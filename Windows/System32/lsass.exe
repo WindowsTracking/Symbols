@@ -1,0 +1,43 @@
+
+// Functions
+
+__GSHandlerCheck();
+__GSHandlerCheckCommon();
+? _initterm;
+LsaISetupWasRun();
+LsapAuOpenSam();
+LsapCheckBootMode();
+LsapDsInitializeDsStateInfo();
+LsapDsInitializePromoteInterface();
+LsapInitLsa();
+LsapMarkBootGood();
+LsapNotifyInitializationFinish();
+LsaTopLevelExceptionHandler();
+main();
+mainNoCRTStartup();
+__report_gsfailure();
+SamIInitialize();
+SampDsIsRunning();
+__security_check_cookie();
+__security_init_cookie();
+ServiceInit();
+
+// Globals
+
+HotPatchBuffer;
+__IMPORT_DESCRIPTOR_ADVAPI32;
+__IMPORT_DESCRIPTOR_KERNEL32;
+__IMPORT_DESCRIPTOR_LSASRV;
+__IMPORT_DESCRIPTOR_ntdll;
+__IMPORT_DESCRIPTOR_SAMSRV;
+__NULL_IMPORT_DESCRIPTOR;
+__security_cookie;
+__security_cookie_complement;
+__xc_a;
+__xc_z;
+__xi_a;
+__xi_z;
+__xp_a;
+__xp_z;
+__xt_a;
+__xt_z;

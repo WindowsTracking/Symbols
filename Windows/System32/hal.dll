@@ -1,0 +1,3599 @@
+/*
+ * PDB file: hal.pdb\14E53BEDD6024976A0C3B0E9388633DC1\hal.pdb
+ * Image architecture: AMD64 (0x8664)
+ *
+ * Dumped by pdbex tool v0.18, by wbenny
+ */
+
+struct _ACCESS_STATE;
+enum BUS_QUERY_ID_TYPE;
+struct _CM_FULL_RESOURCE_DESCRIPTOR;
+struct _CM_PARTIAL_RESOURCE_DESCRIPTOR;
+struct _CM_PARTIAL_RESOURCE_LIST;
+struct _CM_RESOURCE_LIST;
+struct _COMPRESSED_DATA_INFO;
+struct _CONTEXT;
+struct _CONTROLLER_OBJECT;
+struct _DESCRIPTION_HEADER;
+struct _DEVICE_CAPABILITIES;
+struct _DEVICE_OBJECT;
+enum _DEVICE_POWER_STATE;
+enum _DEVICE_RELATION_TYPE;
+enum DEVICE_TEXT_TYPE;
+enum _DEVICE_USAGE_NOTIFICATION_TYPE;
+struct _DEVOBJ_EXTENSION;
+struct _DISPATCHER_HEADER;
+struct _DRIVER_EXTENSION;
+struct _DRIVER_OBJECT;
+struct _EPROCESS;
+struct _ERESOURCE;
+struct _ETHREAD;
+struct _EVENT_DATA_DESCRIPTOR;
+struct _EVENT_DESCRIPTOR;
+enum _EVENT_TYPE;
+struct _FACS;
+struct _FADT;
+struct _FAST_IO_DISPATCH;
+struct _FAST_MUTEX;
+struct _FILE_BASIC_INFORMATION;
+struct _FILE_GET_QUOTA_INFORMATION;
+enum _FILE_INFORMATION_CLASS;
+struct _FILE_NETWORK_OPEN_INFORMATION;
+struct _FILE_OBJECT;
+struct _FILE_STANDARD_INFORMATION;
+enum _FSINFOCLASS;
+struct _GEN_ADDR;
+struct _GENERAL_LOOKASIDE;
+struct _GENERAL_LOOKASIDE_POOL;
+struct _GUID;
+struct _INITIAL_PRIVILEGE_SET;
+struct _INTERFACE;
+enum _INTERFACE_TYPE;
+enum _INTERLOCKED_RESULT;
+enum _IO_ALLOCATION_ACTION;
+struct _IO_COMPLETION_CONTEXT;
+struct _IO_NMISOURCE;
+struct _IO_RESOURCE_DESCRIPTOR;
+struct _IO_RESOURCE_LIST;
+struct _IO_RESOURCE_REQUIREMENTS_LIST;
+struct _IO_SECURITY_CONTEXT;
+struct _IO_STACK_LOCATION;
+struct _IO_STATUS_BLOCK;
+struct _IO_TIMER;
+struct _IOAPIC;
+struct _IOSAPIC;
+struct _IRP;
+enum _IRQ_DEVICE_POLICY;
+enum _IRQ_PRIORITY;
+struct _ISA_VECTOR;
+struct _KAPC;
+struct _KDESCRIPTOR;
+struct _KDEVICE_QUEUE;
+struct _KDEVICE_QUEUE_ENTRY;
+struct _KDPC;
+struct _KEVENT;
+struct _KPRCB;
+struct _KPROCESS;
+struct _KPROCESSOR_STATE;
+struct _KSEMAPHORE;
+struct _KSPECIAL_REGISTERS;
+struct _KTHREAD;
+union _LARGE_INTEGER;
+struct LIST_ENTRY32;
+struct LIST_ENTRY64;
+struct _LIST_ENTRY;
+struct _LOCAL_NMISOURCE;
+struct _LOOKASIDE_LIST_EX;
+struct _LUID;
+struct _LUID_AND_ATTRIBUTES;
+struct _M128A;
+struct _MAPIC;
+struct _MDL;
+enum _MEMORY_CACHING_TYPE_ORIG;
+struct _NPAGED_LOOKASIDE_LIST;
+struct _OBJECT_ATTRIBUTES;
+struct _OBJECT_TYPE;
+struct _OWNER_ENTRY;
+struct _PAGED_LOOKASIDE_LIST;
+enum PCI_EXPRESS_DEVICE_TYPE;
+struct _PCIE_DEVICE_ID;
+struct _PLATFORM_INTERRUPT;
+enum _POOL_TYPE;
+enum POWER_ACTION;
+struct _POWER_SEQUENCE;
+union _POWER_STATE;
+enum _POWER_STATE_TYPE;
+struct _PRIVILEGE_SET;
+struct _PROCLOCALAPIC;
+struct _PROCLOCALSAPIC;
+enum _REG_NOTIFY_CLASS;
+struct _RSDP;
+struct _RSDT_32;
+struct _RTL_BITMAP;
+struct _SCSI_REQUEST_BLOCK;
+struct _SECTION_OBJECT_POINTERS;
+enum _SECURITY_IMPERSONATION_LEVEL;
+struct _SECURITY_QUALITY_OF_SERVICE;
+struct _SECURITY_SUBJECT_CONTEXT;
+struct _SINGLE_LIST_ENTRY;
+struct _SLIST_ENTRY;
+union _SLIST_HEADER;
+struct _STRING;
+enum _SYSTEM_POWER_STATE;
+struct _SYSTEM_POWER_STATE_CONTEXT;
+union _ULARGE_INTEGER;
+struct _UNICODE_STRING;
+struct _VPB;
+struct _WAIT_CONTEXT_BLOCK;
+struct _WHEA_ERROR_PACKET;
+struct _WHEA_ERROR_RECORD;
+struct _WHEA_ERROR_RECORD_HEADER;
+struct _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR;
+enum _WHEA_ERROR_SEVERITY;
+enum _WHEA_ERROR_SOURCE_TYPE;
+struct _WHEA_ERROR_STATUS;
+enum _WHEA_ERROR_STATUS_FORMAT;
+enum _WHEA_ERROR_TYPE;
+struct _WHEA_GENERIC_PROCESSOR_ERROR;
+struct _WHEA_MEMORY_ERROR;
+struct _WHEA_NMI_ERROR;
+struct _WHEA_PCIEXPRESS_ERROR;
+struct _WHEA_PCIX_BUS_ERROR;
+struct _WHEA_PCIX_BUS_VALIDATION_BITS;
+struct _WHEA_PCIX_DEV_VALIDATION_BITS;
+struct _WHEA_PCIX_DEVICE_ERROR;
+struct _WHEA_PERSISTENCE_INFO;
+struct _XMM_SAVE_AREA32;
+
+#include <pshpack1.h>
+
+typedef struct _ACCESS_STATE
+{
+  struct _LUID OperationID;
+  unsigned char SecurityEvaluated;
+  unsigned char GenerateAudit;
+  unsigned char GenerateOnClose;
+  unsigned char PrivilegesAllocated;
+  unsigned long Flags;
+  unsigned long RemainingDesiredAccess;
+  unsigned long PreviouslyGrantedAccess;
+  unsigned long OriginalDesiredAccess;
+  struct _SECURITY_SUBJECT_CONTEXT SubjectSecurityContext;
+  void* SecurityDescriptor;
+  void* AuxData;
+  union
+  {
+    union
+    {
+      struct _INITIAL_PRIVILEGE_SET InitialPrivilegeSet;
+      struct _PRIVILEGE_SET PrivilegeSet;
+    };
+  } Privileges;
+  unsigned char AuditPrivileges;
+  struct _UNICODE_STRING ObjectName;
+  struct _UNICODE_STRING ObjectTypeName;
+} ACCESS_STATE, *PACCESS_STATE;
+
+enum BUS_QUERY_ID_TYPE
+{
+  BusQueryDeviceID = 0,
+  BusQueryHardwareIDs = 1,
+  BusQueryCompatibleIDs = 2,
+  BusQueryInstanceID = 3,
+  BusQueryDeviceSerialNumber = 4,
+};
+
+typedef struct _CM_FULL_RESOURCE_DESCRIPTOR
+{
+  enum _INTERFACE_TYPE InterfaceType;
+  unsigned long BusNumber;
+  struct _CM_PARTIAL_RESOURCE_LIST PartialResourceList;
+} CM_FULL_RESOURCE_DESCRIPTOR, *PCM_FULL_RESOURCE_DESCRIPTOR;
+
+typedef struct _CM_PARTIAL_RESOURCE_DESCRIPTOR
+{
+  unsigned char Type;
+  unsigned char ShareDisposition;
+  unsigned short Flags;
+  union
+  {
+    union
+    {
+      struct
+      {
+        union _LARGE_INTEGER Start;
+        unsigned long Length;
+      } Generic;
+      struct
+      {
+        union _LARGE_INTEGER Start;
+        unsigned long Length;
+      } Port;
+      struct
+      {
+        unsigned long Level;
+        unsigned long Vector;
+        unsigned __int64 Affinity;
+      } Interrupt;
+      struct
+      {
+        union
+        {
+          struct
+          {
+            unsigned short Reserved;
+            unsigned short MessageCount;
+            unsigned long Vector;
+            unsigned __int64 Affinity;
+          } Raw;
+          struct
+          {
+            unsigned long Level;
+            unsigned long Vector;
+            unsigned __int64 Affinity;
+          } Translated;
+        };
+      } MessageInterrupt;
+      struct
+      {
+        union _LARGE_INTEGER Start;
+        unsigned long Length;
+      } Memory;
+      struct
+      {
+        unsigned long Channel;
+        unsigned long Port;
+        unsigned long Reserved1;
+      } Dma;
+      struct
+      {
+        unsigned long Data[3];
+      } DevicePrivate;
+      struct
+      {
+        unsigned long Start;
+        unsigned long Length;
+        unsigned long Reserved;
+      } BusNumber;
+      struct
+      {
+        unsigned long DataSize;
+        unsigned long Reserved1;
+        unsigned long Reserved2;
+      } DeviceSpecificData;
+      struct
+      {
+        union _LARGE_INTEGER Start;
+        unsigned long Length40;
+      } Memory40;
+      struct
+      {
+        union _LARGE_INTEGER Start;
+        unsigned long Length48;
+      } Memory48;
+      struct
+      {
+        union _LARGE_INTEGER Start;
+        unsigned long Length64;
+      } Memory64;
+    };
+  } u;
+} CM_PARTIAL_RESOURCE_DESCRIPTOR, *PCM_PARTIAL_RESOURCE_DESCRIPTOR;
+
+typedef struct _CM_PARTIAL_RESOURCE_LIST
+{
+  unsigned short Version;
+  unsigned short Revision;
+  unsigned long Count;
+  struct _CM_PARTIAL_RESOURCE_DESCRIPTOR PartialDescriptors[1];
+} CM_PARTIAL_RESOURCE_LIST, *PCM_PARTIAL_RESOURCE_LIST;
+
+typedef struct _CM_RESOURCE_LIST
+{
+  unsigned long Count;
+  struct _CM_FULL_RESOURCE_DESCRIPTOR List[1];
+} CM_RESOURCE_LIST, *PCM_RESOURCE_LIST;
+
+struct _COMPRESSED_DATA_INFO;
+
+typedef struct _CONTEXT
+{
+  unsigned __int64 P1Home;
+  unsigned __int64 P2Home;
+  unsigned __int64 P3Home;
+  unsigned __int64 P4Home;
+  unsigned __int64 P5Home;
+  unsigned __int64 P6Home;
+  unsigned long ContextFlags;
+  unsigned long MxCsr;
+  unsigned short SegCs;
+  unsigned short SegDs;
+  unsigned short SegEs;
+  unsigned short SegFs;
+  unsigned short SegGs;
+  unsigned short SegSs;
+  unsigned long EFlags;
+  unsigned __int64 Dr0;
+  unsigned __int64 Dr1;
+  unsigned __int64 Dr2;
+  unsigned __int64 Dr3;
+  unsigned __int64 Dr6;
+  unsigned __int64 Dr7;
+  unsigned __int64 Rax;
+  unsigned __int64 Rcx;
+  unsigned __int64 Rdx;
+  unsigned __int64 Rbx;
+  unsigned __int64 Rsp;
+  unsigned __int64 Rbp;
+  unsigned __int64 Rsi;
+  unsigned __int64 Rdi;
+  unsigned __int64 R8;
+  unsigned __int64 R9;
+  unsigned __int64 R10;
+  unsigned __int64 R11;
+  unsigned __int64 R12;
+  unsigned __int64 R13;
+  unsigned __int64 R14;
+  unsigned __int64 R15;
+  unsigned __int64 Rip;
+  union
+  {
+    struct _XMM_SAVE_AREA32 FltSave;
+    struct
+    {
+      struct _M128A Header[2];
+      struct _M128A Legacy[8];
+      struct _M128A Xmm0;
+      struct _M128A Xmm1;
+      struct _M128A Xmm2;
+      struct _M128A Xmm3;
+      struct _M128A Xmm4;
+      struct _M128A Xmm5;
+      struct _M128A Xmm6;
+      struct _M128A Xmm7;
+      struct _M128A Xmm8;
+      struct _M128A Xmm9;
+      struct _M128A Xmm10;
+      struct _M128A Xmm11;
+      struct _M128A Xmm12;
+      struct _M128A Xmm13;
+      struct _M128A Xmm14;
+      struct _M128A Xmm15;
+    };
+  };
+  struct _M128A VectorRegister[26];
+  unsigned __int64 VectorControl;
+  unsigned __int64 DebugControl;
+  unsigned __int64 LastBranchToRip;
+  unsigned __int64 LastBranchFromRip;
+  unsigned __int64 LastExceptionToRip;
+  unsigned __int64 LastExceptionFromRip;
+} CONTEXT, *PCONTEXT;
+
+typedef struct _CONTROLLER_OBJECT
+{
+  short Type;
+  short Size;
+  void* ControllerExtension;
+  struct _KDEVICE_QUEUE DeviceWaitQueue;
+  unsigned long Spare1;
+  union _LARGE_INTEGER Spare2;
+} CONTROLLER_OBJECT, *PCONTROLLER_OBJECT;
+
+typedef struct _DESCRIPTION_HEADER
+{
+  unsigned long Signature;
+  unsigned long Length;
+  unsigned char Revision;
+  unsigned char Checksum;
+  char OEMID[6];
+  char OEMTableID[8];
+  unsigned long OEMRevision;
+  char CreatorID[4];
+  unsigned long CreatorRev;
+} DESCRIPTION_HEADER, *PDESCRIPTION_HEADER;
+
+typedef struct _DEVICE_CAPABILITIES
+{
+  unsigned short Size;
+  unsigned short Version;
+  struct /* bitfield */
+  {
+    unsigned long DeviceD1 : 1; /* bit position: 0 */
+    unsigned long DeviceD2 : 1; /* bit position: 1 */
+    unsigned long LockSupported : 1; /* bit position: 2 */
+    unsigned long EjectSupported : 1; /* bit position: 3 */
+    unsigned long Removable : 1; /* bit position: 4 */
+    unsigned long DockDevice : 1; /* bit position: 5 */
+    unsigned long UniqueID : 1; /* bit position: 6 */
+    unsigned long SilentInstall : 1; /* bit position: 7 */
+    unsigned long RawDeviceOK : 1; /* bit position: 8 */
+    unsigned long SurpriseRemovalOK : 1; /* bit position: 9 */
+    unsigned long WakeFromD0 : 1; /* bit position: 10 */
+    unsigned long WakeFromD1 : 1; /* bit position: 11 */
+    unsigned long WakeFromD2 : 1; /* bit position: 12 */
+    unsigned long WakeFromD3 : 1; /* bit position: 13 */
+    unsigned long HardwareDisabled : 1; /* bit position: 14 */
+    unsigned long NonDynamic : 1; /* bit position: 15 */
+    unsigned long WarmEjectSupported : 1; /* bit position: 16 */
+    unsigned long NoDisplayInUI : 1; /* bit position: 17 */
+    unsigned long Reserved : 14; /* bit position: 18 */
+  }; /* bitfield */
+  unsigned long Address;
+  unsigned long UINumber;
+  enum _DEVICE_POWER_STATE DeviceState[7];
+  enum _SYSTEM_POWER_STATE SystemWake;
+  enum _DEVICE_POWER_STATE DeviceWake;
+  unsigned long D1Latency;
+  unsigned long D2Latency;
+  unsigned long D3Latency;
+} DEVICE_CAPABILITIES, *PDEVICE_CAPABILITIES;
+
+typedef struct _DEVICE_OBJECT
+{
+  short Type;
+  unsigned short Size;
+  long ReferenceCount;
+  struct _DRIVER_OBJECT* DriverObject;
+  struct _DEVICE_OBJECT* NextDevice;
+  struct _DEVICE_OBJECT* AttachedDevice;
+  struct _IRP* CurrentIrp;
+  struct _IO_TIMER* Timer;
+  unsigned long Flags;
+  unsigned long Characteristics;
+  struct _VPB* Vpb;
+  void* DeviceExtension;
+  unsigned long DeviceType;
+  char StackSize;
+  union
+  {
+    union
+    {
+      struct _LIST_ENTRY ListEntry;
+      struct _WAIT_CONTEXT_BLOCK Wcb;
+    };
+  } Queue;
+  unsigned long AlignmentRequirement;
+  struct _KDEVICE_QUEUE DeviceQueue;
+  struct _KDPC Dpc;
+  unsigned long ActiveThreadCount;
+  void* SecurityDescriptor;
+  struct _KEVENT DeviceLock;
+  unsigned short SectorSize;
+  unsigned short Spare1;
+  struct _DEVOBJ_EXTENSION* DeviceObjectExtension;
+  void* Reserved;
+  long __PADDING__[2];
+} DEVICE_OBJECT, *PDEVICE_OBJECT;
+
+typedef enum _DEVICE_POWER_STATE
+{
+  PowerDeviceUnspecified = 0,
+  PowerDeviceD0 = 1,
+  PowerDeviceD1 = 2,
+  PowerDeviceD2 = 3,
+  PowerDeviceD3 = 4,
+  PowerDeviceMaximum = 5,
+} DEVICE_POWER_STATE, *PDEVICE_POWER_STATE;
+
+typedef enum _DEVICE_RELATION_TYPE
+{
+  BusRelations = 0,
+  EjectionRelations = 1,
+  PowerRelations = 2,
+  RemovalRelations = 3,
+  TargetDeviceRelation = 4,
+  SingleBusRelations = 5,
+} DEVICE_RELATION_TYPE, *PDEVICE_RELATION_TYPE;
+
+enum DEVICE_TEXT_TYPE
+{
+  DeviceTextDescription = 0,
+  DeviceTextLocationInformation = 1,
+};
+
+typedef enum _DEVICE_USAGE_NOTIFICATION_TYPE
+{
+  DeviceUsageTypeUndefined = 0,
+  DeviceUsageTypePaging = 1,
+  DeviceUsageTypeHibernation = 2,
+  DeviceUsageTypeDumpFile = 3,
+} DEVICE_USAGE_NOTIFICATION_TYPE, *PDEVICE_USAGE_NOTIFICATION_TYPE;
+
+typedef struct _DEVOBJ_EXTENSION
+{
+  short Type;
+  unsigned short Size;
+  struct _DEVICE_OBJECT* DeviceObject;
+} DEVOBJ_EXTENSION, *PDEVOBJ_EXTENSION;
+
+typedef struct _DISPATCHER_HEADER
+{
+  union
+  {
+    struct
+    {
+      unsigned char Type;
+      union
+      {
+        unsigned char Abandoned;
+        unsigned char Absolute;
+        unsigned char NpxIrql;
+        struct
+        {
+          unsigned char Signalling;
+          union
+          {
+            unsigned char Size;
+            struct
+            {
+              unsigned char Hand;
+              union
+              {
+                unsigned char Inserted;
+                unsigned char DebugActive;
+                unsigned char DpcActive;
+              };
+            };
+          };
+        };
+      };
+    };
+    volatile long Lock;
+  };
+  long SignalState;
+  struct _LIST_ENTRY WaitListHead;
+} DISPATCHER_HEADER, *PDISPATCHER_HEADER;
+
+typedef struct _DRIVER_EXTENSION
+{
+  struct _DRIVER_OBJECT* DriverObject;
+  void* AddDevice /* function */;
+  unsigned long Count;
+  struct _UNICODE_STRING ServiceKeyName;
+} DRIVER_EXTENSION, *PDRIVER_EXTENSION;
+
+typedef struct _DRIVER_OBJECT
+{
+  short Type;
+  short Size;
+  struct _DEVICE_OBJECT* DeviceObject;
+  unsigned long Flags;
+  void* DriverStart;
+  unsigned long DriverSize;
+  void* DriverSection;
+  struct _DRIVER_EXTENSION* DriverExtension;
+  struct _UNICODE_STRING DriverName;
+  struct _UNICODE_STRING* HardwareDatabase;
+  struct _FAST_IO_DISPATCH* FastIoDispatch;
+  void* DriverInit /* function */;
+  void* DriverStartIo /* function */;
+  void* DriverUnload /* function */;
+  void* MajorFunction[28] /* function */;
+} DRIVER_OBJECT, *PDRIVER_OBJECT;
+
+struct _EPROCESS;
+
+typedef struct _ERESOURCE
+{
+  struct _LIST_ENTRY SystemResourcesList;
+  struct _OWNER_ENTRY* OwnerTable;
+  short ActiveCount;
+  unsigned short Flag;
+  struct _KSEMAPHORE* SharedWaiters;
+  struct _KEVENT* ExclusiveWaiters;
+  struct _OWNER_ENTRY OwnerEntry;
+  unsigned long ActiveEntries;
+  unsigned long ContentionCount;
+  unsigned long NumberOfSharedWaiters;
+  unsigned long NumberOfExclusiveWaiters;
+  void* Reserved2;
+  union
+  {
+    void* Address;
+    unsigned __int64 CreatorBackTraceIndex;
+  };
+  unsigned __int64 SpinLock;
+} ERESOURCE, *PERESOURCE;
+
+struct _ETHREAD;
+
+typedef struct _EVENT_DATA_DESCRIPTOR
+{
+  unsigned __int64 Ptr;
+  unsigned long Size;
+  unsigned long Reserved;
+} EVENT_DATA_DESCRIPTOR, *PEVENT_DATA_DESCRIPTOR;
+
+typedef struct _EVENT_DESCRIPTOR
+{
+  unsigned short Id;
+  unsigned char Version;
+  unsigned char Channel;
+  unsigned char Level;
+  unsigned char Opcode;
+  unsigned short Task;
+  unsigned __int64 Keyword;
+} EVENT_DESCRIPTOR, *PEVENT_DESCRIPTOR;
+
+typedef enum _EVENT_TYPE
+{
+  NotificationEvent = 0,
+  SynchronizationEvent = 1,
+} EVENT_TYPE, *PEVENT_TYPE;
+
+typedef struct _FACS
+{
+  unsigned long Signature;
+  unsigned long Length;
+  unsigned long HardwareSignature;
+  unsigned long pFirmwareWakingVector;
+  unsigned long GlobalLock;
+  unsigned long Flags;
+  union _LARGE_INTEGER x_FirmwareWakingVector;
+  unsigned char version;
+  unsigned char Reserved[31];
+} FACS, *PFACS;
+
+typedef struct _FADT
+{
+  struct _DESCRIPTION_HEADER Header;
+  unsigned long facs;
+  unsigned long dsdt;
+  unsigned char int_model;
+  unsigned char pm_profile;
+  unsigned short sci_int_vector;
+  unsigned long smi_cmd_io_port;
+  unsigned char acpi_on_value;
+  unsigned char acpi_off_value;
+  unsigned char s4bios_req;
+  unsigned char pstate_control;
+  unsigned long pm1a_evt_blk_io_port;
+  unsigned long pm1b_evt_blk_io_port;
+  unsigned long pm1a_ctrl_blk_io_port;
+  unsigned long pm1b_ctrl_blk_io_port;
+  unsigned long pm2_ctrl_blk_io_port;
+  unsigned long pm_tmr_blk_io_port;
+  unsigned long gp0_blk_io_port;
+  unsigned long gp1_blk_io_port;
+  unsigned char pm1_evt_len;
+  unsigned char pm1_ctrl_len;
+  unsigned char pm2_ctrl_len;
+  unsigned char pm_tmr_len;
+  unsigned char gp0_blk_len;
+  unsigned char gp1_blk_len;
+  unsigned char gp1_base;
+  unsigned char cstate_control;
+  unsigned short lvl2_latency;
+  unsigned short lvl3_latency;
+  unsigned short flush_size;
+  unsigned short flush_stride;
+  unsigned char duty_offset;
+  unsigned char duty_width;
+  unsigned char day_alarm_index;
+  unsigned char month_alarm_index;
+  unsigned char century_alarm_index;
+  unsigned short boot_arch;
+  unsigned char reserved3[1];
+  unsigned long flags;
+  struct _GEN_ADDR reset_reg;
+  unsigned char reset_val;
+  unsigned char reserved4[3];
+  union _LARGE_INTEGER x_firmware_ctrl;
+  union _LARGE_INTEGER x_dsdt;
+  struct _GEN_ADDR x_pm1a_evt_blk;
+  struct _GEN_ADDR x_pm1b_evt_blk;
+  struct _GEN_ADDR x_pm1a_ctrl_blk;
+  struct _GEN_ADDR x_pm1b_ctrl_blk;
+  struct _GEN_ADDR x_pm2_ctrl_blk;
+  struct _GEN_ADDR x_pm_tmr_blk;
+  struct _GEN_ADDR x_gp0_blk;
+  struct _GEN_ADDR x_gp1_blk;
+} FADT, *PFADT;
+
+typedef struct _FAST_IO_DISPATCH
+{
+  unsigned long SizeOfFastIoDispatch;
+  void* FastIoCheckIfPossible /* function */;
+  void* FastIoRead /* function */;
+  void* FastIoWrite /* function */;
+  void* FastIoQueryBasicInfo /* function */;
+  void* FastIoQueryStandardInfo /* function */;
+  void* FastIoLock /* function */;
+  void* FastIoUnlockSingle /* function */;
+  void* FastIoUnlockAll /* function */;
+  void* FastIoUnlockAllByKey /* function */;
+  void* FastIoDeviceControl /* function */;
+  void* AcquireFileForNtCreateSection /* function */;
+  void* ReleaseFileForNtCreateSection /* function */;
+  void* FastIoDetachDevice /* function */;
+  void* FastIoQueryNetworkOpenInfo /* function */;
+  void* AcquireForModWrite /* function */;
+  void* MdlRead /* function */;
+  void* MdlReadComplete /* function */;
+  void* PrepareMdlWrite /* function */;
+  void* MdlWriteComplete /* function */;
+  void* FastIoReadCompressed /* function */;
+  void* FastIoWriteCompressed /* function */;
+  void* MdlReadCompleteCompressed /* function */;
+  void* MdlWriteCompleteCompressed /* function */;
+  void* FastIoQueryOpen /* function */;
+  void* ReleaseForModWrite /* function */;
+  void* AcquireForCcFlush /* function */;
+  void* ReleaseForCcFlush /* function */;
+} FAST_IO_DISPATCH, *PFAST_IO_DISPATCH;
+
+typedef struct _FAST_MUTEX
+{
+  volatile long Count;
+  struct _KTHREAD* Owner;
+  unsigned long Contention;
+  struct _KEVENT Gate;
+  unsigned long OldIrql;
+  long __PADDING__[1];
+} FAST_MUTEX, *PFAST_MUTEX;
+
+typedef struct _FILE_BASIC_INFORMATION
+{
+  union _LARGE_INTEGER CreationTime;
+  union _LARGE_INTEGER LastAccessTime;
+  union _LARGE_INTEGER LastWriteTime;
+  union _LARGE_INTEGER ChangeTime;
+  unsigned long FileAttributes;
+  long __PADDING__[1];
+} FILE_BASIC_INFORMATION, *PFILE_BASIC_INFORMATION;
+
+struct _FILE_GET_QUOTA_INFORMATION;
+
+typedef enum _FILE_INFORMATION_CLASS
+{
+  FileDirectoryInformation = 1,
+  FileFullDirectoryInformation = 2,
+  FileBothDirectoryInformation = 3,
+  FileBasicInformation = 4,
+  FileStandardInformation = 5,
+  FileInternalInformation = 6,
+  FileEaInformation = 7,
+  FileAccessInformation = 8,
+  FileNameInformation = 9,
+  FileRenameInformation = 10,
+  FileLinkInformation = 11,
+  FileNamesInformation = 12,
+  FileDispositionInformation = 13,
+  FilePositionInformation = 14,
+  FileFullEaInformation = 15,
+  FileModeInformation = 16,
+  FileAlignmentInformation = 17,
+  FileAllInformation = 18,
+  FileAllocationInformation = 19,
+  FileEndOfFileInformation = 20,
+  FileAlternateNameInformation = 21,
+  FileStreamInformation = 22,
+  FilePipeInformation = 23,
+  FilePipeLocalInformation = 24,
+  FilePipeRemoteInformation = 25,
+  FileMailslotQueryInformation = 26,
+  FileMailslotSetInformation = 27,
+  FileCompressionInformation = 28,
+  FileObjectIdInformation = 29,
+  FileCompletionInformation = 30,
+  FileMoveClusterInformation = 31,
+  FileQuotaInformation = 32,
+  FileReparsePointInformation = 33,
+  FileNetworkOpenInformation = 34,
+  FileAttributeTagInformation = 35,
+  FileTrackingInformation = 36,
+  FileIdBothDirectoryInformation = 37,
+  FileIdFullDirectoryInformation = 38,
+  FileValidDataLengthInformation = 39,
+  FileShortNameInformation = 40,
+  FileIoCompletionNotificationInformation = 41,
+  FileIoStatusBlockRangeInformation = 42,
+  FileIoPriorityHintInformation = 43,
+  FileSfioReserveInformation = 44,
+  FileSfioVolumeInformation = 45,
+  FileHardLinkInformation = 46,
+  FileProcessIdsUsingFileInformation = 47,
+  FileNormalizedNameInformation = 48,
+  FileNetworkPhysicalNameInformation = 49,
+  FileMaximumInformation = 50,
+} FILE_INFORMATION_CLASS, *PFILE_INFORMATION_CLASS;
+
+typedef struct _FILE_NETWORK_OPEN_INFORMATION
+{
+  union _LARGE_INTEGER CreationTime;
+  union _LARGE_INTEGER LastAccessTime;
+  union _LARGE_INTEGER LastWriteTime;
+  union _LARGE_INTEGER ChangeTime;
+  union _LARGE_INTEGER AllocationSize;
+  union _LARGE_INTEGER EndOfFile;
+  unsigned long FileAttributes;
+  long __PADDING__[1];
+} FILE_NETWORK_OPEN_INFORMATION, *PFILE_NETWORK_OPEN_INFORMATION;
+
+typedef struct _FILE_OBJECT
+{
+  short Type;
+  short Size;
+  struct _DEVICE_OBJECT* DeviceObject;
+  struct _VPB* Vpb;
+  void* FsContext;
+  void* FsContext2;
+  struct _SECTION_OBJECT_POINTERS* SectionObjectPointer;
+  void* PrivateCacheMap;
+  long FinalStatus;
+  struct _FILE_OBJECT* RelatedFileObject;
+  unsigned char LockOperation;
+  unsigned char DeletePending;
+  unsigned char ReadAccess;
+  unsigned char WriteAccess;
+  unsigned char DeleteAccess;
+  unsigned char SharedRead;
+  unsigned char SharedWrite;
+  unsigned char SharedDelete;
+  unsigned long Flags;
+  struct _UNICODE_STRING FileName;
+  union _LARGE_INTEGER CurrentByteOffset;
+  unsigned long Waiters;
+  unsigned long Busy;
+  void* LastLock;
+  struct _KEVENT Lock;
+  struct _KEVENT Event;
+  struct _IO_COMPLETION_CONTEXT* CompletionContext;
+  unsigned __int64 IrpListLock;
+  struct _LIST_ENTRY IrpList;
+  void* FileObjectExtension;
+} FILE_OBJECT, *PFILE_OBJECT;
+
+typedef struct _FILE_STANDARD_INFORMATION
+{
+  union _LARGE_INTEGER AllocationSize;
+  union _LARGE_INTEGER EndOfFile;
+  unsigned long NumberOfLinks;
+  unsigned char DeletePending;
+  unsigned char Directory;
+  char __PADDING__[2];
+} FILE_STANDARD_INFORMATION, *PFILE_STANDARD_INFORMATION;
+
+typedef enum _FSINFOCLASS
+{
+  FileFsVolumeInformation = 1,
+  FileFsLabelInformation = 2,
+  FileFsSizeInformation = 3,
+  FileFsDeviceInformation = 4,
+  FileFsAttributeInformation = 5,
+  FileFsControlInformation = 6,
+  FileFsFullSizeInformation = 7,
+  FileFsObjectIdInformation = 8,
+  FileFsDriverPathInformation = 9,
+  FileFsVolumeFlagsInformation = 10,
+  FileFsMaximumInformation = 11,
+} FSINFOCLASS, *PFSINFOCLASS;
+
+typedef struct _GEN_ADDR
+{
+  unsigned char AddressSpaceID;
+  unsigned char BitWidth;
+  unsigned char BitOffset;
+  unsigned char AccessSize;
+  union _LARGE_INTEGER Address;
+} GEN_ADDR, *PGEN_ADDR;
+
+typedef struct _GENERAL_LOOKASIDE
+{
+  union
+  {
+    union _SLIST_HEADER ListHead;
+    struct _SINGLE_LIST_ENTRY SingleListHead;
+  };
+  unsigned short Depth;
+  unsigned short MaximumDepth;
+  unsigned long TotalAllocates;
+  union
+  {
+    unsigned long AllocateMisses;
+    unsigned long AllocateHits;
+  };
+  unsigned long TotalFrees;
+  union
+  {
+    unsigned long FreeMisses;
+    unsigned long FreeHits;
+  };
+  enum _POOL_TYPE Type;
+  unsigned long Tag;
+  unsigned long Size;
+  union
+  {
+    void* AllocateEx /* function */;
+    void* Allocate /* function */;
+  };
+  union
+  {
+    void* FreeEx /* function */;
+    void* Free /* function */;
+  };
+  struct _LIST_ENTRY ListEntry;
+  unsigned long LastTotalAllocates;
+  union
+  {
+    unsigned long LastAllocateMisses;
+    unsigned long LastAllocateHits;
+  };
+  unsigned long Future[2];
+  long __PADDING__[8];
+} GENERAL_LOOKASIDE, *PGENERAL_LOOKASIDE;
+
+typedef struct _GENERAL_LOOKASIDE_POOL
+{
+  union
+  {
+    union _SLIST_HEADER ListHead;
+    struct _SINGLE_LIST_ENTRY SingleListHead;
+  };
+  unsigned short Depth;
+  unsigned short MaximumDepth;
+  unsigned long TotalAllocates;
+  union
+  {
+    unsigned long AllocateMisses;
+    unsigned long AllocateHits;
+  };
+  unsigned long TotalFrees;
+  union
+  {
+    unsigned long FreeMisses;
+    unsigned long FreeHits;
+  };
+  enum _POOL_TYPE Type;
+  unsigned long Tag;
+  unsigned long Size;
+  union
+  {
+    void* AllocateEx /* function */;
+    void* Allocate /* function */;
+  };
+  union
+  {
+    void* FreeEx /* function */;
+    void* Free /* function */;
+  };
+  struct _LIST_ENTRY ListEntry;
+  unsigned long LastTotalAllocates;
+  union
+  {
+    unsigned long LastAllocateMisses;
+    unsigned long LastAllocateHits;
+  };
+  unsigned long Future[2];
+} GENERAL_LOOKASIDE_POOL, *PGENERAL_LOOKASIDE_POOL;
+
+typedef struct _GUID
+{
+  unsigned long Data1;
+  unsigned short Data2;
+  unsigned short Data3;
+  unsigned char Data4[8];
+} GUID, *PGUID;
+
+typedef struct _INITIAL_PRIVILEGE_SET
+{
+  unsigned long PrivilegeCount;
+  unsigned long Control;
+  struct _LUID_AND_ATTRIBUTES Privilege[3];
+} INITIAL_PRIVILEGE_SET, *PINITIAL_PRIVILEGE_SET;
+
+typedef struct _INTERFACE
+{
+  unsigned short Size;
+  unsigned short Version;
+  void* Context;
+  void* InterfaceReference /* function */;
+  void* InterfaceDereference /* function */;
+} INTERFACE, *PINTERFACE;
+
+typedef enum _INTERFACE_TYPE
+{
+  InterfaceTypeUndefined = -1,
+  Internal = 0,
+  Isa = 1,
+  Eisa = 2,
+  MicroChannel = 3,
+  TurboChannel = 4,
+  PCIBus = 5,
+  VMEBus = 6,
+  NuBus = 7,
+  PCMCIABus = 8,
+  CBus = 9,
+  MPIBus = 10,
+  MPSABus = 11,
+  ProcessorInternal = 12,
+  InternalPowerBus = 13,
+  PNPISABus = 14,
+  PNPBus = 15,
+  MaximumInterfaceType = 16,
+} INTERFACE_TYPE, *PINTERFACE_TYPE;
+
+typedef enum _INTERLOCKED_RESULT
+{
+  ResultNegative = 1,
+  ResultZero = 0,
+  ResultPositive = 2,
+} INTERLOCKED_RESULT, *PINTERLOCKED_RESULT;
+
+typedef enum _IO_ALLOCATION_ACTION
+{
+  KeepObject = 1,
+  DeallocateObject = 2,
+  DeallocateObjectKeepRegisters = 3,
+} IO_ALLOCATION_ACTION, *PIO_ALLOCATION_ACTION;
+
+typedef struct _IO_COMPLETION_CONTEXT
+{
+  void* Port;
+  void* Key;
+} IO_COMPLETION_CONTEXT, *PIO_COMPLETION_CONTEXT;
+
+typedef struct _IO_NMISOURCE
+{
+  unsigned char Type;
+  unsigned char Length;
+  unsigned short Flags;
+  unsigned long GlobalSystemInterruptVector;
+} IO_NMISOURCE, *PIO_NMISOURCE;
+
+typedef struct _IO_RESOURCE_DESCRIPTOR
+{
+  unsigned char Option;
+  unsigned char Type;
+  unsigned char ShareDisposition;
+  unsigned char Spare1;
+  unsigned short Flags;
+  unsigned short Spare2;
+  union
+  {
+    union
+    {
+      struct
+      {
+        unsigned long Length;
+        unsigned long Alignment;
+        union _LARGE_INTEGER MinimumAddress;
+        union _LARGE_INTEGER MaximumAddress;
+      } Port;
+      struct
+      {
+        unsigned long Length;
+        unsigned long Alignment;
+        union _LARGE_INTEGER MinimumAddress;
+        union _LARGE_INTEGER MaximumAddress;
+      } Memory;
+      struct
+      {
+        unsigned long MinimumVector;
+        unsigned long MaximumVector;
+        enum _IRQ_DEVICE_POLICY AffinityPolicy;
+        enum _IRQ_PRIORITY PriorityPolicy;
+        unsigned __int64 TargetedProcessors;
+      } Interrupt;
+      struct
+      {
+        unsigned long MinimumChannel;
+        unsigned long MaximumChannel;
+      } Dma;
+      struct
+      {
+        unsigned long Length;
+        unsigned long Alignment;
+        union _LARGE_INTEGER MinimumAddress;
+        union _LARGE_INTEGER MaximumAddress;
+      } Generic;
+      struct
+      {
+        unsigned long Data[3];
+      } DevicePrivate;
+      struct
+      {
+        unsigned long Length;
+        unsigned long MinBusNumber;
+        unsigned long MaxBusNumber;
+        unsigned long Reserved;
+      } BusNumber;
+      struct
+      {
+        unsigned long Priority;
+        unsigned long Reserved1;
+        unsigned long Reserved2;
+      } ConfigData;
+      struct
+      {
+        unsigned long Length40;
+        unsigned long Alignment40;
+        union _LARGE_INTEGER MinimumAddress;
+        union _LARGE_INTEGER MaximumAddress;
+      } Memory40;
+      struct
+      {
+        unsigned long Length48;
+        unsigned long Alignment48;
+        union _LARGE_INTEGER MinimumAddress;
+        union _LARGE_INTEGER MaximumAddress;
+      } Memory48;
+      struct
+      {
+        unsigned long Length64;
+        unsigned long Alignment64;
+        union _LARGE_INTEGER MinimumAddress;
+        union _LARGE_INTEGER MaximumAddress;
+      } Memory64;
+    };
+  } u;
+} IO_RESOURCE_DESCRIPTOR, *PIO_RESOURCE_DESCRIPTOR;
+
+typedef struct _IO_RESOURCE_LIST
+{
+  unsigned short Version;
+  unsigned short Revision;
+  unsigned long Count;
+  struct _IO_RESOURCE_DESCRIPTOR Descriptors[1];
+} IO_RESOURCE_LIST, *PIO_RESOURCE_LIST;
+
+typedef struct _IO_RESOURCE_REQUIREMENTS_LIST
+{
+  unsigned long ListSize;
+  enum _INTERFACE_TYPE InterfaceType;
+  unsigned long BusNumber;
+  unsigned long SlotNumber;
+  unsigned long Reserved[3];
+  unsigned long AlternativeLists;
+  struct _IO_RESOURCE_LIST List[1];
+} IO_RESOURCE_REQUIREMENTS_LIST, *PIO_RESOURCE_REQUIREMENTS_LIST;
+
+typedef struct _IO_SECURITY_CONTEXT
+{
+  struct _SECURITY_QUALITY_OF_SERVICE* SecurityQos;
+  struct _ACCESS_STATE* AccessState;
+  unsigned long DesiredAccess;
+  unsigned long FullCreateOptions;
+} IO_SECURITY_CONTEXT, *PIO_SECURITY_CONTEXT;
+
+typedef struct _IO_STACK_LOCATION
+{
+  unsigned char MajorFunction;
+  unsigned char MinorFunction;
+  unsigned char Flags;
+  unsigned char Control;
+  union
+  {
+    union
+    {
+      struct
+      {
+        struct _IO_SECURITY_CONTEXT* SecurityContext;
+        unsigned long Options;
+        unsigned short FileAttributes;
+        unsigned short ShareAccess;
+        unsigned long EaLength;
+        long __PADDING__[1];
+      } Create;
+      struct
+      {
+        unsigned long Length;
+        unsigned long Key;
+        union _LARGE_INTEGER ByteOffset;
+      } Read;
+      struct
+      {
+        unsigned long Length;
+        unsigned long Key;
+        union _LARGE_INTEGER ByteOffset;
+      } Write;
+      struct
+      {
+        unsigned long Length;
+        struct _UNICODE_STRING* FileName;
+        enum _FILE_INFORMATION_CLASS FileInformationClass;
+        unsigned long FileIndex;
+        long __PADDING__[1];
+      } QueryDirectory;
+      struct
+      {
+        unsigned long Length;
+        unsigned long CompletionFilter;
+        long __PADDING__[1];
+      } NotifyDirectory;
+      struct
+      {
+        unsigned long Length;
+        enum _FILE_INFORMATION_CLASS FileInformationClass;
+        long __PADDING__[1];
+      } QueryFile;
+      struct
+      {
+        unsigned long Length;
+        enum _FILE_INFORMATION_CLASS FileInformationClass;
+        struct _FILE_OBJECT* FileObject;
+        union
+        {
+          struct
+          {
+            unsigned char ReplaceIfExists;
+            unsigned char AdvanceOnly;
+          };
+          unsigned long ClusterCount;
+          void* DeleteHandle;
+        };
+      } SetFile;
+      struct
+      {
+        unsigned long Length;
+        void* EaList;
+        unsigned long EaListLength;
+        unsigned long EaIndex;
+        long __PADDING__[1];
+      } QueryEa;
+      struct
+      {
+        unsigned long Length;
+      } SetEa;
+      struct
+      {
+        unsigned long Length;
+        enum _FSINFOCLASS FsInformationClass;
+        long __PADDING__[1];
+      } QueryVolume;
+      struct
+      {
+        unsigned long Length;
+        enum _FSINFOCLASS FsInformationClass;
+        long __PADDING__[1];
+      } SetVolume;
+      struct
+      {
+        unsigned long OutputBufferLength;
+        unsigned long InputBufferLength;
+        unsigned long FsControlCode;
+        void* Type3InputBuffer;
+      } FileSystemControl;
+      struct
+      {
+        union _LARGE_INTEGER* Length;
+        unsigned long Key;
+        union _LARGE_INTEGER ByteOffset;
+      } LockControl;
+      struct
+      {
+        unsigned long OutputBufferLength;
+        unsigned long InputBufferLength;
+        unsigned long IoControlCode;
+        void* Type3InputBuffer;
+      } DeviceIoControl;
+      struct
+      {
+        unsigned long SecurityInformation;
+        unsigned long Length;
+        long __PADDING__[1];
+      } QuerySecurity;
+      struct
+      {
+        unsigned long SecurityInformation;
+        void* SecurityDescriptor;
+      } SetSecurity;
+      struct
+      {
+        struct _VPB* Vpb;
+        struct _DEVICE_OBJECT* DeviceObject;
+      } MountVolume;
+      struct
+      {
+        struct _VPB* Vpb;
+        struct _DEVICE_OBJECT* DeviceObject;
+      } VerifyVolume;
+      struct
+      {
+        struct _SCSI_REQUEST_BLOCK* Srb;
+      } Scsi;
+      struct
+      {
+        unsigned long Length;
+        void* StartSid;
+        struct _FILE_GET_QUOTA_INFORMATION* SidList;
+        unsigned long SidListLength;
+        long __PADDING__[1];
+      } QueryQuota;
+      struct
+      {
+        unsigned long Length;
+      } SetQuota;
+      struct
+      {
+        enum _DEVICE_RELATION_TYPE Type;
+      } QueryDeviceRelations;
+      struct
+      {
+        const struct _GUID* InterfaceType;
+        unsigned short Size;
+        unsigned short Version;
+        struct _INTERFACE* Interface;
+        void* InterfaceSpecificData;
+      } QueryInterface;
+      struct
+      {
+        struct _DEVICE_CAPABILITIES* Capabilities;
+      } DeviceCapabilities;
+      struct
+      {
+        struct _IO_RESOURCE_REQUIREMENTS_LIST* IoResourceRequirementList;
+      } FilterResourceRequirements;
+      struct
+      {
+        unsigned long WhichSpace;
+        void* Buffer;
+        unsigned long Offset;
+        unsigned long Length;
+        long __PADDING__[1];
+      } ReadWriteConfig;
+      struct
+      {
+        unsigned char Lock;
+      } SetLock;
+      struct
+      {
+        enum BUS_QUERY_ID_TYPE IdType;
+      } QueryId;
+      struct
+      {
+        enum DEVICE_TEXT_TYPE DeviceTextType;
+        unsigned long LocaleId;
+        long __PADDING__[1];
+      } QueryDeviceText;
+      struct
+      {
+        unsigned char InPath;
+        unsigned char Reserved[3];
+        enum _DEVICE_USAGE_NOTIFICATION_TYPE Type;
+        long __PADDING__[1];
+      } UsageNotification;
+      struct
+      {
+        enum _SYSTEM_POWER_STATE PowerState;
+      } WaitWake;
+      struct
+      {
+        struct _POWER_SEQUENCE* PowerSequence;
+      } PowerSequence;
+      struct
+      {
+        union
+        {
+          unsigned long SystemContext;
+          struct _SYSTEM_POWER_STATE_CONTEXT SystemPowerStateContext;
+        };
+        enum _POWER_STATE_TYPE Type;
+        union _POWER_STATE State;
+        enum POWER_ACTION ShutdownType;
+        long __PADDING__[1];
+      } Power;
+      struct
+      {
+        struct _CM_RESOURCE_LIST* AllocatedResources;
+        struct _CM_RESOURCE_LIST* AllocatedResourcesTranslated;
+      } StartDevice;
+      struct
+      {
+        unsigned __int64 ProviderId;
+        void* DataPath;
+        unsigned long BufferSize;
+        void* Buffer;
+      } WMI;
+      struct
+      {
+        void* Argument1;
+        void* Argument2;
+        void* Argument3;
+        void* Argument4;
+      } Others;
+    };
+  } Parameters;
+  struct _DEVICE_OBJECT* DeviceObject;
+  struct _FILE_OBJECT* FileObject;
+  void* CompletionRoutine /* function */;
+  void* Context;
+} IO_STACK_LOCATION, *PIO_STACK_LOCATION;
+
+typedef struct _IO_STATUS_BLOCK
+{
+  union
+  {
+    long Status;
+    void* Pointer;
+  };
+  unsigned __int64 Information;
+} IO_STATUS_BLOCK, *PIO_STATUS_BLOCK;
+
+struct _IO_TIMER;
+
+typedef struct _IOAPIC
+{
+  unsigned char Type;
+  unsigned char Length;
+  unsigned char IOAPICID;
+  unsigned char Reserved;
+  unsigned long IOAPICAddress;
+  unsigned long SystemVectorBase;
+} IOAPIC, *PIOAPIC;
+
+typedef struct _IOSAPIC
+{
+  unsigned char Type;
+  unsigned char Length;
+  unsigned short Reserved;
+  unsigned long SystemVectorBase;
+  unsigned __int64 IOSAPICAddress;
+} IOSAPIC, *PIOSAPIC;
+
+typedef struct _IRP
+{
+  short Type;
+  unsigned short Size;
+  struct _MDL* MdlAddress;
+  unsigned long Flags;
+  union
+  {
+    union
+    {
+      struct _IRP* MasterIrp;
+      long IrpCount;
+      void* SystemBuffer;
+    };
+  } AssociatedIrp;
+  struct _LIST_ENTRY ThreadListEntry;
+  struct _IO_STATUS_BLOCK IoStatus;
+  char RequestorMode;
+  unsigned char PendingReturned;
+  char StackCount;
+  char CurrentLocation;
+  unsigned char Cancel;
+  unsigned char CancelIrql;
+  char ApcEnvironment;
+  unsigned char AllocationFlags;
+  struct _IO_STATUS_BLOCK* UserIosb;
+  struct _KEVENT* UserEvent;
+  union
+  {
+    union
+    {
+      struct
+      {
+        union
+        {
+          void* UserApcRoutine /* function */;
+          void* IssuingProcess;
+        };
+        void* UserApcContext;
+      } AsynchronousParameters;
+      union _LARGE_INTEGER AllocationSize;
+    };
+  } Overlay;
+  void* CancelRoutine /* function */;
+  void* UserBuffer;
+  union
+  {
+    union
+    {
+      struct
+      {
+        union
+        {
+          struct _KDEVICE_QUEUE_ENTRY DeviceQueueEntry;
+          void* DriverContext[4];
+        };
+        struct _ETHREAD* Thread;
+        char* AuxiliaryBuffer;
+        struct _LIST_ENTRY ListEntry;
+        union
+        {
+          struct _IO_STACK_LOCATION* CurrentStackLocation;
+          unsigned long PacketType;
+        };
+        struct _FILE_OBJECT* OriginalFileObject;
+      } Overlay;
+      struct _KAPC Apc;
+      void* CompletionKey;
+    };
+  } Tail;
+} IRP, *PIRP;
+
+typedef enum _IRQ_DEVICE_POLICY
+{
+  IrqPolicyMachineDefault = 0,
+  IrqPolicyAllCloseProcessors = 1,
+  IrqPolicyOneCloseProcessor = 2,
+  IrqPolicyAllProcessorsInMachine = 3,
+  IrqPolicySpecifiedProcessors = 4,
+  IrqPolicySpreadMessagesAcrossAllProcessors = 5,
+} IRQ_DEVICE_POLICY, *PIRQ_DEVICE_POLICY;
+
+typedef enum _IRQ_PRIORITY
+{
+  IrqPriorityUndefined = 0,
+  IrqPriorityLow = 1,
+  IrqPriorityNormal = 2,
+  IrqPriorityHigh = 3,
+} IRQ_PRIORITY, *PIRQ_PRIORITY;
+
+typedef struct _ISA_VECTOR
+{
+  unsigned char Type;
+  unsigned char Length;
+  unsigned char Bus;
+  unsigned char Source;
+  unsigned long GlobalSystemInterruptVector;
+  unsigned short Flags;
+} ISA_VECTOR, *PISA_VECTOR;
+
+typedef struct _KAPC
+{
+  unsigned char Type;
+  unsigned char SpareByte0;
+  unsigned char Size;
+  unsigned char SpareByte1;
+  unsigned long SpareLong0;
+  struct _KTHREAD* Thread;
+  struct _LIST_ENTRY ApcListEntry;
+  void* KernelRoutine /* function */;
+  void* RundownRoutine /* function */;
+  void* NormalRoutine /* function */;
+  void* NormalContext;
+  void* SystemArgument1;
+  void* SystemArgument2;
+  char ApcStateIndex;
+  char ApcMode;
+  unsigned char Inserted;
+  char __PADDING__[5];
+} KAPC, *PKAPC;
+
+typedef struct _KDESCRIPTOR
+{
+  unsigned short Pad[3];
+  unsigned short Limit;
+  void* Base;
+} KDESCRIPTOR, *PKDESCRIPTOR;
+
+typedef struct _KDEVICE_QUEUE
+{
+  short Type;
+  short Size;
+  struct _LIST_ENTRY DeviceListHead;
+  unsigned __int64 Lock;
+  union
+  {
+    unsigned char Busy;
+    struct /* bitfield */
+    {
+      __int64 Reserved : 8; /* bit position: 0 */
+      __int64 Hint : 56; /* bit position: 8 */
+    }; /* bitfield */
+  };
+} KDEVICE_QUEUE, *PKDEVICE_QUEUE;
+
+typedef struct _KDEVICE_QUEUE_ENTRY
+{
+  struct _LIST_ENTRY DeviceListEntry;
+  unsigned long SortKey;
+  unsigned char Inserted;
+  char __PADDING__[3];
+} KDEVICE_QUEUE_ENTRY, *PKDEVICE_QUEUE_ENTRY;
+
+typedef struct _KDPC
+{
+  unsigned char Type;
+  unsigned char Importance;
+  unsigned short Number;
+  struct _LIST_ENTRY DpcListEntry;
+  void* DeferredRoutine /* function */;
+  void* DeferredContext;
+  void* SystemArgument1;
+  void* SystemArgument2;
+  void* DpcData;
+} KDPC, *PKDPC;
+
+typedef struct _KEVENT
+{
+  struct _DISPATCHER_HEADER Header;
+} KEVENT, *PKEVENT;
+
+typedef struct _KPRCB
+{
+  unsigned long MxCsr;
+  unsigned short Number;
+  unsigned char InterruptRequest;
+  unsigned char IdleHalt;
+  struct _KTHREAD* CurrentThread;
+  struct _KTHREAD* NextThread;
+  struct _KTHREAD* IdleThread;
+  unsigned char NestingLevel;
+  unsigned char Group;
+  unsigned char PrcbPad00[6];
+  unsigned __int64 RspBase;
+  unsigned __int64 PrcbLock;
+  unsigned __int64 SetMember;
+  struct _KPROCESSOR_STATE ProcessorState;
+  char CpuType;
+  char CpuID;
+  union
+  {
+    unsigned short CpuStep;
+    struct
+    {
+      unsigned char CpuStepping;
+      unsigned char CpuModel;
+    };
+  };
+  unsigned long MHz;
+  unsigned __int64 HalReserved[8];
+  unsigned short MinorVersion;
+  unsigned short MajorVersion;
+  unsigned char BuildType;
+  unsigned char CpuVendor;
+  unsigned char CoresPerPhysicalProcessor;
+  unsigned char LogicalProcessorsPerCore;
+  unsigned long ApicMask;
+  unsigned long CFlushSize;
+  void* AcpiReserved;
+  unsigned long InitialApicId;
+  unsigned long Stride;
+  unsigned __int64 PrcbPad01[3];
+} KPRCB, *PKPRCB;
+
+struct _KPROCESS;
+
+typedef struct _KPROCESSOR_STATE
+{
+  struct _KSPECIAL_REGISTERS SpecialRegisters;
+  struct _CONTEXT ContextFrame;
+} KPROCESSOR_STATE, *PKPROCESSOR_STATE;
+
+typedef struct _KSEMAPHORE
+{
+  struct _DISPATCHER_HEADER Header;
+  long Limit;
+  long __PADDING__[1];
+} KSEMAPHORE, *PKSEMAPHORE;
+
+typedef struct _KSPECIAL_REGISTERS
+{
+  unsigned __int64 Cr0;
+  unsigned __int64 Cr2;
+  unsigned __int64 Cr3;
+  unsigned __int64 Cr4;
+  unsigned __int64 KernelDr0;
+  unsigned __int64 KernelDr1;
+  unsigned __int64 KernelDr2;
+  unsigned __int64 KernelDr3;
+  unsigned __int64 KernelDr6;
+  unsigned __int64 KernelDr7;
+  struct _KDESCRIPTOR Gdtr;
+  struct _KDESCRIPTOR Idtr;
+  unsigned short Tr;
+  unsigned short Ldtr;
+  unsigned long MxCsr;
+  unsigned __int64 DebugControl;
+  unsigned __int64 LastBranchToRip;
+  unsigned __int64 LastBranchFromRip;
+  unsigned __int64 LastExceptionToRip;
+  unsigned __int64 LastExceptionFromRip;
+  unsigned __int64 Cr8;
+  unsigned __int64 MsrGsBase;
+  unsigned __int64 MsrGsSwap;
+  unsigned __int64 MsrStar;
+  unsigned __int64 MsrLStar;
+  unsigned __int64 MsrCStar;
+  unsigned __int64 MsrSyscallMask;
+} KSPECIAL_REGISTERS, *PKSPECIAL_REGISTERS;
+
+struct _KTHREAD;
+
+typedef union _LARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      unsigned long LowPart;
+      long HighPart;
+    };
+    struct
+    {
+      unsigned long LowPart;
+      long HighPart;
+    } u;
+    __int64 QuadPart;
+  };
+} LARGE_INTEGER, *PLARGE_INTEGER;
+
+typedef struct _LIST_ENTRY
+{
+  struct _LIST_ENTRY* Flink;
+  struct _LIST_ENTRY* Blink;
+} LIST_ENTRY, *PLIST_ENTRY;
+
+struct LIST_ENTRY32
+{
+  unsigned long Flink;
+  unsigned long Blink;
+};
+
+struct LIST_ENTRY64
+{
+  unsigned __int64 Flink;
+  unsigned __int64 Blink;
+};
+
+typedef struct _LOCAL_NMISOURCE
+{
+  unsigned char Type;
+  unsigned char Length;
+  unsigned char ProcessorID;
+  unsigned short Flags;
+  unsigned char LINTIN;
+} LOCAL_NMISOURCE, *PLOCAL_NMISOURCE;
+
+typedef struct _LOOKASIDE_LIST_EX
+{
+  struct _GENERAL_LOOKASIDE_POOL L;
+} LOOKASIDE_LIST_EX, *PLOOKASIDE_LIST_EX;
+
+typedef struct _LUID
+{
+  unsigned long LowPart;
+  long HighPart;
+} LUID, *PLUID;
+
+typedef struct _LUID_AND_ATTRIBUTES
+{
+  struct _LUID Luid;
+  unsigned long Attributes;
+} LUID_AND_ATTRIBUTES, *PLUID_AND_ATTRIBUTES;
+
+typedef struct _M128A
+{
+  unsigned __int64 Low;
+  __int64 High;
+} M128A, *PM128A;
+
+typedef struct _MAPIC
+{
+  struct _DESCRIPTION_HEADER Header;
+  unsigned long LocalAPICAddress;
+  unsigned long Flags;
+  unsigned long APICTables[1];
+} MAPIC, *PMAPIC;
+
+typedef struct _MDL
+{
+  struct _MDL* Next;
+  short Size;
+  short MdlFlags;
+  struct _EPROCESS* Process;
+  void* MappedSystemVa;
+  void* StartVa;
+  unsigned long ByteCount;
+  unsigned long ByteOffset;
+} MDL, *PMDL;
+
+typedef enum _MEMORY_CACHING_TYPE_ORIG
+{
+  MmFrameBufferCached = 2,
+} MEMORY_CACHING_TYPE_ORIG, *PMEMORY_CACHING_TYPE_ORIG;
+
+typedef struct _NPAGED_LOOKASIDE_LIST
+{
+  struct _GENERAL_LOOKASIDE L;
+} NPAGED_LOOKASIDE_LIST, *PNPAGED_LOOKASIDE_LIST;
+
+typedef struct _OBJECT_ATTRIBUTES
+{
+  unsigned long Length;
+  void* RootDirectory;
+  struct _UNICODE_STRING* ObjectName;
+  unsigned long Attributes;
+  void* SecurityDescriptor;
+  void* SecurityQualityOfService;
+} OBJECT_ATTRIBUTES, *POBJECT_ATTRIBUTES;
+
+struct _OBJECT_TYPE;
+
+typedef struct _OWNER_ENTRY
+{
+  unsigned __int64 OwnerThread;
+  union
+  {
+    long OwnerCount;
+    unsigned long TableSize;
+  };
+  long __PADDING__[1];
+} OWNER_ENTRY, *POWNER_ENTRY;
+
+typedef struct _PAGED_LOOKASIDE_LIST
+{
+  struct _GENERAL_LOOKASIDE L;
+} PAGED_LOOKASIDE_LIST, *PPAGED_LOOKASIDE_LIST;
+
+enum PCI_EXPRESS_DEVICE_TYPE
+{
+  PciExpressEndpoint = 0,
+  PciExpressLegacyEndpoint = 1,
+  PciExpressRootPort = 4,
+  PciExpressUpstreamSwitchPort = 5,
+  PciExpressDownstreamSwitchPort = 6,
+  PciExpressToPciXBridge = 7,
+  PciXToExpressBridge = 8,
+  PciExpressRootComplexIntegratedEndpoint = 9,
+  PciExpressRootComplexEventCollector = 10,
+};
+
+typedef struct _PCIE_DEVICE_ID
+{
+  unsigned short VendorID;
+  unsigned short DeviceID;
+  struct /* bitfield */
+  {
+    unsigned long ClassCode : 24; /* bit position: 0 */
+    unsigned long FunctionNumber : 8; /* bit position: 24 */
+  }; /* bitfield */
+  struct /* bitfield */
+  {
+    unsigned long DeviceNumber : 8; /* bit position: 0 */
+    unsigned long Segment : 16; /* bit position: 8 */
+    unsigned long PrimaryBusNumber : 8; /* bit position: 24 */
+  }; /* bitfield */
+  struct /* bitfield */
+  {
+    unsigned long SecondaryBusNumber : 8; /* bit position: 0 */
+    unsigned long Reserved1 : 2; /* bit position: 8 */
+    unsigned long SlotNumber : 14; /* bit position: 10 */
+    unsigned long Reserved2 : 8; /* bit position: 24 */
+  }; /* bitfield */
+} PCIE_DEVICE_ID, *PPCIE_DEVICE_ID;
+
+typedef struct _PLATFORM_INTERRUPT
+{
+  unsigned char Type;
+  unsigned char Length;
+  unsigned short Flags;
+  unsigned char InterruptType;
+  unsigned char APICID;
+  unsigned char ACPIEID;
+  unsigned char IOSAPICVector;
+  unsigned long GlobalVector;
+  unsigned long Reserved;
+} PLATFORM_INTERRUPT, *PPLATFORM_INTERRUPT;
+
+typedef enum _POOL_TYPE
+{
+  NonPagedPool = 0,
+  PagedPool = 1,
+  NonPagedPoolMustSucceed = 2,
+  DontUseThisType = 3,
+  NonPagedPoolCacheAligned = 4,
+  PagedPoolCacheAligned = 5,
+  NonPagedPoolCacheAlignedMustS = 6,
+  MaxPoolType = 7,
+  NonPagedPoolSession = 32,
+  PagedPoolSession = 33,
+  NonPagedPoolMustSucceedSession = 34,
+  DontUseThisTypeSession = 35,
+  NonPagedPoolCacheAlignedSession = 36,
+  PagedPoolCacheAlignedSession = 37,
+  NonPagedPoolCacheAlignedMustSSession = 38,
+} POOL_TYPE, *PPOOL_TYPE;
+
+enum POWER_ACTION
+{
+  PowerActionNone = 0,
+  PowerActionReserved = 1,
+  PowerActionSleep = 2,
+  PowerActionHibernate = 3,
+  PowerActionShutdown = 4,
+  PowerActionShutdownReset = 5,
+  PowerActionShutdownOff = 6,
+  PowerActionWarmEject = 7,
+};
+
+typedef struct _POWER_SEQUENCE
+{
+  unsigned long SequenceD1;
+  unsigned long SequenceD2;
+  unsigned long SequenceD3;
+} POWER_SEQUENCE, *PPOWER_SEQUENCE;
+
+typedef union _POWER_STATE
+{
+  union
+  {
+    enum _SYSTEM_POWER_STATE SystemState;
+    enum _DEVICE_POWER_STATE DeviceState;
+  };
+} POWER_STATE, *PPOWER_STATE;
+
+typedef enum _POWER_STATE_TYPE
+{
+  SystemPowerState = 0,
+  DevicePowerState = 1,
+} POWER_STATE_TYPE, *PPOWER_STATE_TYPE;
+
+typedef struct _PRIVILEGE_SET
+{
+  unsigned long PrivilegeCount;
+  unsigned long Control;
+  struct _LUID_AND_ATTRIBUTES Privilege[1];
+} PRIVILEGE_SET, *PPRIVILEGE_SET;
+
+typedef struct _PROCLOCALAPIC
+{
+  unsigned char Type;
+  unsigned char Length;
+  unsigned char ACPIProcessorID;
+  unsigned char APICID;
+  unsigned long Flags;
+} PROCLOCALAPIC, *PPROCLOCALAPIC;
+
+typedef struct _PROCLOCALSAPIC
+{
+  unsigned char Type;
+  unsigned char Length;
+  unsigned char ACPIProcessorID;
+  unsigned char APICID;
+  unsigned char APICEID;
+  unsigned char Reserved[3];
+  unsigned long Flags;
+} PROCLOCALSAPIC, *PPROCLOCALSAPIC;
+
+typedef enum _REG_NOTIFY_CLASS
+{
+  RegNtDeleteKey = 0,
+  RegNtPreDeleteKey = 0,
+  RegNtSetValueKey = 1,
+  RegNtPreSetValueKey = 1,
+  RegNtDeleteValueKey = 2,
+  RegNtPreDeleteValueKey = 2,
+  RegNtSetInformationKey = 3,
+  RegNtPreSetInformationKey = 3,
+  RegNtRenameKey = 4,
+  RegNtPreRenameKey = 4,
+  RegNtEnumerateKey = 5,
+  RegNtPreEnumerateKey = 5,
+  RegNtEnumerateValueKey = 6,
+  RegNtPreEnumerateValueKey = 6,
+  RegNtQueryKey = 7,
+  RegNtPreQueryKey = 7,
+  RegNtQueryValueKey = 8,
+  RegNtPreQueryValueKey = 8,
+  RegNtQueryMultipleValueKey = 9,
+  RegNtPreQueryMultipleValueKey = 9,
+  RegNtPreCreateKey = 10,
+  RegNtPostCreateKey = 11,
+  RegNtPreOpenKey = 12,
+  RegNtPostOpenKey = 13,
+  RegNtKeyHandleClose = 14,
+  RegNtPreKeyHandleClose = 14,
+  RegNtPostDeleteKey = 15,
+  RegNtPostSetValueKey = 16,
+  RegNtPostDeleteValueKey = 17,
+  RegNtPostSetInformationKey = 18,
+  RegNtPostRenameKey = 19,
+  RegNtPostEnumerateKey = 20,
+  RegNtPostEnumerateValueKey = 21,
+  RegNtPostQueryKey = 22,
+  RegNtPostQueryValueKey = 23,
+  RegNtPostQueryMultipleValueKey = 24,
+  RegNtPostKeyHandleClose = 25,
+  RegNtPreCreateKeyEx = 26,
+  RegNtPostCreateKeyEx = 27,
+  RegNtPreOpenKeyEx = 28,
+  RegNtPostOpenKeyEx = 29,
+  RegNtPreFlushKey = 30,
+  RegNtPostFlushKey = 31,
+  RegNtPreLoadKey = 32,
+  RegNtPostLoadKey = 33,
+  RegNtPreUnLoadKey = 34,
+  RegNtPostUnLoadKey = 35,
+  RegNtPreQueryKeySecurity = 36,
+  RegNtPostQueryKeySecurity = 37,
+  RegNtPreSetKeySecurity = 38,
+  RegNtPostSetKeySecurity = 39,
+  RegNtCallbackObjectContextCleanup = 40,
+  MaxRegNtNotifyClass = 41,
+} REG_NOTIFY_CLASS, *PREG_NOTIFY_CLASS;
+
+typedef struct _RSDP
+{
+  unsigned __int64 Signature;
+  unsigned char Checksum;
+  unsigned char OEMID[6];
+  unsigned char Revision;
+  unsigned long RsdtAddress;
+  unsigned long Length;
+  union _LARGE_INTEGER XsdtAddress;
+  unsigned char XChecksum;
+  unsigned char Reserved[3];
+} RSDP, *PRSDP;
+
+typedef struct _RSDT_32
+{
+  struct _DESCRIPTION_HEADER Header;
+  unsigned long Tables[1];
+} RSDT_32, *PRSDT_32;
+
+typedef struct _RTL_BITMAP
+{
+  unsigned long SizeOfBitMap;
+  unsigned long* Buffer;
+} RTL_BITMAP, *PRTL_BITMAP;
+
+struct _SCSI_REQUEST_BLOCK;
+
+typedef struct _SECTION_OBJECT_POINTERS
+{
+  void* DataSectionObject;
+  void* SharedCacheMap;
+  void* ImageSectionObject;
+} SECTION_OBJECT_POINTERS, *PSECTION_OBJECT_POINTERS;
+
+typedef enum _SECURITY_IMPERSONATION_LEVEL
+{
+  SecurityAnonymous = 0,
+  SecurityIdentification = 1,
+  SecurityImpersonation = 2,
+  SecurityDelegation = 3,
+} SECURITY_IMPERSONATION_LEVEL, *PSECURITY_IMPERSONATION_LEVEL;
+
+typedef struct _SECURITY_QUALITY_OF_SERVICE
+{
+  unsigned long Length;
+  enum _SECURITY_IMPERSONATION_LEVEL ImpersonationLevel;
+  unsigned char ContextTrackingMode;
+  unsigned char EffectiveOnly;
+  char __PADDING__[2];
+} SECURITY_QUALITY_OF_SERVICE, *PSECURITY_QUALITY_OF_SERVICE;
+
+typedef struct _SECURITY_SUBJECT_CONTEXT
+{
+  void* ClientToken;
+  enum _SECURITY_IMPERSONATION_LEVEL ImpersonationLevel;
+  void* PrimaryToken;
+  void* ProcessAuditId;
+} SECURITY_SUBJECT_CONTEXT, *PSECURITY_SUBJECT_CONTEXT;
+
+typedef struct _SINGLE_LIST_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY* Next;
+} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY;
+
+typedef struct _SLIST_ENTRY
+{
+  struct _SLIST_ENTRY* Next;
+  long __PADDING__[2];
+} SLIST_ENTRY, *PSLIST_ENTRY;
+
+typedef union _SLIST_HEADER
+{
+  union
+  {
+    struct
+    {
+      unsigned __int64 Alignment;
+      unsigned __int64 Region;
+    };
+    struct
+    {
+      struct /* bitfield */
+      {
+        unsigned __int64 Depth : 16; /* bit position: 0 */
+        unsigned __int64 Sequence : 9; /* bit position: 16 */
+        unsigned __int64 NextEntry : 39; /* bit position: 25 */
+      }; /* bitfield */
+      struct /* bitfield */
+      {
+        unsigned __int64 HeaderType : 1; /* bit position: 0 */
+        unsigned __int64 Init : 1; /* bit position: 1 */
+        unsigned __int64 Reserved : 59; /* bit position: 2 */
+        unsigned __int64 Region : 3; /* bit position: 61 */
+      }; /* bitfield */
+    } Header8;
+    struct
+    {
+      struct /* bitfield */
+      {
+        unsigned __int64 Depth : 16; /* bit position: 0 */
+        unsigned __int64 Sequence : 48; /* bit position: 16 */
+      }; /* bitfield */
+      struct /* bitfield */
+      {
+        unsigned __int64 HeaderType : 1; /* bit position: 0 */
+        unsigned __int64 Init : 1; /* bit position: 1 */
+        unsigned __int64 Reserved : 2; /* bit position: 2 */
+        unsigned __int64 NextEntry : 60; /* bit position: 4 */
+      }; /* bitfield */
+    } Header16;
+  };
+} SLIST_HEADER, *PSLIST_HEADER;
+
+typedef struct _STRING
+{
+  unsigned short Length;
+  unsigned short MaximumLength;
+  char* Buffer;
+} STRING, *PSTRING;
+
+typedef enum _SYSTEM_POWER_STATE
+{
+  PowerSystemUnspecified = 0,
+  PowerSystemWorking = 1,
+  PowerSystemSleeping1 = 2,
+  PowerSystemSleeping2 = 3,
+  PowerSystemSleeping3 = 4,
+  PowerSystemHibernate = 5,
+  PowerSystemShutdown = 6,
+  PowerSystemMaximum = 7,
+} SYSTEM_POWER_STATE, *PSYSTEM_POWER_STATE;
+
+typedef struct _SYSTEM_POWER_STATE_CONTEXT
+{
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned long Reserved1 : 8; /* bit position: 0 */
+      unsigned long TargetSystemState : 4; /* bit position: 8 */
+      unsigned long EffectiveSystemState : 4; /* bit position: 12 */
+      unsigned long CurrentSystemState : 4; /* bit position: 16 */
+      unsigned long IgnoreHibernationPath : 1; /* bit position: 20 */
+      unsigned long Reserved2 : 11; /* bit position: 21 */
+    }; /* bitfield */
+    unsigned long ContextAsUlong;
+  };
+} SYSTEM_POWER_STATE_CONTEXT, *PSYSTEM_POWER_STATE_CONTEXT;
+
+typedef union _ULARGE_INTEGER
+{
+  union
+  {
+    struct
+    {
+      unsigned long LowPart;
+      unsigned long HighPart;
+    };
+    struct
+    {
+      unsigned long LowPart;
+      unsigned long HighPart;
+    } u;
+    unsigned __int64 QuadPart;
+  };
+} ULARGE_INTEGER, *PULARGE_INTEGER;
+
+typedef struct _UNICODE_STRING
+{
+  unsigned short Length;
+  unsigned short MaximumLength;
+  unsigned short* Buffer;
+} UNICODE_STRING, *PUNICODE_STRING;
+
+typedef struct _VPB
+{
+  short Type;
+  short Size;
+  unsigned short Flags;
+  unsigned short VolumeLabelLength;
+  struct _DEVICE_OBJECT* DeviceObject;
+  struct _DEVICE_OBJECT* RealDevice;
+  unsigned long SerialNumber;
+  unsigned long ReferenceCount;
+  wchar_t VolumeLabel[32];
+} VPB, *PVPB;
+
+typedef struct _WAIT_CONTEXT_BLOCK
+{
+  struct _KDEVICE_QUEUE_ENTRY WaitQueueEntry;
+  void* DeviceRoutine /* function */;
+  void* DeviceContext;
+  unsigned long NumberOfMapRegisters;
+  void* DeviceObject;
+  void* CurrentIrp;
+  struct _KDPC* BufferChainingDpc;
+} WAIT_CONTEXT_BLOCK, *PWAIT_CONTEXT_BLOCK;
+
+typedef struct _WHEA_ERROR_PACKET
+{
+  unsigned long Signature;
+  unsigned long Flags;
+  unsigned __int64 Size;
+  unsigned __int64 RawDataLength;
+  unsigned __int64 Context;
+  enum _WHEA_ERROR_TYPE ErrorType;
+  enum _WHEA_ERROR_SEVERITY ErrorSeverity;
+  unsigned long ErrorSourceId;
+  enum _WHEA_ERROR_SOURCE_TYPE ErrorSourceType;
+  unsigned long Reserved1;
+  unsigned long Version;
+  unsigned __int64 Cpu;
+  union
+  {
+    union
+    {
+      struct _WHEA_GENERIC_PROCESSOR_ERROR ProcessorError;
+      struct _WHEA_MEMORY_ERROR MemoryError;
+      struct _WHEA_NMI_ERROR NmiError;
+      struct _WHEA_PCIEXPRESS_ERROR PciExpressError;
+      struct _WHEA_PCIX_BUS_ERROR PciXBusError;
+      struct _WHEA_PCIX_DEVICE_ERROR PciXDeviceError;
+    };
+  } u;
+  enum _WHEA_ERROR_STATUS_FORMAT RawDataFormat;
+  unsigned long Reserved2;
+  unsigned char RawData[1];
+} WHEA_ERROR_PACKET, *PWHEA_ERROR_PACKET;
+
+typedef struct _WHEA_ERROR_RECORD
+{
+  struct _WHEA_ERROR_RECORD_HEADER Header;
+  struct _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR SectionDescriptor[1];
+} WHEA_ERROR_RECORD, *PWHEA_ERROR_RECORD;
+
+typedef struct _WHEA_ERROR_RECORD_HEADER
+{
+  unsigned long Signature;
+  unsigned short Revision;
+  unsigned short Reserved1;
+  unsigned short Reserved2;
+  unsigned short SectionCount;
+  enum _WHEA_ERROR_SEVERITY Severity;
+  unsigned long ValidationBits;
+  unsigned long Length;
+  union _LARGE_INTEGER Timestamp;
+  struct _GUID PlatformId;
+  struct _GUID PartitionId;
+  struct _GUID CreatorId;
+  struct _GUID NotifyType;
+  unsigned __int64 RecordId;
+  unsigned long Flags;
+  struct _WHEA_PERSISTENCE_INFO PersistenceInfo;
+  unsigned char Reserved3[12];
+  long __PADDING__[1];
+} WHEA_ERROR_RECORD_HEADER, *PWHEA_ERROR_RECORD_HEADER;
+
+typedef struct _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR
+{
+  unsigned long SectionOffset;
+  unsigned long SectionLength;
+  unsigned short Revision;
+  unsigned char ValidationBits;
+  unsigned char Reserved;
+  unsigned long Flags;
+  struct _GUID SectionType;
+  struct _GUID FRUId;
+  enum _WHEA_ERROR_SEVERITY SectionSeverity;
+  char FRUText[20];
+} WHEA_ERROR_RECORD_SECTION_DESCRIPTOR, *PWHEA_ERROR_RECORD_SECTION_DESCRIPTOR;
+
+typedef enum _WHEA_ERROR_SEVERITY
+{
+  WheaErrSevRecoverable = 0,
+  WheaErrSevFatal = 1,
+  WheaErrSevCorrected = 2,
+  WheaErrSevNone = 3,
+} WHEA_ERROR_SEVERITY, *PWHEA_ERROR_SEVERITY;
+
+typedef enum _WHEA_ERROR_SOURCE_TYPE
+{
+  WheaErrSrcTypeMCE = 0,
+  WheaErrSrcTypeCMC = 1,
+  WheaErrSrcTypeCPE = 2,
+  WheaErrSrcTypeNMI = 3,
+  WheaErrSrcTypePCIe = 4,
+  WheaErrSrcTypeOther = 5,
+  WheaErrSrcTypeMax = 6,
+} WHEA_ERROR_SOURCE_TYPE, *PWHEA_ERROR_SOURCE_TYPE;
+
+typedef struct _WHEA_ERROR_STATUS
+{
+  struct /* bitfield */
+  {
+    unsigned __int64 Reserved1 : 8; /* bit position: 0 */
+    unsigned __int64 ErrorType : 8; /* bit position: 8 */
+    unsigned __int64 Address : 1; /* bit position: 16 */
+    unsigned __int64 Control : 1; /* bit position: 17 */
+    unsigned __int64 Data : 1; /* bit position: 18 */
+    unsigned __int64 Responder : 1; /* bit position: 19 */
+    unsigned __int64 Requester : 1; /* bit position: 20 */
+    unsigned __int64 FirstError : 1; /* bit position: 21 */
+    unsigned __int64 Overflow : 1; /* bit position: 22 */
+    unsigned __int64 Reserved2 : 41; /* bit position: 23 */
+  }; /* bitfield */
+} WHEA_ERROR_STATUS, *PWHEA_ERROR_STATUS;
+
+typedef enum _WHEA_ERROR_STATUS_FORMAT
+{
+  WheaErrorStatusFormatIPFSalRecord = 0,
+  WheaErrorStatusFormatIA32MCA = 1,
+  WheaErrorStatusFormatEM64TMCA = 2,
+  WheaErrorStatusFormatAMD64MCA = 3,
+  WheaErrorStatusFormatPCIExpress = 4,
+  WheaErrorStatusFormatNMIPort = 5,
+  WheaErrorStatusFormatOther = 6,
+  WheaErrorStatusFormatMax = 7,
+} WHEA_ERROR_STATUS_FORMAT, *PWHEA_ERROR_STATUS_FORMAT;
+
+typedef enum _WHEA_ERROR_TYPE
+{
+  WheaErrTypeProcessor = 0,
+  WheaErrTypeMemory = 1,
+  WheaErrTypePCIExpress = 2,
+  WheaErrTypeNMI = 3,
+  WheaErrTypePCIXBus = 4,
+  WheaErrTypePCIXDevice = 5,
+} WHEA_ERROR_TYPE, *PWHEA_ERROR_TYPE;
+
+typedef struct _WHEA_GENERIC_PROCESSOR_ERROR
+{
+  unsigned __int64 ValidBits;
+  unsigned char ProcessorType;
+  unsigned char InstructionSet;
+  unsigned char ErrorType;
+  unsigned char Operation;
+  unsigned char Flags;
+  unsigned char Level;
+  unsigned short Reserved;
+  unsigned __int64 CPUVersion;
+  unsigned char CPUBrandString[128];
+  unsigned __int64 ProcessorId;
+  unsigned __int64 TargetAddress;
+  unsigned __int64 RequestorId;
+  unsigned __int64 ResponderId;
+  unsigned __int64 InstructionPointer;
+} WHEA_GENERIC_PROCESSOR_ERROR, *PWHEA_GENERIC_PROCESSOR_ERROR;
+
+typedef struct _WHEA_MEMORY_ERROR
+{
+  unsigned __int64 ValidationBits;
+  struct _WHEA_ERROR_STATUS ErrorStatus;
+  unsigned __int64 PhysicalAddress;
+  unsigned __int64 PhysicalAddressMask;
+  unsigned short Node;
+  unsigned short Card;
+  unsigned short Module;
+  unsigned short Bank;
+  unsigned short Device;
+  unsigned short Row;
+  unsigned short Column;
+  unsigned short BitPosition;
+  unsigned __int64 RequestorId;
+  unsigned __int64 ResponderId;
+  unsigned __int64 TargetId;
+  unsigned char ErrorType;
+  char __PADDING__[7];
+} WHEA_MEMORY_ERROR, *PWHEA_MEMORY_ERROR;
+
+typedef struct _WHEA_NMI_ERROR
+{
+  unsigned char Data[8];
+} WHEA_NMI_ERROR, *PWHEA_NMI_ERROR;
+
+typedef struct _WHEA_PCIEXPRESS_ERROR
+{
+  unsigned __int64 ValidationBits;
+  enum PCI_EXPRESS_DEVICE_TYPE PortType;
+  unsigned long Version;
+  unsigned long CommandStatus;
+  unsigned long Reserved;
+  struct _PCIE_DEVICE_ID DeviceId;
+  unsigned __int64 DeviceSN;
+  unsigned long BridgeCtrlSts;
+  unsigned char ExpressCapability[60];
+  unsigned char AerInfo[96];
+} WHEA_PCIEXPRESS_ERROR, *PWHEA_PCIEXPRESS_ERROR;
+
+typedef struct _WHEA_PCIX_BUS_ERROR
+{
+  struct _WHEA_PCIX_BUS_VALIDATION_BITS ValidationBits;
+  struct _WHEA_ERROR_STATUS ErrorStatus;
+  unsigned short ErrorType;
+  unsigned short BusId;
+  unsigned long Reserved;
+  unsigned __int64 BusAddress;
+  unsigned __int64 BusData;
+  unsigned __int64 BusCommand;
+  unsigned __int64 BusRequestorId;
+  unsigned __int64 BusCompleterId;
+  unsigned __int64 TargetId;
+} WHEA_PCIX_BUS_ERROR, *PWHEA_PCIX_BUS_ERROR;
+
+typedef struct _WHEA_PCIX_BUS_VALIDATION_BITS
+{
+  struct /* bitfield */
+  {
+    unsigned __int64 ErrorStatusValid : 1; /* bit position: 0 */
+    unsigned __int64 ErrorTypeValid : 1; /* bit position: 1 */
+    unsigned __int64 BusIdValid : 1; /* bit position: 2 */
+    unsigned __int64 BusAddressValid : 1; /* bit position: 3 */
+    unsigned __int64 BusDataValid : 1; /* bit position: 4 */
+    unsigned __int64 CommandValid : 1; /* bit position: 5 */
+    unsigned __int64 RequestorIdValid : 1; /* bit position: 6 */
+    unsigned __int64 CompleterIdValid : 1; /* bit position: 7 */
+    unsigned __int64 TargetIdValid : 1; /* bit position: 8 */
+    unsigned __int64 Reserved : 55; /* bit position: 9 */
+  }; /* bitfield */
+} WHEA_PCIX_BUS_VALIDATION_BITS, *PWHEA_PCIX_BUS_VALIDATION_BITS;
+
+typedef struct _WHEA_PCIX_DEV_VALIDATION_BITS
+{
+  struct /* bitfield */
+  {
+    unsigned __int64 ErrorStatusValid : 1; /* bit position: 0 */
+    unsigned __int64 IdInfoValid : 1; /* bit position: 1 */
+    unsigned __int64 MemoryNumberValid : 1; /* bit position: 2 */
+    unsigned __int64 IoNumberValid : 1; /* bit position: 3 */
+    unsigned __int64 RegisterDataPairValid : 1; /* bit position: 4 */
+    unsigned __int64 Reserved : 59; /* bit position: 5 */
+  }; /* bitfield */
+} WHEA_PCIX_DEV_VALIDATION_BITS, *PWHEA_PCIX_DEV_VALIDATION_BITS;
+
+typedef struct _WHEA_PCIX_DEVICE_ERROR
+{
+  struct _WHEA_PCIX_DEV_VALIDATION_BITS ValidationBits;
+  struct _WHEA_ERROR_STATUS ErrorStatus;
+  unsigned char IdInfo[16];
+  unsigned long MemoryNumber;
+  unsigned long IoNumber;
+  unsigned char RegisterDataPairs[64];
+} WHEA_PCIX_DEVICE_ERROR, *PWHEA_PCIX_DEVICE_ERROR;
+
+typedef struct _WHEA_PERSISTENCE_INFO
+{
+  struct /* bitfield */
+  {
+    unsigned __int64 Identifier : 16; /* bit position: 0 */
+    unsigned __int64 Length : 24; /* bit position: 16 */
+    unsigned __int64 Reserved : 6; /* bit position: 40 */
+    unsigned __int64 Attributes : 2; /* bit position: 46 */
+    unsigned __int64 Signature : 16; /* bit position: 48 */
+  }; /* bitfield */
+} WHEA_PERSISTENCE_INFO, *PWHEA_PERSISTENCE_INFO;
+
+typedef struct _XMM_SAVE_AREA32
+{
+  unsigned short ControlWord;
+  unsigned short StatusWord;
+  unsigned char TagWord;
+  unsigned char Reserved1;
+  unsigned short ErrorOpcode;
+  unsigned long ErrorOffset;
+  unsigned short ErrorSelector;
+  unsigned short Reserved2;
+  unsigned long DataOffset;
+  unsigned short DataSelector;
+  unsigned short Reserved3;
+  unsigned long MxCsr;
+  unsigned long MxCsr_Mask;
+  struct _M128A FloatRegisters[8];
+  struct _M128A XmmRegisters[16];
+  unsigned char Reserved4[96];
+} XMM_SAVE_AREA32, *PXMM_SAVE_AREA32;
+
+#include <poppack.h>
+
+// Functions
+
+Amd64DisableMonitoring();
+Amd64EnableMonitoring();
+Amd64FreeCounter();
+Amd64GetProfileDescriptor();
+Amd64InitializeProfiling();
+Amd64OverflowHandler();
+Amd64QueryInformation();
+Amd64SetInterval();
+atoi();
+DbgBreakPoint();
+DbgPrint();
+DefaultDisableMonitoring();
+DefaultEnableMonitoring();
+DefaultInitializeProfiling();
+DefaultOverflowHandler();
+DefaultQueryInformation();
+DefaultSetInterval();
+DetectAcpiMP();
+EmClientQueryRuleState();
+EmonDisableMonitoring();
+EmonEnableMonitoring();
+EmonFreeCounter();
+EmonGetProfileDescriptor();
+EmonInitializeProfiling();
+EmonOverflowHandler();
+EmonQueryInformation();
+EmonSetInterval();
+EmpProviderRegister();
+__GSHandlerCheck();
+__GSHandlerCheckCommon();
+HalaAcpiTimerInit();
+HalAcpiEmCheckOperator();
+HalAcpiGetAllTablesDispatch();
+HalAcpiGetFacsMappingDispatch();
+HalAcpiGetRsdpDispatch();
+HalAcpiGetTable();
+HalAcpiGetTableDispatch();
+HalacpiIrqTranslateResourceRequirementsIsa();
+HalacpiIrqTranslateResourcesIsa();
+HalacpiIrqTranslatorReference();
+HalacpIrqTranslatorDereference();
+HalAcquireDisplayOwnership();
+HalAdjustResourceList();
+HalAllocateAdapterChannel();
+HalAllocateCommonBuffer();
+HalAllocateCrashDumpRegisters();
+HalAllProcessorsStarted();
+HalAssignSlotResources();
+HalBugCheckSystem();
+HalBuildMdlFromScatterGatherList();
+HalBuildScatterGatherList();
+HalCalculateScatterGatherListSize();
+HalCalibratePerformanceCounter();
+HalClearSoftwareInterrupt();
+HalConvertDeviceIdtToIrql();
+HalDisableInterrupt();
+HalDisplayString();
+HalDynamicProcessorStarted();
+HalEfiSetEnvironmentVariable();
+HalEnableInterrupt();
+HalEnumerateEnvironmentVariablesEx();
+HalEnumerateProcessors();
+HalFlushCommonBuffer();
+HalFreeCommonBuffer();
+HalGetAdapter();
+HalGetBusData();
+HalGetBusDataByOffset();
+HalGetDmaAlignment();
+HalGetEnvironmentVariable();
+HalGetEnvironmentVariableEx();
+HalGetInterruptTargetInformation();
+HalGetInterruptVector();
+HalGetMessageRoutingInfo();
+HalGetScatterGatherList();
+HalGetVectorInput();
+HalHandleMcheck();
+HalHandleNMI();
+HaliAcpiMachineStateInit();
+HaliAcpiQueryFlags();
+HaliAcpiSleep();
+HaliAcpiTimerCarry();
+HaliAcpiTimerInit();
+HaliGetDmaAdapter();
+HaliGetInterruptTranslator();
+HaliHaltSystem();
+HaliHandlePCIConfigSpaceAccess();
+HaliInitPnpDriver();
+HaliInitPowerManagement();
+HaliIsVectorValid();
+HaliLocateHiberRanges();
+HalInitializeBios();
+HalInitializeErrSrc();
+HalInitializeMCA();
+HalInitializeNMI();
+HalInitializeProcessor();
+HalInitSystem();
+HaliPciInterfaceReadConfig();
+HaliPciInterfaceWriteConfig();
+HaliQuerySystemInformation();
+HaliSetMaxLegacyPciBusNumber();
+HaliSetSystemInformation();
+HaliSetWakeAlarm();
+HaliSetWakeEnable();
+HalIsHyperThreadingEnabled();
+HalMakeBeep();
+HalMatchAcpiCreatorRevision();
+HalMatchAcpiFADTBootArch();
+HalMatchAcpiOemId();
+HalMatchAcpiOemRevision();
+HalMatchAcpiOemTableId();
+HalMatchAcpiRevision();
+HalpAcpiAllocateMemory();
+HalpAcpiCacheTable();
+HalpAcpiCheckAndMapTable();
+HalpAcpiCopyBiosTable();
+HalpAcpiDetectMachineSpecificActions();
+HalpAcpiFallbackOnLegacyConfigMethod();
+HalpAcpiFindRsdp();
+HalpAcpiGetAllTablesWork();
+HalpAcpiGetCachedTable();
+HalpAcpiGetFacsMapping();
+HalpAcpiGetTable();
+HalpAcpiGetTableFromBios();
+HalpAcpiGetTableWork();
+HalpAcpiIBMExaMatch();
+HalpAcpiIBMVigilMatch();
+HalpAcpiPicStateIntact();
+HalpAcpiPostSleep();
+HalpAcpiPreSleep();
+HalpAcpiTableCacheInit();
+HalpAcquireCmosSpinLockAndWait();
+HalpAcquireCmosSpinLockEx();
+HalpAcquireHighLevelLock();
+HalpAddAdapterToList();
+HalpAddDevice();
+HalpAllocateAdapterCallback();
+HalpAllocateCR3Root();
+HalpAllocateMapRegisters();
+HalpAllocPhysicalMemory();
+HalpApicRebootService();
+HalpApicSpuriousService();
+HalpAssignDriveLetters();
+HalpAssignSlotResourcesStub();
+HalpBiosDisplayReset();
+HalpBroadcastCallService();
+HalpBugCheckCallback();
+HalpBuildIpiDestinationMap();
+HalpBuildKGDTEntry32();
+HalpBuildRealModeStartBlock();
+HalpBuildResumeStructures();
+HalpBuildTiledCR3Ex();
+HalpcGetCmosDataByType();
+HalpCheckLowMemoryPostSleep();
+HalpCheckLowMemoryPreSleep();
+HalpCheckPowerButton();
+HalpCheckWakeupTimeAndAdjust();
+HalpCmcInit();
+HalpCmcPollingDpcRoutine();
+HalpCmcPollingWorkerRoutine();
+HalpCmosNullReference();
+HalpCmosRangeHandler();
+HalpCmosReadByte();
+HalpCmosWriteByte();
+HalpCommitCR3Worker();
+HalpConsumeLowMemory();
+HalpCpuID();
+HalpcSetCmosDataByType();
+HalpDisableSystemInterrupt();
+HalpDispatchPnp();
+HalpDispatchPower();
+HalpDispatchSystemStateTransition();
+HalpDispatchWmi();
+HalpDmaAcquireBufferMappings();
+HalpDmaAllocateChildAdapter();
+HalpDmaAllocateContiguousMemory();
+HalpDmaAllocateContiguousPagesFromContiguousPool();
+HalpDmaAllocateContiguousPagesFromContiguousPoolAtHighLevel();
+HalpDmaAllocateEmergencyResources();
+HalpDmaAllocateLocalContiguousPool();
+HalpDmaAllocateLocalScatterPool();
+HalpDmaAllocateMappingResources();
+HalpDmaAllocateMapRegisters();
+HalpDmaAllocateMapRegistersAtHighLevel();
+HalpDmaAllocateNewTranslationBuffer();
+HalpDmaAllocateReservedMapping();
+HalpDmaAllocateReservedMappingArray();
+HalpDmaAllocateScatterMemory();
+HalpDmaAllocateScatterPagesFromContiguousPool();
+HalpDmaAllocateScatterPagesFromContiguousPoolAtHighLevel();
+HalpDmaAllocateScatterPagesFromScatterPool();
+HalpDmaAllocateScatterPagesFromScatterPoolAtHighLevel();
+HalpDmaAllocateTranslationBuffer();
+HalpDmaCommitContiguousMapBuffers();
+HalpDmaCommitScatterMapBuffers();
+HalpDmaFinalizeDoubleBufferingDisposition();
+HalpDmaFlushScatterTransfer();
+HalpDmaForceAllocation();
+HalpDmaFreeChildAdapter();
+HalpDmaFreeChildAdapterWorker();
+HalpDmaFreeMapRegisters();
+HalpDmaGetTranslationEntries();
+HalpDmaGrowContiguousMapBuffers();
+HalpDmaGrowScatterMapBuffers();
+HalpDmaInit();
+HalpDmaInitializeMasterAdapter();
+HalpDmaLinkContiguousTranslations();
+HalpDmaMapScatterTransfer();
+HalpDmaNextContiguousPiece();
+HalpDmaPrependTranslations();
+HalpDmaQueueAdapter();
+HalpDmaReleaseBufferMappings();
+HalpDmaReturnPageToOwner();
+HalpDmaReturnPageToSource();
+HalpDmaReturnToContiguousPool();
+HalpDmaReturnToScatterPool();
+HalpDmaSyncMapBuffers();
+HalpDmaSyncMapBuffersWithEmergencyResources();
+HalpDmaZeroMapBuffers();
+HalpDriverEntry();
+HalpECmosReadByte();
+HalpECmosWriteByte();
+HalpEfiInitialization();
+HalpEnableNMI();
+HalpEnablePerfInterupt();
+HalpEnableRedirEntry();
+HalpEnableSystemInterrupt();
+HalpEndOfBoot();
+HalpFDMANotificationCallback();
+HalpFindBusAddressTranslation();
+HalpFixupPhysicalIntiDestinations();
+HalpFreeTiledCR3Ex();
+HalpGenericCall();
+HalpGetAcpiStaticNumaTopology();
+HalpGetApicIdByProcessorNumber();
+HalpGetApicInti();
+HalpGetApicVersion();
+HalpGetChipHacks();
+HalpGetCmosData();
+HalpGetCPUVendor();
+HalpGetDisplayBiosInformation();
+HalpGetEisaData();
+HalpGetFeatureBits();
+HalpGetIoApicId();
+HalpGetMcaLog();
+HalpGetNextProcessorApicId();
+HalpGetParameters();
+HalpGetPCIData();
+HalpGetPmTimerPerfCounterValue();
+HalpGetPmTimerSleepModePerfCounterValue();
+HalpGetResourceSortValue();
+HalpGetSetCmosData();
+HalpGrowMapBufferWorker();
+HalpHalt();
+HalpHpetClockInterrupt();
+HalpHpetClockInterruptStub();
+HalpHpetClockInterruptWork();
+HalpHpetInitializeClock();
+HalpHpetRolloverInterrupt();
+HalpHpetStallExecutionProcessor();
+HalpHpetStartProfileInterrupt();
+HalpHpetWriteEtwEvent();
+HalpInitChipHacks();
+HalpInitializeApicAddressing();
+HalpInitializeClock();
+HalpInitializeCmos();
+HalpInitializeHpet();
+HalpInitializeIOUnits();
+HalpInitializeLocalUnit();
+HalpInitializePciBus();
+HalpInitializePICs();
+HalpInitializeProfiling();
+HalpInitIntiInfo();
+HalpInitMpInfo();
+HalpInitNonBusHandler();
+HalpIoDelay();
+HalpKdAllocateAddressRange();
+HalpKdConfigureCardBusSocket();
+HalpKdConfigureDebuggingDevice();
+HalpKdExtendAddressRange();
+HalpKdFindFreeResourceLimits();
+HalpKdGetBarRange();
+HalpKdGetCardBusBridgeResources();
+HalpKdGetPciBridgeResources();
+HalpKdPowerUpDevice();
+HalpKdReadPCIConfig();
+HalpKdReleasePciDevice();
+HalpKdSearchBehindCardBusBridge();
+HalpKdSearchBehindPciBridge();
+HalpKdSearchForPciDebuggingDevice();
+HalpKdSearchForTopOfMMIO();
+HalpKdSetupPciDevice();
+HalpKdUnconfigureCardBusBridge();
+HalpKdUpdateAddressRange();
+HalpKdWidenCardBusBridgeBusRange();
+HalpKdWidenCardBusBridgeIoRange();
+HalpKdWidenCardBusBridgeMemoryRange();
+HalpKdWidenPciBridgeBusRange();
+HalpKdWidenPciBridgeIoRange();
+HalpKdWidenPciBridgeMemoryRange();
+HalpKdWritePCIConfig();
+HalpLMIdentityStub();
+HalpLMIdentityStubEnd();
+HalpLMStub();
+HalpLoadMicrocode();
+HalpLocalApicErrorService();
+HalpMapCR3Ex();
+HalpMapNtToHwProcessorId();
+HalpMapNvsArea();
+HalpMapPhysicalMemory64();
+HalpMapPhysicalMemoryWriteThrough64();
+HalpMapTransfer();
+HalpMarkProcessorStarted();
+HalpMcaCurrentProcessorInitErrorPacket();
+HalpMcaCurrentProcessorSetConfig();
+HalpMcaInit();
+HalpMcaQueueDpc();
+HalpMcaReadProcessorException();
+HalpMcaReadRegisterInterface();
+HalpMcUpdateFindDataTableEntry();
+HalpMcUpdateInitialize();
+HalpMcUpdateLock();
+HalpMcUpdateMicrocode();
+HalpMcUpdatePostUpdate();
+HalpMcUpdateUnlock();
+HalpNMIHalt();
+HalPnpGetDmaAdapter();
+HalPnpInterfaceDereference();
+HalPnpInterfaceReference();
+HalpNumaInitializeStaticConfiguration();
+HalpNumaQueryPageToNode();
+HalpNumaQueryProcessorNode();
+HalpNumaQueryProximityNode();
+HalpPassIrpFromFdoToPdo();
+HalpPciAddMmConfigEntry();
+HalpPCIConfig();
+HalpPCIConfigHoldingConfigLock();
+HalpPCIEndConfigAccess();
+HalpPciInitializeMmConfigAccess();
+HalpPCIISALine2Pin();
+HalpPCIPerformConfigAccess();
+HalpPCIPin2ISALine();
+HalpPciReadMmConfigUchar();
+HalpPciReadMmConfigUlong();
+HalpPciReadMmConfigUshort();
+HalpPCIReadUcharType1();
+HalpPCIReadUcharType2();
+HalpPCIReadUlongType1();
+HalpPCIReadUlongType2();
+HalpPCIReadUshortType1();
+HalpPCIReadUshortType2();
+HalpPciReportMmConfigAddressRange();
+HalpPCIStartConfigAccess();
+HalpPciWriteMmConfigUchar();
+HalpPciWriteMmConfigUlong();
+HalpPciWriteMmConfigUshort();
+HalpPCIWriteUcharType1();
+HalpPCIWriteUcharType2();
+HalpPCIWriteUlongType1();
+HalpPCIWriteUlongType2();
+HalpPCIWriteUshortType1();
+HalpPCIWriteUshortType2();
+HalpPerfInterrupt();
+HalpPhase0GetPciDataByOffset();
+HalpPhase0SetPciDataByOffset();
+HalpPiix4Detect();
+HalpPmTimerTickCountStall();
+HalpPowerStateCallback();
+HalpPreserveNvsArea();
+HalpProcessAcpiStartDevice();
+HalpProcessorFence();
+HalpProfileInterrupt();
+HalpProgramHpetClock();
+HalpProgramRtcClock();
+HalpPutAcpiHacksInRegistry();
+HalpQueryAcpiResourceRequirements();
+HalpQueryDeviceRelations();
+HalpQueryHpetCount();
+HalpQueryIdFdo();
+HalpQueryIdPdo();
+HalpQueryInterface();
+HalpQueryPciRegistryInfo();
+HalpQueryResources();
+HalpQueueMapBufferWorker();
+HalpReadErrorInfo();
+HalpReadLocalApicID();
+HalpReadPartitionTable();
+HalpReadPCIConfig();
+HalpReadRtcStdPCAT();
+HalpReadStdCmosData();
+HalpRegisterPciDebuggingDeviceInfo();
+HalpRegisterVector();
+HalpReleaseCmosSpinLock();
+HalpReleaseHighLevelLock();
+HalpRemapVirtualAddress64();
+HalpReportMachineCheck();
+HalpReportResourceUsage();
+HalpRequestIpiSpecifyVector();
+HalpResetAllProcessors();
+HalpResetSBF();
+HalpResetThisProcessor();
+HalpRestoreDmaControllerState();
+HalpRestoreInterruptControllerState();
+HalpRestoreNvsArea();
+HalpRestorePerformanceCounter();
+HalpResumeClock();
+HalProcessorIdle();
+HalpRtcClockInterrupt();
+HalpRtcClockInterruptStub();
+HalpSaveContextTargetProcessor();
+HalpSaveDmaControllerState();
+HalpSavePerformanceCounter();
+HalpSaveProcessorStateAndWait();
+HalpScaleTimers();
+HalpSendFlatIpi();
+HalpSendNodeIpi64();
+HalpSendPhysicalIpi();
+HalpSet8259Mask();
+HalpSetClockAfterSleep();
+HalpSetClockBeforeSleep();
+HalpSetCmosData();
+HalpSetHandlerAddressToIDTIrql();
+HalpSetInternalVector();
+HalpSetInterruptControllerWakeupState();
+HalpSetPartitionInformation();
+HalpSetPCIData();
+HalpSetProfileSourceInterval();
+HalpSetRedirEntry();
+HalpSetSystemInformation();
+HalpSetupAcpiPhase0();
+HalpSetupRealModeResume();
+HalpSetupSystemClockSupport();
+HalpSetWakeAlarm();
+HalpStartProcessor();
+HalpStopOhciInterrupt();
+HalpStopUhciInterrupt();
+HalpStoreFreeCr3();
+HalpSuspendClock();
+HalpTranslateBusAddress();
+HalpUnloadMicrocode();
+HalpUnlockPagableCodeSection();
+HalpUnmapVirtualAddress();
+HalpUnmaskCriticalClockInterruptSources();
+HalPutDmaAdapter();
+HalPutScatterGatherList();
+HalpValidPCISlot();
+HalpWaitForPending();
+HalpWhackICHUsbSmi();
+HalpWriteCmosTime();
+HalpWritePartitionTable();
+HalpWritePCIConfig();
+HalpWriteResetCommand();
+HalpWriteRtcStdPCAT();
+HalpWriteStdCmosData();
+HalQueryDisplayParameters();
+HalQueryRealTimeClock();
+HalReadDmaCounter();
+HalRealAllocateAdapterChannel();
+HalRegisterErrataCallbacks();
+HalReportResourceUsage();
+HalRequestIpi();
+HalRequestSoftwareInterrupt();
+HalReturnToFirmware();
+HalSendNMI();
+HalSendSoftwareInterrupt();
+HalSetBusData();
+HalSetBusDataByOffset();
+HalSetDisplayParameters();
+HalSetEnvironmentVariable();
+HalSetEnvironmentVariableEx();
+HalSetProfileInterval();
+HalSetRealTimeClock();
+HalSetTimeIncrement();
+HalStartDynamicProcessor();
+HalStartNextProcessor();
+HalStartProfileInterrupt();
+HalStopProfileInterrupt();
+HalSystemVectorDispatchEntry();
+HalTranslateBusAddress();
+HalWriteBootRegister();
+_invalid_parameter();
+IoFlushAdapterBuffers();
+IoFreeAdapterChannel();
+IoFreeMapRegisters();
+IoMapTransfer();
+_iswctype_l();
+KdRestore();
+KeFlushWriteBuffer();
+KeQueryPerformanceCounter();
+KeStallExecutionProcessor();
+longjmp();
+memcmp();
+memcpy();
+memmove();
+memset();
+PicNopHandlerInt();
+PicSpuriousService37();
+PoSetFixedWakeSource();
+PshedRetrieveErrorInfo();
+RtlMoveMemory();
+RtlStringCbPrintfW();
+__security_check_cookie();
+_setjmp();
+_stricmp();
+strncmp();
+strncpy_s();
+strstr();
+_vsnwprintf();
+_wchartodigit();
+_wcsicmp();
+wcstoul();
+WheaRegisterErrSrcInitializer();
+WheaReportHwError();
+x86BiosAllocateBuffer();
+x86BiosCall();
+x86BiosExecuteInterruptShadowed();
+x86BiosFreeBuffer();
+x86BiosGetPciBusData();
+x86BiosInitializeBiosEx();
+x86BiosInitializeBiosShadowed();
+x86BiosReadCmosPortByte();
+x86BiosReadIoSpace();
+x86BiosReadMemory();
+x86BiosSetPciBusData();
+x86BiosTranslateAddress();
+x86BiosWriteCmosPortByte();
+x86BiosWriteIoSpace();
+x86BiosWriteMemory();
+XmAaaOp();
+XmAadOp();
+XmAamOp();
+XmAasOp();
+XmAccumImmediate();
+XmAccumRegister();
+XmAdcOp();
+XmAddOp();
+XmAddOperands();
+XmAndOp();
+XmBitScanGeneral();
+XmBoundOp();
+XmBsfOp();
+XmBsrOp();
+XmBswapOp();
+XmBtcOp();
+XmBtOp();
+XmBtrOp();
+XmBtsOp();
+XmByteImmediate();
+XmCallOp();
+XmCbwOp();
+XmClcOp();
+XmCldOp();
+XmCliOp();
+XmCmcOp();
+XmCmpOp();
+XmCmpsOp();
+XmCmpxchgOp();
+XmCompareOperands();
+XmCwdOp();
+XmDaaOp();
+XmDasOp();
+XmDecOp();
+XmDivOp();
+XmEffectiveOffset();
+XmEmulateStream();
+XmEnterOp();
+XmEvaluateAddressSpecifier();
+XmEvaluateIndexSpecifier();
+XmExecuteInt1a();
+XmFlagsRegister();
+XmGeneralBitOffset();
+XmGeneralRegister();
+XmGetCodeByte();
+XmGetImmediateSourceValue();
+XmGetLongImmediate();
+XmGetOffsetAddress();
+XmGetStringAddress();
+XmGetWordImmediate();
+XmGroup1General();
+XmGroup1Immediate();
+XmGroup2By1();
+XmGroup2ByByte();
+XmGroup2ByCL();
+XmGroup3General();
+XmGroup45General();
+XmGroup7General();
+XmGroup8BitOffset();
+XmHltOp();
+XmIdivOp();
+XmIllOp();
+XmImmediateEnter();
+XmImmediateJump();
+XmImulImmediate();
+XmImulOp();
+XmImulxOp();
+XmIncOp();
+XmInOp();
+XmInsOp();
+XmInt1aFindPciClassCode();
+XmInt1aFindPciDevice();
+XmInt1aReadConfigRegister();
+XmInt1aWriteConfigRegister();
+XmIntOp();
+XmIretOp();
+XmJcxzOp();
+XmJmpOp();
+XmJxxOp();
+XmLahfOp();
+XmLeaveOp();
+XmLoadSegment();
+XmLodsOp();
+XmLongJump();
+XmLoopOp();
+XmMoveGeneral();
+XmMoveImmediate();
+XmMoveRegImmediate();
+XmMoveSegment();
+XmMoveXxGeneral();
+XmMovOp();
+XmMovsOp();
+XmMulOp();
+XmNegOp();
+XmNoOperands();
+XmNopOp();
+XmNotOp();
+XmOpcodeEscape();
+XmOpcodeRegister();
+XmOrOp();
+XmOutOp();
+XmOutsOp();
+XmPopaOp();
+XmPopGeneral();
+XmPopOp();
+XmPopStack();
+XmPortDX();
+XmPortImmediate();
+XmPrefixOpcode();
+XmPushaOp();
+XmPushImmediate();
+XmPushOp();
+XmPushPopSegment();
+XmPushStack();
+XmRclOp();
+XmRcrOp();
+XmRdtscOp();
+XmRetOp();
+XmRolOp();
+XmRorOp();
+XmSahfOp();
+XmSarOp();
+XmSbbOp();
+XmScasOp();
+XmSegmentOffset();
+XmSetccByte();
+XmSetDataType();
+XmSetLogicalResult();
+XmShiftDouble();
+XmShldOp();
+XmShlOp();
+XmShortJump();
+XmShrdOp();
+XmShrOp();
+XmSmswOp();
+XmStcOp();
+XmStdOp();
+XmStiOp();
+XmStosOp();
+XmStringOperands();
+XmSubOp();
+XmSubOperands();
+XmSxxOp();
+XmTestOp();
+XmXaddOp();
+XmXchgOp();
+XmXlatOpcode();
+XmXorOp();
+ZwClose();
+ZwDeleteValueKey();
+ZwOpenKey();
+ZwSetValueKey();
+
+// Globals
+
+Amd64ProfileInterface;
+Amd64ProfileSourceDescriptorTable;
+BadIOAddrList;
+__clocalestr;
+CmosRangeHandlersStdPCAT;
+CounterStatus;
+CurTiledCr3LowPart;
+DefaultProfileInterface;
+DefaultProfileSourceDescriptor;
+EisaNMIMsg;
+EM64TCounterDescriptor;
+EM64TESCRDescriptor;
+EM64THyperThreadingActive;
+EM64TProfileSourceDescriptors;
+EmonCounterResolution;
+EmonCounterStatus;
+EmonNumberCounters;
+EmonProfileInterface;
+EmonProfileSourceDescriptorTable;
+EmonVersion;
+errno;
+False;
+__fastflag;
+_fltused;
+GUID_ACPI_CMOS_INTERFACE_STANDARD;
+GUID_BUS_INTERFACE_STANDARD;
+GUID_EM_DISABLE_MSI_RULE;
+GUID_FDMA_INTERFACE_PRIVATE;
+GUID_HAL_CALLBACK_ACPI_CREATOR_REVISION;
+GUID_HAL_CALLBACK_ACPI_FADT_BOOTARCH;
+GUID_HAL_CALLBACK_ACPI_OEM_ID;
+GUID_HAL_CALLBACK_ACPI_OEM_REVISION;
+GUID_HAL_CALLBACK_ACPI_OEM_TABLE_ID;
+GUID_HAL_CALLBACK_ACPI_REVISION;
+GUID_ISA_FDMA_INTERFACE;
+GUID_TARGET_DEVICE_QUERY_REMOVE;
+HAL_ETW_EVENT_HPET_INTERRUPT_ERROR;
+HAL_ETW_EVENT_HPET_UNSUPPORTED_TABLE;
+HAL_ETW_EVENT_HPET_UNSUPPORTED_TIMER;
+HAL_ETW_PROVIDER;
+HalAcpiDispatchTable;
+HalDispatchTable;
+HalEfiMissedMappingsCount;
+HalEfiRuntimeServicesBlock;
+HalEfiRuntimeServicesTable;
+HalEfiSetVirtualAddressMapStatus;
+HalEfiToNtStatusMappings;
+HalFirmwareTypeEfi;
+HalHardwareIdString;
+HalName;
+Halp1stPhysicalPageVaddr;
+Halp8259Counts;
+HalpAccountingLock;
+HalpAcpiCountDown;
+HalpAcpiCountReset;
+HalpAcpiFacsMapping;
+HalpAcpiFlags;
+HalpAcpiInterruptMasked;
+HalpAcpiInterruptRunning;
+HalpAcpiMultiNode;
+HalpAcpiNvsData;
+HalpAcpiSrat;
+HalpAcpiTableCacheList;
+HalpAcpiTableCacheLock;
+HalpAcpiTableMatchList;
+HalpAcpiTablePointers;
+HalpActiveProcessors;
+HalpAddressUsageList;
+HalpAllocationDescriptorArray;
+HalpApicErrorLog;
+HalpApicMaxCluster;
+HalpApicTable;
+HalpApicUsage;
+HalpAuthenticAMD;
+HalpAvoidMmConfigAccessMethod;
+HalpBarrier;
+HalpBroadcastContext;
+HalpBroadcastFunction;
+HalpBroadcastLock;
+HalpBroadcastTargets;
+HalpBroken440BX;
+HalpBrokenAcpiTimer;
+HalpBusType;
+HalpCallbackRecord;
+HalpChipHackCount;
+HalpChipHacksTable;
+HalpClockInterrupt;
+HalpClockInterruptStub;
+HalpClockSource;
+HalpClockWorkUnion;
+HalpCmcContext;
+HalpCmcErrorPacket;
+HalpCmosBusParameterTable;
+HalpCmosCenturyOffset;
+HalpComIoSpace;
+HalpComPortIrqMapping;
+HalpCR3Root;
+HalpCriticalClockSourceCount;
+HalpCriticalClockSources;
+HalpCurrentClockRateAdjustment;
+HalpCurrentClockRateIn100ns;
+HalpCurrentRateIndex;
+HalpCurrentRTCRegisterA;
+HalpCurrentTimePort;
+HalpDebugPortTable;
+HalpDefaultApicDestinationModeMask;
+HalpDefaultPcIoSpace;
+HalpDevLevel;
+HalpDevPolarity;
+HalpDiagnosticEventHandle;
+HalpDiagnosticEventsRegistered;
+HalpDisableHibernate;
+HalpDisableNvsSaveRestore;
+HalpDisableS5Hibernation;
+HalpDmaAdapterList;
+HalpDmaAdapterListLock;
+HalpDmaChannelState;
+HalpDmaGrowMapBufferWorkerQueued;
+HalpDmaHibernateAdapter;
+HalpDmaHibernateRegisterSetIndex;
+HalpDmaHibernateRegisterSets;
+HalpDmaOperations;
+HalpDoingCrashDump;
+HalpDontConsumeLowMemory;
+HalpDontStartProcessors;
+HalpDriverObject;
+HalpEisaAdapter;
+HalpEisaControlBase;
+HalpEisaDma;
+HalpEisaELCR;
+HalpEisaIoSpace;
+HalpEnlightenment;
+HalpFakePciBusData;
+HalpFakePciBusHandler;
+HalpFDMAAvail;
+HalpFDMAChecked;
+HalpFDMAInterface;
+HalpFeatureBits;
+HalpFixedAcpiDescTable;
+HalpForceApicPhysicalDestinationMode;
+HalpForceClusteredApicMode;
+HalpFrameBufferBase;
+HalpGenuineIntel;
+HalpGetInfoFromACPI;
+HalpGlobal8259Mask;
+HalpGlobalVolatile;
+HalpHardwareLockFlags;
+HalpHardwareTimeRollover;
+HalpHeapStart;
+HalpHiberInProgress;
+HalpHiberProcState;
+HalpHpetAddress;
+HalpHpetClockTable;
+HalpHpetClockTimerIrq;
+HalpHpetCurrentProfileComparator;
+HalpHpetCurrentProfileTickCount;
+HalpHpetCurrentTime;
+HalpHpetFrequency;
+HalpHpetHalfRollover;
+HalpHpetInitializationStatus;
+HalpHpetInitialized;
+HalpHpetLegacyInterruptCapable;
+HalpHpetMemoryUsage;
+HalpHpetMinimumOneShotTickCount;
+HalpHpetPeriod;
+HalpHpetPreviousTimeBias;
+HalpHpetProfileTimerIrq;
+HalpHpetRolloverTimerIrq;
+HalpHpetTimeBias;
+HalpHpetTimerCount;
+HalpHpetTimerState;
+HalpHybridApicPhysicalTargets;
+HalpIdtExclusionList;
+HalpIDTUsage;
+HalpIDTUsageFlags;
+HalpImcrIoSpace;
+HalpInitialRtcClockRateIndex;
+HalpInitLevel;
+HalpIntDestMap;
+HalpInterruptObjectList;
+HalpIntiInfo;
+HalpInvalidAcpiTable;
+HalpIoApicId;
+HalpIOApicVersion;
+HalpIoCompatibleRangeList0;
+HalpIoCompatibleRangeList1;
+HalpIoControlBase;
+HalpIoMemoryBase;
+HalpIpiClock;
+HalpIpiPhysicalApicId;
+HalpIpiPhysicalTargetMask;
+HalpIpiPhysicalTargets;
+HalpIpiRoutine;
+HalpIpiTargetLookup;
+HalpIpiTargetMask;
+HalpIrqlTablesInitialized;
+HalpKInterruptHeap;
+HalpKInterruptHeapUsed;
+HalpLastTickIncrement;
+HalpLocalApicErrorCount;
+HalpLocalApicErrorLock;
+HalpLocalNmiSources;
+HalpLowMemoryMap;
+HalpLowMemoryMapBitmapBuffer;
+HalpLowStub;
+HalpLowStubPhysicalAddress;
+HalpMachineType;
+HalpMaxApicInti;
+HalpMaxHotPlugMemoryAddress;
+HalpMaxPciBus;
+HalpMaxProcs;
+HalpMaxProcsPerCluster;
+HalpMcaScanTime;
+HalpMceDataFound;
+HalpMceErrorSourceId;
+HalpMceRecovered;
+HalpMcUpdateLockFunc;
+HalpMcUpdateMicrocodeFunc;
+HalpMcUpdatePostUpdateFunc;
+HalpMcUpdateUnlockFunc;
+HalpMinPciBus;
+HalpMoveMemory;
+HalpMpInfoTable;
+HalpMsiOverrideFlags;
+HalpMsiSupportDetermined;
+HalpMsiSupported;
+HalpNewAdapter;
+HalpNextRateIndex;
+HalpNMIDumpFlag;
+HalpNmiInfo;
+HalpNumaConfig;
+HalpNumaLastRangeIndex;
+HalpNumaMemoryNode;
+HalpNumaMemoryRanges;
+HalpNumberOfProcessorsInCluster;
+HalpNvsVirtualAddress;
+HalpOrionOPB;
+HalpPciAmdK8SpecialLocationHack;
+HalpPCIConfigAccessMethod;
+HalpPCIConfigLock;
+HalpPCIConfigReadHandlers;
+HalpPCIConfigSpaceInitialized;
+HalpPCIConfigWriteHandlers;
+HalpPciDebuggingDevice;
+HalpPciLockSettings;
+HalpPciMmConfigBaseAddressList;
+HalpPciMmConfigReadHandlers;
+HalpPciMmConfigVirtualAddress;
+HalpPciMmConfigWriteHandlers;
+HalpPendingRate;
+HalpPerfInterruptHandler;
+HalpPhase0ClockInterruptCount;
+HalpPhysicalMemoryCheckSums;
+HalpPhysicalMemoryMayAppearAbove4GB;
+HalpPicStateIntact;
+HalpPicVectorFlags;
+HalpPicVectorRedirect;
+HalpPiix4;
+HalpPiix4BusNumber;
+HalpPiix4DevActB;
+HalpPiix4SlotNumber;
+HalpPMStub;
+HalpPmTimerCurrentTime;
+HalpPmTimerSleepModeEnabled;
+HalpPmTimerSleepModeLock;
+HalpPmTimerTimeBias;
+HalpProc0TSCHz;
+HalpProcessedACPIPhase0;
+HalpProcessorPCR;
+HalpProcessorsInMceHandler;
+HalpProcessorsNotHalted;
+HalpProcLocalApicTable;
+HalpProfileInterface;
+HalpProfileRunning;
+HalpProfileTimerHandler;
+HalpProfileTimerSource;
+HalpPteForFlush;
+HalpQueryPerformanceCounterSource;
+HalpRateCorrection;
+HalpRebootNow;
+HalpReserveCmcErrorPacket;
+HalpResumeStructuresAllocated;
+HalPrivateDispatchTable;
+HalpRMStub;
+HalpRtcRegA;
+HalpRtcRegB;
+HalpRtcTimeIncrements;
+HalpScaleWithPmTimer;
+HalpSerialLen;
+HalpSerialNumber;
+HalpShutdownContext;
+HalpSimpleBootFlagTable;
+HalpSleepContext;
+HalpSleepPageLock;
+HalpSleepSync;
+HalpStallExecutionProcessorSource;
+HalpStaticIntAffinity;
+HalpStaticProcLocalApicTable;
+HalpSystemHardwareLock;
+HalpSzBreak;
+HalpSzClockLevel;
+HalpSzDisallowMmConfig;
+HalpSzDisallowMsi;
+HalpSzDontConsumeLowMemory;
+HalpSzForceClusterMode;
+HalpSzForceMSI;
+HalpSzInterruptAffinity;
+HalpSzMaxApicCluster;
+HalpSzOneCpu;
+HalpSzPciLock;
+HalpSzSerialNumber;
+HalpSzSystem;
+HalpSzTimerRes;
+HalpSzUse8254;
+HalpSzUsePhysicalApic;
+HalpTemporaryLogicalProcessorToApicIdMap;
+HalpTiledCr3Addresses;
+HalpTimeSourceInitializationComplete;
+HalpUsedAllocDescriptors;
+HalpUseDbgPrint;
+HalpVectorInit;
+HalpVectorToIRQL;
+HalpVerifierInUse;
+HalpVirtAddrForFlush;
+HalpWAETDeviceFlags;
+HalpWakeupState;
+HalpWakeVector;
+HalpWheaReady;
+HiberFreeCR3;
+HotPatchBuffer;
+__IMPORT_DESCRIPTOR_KDCOM;
+__IMPORT_DESCRIPTOR_ntoskrnl;
+__IMPORT_DESCRIPTOR_PSHED;
+__initiallocalestructinfo;
+__initiallocinfo;
+IoAdapterObjectType;
+KdComPortInUse;
+KdDebuggerEnabled;
+KdDebuggerNotPresent;
+KiBugCheckData;
+LastKnownGood;
+__lc_clike;
+__lc_codepage;
+__lc_collate_cp;
+__lc_handle;
+__lconv;
+__lconv_c;
+__lconv_static_decimal;
+__lconv_static_null;
+_ldused;
+LessThan16Mb;
+MasterAdapter24;
+MasterAdapter32;
+McaBlockErrorClearing;
+McaDeviceContext;
+McaDriverExceptionCallback;
+McaEnableCmc;
+McaMutex;
+McaNoBugCheck;
+McaNumberOfBanks;
+McaSavedAffinity;
+McaSavedBankNumber;
+McaSavedStatus;
+McaSavedTimeStamp;
+McaStatusCount;
+McaWmiCallback;
+MsgMCEPending;
+__newclmap;
+__newctype;
+__newcumap;
+__NULL_IMPORT_DESCRIPTOR;
+PCIDeref;
+PciIsaIrq;
+_pctype;
+PmAcpiDispatchTable;
+__ptlocinfo;
+_pwctype;
+rgzApicNotVerified;
+rgzBadApicVersion;
+rgzBadDefault;
+rgzBadHal;
+rgzConfigurationData;
+rgzEnableCMC;
+rgzEnableMCA;
+rgzEnableMCE;
+rgzIdentifier;
+rgzMPPTRCheck;
+rgzMPSBadCheck;
+rgzMPSBadSig;
+rgzMultiFunctionAdapter;
+rgzNoApic;
+rgzNoApicTable;
+rgzNoMCABugCheck;
+rgzNoMem;
+rgzNoMpsTable;
+rgzNoMPTable;
+rgzPCICardList;
+rgzPCIIdentifier;
+rgzReservedResources;
+rgzRTCNotFound;
+rgzSessionManager;
+rgzSuspendCallbackName;
+__security_cookie;
+__setloc_data;
+True;
+_wctype;
+x86BiosBufferAllocated;
+x86BiosFrameBuffer;
+x86BiosInitialized;
+x86BiosIoMemory;
+x86BiosIoSpace;
+x86BiosLowMemory;
+x86BiosScratchMemory;
+x86BiosTransferLength;
+x86BiosTransferMemory;
+XmBitCount;
+XmCmosAddress;
+XmContext;
+XmEmulatorInitialized;
+XmGetPciData;
+XmNumberPciBusses;
+XmOpcodeControlTable1;
+XmOpcodeControlTable2;
+XmOpcodeFunctionTable;
+XmOperandDecodeTable;
+XmPciBiosPresent;
+XmPCIConfigAddress;
+XmSetPciData;
+XmStatus;
