@@ -1,5 +1,5 @@
 /*
- * PDB file: win32k.pdb\061E431486D04C2585E8BA1E1C4FBBFF2\win32k.pdb
+ * PDB file: win32k.pdb\ECBBACF6FC76475BAFABC5427025CD6F2\win32k.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -124,8 +124,6 @@ union _OBJECTOWNER;
 struct _OBJECTOWNER_S;
 struct _OWNER_ENTRY;
 struct _PAGED_LOOKASIDE_LIST;
-enum PCI_EXPRESS_DEVICE_TYPE;
-struct _PCIE_DEVICE_ID;
 enum _POOL_TYPE;
 enum POWER_ACTION;
 struct _POWER_SEQUENCE;
@@ -174,23 +172,43 @@ struct _VPB;
 struct _W32THREAD;
 struct _WAIT_CONTEXT_BLOCK;
 struct _WHEA_ERROR_PACKET;
+union _WHEA_ERROR_PACKET_FLAGS;
 struct _WHEA_ERROR_RECORD;
 struct _WHEA_ERROR_RECORD_HEADER;
+union _WHEA_ERROR_RECORD_HEADER_FLAGS;
+union _WHEA_ERROR_RECORD_HEADER_VALIDBITS;
 struct _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR;
+union _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR_FLAGS;
+union _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR_VALIDBITS;
 enum _WHEA_ERROR_SEVERITY;
 enum _WHEA_ERROR_SOURCE_TYPE;
-struct _WHEA_ERROR_STATUS;
-enum _WHEA_ERROR_STATUS_FORMAT;
+union _WHEA_ERROR_STATUS;
 enum _WHEA_ERROR_TYPE;
 struct _WHEA_GENERIC_PROCESSOR_ERROR;
+union _WHEA_GENERIC_PROCESSOR_ERROR_VALIDBITS;
 struct _WHEA_MEMORY_ERROR;
+union _WHEA_MEMORY_ERROR_VALIDBITS;
 struct _WHEA_NMI_ERROR;
+union _WHEA_NMI_ERROR_FLAGS;
+union _WHEA_PCIEXPRESS_BRIDGE_CONTROL_STATUS;
+union _WHEA_PCIEXPRESS_COMMAND_STATUS;
+struct _WHEA_PCIEXPRESS_DEVICE_ID;
+enum WHEA_PCIEXPRESS_DEVICE_TYPE;
 struct _WHEA_PCIEXPRESS_ERROR;
-struct _WHEA_PCIX_BUS_ERROR;
-struct _WHEA_PCIX_BUS_VALIDATION_BITS;
-struct _WHEA_PCIX_DEV_VALIDATION_BITS;
-struct _WHEA_PCIX_DEVICE_ERROR;
-struct _WHEA_PERSISTENCE_INFO;
+union _WHEA_PCIEXPRESS_ERROR_VALIDBITS;
+union _WHEA_PCIEXPRESS_VERSION;
+union _WHEA_PCIXBUS_COMMAND;
+struct _WHEA_PCIXBUS_ERROR;
+union _WHEA_PCIXBUS_ERROR_VALIDBITS;
+union _WHEA_PCIXBUS_ID;
+struct _WHEA_PCIXDEVICE_ERROR;
+union _WHEA_PCIXDEVICE_ERROR_VALIDBITS;
+struct _WHEA_PCIXDEVICE_ID;
+struct WHEA_PCIXDEVICE_REGISTER_PAIR;
+union _WHEA_PERSISTENCE_INFO;
+enum _WHEA_RAW_DATA_FORMAT;
+union _WHEA_REVISION;
+union _WHEA_TIMESTAMP;
 struct _XMM_SAVE_AREA32;
 
 #include <pshpack1.h>
@@ -715,6 +733,8 @@ typedef struct _DEVOBJ_EXTENSION
   long StartIoKey;
   unsigned long StartIoFlags;
   struct _VPB* Vpb;
+  struct _LIST_ENTRY DependentList;
+  struct _LIST_ENTRY ProviderList;
 } DEVOBJ_EXTENSION, *PDEVOBJ_EXTENSION;
 
 typedef struct _DISPATCHER_HEADER
@@ -1025,7 +1045,8 @@ typedef enum _FILE_INFORMATION_CLASS
   FileProcessIdsUsingFileInformation = 47,
   FileNormalizedNameInformation = 48,
   FileNetworkPhysicalNameInformation = 49,
-  FileMaximumInformation = 50,
+  FileIdGlobalTxDirectoryInformation = 50,
+  FileMaximumInformation = 51,
 } FILE_INFORMATION_CLASS, *PFILE_INFORMATION_CLASS;
 
 typedef struct _FILE_NETWORK_OPEN_INFORMATION
@@ -1375,7 +1396,8 @@ typedef enum _INTERFACE_TYPE
   InternalPowerBus = 13,
   PNPISABus = 14,
   PNPBus = 15,
-  MaximumInterfaceType = 16,
+  Vmcs = 16,
+  MaximumInterfaceType = 17,
 } INTERFACE_TYPE, *PINTERFACE_TYPE;
 
 typedef enum _INTERLOCKED_RESULT
@@ -1910,7 +1932,7 @@ typedef struct _KDPC
 {
   unsigned char Type;
   unsigned char Importance;
-  unsigned short Number;
+  volatile unsigned short Number;
   struct _LIST_ENTRY DpcListEntry;
   void* DeferredRoutine /* function */;
   void* DeferredContext;
@@ -2207,7 +2229,6 @@ typedef struct _OBJECT_NAME_INFORMATION
 
 typedef struct _OBJECT_TYPE
 {
-  struct _ERESOURCE Mutex;
   struct _LIST_ENTRY TypeList;
   struct _UNICODE_STRING Name;
   void* DefaultObject;
@@ -2217,8 +2238,11 @@ typedef struct _OBJECT_TYPE
   unsigned long HighWaterNumberOfObjects;
   unsigned long HighWaterNumberOfHandles;
   struct _OBJECT_TYPE_INITIALIZER TypeInfo;
+  struct _ERESOURCE Mutex;
+  struct _EX_PUSH_LOCK TypeLock;
   unsigned long Key;
   struct _EX_PUSH_LOCK ObjectLocks[32];
+  struct _LIST_ENTRY CallbackList;
 } OBJECT_TYPE, *POBJECT_TYPE;
 
 typedef struct _OBJECT_TYPE_INITIALIZER
@@ -2235,12 +2259,14 @@ typedef struct _OBJECT_TYPE_INITIALIZER
       unsigned char SecurityRequired : 1; /* bit position: 3 */
       unsigned char MaintainHandleCount : 1; /* bit position: 4 */
       unsigned char MaintainTypeList : 1; /* bit position: 5 */
+      unsigned char SupportsObjectCallbacks : 1; /* bit position: 6 */
     }; /* bitfield */
   };
   unsigned long ObjectTypeCode;
   unsigned long InvalidAttributes;
   struct _GENERIC_MAPPING GenericMapping;
   unsigned long ValidAccessMask;
+  unsigned long RetainAccess;
   enum _POOL_TYPE PoolType;
   unsigned long DefaultPagedPoolCharge;
   unsigned long DefaultNonPagedPoolCharge;
@@ -2287,43 +2313,6 @@ typedef struct _PAGED_LOOKASIDE_LIST
 {
   struct _GENERAL_LOOKASIDE L;
 } PAGED_LOOKASIDE_LIST, *PPAGED_LOOKASIDE_LIST;
-
-enum PCI_EXPRESS_DEVICE_TYPE
-{
-  PciExpressEndpoint = 0,
-  PciExpressLegacyEndpoint = 1,
-  PciExpressRootPort = 4,
-  PciExpressUpstreamSwitchPort = 5,
-  PciExpressDownstreamSwitchPort = 6,
-  PciExpressToPciXBridge = 7,
-  PciXToExpressBridge = 8,
-  PciExpressRootComplexIntegratedEndpoint = 9,
-  PciExpressRootComplexEventCollector = 10,
-};
-
-typedef struct _PCIE_DEVICE_ID
-{
-  unsigned short VendorID;
-  unsigned short DeviceID;
-  struct /* bitfield */
-  {
-    unsigned long ClassCode : 24; /* bit position: 0 */
-    unsigned long FunctionNumber : 8; /* bit position: 24 */
-  }; /* bitfield */
-  struct /* bitfield */
-  {
-    unsigned long DeviceNumber : 8; /* bit position: 0 */
-    unsigned long Segment : 16; /* bit position: 8 */
-    unsigned long PrimaryBusNumber : 8; /* bit position: 24 */
-  }; /* bitfield */
-  struct /* bitfield */
-  {
-    unsigned long SecondaryBusNumber : 8; /* bit position: 0 */
-    unsigned long Reserved1 : 2; /* bit position: 8 */
-    unsigned long SlotNumber : 14; /* bit position: 10 */
-    unsigned long Reserved2 : 8; /* bit position: 24 */
-  }; /* bitfield */
-} PCIE_DEVICE_ID, *PPCIE_DEVICE_ID;
 
 typedef enum _POOL_TYPE
 {
@@ -2502,6 +2491,7 @@ enum ReplacesCorHdrNumericDefines
   COMIMAGE_FLAGS_32BITREQUIRED = 2,
   COMIMAGE_FLAGS_IL_LIBRARY = 4,
   COMIMAGE_FLAGS_STRONGNAMESIGNED = 8,
+  COMIMAGE_FLAGS_NATIVE_ENTRYPOINT = 16,
   COMIMAGE_FLAGS_TRACKDEBUGDATA = 0x10000,
   COR_VERSION_MAJOR_V2 = 2,
   COR_VERSION_MAJOR = 2,
@@ -2669,7 +2659,8 @@ typedef struct _SYSTEM_POWER_STATE_CONTEXT
       unsigned long EffectiveSystemState : 4; /* bit position: 12 */
       unsigned long CurrentSystemState : 4; /* bit position: 16 */
       unsigned long IgnoreHibernationPath : 1; /* bit position: 20 */
-      unsigned long Reserved2 : 11; /* bit position: 21 */
+      unsigned long PseudoTransition : 1; /* bit position: 21 */
+      unsigned long Reserved2 : 10; /* bit position: 22 */
     }; /* bitfield */
     unsigned long ContextAsUlong;
   };
@@ -2848,15 +2839,16 @@ typedef struct _WAIT_CONTEXT_BLOCK
 typedef struct _WHEA_ERROR_PACKET
 {
   unsigned long Signature;
-  unsigned long Flags;
-  unsigned __int64 Size;
-  unsigned __int64 RawDataLength;
+  union _WHEA_ERROR_PACKET_FLAGS Flags;
+  unsigned long Size;
+  unsigned long RawDataLength;
+  unsigned __int64 Reserved1;
   unsigned __int64 Context;
   enum _WHEA_ERROR_TYPE ErrorType;
   enum _WHEA_ERROR_SEVERITY ErrorSeverity;
   unsigned long ErrorSourceId;
   enum _WHEA_ERROR_SOURCE_TYPE ErrorSourceType;
-  unsigned long Reserved1;
+  unsigned long Reserved2;
   unsigned long Version;
   unsigned __int64 Cpu;
   union
@@ -2867,14 +2859,30 @@ typedef struct _WHEA_ERROR_PACKET
       struct _WHEA_MEMORY_ERROR MemoryError;
       struct _WHEA_NMI_ERROR NmiError;
       struct _WHEA_PCIEXPRESS_ERROR PciExpressError;
-      struct _WHEA_PCIX_BUS_ERROR PciXBusError;
-      struct _WHEA_PCIX_DEVICE_ERROR PciXDeviceError;
+      struct _WHEA_PCIXBUS_ERROR PciXBusError;
+      struct _WHEA_PCIXDEVICE_ERROR PciXDeviceError;
     };
   } u;
-  enum _WHEA_ERROR_STATUS_FORMAT RawDataFormat;
-  unsigned long Reserved2;
+  enum _WHEA_RAW_DATA_FORMAT RawDataFormat;
+  unsigned long RawDataOffset;
   unsigned char RawData[1];
 } WHEA_ERROR_PACKET, *PWHEA_ERROR_PACKET;
+
+typedef union _WHEA_ERROR_PACKET_FLAGS
+{
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned long PreviousError : 1; /* bit position: 0 */
+      unsigned long CpuValid : 1; /* bit position: 1 */
+      unsigned long HypervisorError : 1; /* bit position: 2 */
+      unsigned long Simulated : 1; /* bit position: 3 */
+      unsigned long Reserved : 28; /* bit position: 4 */
+    }; /* bitfield */
+    unsigned long AsULONG;
+  };
+} WHEA_ERROR_PACKET_FLAGS, *PWHEA_ERROR_PACKET_FLAGS;
 
 typedef struct _WHEA_ERROR_RECORD
 {
@@ -2885,38 +2893,98 @@ typedef struct _WHEA_ERROR_RECORD
 typedef struct _WHEA_ERROR_RECORD_HEADER
 {
   unsigned long Signature;
-  unsigned short Revision;
-  unsigned short Reserved1;
-  unsigned short Reserved2;
+  union _WHEA_REVISION Revision;
+  unsigned long SignatureEnd;
   unsigned short SectionCount;
   enum _WHEA_ERROR_SEVERITY Severity;
-  unsigned long ValidationBits;
+  union _WHEA_ERROR_RECORD_HEADER_VALIDBITS ValidBits;
   unsigned long Length;
-  union _LARGE_INTEGER Timestamp;
+  union _WHEA_TIMESTAMP Timestamp;
   struct _GUID PlatformId;
   struct _GUID PartitionId;
   struct _GUID CreatorId;
   struct _GUID NotifyType;
   unsigned __int64 RecordId;
-  unsigned long Flags;
-  struct _WHEA_PERSISTENCE_INFO PersistenceInfo;
-  unsigned char Reserved3[12];
-  long __PADDING__[1];
+  union _WHEA_ERROR_RECORD_HEADER_FLAGS Flags;
+  union _WHEA_PERSISTENCE_INFO PersistenceInfo;
+  unsigned char Reserved[12];
 } WHEA_ERROR_RECORD_HEADER, *PWHEA_ERROR_RECORD_HEADER;
+
+typedef union _WHEA_ERROR_RECORD_HEADER_FLAGS
+{
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned long Recovered : 1; /* bit position: 0 */
+      unsigned long PreviousError : 1; /* bit position: 1 */
+      unsigned long Simulated : 1; /* bit position: 2 */
+      unsigned long Reserved : 29; /* bit position: 3 */
+    }; /* bitfield */
+    unsigned long AsULONG;
+  };
+} WHEA_ERROR_RECORD_HEADER_FLAGS, *PWHEA_ERROR_RECORD_HEADER_FLAGS;
+
+typedef union _WHEA_ERROR_RECORD_HEADER_VALIDBITS
+{
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned long Timestamp : 1; /* bit position: 0 */
+      unsigned long PlatformId : 1; /* bit position: 1 */
+      unsigned long PartitionId : 1; /* bit position: 2 */
+      unsigned long Reserved : 29; /* bit position: 3 */
+    }; /* bitfield */
+    unsigned long AsULONG;
+  };
+} WHEA_ERROR_RECORD_HEADER_VALIDBITS, *PWHEA_ERROR_RECORD_HEADER_VALIDBITS;
 
 typedef struct _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR
 {
   unsigned long SectionOffset;
   unsigned long SectionLength;
-  unsigned short Revision;
-  unsigned char ValidationBits;
+  union _WHEA_REVISION Revision;
+  union _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR_VALIDBITS ValidBits;
   unsigned char Reserved;
-  unsigned long Flags;
+  union _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR_FLAGS Flags;
   struct _GUID SectionType;
   struct _GUID FRUId;
   enum _WHEA_ERROR_SEVERITY SectionSeverity;
   char FRUText[20];
 } WHEA_ERROR_RECORD_SECTION_DESCRIPTOR, *PWHEA_ERROR_RECORD_SECTION_DESCRIPTOR;
+
+typedef union _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR_FLAGS
+{
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned long Primary : 1; /* bit position: 0 */
+      unsigned long ContainmentWarning : 1; /* bit position: 1 */
+      unsigned long Reset : 1; /* bit position: 2 */
+      unsigned long ThresholdExceeded : 1; /* bit position: 3 */
+      unsigned long ResourceNotAvailable : 1; /* bit position: 4 */
+      unsigned long LatentError : 1; /* bit position: 5 */
+      unsigned long Reserved : 26; /* bit position: 6 */
+    }; /* bitfield */
+    unsigned long AsULONG;
+  };
+} WHEA_ERROR_RECORD_SECTION_DESCRIPTOR_FLAGS, *PWHEA_ERROR_RECORD_SECTION_DESCRIPTOR_FLAGS;
+
+typedef union _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR_VALIDBITS
+{
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned char FRUId : 1; /* bit position: 0 */
+      unsigned char FRUText : 1; /* bit position: 1 */
+      unsigned char Reserved : 6; /* bit position: 2 */
+    }; /* bitfield */
+    unsigned char AsUCHAR;
+  };
+} WHEA_ERROR_RECORD_SECTION_DESCRIPTOR_VALIDBITS, *PWHEA_ERROR_RECORD_SECTION_DESCRIPTOR_VALIDBITS;
 
 typedef enum _WHEA_ERROR_SEVERITY
 {
@@ -2933,38 +3001,36 @@ typedef enum _WHEA_ERROR_SOURCE_TYPE
   WheaErrSrcTypeCPE = 2,
   WheaErrSrcTypeNMI = 3,
   WheaErrSrcTypePCIe = 4,
-  WheaErrSrcTypeOther = 5,
-  WheaErrSrcTypeMax = 6,
+  WheaErrSrcTypeGeneric = 5,
+  WheaErrSrcTypeINIT = 6,
+  WheaErrSrcTypeBOOT = 7,
+  WheaErrSrcTypeSCIGeneric = 8,
+  WheaErrSrcTypeIPFMCA = 9,
+  WheaErrSrcTypeIPFCMC = 10,
+  WheaErrSrcTypeIPFCPE = 11,
+  WheaErrSrcTypeMax = 12,
 } WHEA_ERROR_SOURCE_TYPE, *PWHEA_ERROR_SOURCE_TYPE;
 
-typedef struct _WHEA_ERROR_STATUS
+typedef union _WHEA_ERROR_STATUS
 {
-  struct /* bitfield */
+  union
   {
-    unsigned __int64 Reserved1 : 8; /* bit position: 0 */
-    unsigned __int64 ErrorType : 8; /* bit position: 8 */
-    unsigned __int64 Address : 1; /* bit position: 16 */
-    unsigned __int64 Control : 1; /* bit position: 17 */
-    unsigned __int64 Data : 1; /* bit position: 18 */
-    unsigned __int64 Responder : 1; /* bit position: 19 */
-    unsigned __int64 Requester : 1; /* bit position: 20 */
-    unsigned __int64 FirstError : 1; /* bit position: 21 */
-    unsigned __int64 Overflow : 1; /* bit position: 22 */
-    unsigned __int64 Reserved2 : 41; /* bit position: 23 */
-  }; /* bitfield */
+    unsigned __int64 ErrorStatus;
+    struct /* bitfield */
+    {
+      unsigned __int64 Reserved1 : 8; /* bit position: 0 */
+      unsigned __int64 ErrorType : 8; /* bit position: 8 */
+      unsigned __int64 Address : 1; /* bit position: 16 */
+      unsigned __int64 Control : 1; /* bit position: 17 */
+      unsigned __int64 Data : 1; /* bit position: 18 */
+      unsigned __int64 Responder : 1; /* bit position: 19 */
+      unsigned __int64 Requester : 1; /* bit position: 20 */
+      unsigned __int64 FirstError : 1; /* bit position: 21 */
+      unsigned __int64 Overflow : 1; /* bit position: 22 */
+      unsigned __int64 Reserved2 : 41; /* bit position: 23 */
+    }; /* bitfield */
+  };
 } WHEA_ERROR_STATUS, *PWHEA_ERROR_STATUS;
-
-typedef enum _WHEA_ERROR_STATUS_FORMAT
-{
-  WheaErrorStatusFormatIPFSalRecord = 0,
-  WheaErrorStatusFormatIA32MCA = 1,
-  WheaErrorStatusFormatEM64TMCA = 2,
-  WheaErrorStatusFormatAMD64MCA = 3,
-  WheaErrorStatusFormatPCIExpress = 4,
-  WheaErrorStatusFormatNMIPort = 5,
-  WheaErrorStatusFormatOther = 6,
-  WheaErrorStatusFormatMax = 7,
-} WHEA_ERROR_STATUS_FORMAT, *PWHEA_ERROR_STATUS_FORMAT;
 
 typedef enum _WHEA_ERROR_TYPE
 {
@@ -2974,11 +3040,12 @@ typedef enum _WHEA_ERROR_TYPE
   WheaErrTypeNMI = 3,
   WheaErrTypePCIXBus = 4,
   WheaErrTypePCIXDevice = 5,
+  WheaErrTypeGeneric = 6,
 } WHEA_ERROR_TYPE, *PWHEA_ERROR_TYPE;
 
 typedef struct _WHEA_GENERIC_PROCESSOR_ERROR
 {
-  unsigned __int64 ValidBits;
+  union _WHEA_GENERIC_PROCESSOR_ERROR_VALIDBITS ValidBits;
   unsigned char ProcessorType;
   unsigned char InstructionSet;
   unsigned char ErrorType;
@@ -2990,15 +3057,40 @@ typedef struct _WHEA_GENERIC_PROCESSOR_ERROR
   unsigned char CPUBrandString[128];
   unsigned __int64 ProcessorId;
   unsigned __int64 TargetAddress;
-  unsigned __int64 RequestorId;
+  unsigned __int64 RequesterId;
   unsigned __int64 ResponderId;
   unsigned __int64 InstructionPointer;
 } WHEA_GENERIC_PROCESSOR_ERROR, *PWHEA_GENERIC_PROCESSOR_ERROR;
 
+typedef union _WHEA_GENERIC_PROCESSOR_ERROR_VALIDBITS
+{
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned __int64 ProcessorType : 1; /* bit position: 0 */
+      unsigned __int64 InstructionSet : 1; /* bit position: 1 */
+      unsigned __int64 ErrorType : 1; /* bit position: 2 */
+      unsigned __int64 Operation : 1; /* bit position: 3 */
+      unsigned __int64 Flags : 1; /* bit position: 4 */
+      unsigned __int64 Level : 1; /* bit position: 5 */
+      unsigned __int64 CPUVersion : 1; /* bit position: 6 */
+      unsigned __int64 CPUBrandString : 1; /* bit position: 7 */
+      unsigned __int64 ProcessorId : 1; /* bit position: 8 */
+      unsigned __int64 TargetAddress : 1; /* bit position: 9 */
+      unsigned __int64 RequesterId : 1; /* bit position: 10 */
+      unsigned __int64 ResponderId : 1; /* bit position: 11 */
+      unsigned __int64 InstructionPointer : 1; /* bit position: 12 */
+      unsigned __int64 Reserved : 51; /* bit position: 13 */
+    }; /* bitfield */
+    unsigned __int64 ValidBits;
+  };
+} WHEA_GENERIC_PROCESSOR_ERROR_VALIDBITS, *PWHEA_GENERIC_PROCESSOR_ERROR_VALIDBITS;
+
 typedef struct _WHEA_MEMORY_ERROR
 {
-  unsigned __int64 ValidationBits;
-  struct _WHEA_ERROR_STATUS ErrorStatus;
+  union _WHEA_MEMORY_ERROR_VALIDBITS ValidBits;
+  union _WHEA_ERROR_STATUS ErrorStatus;
   unsigned __int64 PhysicalAddress;
   unsigned __int64 PhysicalAddressMask;
   unsigned short Node;
@@ -3009,98 +3101,347 @@ typedef struct _WHEA_MEMORY_ERROR
   unsigned short Row;
   unsigned short Column;
   unsigned short BitPosition;
-  unsigned __int64 RequestorId;
+  unsigned __int64 RequesterId;
   unsigned __int64 ResponderId;
   unsigned __int64 TargetId;
   unsigned char ErrorType;
-  char __PADDING__[7];
 } WHEA_MEMORY_ERROR, *PWHEA_MEMORY_ERROR;
+
+typedef union _WHEA_MEMORY_ERROR_VALIDBITS
+{
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned __int64 ErrorStatus : 1; /* bit position: 0 */
+      unsigned __int64 PhysicalAddress : 1; /* bit position: 1 */
+      unsigned __int64 PhysicalAddressMask : 1; /* bit position: 2 */
+      unsigned __int64 Node : 1; /* bit position: 3 */
+      unsigned __int64 Card : 1; /* bit position: 4 */
+      unsigned __int64 Module : 1; /* bit position: 5 */
+      unsigned __int64 Bank : 1; /* bit position: 6 */
+      unsigned __int64 Device : 1; /* bit position: 7 */
+      unsigned __int64 Row : 1; /* bit position: 8 */
+      unsigned __int64 Column : 1; /* bit position: 9 */
+      unsigned __int64 BitPosition : 1; /* bit position: 10 */
+      unsigned __int64 RequesterId : 1; /* bit position: 11 */
+      unsigned __int64 ResponderId : 1; /* bit position: 12 */
+      unsigned __int64 TargetId : 1; /* bit position: 13 */
+      unsigned __int64 ErrorType : 1; /* bit position: 14 */
+      unsigned __int64 Reserved : 49; /* bit position: 15 */
+    }; /* bitfield */
+    unsigned __int64 ValidBits;
+  };
+} WHEA_MEMORY_ERROR_VALIDBITS, *PWHEA_MEMORY_ERROR_VALIDBITS;
 
 typedef struct _WHEA_NMI_ERROR
 {
   unsigned char Data[8];
+  union _WHEA_NMI_ERROR_FLAGS Flags;
 } WHEA_NMI_ERROR, *PWHEA_NMI_ERROR;
+
+typedef union _WHEA_NMI_ERROR_FLAGS
+{
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned long HypervisorError : 1; /* bit position: 0 */
+      unsigned long Reserved : 31; /* bit position: 1 */
+    }; /* bitfield */
+    unsigned long AsULONG;
+  };
+} WHEA_NMI_ERROR_FLAGS, *PWHEA_NMI_ERROR_FLAGS;
+
+typedef union _WHEA_PCIEXPRESS_BRIDGE_CONTROL_STATUS
+{
+  union
+  {
+    struct
+    {
+      unsigned short BridgeSecondaryStatus;
+      unsigned short BridgeControl;
+    };
+    unsigned long AsULONG;
+  };
+} WHEA_PCIEXPRESS_BRIDGE_CONTROL_STATUS, *PWHEA_PCIEXPRESS_BRIDGE_CONTROL_STATUS;
+
+typedef union _WHEA_PCIEXPRESS_COMMAND_STATUS
+{
+  union
+  {
+    struct
+    {
+      unsigned short Command;
+      unsigned short Status;
+    };
+    unsigned long AsULONG;
+  };
+} WHEA_PCIEXPRESS_COMMAND_STATUS, *PWHEA_PCIEXPRESS_COMMAND_STATUS;
+
+typedef struct _WHEA_PCIEXPRESS_DEVICE_ID
+{
+  unsigned short VendorID;
+  unsigned short DeviceID;
+  struct /* bitfield */
+  {
+    unsigned long ClassCode : 24; /* bit position: 0 */
+    unsigned long FunctionNumber : 8; /* bit position: 24 */
+  }; /* bitfield */
+  struct /* bitfield */
+  {
+    unsigned long DeviceNumber : 8; /* bit position: 0 */
+    unsigned long Segment : 16; /* bit position: 8 */
+    unsigned long PrimaryBusNumber : 8; /* bit position: 24 */
+  }; /* bitfield */
+  struct /* bitfield */
+  {
+    unsigned long SecondaryBusNumber : 8; /* bit position: 0 */
+    unsigned long Reserved1 : 2; /* bit position: 8 */
+    unsigned long SlotNumber : 14; /* bit position: 10 */
+    unsigned long Reserved2 : 8; /* bit position: 24 */
+  }; /* bitfield */
+} WHEA_PCIEXPRESS_DEVICE_ID, *PWHEA_PCIEXPRESS_DEVICE_ID;
+
+enum WHEA_PCIEXPRESS_DEVICE_TYPE
+{
+  WheaPciExpressEndpoint = 0,
+  WheaPciExpressLegacyEndpoint = 1,
+  WheaPciExpressRootPort = 4,
+  WheaPciExpressUpstreamSwitchPort = 5,
+  WheaPciExpressDownstreamSwitchPort = 6,
+  WheaPciExpressToPciXBridge = 7,
+  WheaPciXToExpressBridge = 8,
+  WheaPciExpressRootComplexIntegratedEndpoint = 9,
+  WheaPciExpressRootComplexEventCollector = 10,
+};
 
 typedef struct _WHEA_PCIEXPRESS_ERROR
 {
-  unsigned __int64 ValidationBits;
-  enum PCI_EXPRESS_DEVICE_TYPE PortType;
-  unsigned long Version;
-  unsigned long CommandStatus;
+  union _WHEA_PCIEXPRESS_ERROR_VALIDBITS ValidBits;
+  enum WHEA_PCIEXPRESS_DEVICE_TYPE PortType;
+  union _WHEA_PCIEXPRESS_VERSION Version;
+  union _WHEA_PCIEXPRESS_COMMAND_STATUS CommandStatus;
   unsigned long Reserved;
-  struct _PCIE_DEVICE_ID DeviceId;
-  unsigned __int64 DeviceSN;
-  unsigned long BridgeCtrlSts;
+  struct _WHEA_PCIEXPRESS_DEVICE_ID DeviceId;
+  unsigned __int64 DeviceSerialNumber;
+  union _WHEA_PCIEXPRESS_BRIDGE_CONTROL_STATUS BridgeControlStatus;
   unsigned char ExpressCapability[60];
   unsigned char AerInfo[96];
 } WHEA_PCIEXPRESS_ERROR, *PWHEA_PCIEXPRESS_ERROR;
 
-typedef struct _WHEA_PCIX_BUS_ERROR
+typedef union _WHEA_PCIEXPRESS_ERROR_VALIDBITS
 {
-  struct _WHEA_PCIX_BUS_VALIDATION_BITS ValidationBits;
-  struct _WHEA_ERROR_STATUS ErrorStatus;
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned __int64 PortType : 1; /* bit position: 0 */
+      unsigned __int64 Version : 1; /* bit position: 1 */
+      unsigned __int64 CommandStatus : 1; /* bit position: 2 */
+      unsigned __int64 DeviceId : 1; /* bit position: 3 */
+      unsigned __int64 DeviceSerialNumber : 1; /* bit position: 4 */
+      unsigned __int64 BridgeControlStatus : 1; /* bit position: 5 */
+      unsigned __int64 ExpressCapability : 1; /* bit position: 6 */
+      unsigned __int64 AerInfo : 1; /* bit position: 7 */
+      unsigned __int64 Reserved : 56; /* bit position: 8 */
+    }; /* bitfield */
+    unsigned __int64 ValidBits;
+  };
+} WHEA_PCIEXPRESS_ERROR_VALIDBITS, *PWHEA_PCIEXPRESS_ERROR_VALIDBITS;
+
+typedef union _WHEA_PCIEXPRESS_VERSION
+{
+  union
+  {
+    struct
+    {
+      unsigned char MinorVersion;
+      unsigned char MajorVersion;
+      unsigned short Reserved;
+    };
+    unsigned long AsULONG;
+  };
+} WHEA_PCIEXPRESS_VERSION, *PWHEA_PCIEXPRESS_VERSION;
+
+typedef union _WHEA_PCIXBUS_COMMAND
+{
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned __int64 Command : 56; /* bit position: 0 */
+      unsigned __int64 PCIXCommand : 1; /* bit position: 56 */
+      unsigned __int64 Reserved : 7; /* bit position: 57 */
+    }; /* bitfield */
+    unsigned __int64 AsULONGLONG;
+  };
+} WHEA_PCIXBUS_COMMAND, *PWHEA_PCIXBUS_COMMAND;
+
+typedef struct _WHEA_PCIXBUS_ERROR
+{
+  union _WHEA_PCIXBUS_ERROR_VALIDBITS ValidBits;
+  union _WHEA_ERROR_STATUS ErrorStatus;
   unsigned short ErrorType;
-  unsigned short BusId;
+  union _WHEA_PCIXBUS_ID BusId;
   unsigned long Reserved;
   unsigned __int64 BusAddress;
   unsigned __int64 BusData;
-  unsigned __int64 BusCommand;
-  unsigned __int64 BusRequestorId;
-  unsigned __int64 BusCompleterId;
+  union _WHEA_PCIXBUS_COMMAND BusCommand;
+  unsigned __int64 RequesterId;
+  unsigned __int64 CompleterId;
   unsigned __int64 TargetId;
-} WHEA_PCIX_BUS_ERROR, *PWHEA_PCIX_BUS_ERROR;
+} WHEA_PCIXBUS_ERROR, *PWHEA_PCIXBUS_ERROR;
 
-typedef struct _WHEA_PCIX_BUS_VALIDATION_BITS
+typedef union _WHEA_PCIXBUS_ERROR_VALIDBITS
 {
-  struct /* bitfield */
+  union
   {
-    unsigned __int64 ErrorStatusValid : 1; /* bit position: 0 */
-    unsigned __int64 ErrorTypeValid : 1; /* bit position: 1 */
-    unsigned __int64 BusIdValid : 1; /* bit position: 2 */
-    unsigned __int64 BusAddressValid : 1; /* bit position: 3 */
-    unsigned __int64 BusDataValid : 1; /* bit position: 4 */
-    unsigned __int64 CommandValid : 1; /* bit position: 5 */
-    unsigned __int64 RequestorIdValid : 1; /* bit position: 6 */
-    unsigned __int64 CompleterIdValid : 1; /* bit position: 7 */
-    unsigned __int64 TargetIdValid : 1; /* bit position: 8 */
-    unsigned __int64 Reserved : 55; /* bit position: 9 */
-  }; /* bitfield */
-} WHEA_PCIX_BUS_VALIDATION_BITS, *PWHEA_PCIX_BUS_VALIDATION_BITS;
+    struct /* bitfield */
+    {
+      unsigned __int64 ErrorStatus : 1; /* bit position: 0 */
+      unsigned __int64 ErrorType : 1; /* bit position: 1 */
+      unsigned __int64 BusId : 1; /* bit position: 2 */
+      unsigned __int64 BusAddress : 1; /* bit position: 3 */
+      unsigned __int64 BusData : 1; /* bit position: 4 */
+      unsigned __int64 BusCommand : 1; /* bit position: 5 */
+      unsigned __int64 RequesterId : 1; /* bit position: 6 */
+      unsigned __int64 CompleterId : 1; /* bit position: 7 */
+      unsigned __int64 TargetId : 1; /* bit position: 8 */
+      unsigned __int64 Reserved : 55; /* bit position: 9 */
+    }; /* bitfield */
+    unsigned __int64 ValidBits;
+  };
+} WHEA_PCIXBUS_ERROR_VALIDBITS, *PWHEA_PCIXBUS_ERROR_VALIDBITS;
 
-typedef struct _WHEA_PCIX_DEV_VALIDATION_BITS
+typedef union _WHEA_PCIXBUS_ID
 {
-  struct /* bitfield */
+  union
   {
-    unsigned __int64 ErrorStatusValid : 1; /* bit position: 0 */
-    unsigned __int64 IdInfoValid : 1; /* bit position: 1 */
-    unsigned __int64 MemoryNumberValid : 1; /* bit position: 2 */
-    unsigned __int64 IoNumberValid : 1; /* bit position: 3 */
-    unsigned __int64 RegisterDataPairValid : 1; /* bit position: 4 */
-    unsigned __int64 Reserved : 59; /* bit position: 5 */
-  }; /* bitfield */
-} WHEA_PCIX_DEV_VALIDATION_BITS, *PWHEA_PCIX_DEV_VALIDATION_BITS;
+    struct
+    {
+      unsigned char BusNumber;
+      unsigned char BusSegment;
+    };
+    unsigned short AsUSHORT;
+  };
+} WHEA_PCIXBUS_ID, *PWHEA_PCIXBUS_ID;
 
-typedef struct _WHEA_PCIX_DEVICE_ERROR
+typedef struct _WHEA_PCIXDEVICE_ERROR
 {
-  struct _WHEA_PCIX_DEV_VALIDATION_BITS ValidationBits;
-  struct _WHEA_ERROR_STATUS ErrorStatus;
-  unsigned char IdInfo[16];
+  union _WHEA_PCIXDEVICE_ERROR_VALIDBITS ValidBits;
+  union _WHEA_ERROR_STATUS ErrorStatus;
+  struct _WHEA_PCIXDEVICE_ID IdInfo;
   unsigned long MemoryNumber;
   unsigned long IoNumber;
-  unsigned char RegisterDataPairs[64];
-} WHEA_PCIX_DEVICE_ERROR, *PWHEA_PCIX_DEVICE_ERROR;
+  struct WHEA_PCIXDEVICE_REGISTER_PAIR RegisterDataPairs[4];
+} WHEA_PCIXDEVICE_ERROR, *PWHEA_PCIXDEVICE_ERROR;
 
-typedef struct _WHEA_PERSISTENCE_INFO
+typedef union _WHEA_PCIXDEVICE_ERROR_VALIDBITS
 {
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned __int64 ErrorStatus : 1; /* bit position: 0 */
+      unsigned __int64 IdInfo : 1; /* bit position: 1 */
+      unsigned __int64 MemoryNumber : 1; /* bit position: 2 */
+      unsigned __int64 IoNumber : 1; /* bit position: 3 */
+      unsigned __int64 RegisterDataPairs : 1; /* bit position: 4 */
+      unsigned __int64 Reserved : 59; /* bit position: 5 */
+    }; /* bitfield */
+    unsigned __int64 ValidBits;
+  };
+} WHEA_PCIXDEVICE_ERROR_VALIDBITS, *PWHEA_PCIXDEVICE_ERROR_VALIDBITS;
+
+typedef struct _WHEA_PCIXDEVICE_ID
+{
+  unsigned short VendorId;
+  unsigned short DeviceId;
   struct /* bitfield */
   {
-    unsigned __int64 Identifier : 16; /* bit position: 0 */
-    unsigned __int64 Length : 24; /* bit position: 16 */
-    unsigned __int64 Reserved : 6; /* bit position: 40 */
-    unsigned __int64 Attributes : 2; /* bit position: 46 */
-    unsigned __int64 Signature : 16; /* bit position: 48 */
+    unsigned long ClassCode : 24; /* bit position: 0 */
+    unsigned long FunctionNumber : 8; /* bit position: 24 */
   }; /* bitfield */
+  struct /* bitfield */
+  {
+    unsigned long DeviceNumber : 8; /* bit position: 0 */
+    unsigned long BusNumber : 8; /* bit position: 8 */
+    unsigned long SegmentNumber : 8; /* bit position: 16 */
+    unsigned long Reserved1 : 8; /* bit position: 24 */
+  }; /* bitfield */
+  unsigned long Reserved2;
+} WHEA_PCIXDEVICE_ID, *PWHEA_PCIXDEVICE_ID;
+
+struct WHEA_PCIXDEVICE_REGISTER_PAIR
+{
+  unsigned __int64 Register;
+  unsigned __int64 Data;
+};
+
+typedef union _WHEA_PERSISTENCE_INFO
+{
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned __int64 Signature : 16; /* bit position: 0 */
+      unsigned __int64 Length : 24; /* bit position: 16 */
+      unsigned __int64 Identifier : 16; /* bit position: 40 */
+      unsigned __int64 Attributes : 2; /* bit position: 56 */
+      unsigned __int64 DoNotLog : 1; /* bit position: 58 */
+      unsigned __int64 Reserved : 5; /* bit position: 59 */
+    }; /* bitfield */
+    unsigned __int64 AsULONGLONG;
+  };
 } WHEA_PERSISTENCE_INFO, *PWHEA_PERSISTENCE_INFO;
+
+typedef enum _WHEA_RAW_DATA_FORMAT
+{
+  WheaRawDataFormatIPFSalRecord = 0,
+  WheaRawDataFormatIA32MCA = 1,
+  WheaRawDataFormatIntel64MCA = 2,
+  WheaRawDataFormatAMD64MCA = 3,
+  WheaRawDataFormatMemory = 4,
+  WheaRawDataFormatPCIExpress = 5,
+  WheaRawDataFormatNMIPort = 6,
+  WheaRawDataFormatPCIXBus = 7,
+  WheaRawDataFormatPCIXDevice = 8,
+  WheaRawDataFormatGeneric = 9,
+  WheaRawDataFormatMax = 10,
+} WHEA_RAW_DATA_FORMAT, *PWHEA_RAW_DATA_FORMAT;
+
+typedef union _WHEA_REVISION
+{
+  union
+  {
+    struct
+    {
+      unsigned char MinorRevision;
+      unsigned char MajorRevision;
+    };
+    unsigned short AsUSHORT;
+  };
+} WHEA_REVISION, *PWHEA_REVISION;
+
+typedef union _WHEA_TIMESTAMP
+{
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned __int64 Seconds : 8; /* bit position: 0 */
+      unsigned __int64 Minutes : 8; /* bit position: 8 */
+      unsigned __int64 Hours : 8; /* bit position: 16 */
+      unsigned __int64 Reserved : 8; /* bit position: 24 */
+      unsigned __int64 Day : 8; /* bit position: 32 */
+      unsigned __int64 Month : 8; /* bit position: 40 */
+      unsigned __int64 Year : 8; /* bit position: 48 */
+      unsigned __int64 Century : 8; /* bit position: 56 */
+    }; /* bitfield */
+    union _LARGE_INTEGER AsLARGE_INTEGER;
+  };
+} WHEA_TIMESTAMP, *PWHEA_TIMESTAMP;
 
 typedef struct _XMM_SAVE_AREA32
 {
@@ -3513,6 +3854,7 @@ BuildRepData();
 BuildShrinkAAInfo();
 BuildTileAAInfo();
 BuildVertexList();
+bUMPD();
 int __cdecl bUndoMakeOpaque(class SURFACE *);
 int __cdecl bUnHookBmpDrv(class XDCOBJ &);
 int __cdecl bUnHookRedir(class XDCOBJ &);
@@ -3590,6 +3932,7 @@ CheckImeHotKey();
 CheckOnTop();
 CheckPlacementBounds();
 CheckProcessForeground();
+CheckProcessIdentity();
 CheckPwndFilter();
 CheckQuitMessage();
 CheckTopmost();
@@ -3621,6 +3964,7 @@ CleanupAndFreeDdeConv();
 CleanUpDHI();
 CleanupGDI();
 CleanupMonitorsAndWindowsSnapShot();
+void __cdecl CleanupPvtData(class PFF *);
 void __cdecl CleanUpRegion(class REGION *);
 CleanupRemoteHandles();
 CleanupResources();
@@ -3631,6 +3975,7 @@ ClearKeyboardToggleStates();
 ClearSendMessages();
 ClearWakeBit();
 ClearWindowState();
+ClientDeliverUserApc();
 ClientEventCallback();
 ClientFrame();
 ClientFreeDDEHandle();
@@ -3862,6 +4207,8 @@ void __cdecl DestroyUMPDHeap(struct _UMPDHEAP *);
 DestroyUnlockedCursor();
 DestroyWindowSmIcon();
 DestroyWindowStation();
+DestroyWindowsTimers();
+public: void __cdecl DEVEXCLUDEWNDOBJ::vExclude(class EWNDOBJ *);
 public: int __cdecl DEVICE_PFTOBJ::bLoadFonts(class PDEVOBJ *);
 public: class PFF * __cdecl DEVICE_PFTOBJ::pPFFGet(struct HDEV__ *,class PFF * * *);
 DeviceCDROMNotify();
@@ -4009,6 +4356,7 @@ DupConvTerminate();
 _DuplicateCursor();
 unsigned long __cdecl dwGetFontLanguageInfo(class XDCOBJ &);
 DwmCaptureScreenBits();
+DwmChildClipRgnChange();
 DwmChildCreate();
 DwmChildDestroy();
 DwmChildLink();
@@ -4213,7 +4561,6 @@ enum _ENUMFONTSTYLE __cdecl efstyCompute(int *,class PFEOBJ &);
 EmboldenOverscaleConst();
 EmboldPoint();
 EnableDwmMoveSizeOptimizations();
-EnableDwmPointerSupport();
 EncodeRLE4();
 EncodeRLE8();
 EndPagePrinter();
@@ -4371,7 +4718,6 @@ EngWaitForSingleObject();
 EngWideCharToMultiByte();
 EngWritePrinter();
 EngXorRgn();
-EnterCrit();
 public: void __cdecl ENTRYOBJ::vSetup(struct _BASEOBJECT *,unsigned char,unsigned short);
 public: int __cdecl ENUMAREAS::bAdvanceToTopMostOpaqueLayer(class SPRITE * *);
 public: int __cdecl ENUMAREAS::bEnum(class SPRITE * *,struct _RECTL *);
@@ -4773,7 +5119,6 @@ GetWindowBorders();
 GetWindowBordersInternal();
 _GetWindowContextHelpId();
 GetWindowFrameMetric();
-GetWindowLuid();
 GetWindowNCMetrics();
 _GetWindowPlacement();
 _GetWindowRect();
@@ -5076,7 +5421,7 @@ _HasCaptionIcon();
 struct HBITMAP__ * __cdecl hbmCreateClone(class SURFACE *,unsigned long,unsigned long);
 struct HBITMAP__ * __cdecl hbmCreateDriverSurface(unsigned long,struct DHSURF__ *,struct tagSIZE,long,unsigned long,unsigned long,void *);
 hbmSelectBitmap();
-struct HDEV__ * __cdecl hCreateHDEV(struct tagGRAPHICS_DEVICE *,struct _DRV_NAMES *,struct _devicemodeW *,void *,unsigned long,unsigned long,int,unsigned long,struct HDEV__ * *);
+struct HDEV__ * __cdecl hCreateHDEV(struct tagGRAPHICS_DEVICE *,struct _DRV_NAMES *,struct _devicemodeW *,void *,unsigned long,unsigned long,int,int,unsigned long,struct HDEV__ * *);
 struct HBRUSH__ * __cdecl hCreateSolidBrushInternal(unsigned long,int,struct HBRUSH__ *,int);
 hdcOpenDCW();
 struct HDEV__ * __cdecl hdevEnumerate(struct HDEV__ *);
@@ -5136,7 +5481,6 @@ HmgSetOwner();
 HmgShareCheckLock();
 HmgShareLock();
 HmgSwapLockedHandleContents();
-HMInitHandleEntries();
 HMInitHandleTable();
 HMMarkObjectDestroy();
 HMNullFnDestroy();
@@ -5179,7 +5523,6 @@ IndirectlyDependsOn();
 InitAnsiOem();
 InitClipboardILDef();
 InitClipFormatExceptionList();
-InitCreateUserCrit();
 InitCreateUserSubsystem();
 void __cdecl InitFNTCache(void);
 InitFunctionTables();
@@ -5251,6 +5594,7 @@ IsFmtBlocked();
 IsFullWidthCharacter();
 IsHandleEntryAccessibleForIL();
 IsHandleEntrySecure();
+IsHotKey();
 IsHungWindow();
 IsKeyStateCached();
 IsPrivileged();
@@ -5465,7 +5809,6 @@ struct _LDEV * __cdecl ldevLoadDriver(unsigned short const *,enum _LDEVTYPE);
 struct _LDEV * __cdecl ldevLoadImage(unsigned short const *,int,int *,int);
 struct _LDEV * __cdecl ldevLoadInternal(__int64 (__cdecl*)(void),enum _LDEVTYPE);
 void __cdecl ldevUnloadImage(struct _LDEV *);
-LeaveCrit();
 public: __cdecl LFONTOBJ::LFONTOBJ(struct HLFONT__ *,class PDEVOBJ *);
 public: class PFE * __cdecl LFONTOBJ::ppfeMapFont(class XDCOBJ &,unsigned long *,struct _POINTL *,unsigned long *,int);
 long __cdecl lGetDefaultWorldHeight(class DCOBJ *);
@@ -6750,6 +7093,7 @@ ProcessUpdateKeyStateEvent();
 ProtectHandle();
 public: __cdecl PROXYPORT::PROXYPORT(unsigned __int64);
 public: long __cdecl PROXYPORT::SecureConnectPort(void * *,struct _UNICODE_STRING *,struct _SECURITY_QUALITY_OF_SERVICE *,struct _PORT_VIEW *,void *,struct _REMOTE_PORT_VIEW *,unsigned long *,void *,unsigned long *);
+public: long __cdecl PROXYPORT::SendRequest(void *,unsigned long,void *,unsigned long);
 int __cdecl PruneMode(struct _devicemodeW *,struct tagModeCap *,int,struct _FREQUENCY_RAGE *,unsigned long);
 unsigned long __cdecl PruneModesByDisplayDeviceCaps(struct tagGRAPHICS_DEVICE *,unsigned long,struct tagDEVMODEMARK *);
 struct _PLGRUN * __cdecl prunPlgRead1(struct _PLGDDA *,struct _PLGRUN *,unsigned char *,unsigned char *,struct _XLATEOBJ *,long,long,long);
@@ -7022,7 +7366,6 @@ RpcBindingFree();
 RpcBindingUnbind();
 RtlAnsiCharToUnicodeChar();
 RtlGetExpWinVer();
-RtlGetThreadLangIdByIndex();
 RtlInitLargeAnsiString();
 RtlInitLargeUnicodeString();
 RtlLoadStringOrError();
@@ -7551,6 +7894,7 @@ UserCommitDesktopMemory();
 UserCommitSharedMemory();
 UserCreateHeap();
 UserDeleteAtom();
+UserDeleteW32Process();
 UserDeleteW32Thread();
 UserDereferenceObject();
 UserEnterUserCritSec();
@@ -7581,6 +7925,7 @@ UserSetLastError();
 UserSetTimer();
 _UserTestForWinStaAccess();
 UserTextOutWInternal();
+UserThreadCallout();
 UserValidateCopyRgn();
 UserVisrgnFromHwnd();
 UT_CaretSet();
@@ -7631,6 +7976,7 @@ void __cdecl vCalculateLine(struct _TRIVERTEX *,struct _TRIVERTEX *,struct _TRIA
 void __cdecl vChangeWndObjs(class SURFACE *,struct HDEV__ *,class SURFACE *,struct HDEV__ *);
 vCheckForSingularXform();
 void __cdecl vCheckIsSetupRunning(void);
+void __cdecl vCleanupPathStackObj(class PATHSTACKOBJ *);
 void __cdecl vCleanupPrivateFonts(void);
 vCleanupSpool();
 void __cdecl vClearTypeLookupTableLoop(unsigned long,class SURFACE *,struct _BLENDINFO *,unsigned long,unsigned long);
@@ -8939,6 +9285,7 @@ zzzClipCursor();
 zzzDestroyCaret();
 zzzDestroyQueue();
 zzzDrawInvertScrollArea();
+zzzEnableDwmPointerSupport();
 zzzHideCursorNoCapture();
 zzzInitTask();
 zzzInternalDestroyCaret();
@@ -9329,7 +9676,6 @@ int gbInvalidateDualView;
 gbJpn98FixPitch;
 gbLastVkForSonar;
 int gbLddmDriverModel;
-gbMasterTimerSet;
 gbMDEVDisabled;
 gbMirrorInclude;
 gbMKMouseMode;
@@ -9343,12 +9689,15 @@ gBounceVk;
 gbPermanentFontsLoaded;
 gbPnPWaiting;
 gbRemoteSession;
+gbRITAlerted;
+gbRITRescan;
 int gbShellFontCompatible;
 gbSnapShotWindowsAndMonitors;
 gbStopReadInput;
 gbSucceedShellGetWallCalls;
 int gbSystemDBCSFontEnabled;
 gbTestSigning;
+gbTimersProcActive;
 int gbUpdateMonitor;
 gbUserInitialized;
 gbUsingDefaultSectionSize;
@@ -9372,7 +9721,6 @@ long gcEUDCCount;
 unsigned long gcFailedModeChanges;
 unsigned long gcfsCharSetTable;
 unsigned long gcfsTable;
-gcHandlePages;
 gcHotKey;
 gcLocalNextGlobalDeviceNumber;
 unsigned long gcLocalNextGlobalPhysicalOutputNumber;
@@ -9412,6 +9760,7 @@ struct _DHSURF_ASSOCIATION_NODE * gdhsurfAssociationList;
 unsigned char * gDitherMatrix16x16Default;
 unsigned char * gDitherMatrix16x16Halftone;
 unsigned short gdmLogPixels;
+gdmsNextTimer;
 gdpi96;
 gdpiSystem;
 gDrawVersionAlways;
@@ -9435,6 +9784,7 @@ gdwKeyboardAttributes;
 gdwLastAniTick;
 gdwLocks;
 gDwmApiPort;
+gdwMaxRetries;
 gdwMaxSurfaceSize;
 gdwMonitorBusy;
 gdwMouseEvents;
@@ -9442,6 +9792,7 @@ gdwMouseMoveExtraInfo;
 gdwMouseMoveTimeStamp;
 gdwMouseQueueHead;
 gdwNOIOSectionSize;
+gdwNoSWCursorOnMoveSize;
 unsigned long gdwOffset;
 gdwPolicyFlags;
 gdwPUDFlags;
@@ -9489,6 +9840,7 @@ gfUnsignedDrivers;
 gfVisAlloc;
 gGdiInPageErrors;
 int gGreDrawStream;
+gHandlePages;
 gHardErrorHandler;
 ghbmBits;
 ghbmCaption;
@@ -9636,6 +9988,7 @@ class MATRIX gmxIdentity_FxToL;
 class MATRIX gmxIdentity_LToFx;
 class MATRIX gmxIdentity_LToL;
 gnDCECount;
+gNestedWindowLimit;
 gnFastAltTabColumns;
 gnFastAltTabRows;
 gnHid;
@@ -9712,7 +10065,6 @@ gpGdiSharedMemory;
 struct tagGRAPHICS_DEVICE * gpGraphicsDeviceList;
 struct tagGRAPHICS_DEVICE * gpGraphicsDeviceListLast;
 gpHandleFlagsMutex;
-gpHandlePages;
 gphkHashTable;
 gpHmgrSharedHandleSection;
 gpHotKeyList;
@@ -9730,6 +10082,7 @@ gpKbdTbl;
 gpkeRITEvent;
 gpkfList;
 gpKL;
+gpkthreadRIT;
 gpLastFailedPhysDisp;
 gpLastPendingNotify;
 gPlaySoundRpcHandle;
@@ -9810,7 +10163,6 @@ gptl00;
 struct _POINTL gptlZero;
 void * gpTmpGlobal;
 void * * gpTmpGlobalFree;
-gptmrFirst;
 gptmrMaster;
 gptmrWD;
 class TRACKOBJ * gpto;
@@ -9903,6 +10255,8 @@ gTermNOIO;
 gTextLeftMask;
 gTextRightMask;
 gThinwireFileObject;
+gTimerHashTable;
+gTimerId;
 gtimeStartCursorHide;
 gTKExtraInformation;
 gTKNextProcIndex;
@@ -9918,6 +10272,7 @@ gtmridMKMoveCursor;
 gtmridMouseTrails;
 gtmridSoundSentry;
 gtmridToggleKeys;
+gtmrListHead;
 gToggleKeyInfo;
 gToggleKeys;
 guDdeSendTimeout;

@@ -61,6 +61,7 @@ WinMain();
 WinMainCRTStartup();
 WinStationFreeMemory();
 WinStationGetInitialApplication();
+WinStationQueryInformationW();
 _XcptFilter();
 
 // Globals

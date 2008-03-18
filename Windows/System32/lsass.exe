@@ -1,9 +1,17 @@
 
 // Functions
 
+_amsg_exit();
+__C_specific_handler();
+__CxxSetUnhandledExceptionFilter();
+long __cdecl __CxxUnhandledExceptionFilter(struct _EXCEPTION_POINTERS *);
+_FindPESection();
+_get_image_app_type();
 __GSHandlerCheck();
 __GSHandlerCheckCommon();
-? _initterm;
+_initterm();
+_IsNonwritableInCurrentImage();
+? _IsNonwritableInCurrentImage$filt$0;
 LsaISetupWasRun();
 LsapAuOpenSam();
 LsapCheckBootMode();
@@ -14,30 +22,50 @@ LsapMarkBootGood();
 LsapNotifyInitializationFinish();
 LsaTopLevelExceptionHandler();
 main();
-mainNoCRTStartup();
+? __mainCRTStartup;
+mainCRTStartup();
+? __mainCRTStartup$filt$0;
+_matherr();
+? pre_c_init;
+? pre_cpp_init;
 __report_gsfailure();
+RtlLookupFunctionEntry();
+RtlpImageNtHeader();
+RtlVirtualUnwind();
 SamIInitialize();
 SampDsIsRunning();
 __security_check_cookie();
 __security_init_cookie();
 ServiceInit();
+_setargv();
+_ValidateImageBase();
+_XcptFilter();
 
 // Globals
 
+_commode;
+__defaultmatherr;
+_dowildcard;
+__dyn_tls_init_callback;
+_fmode;
 HotPatchBuffer;
 __IMPORT_DESCRIPTOR_ADVAPI32;
 __IMPORT_DESCRIPTOR_KERNEL32;
 __IMPORT_DESCRIPTOR_LSASRV;
+__IMPORT_DESCRIPTOR_msvcrt;
 __IMPORT_DESCRIPTOR_ntdll;
 __IMPORT_DESCRIPTOR_SAMSRV;
+__native_dllmain_reason;
+__native_startup_lock;
+__native_startup_state;
+__native_vcclrit_reason;
+_newmode;
 __NULL_IMPORT_DESCRIPTOR;
+__onexitbegin;
+__onexitend;
 __security_cookie;
 __security_cookie_complement;
 __xc_a;
 __xc_z;
 __xi_a;
 __xi_z;
-__xp_a;
-__xp_z;
-__xt_a;
-__xt_z;

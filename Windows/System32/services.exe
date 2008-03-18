@@ -289,6 +289,7 @@ unsigned long __cdecl ScAccessCheckAndAudit(unsigned short *,unsigned short *,un
 unsigned long __cdecl ScAccessValidate(struct _SC_HANDLE_STRUCT *,unsigned long);
 void __cdecl ScActivateServiceRecord(struct _SERVICE_RECORD *,struct _IMAGE_RECORD *);
 unsigned long __cdecl ScAddConfigInfoServiceRecord(struct _SERVICE_RECORD *,unsigned long,unsigned long,unsigned long,unsigned short *,unsigned long,unsigned short *,unsigned short *,void *);
+unsigned long __cdecl ScAddFailedDriver(unsigned short *);
 unsigned long __cdecl ScAddNotificationRequest(struct _SC_HANDLE_STRUCT *,struct _SERVICE_RECORD *,struct _SERVICE_NOTIFY_STATUS_CHANGE_PARAMS_2 *,struct _GUID *,unsigned long,int,struct _SC_NOTIFY_BLOCK * *,int *);
 unsigned long __cdecl ScAdjustServiceDisplayName(struct HKEY__ *,struct _SERVICE_RECORD *);
 unsigned long __cdecl ScAdjustTokenDefaultDacl(void *,void * *,unsigned long);
@@ -762,6 +763,7 @@ IID_IOfflineFilesCache;
 IID_IOfflineFilesChangeInfo;
 IID_IOfflineFilesConnectionInfo;
 IID_IOfflineFilesDirectoryItem;
+IID_IOfflineFilesDirtyInfo;
 IID_IOfflineFilesErrorInfo;
 IID_IOfflineFilesEvents;
 IID_IOfflineFilesEvents2;
