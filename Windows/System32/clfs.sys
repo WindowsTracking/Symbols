@@ -982,7 +982,7 @@ zzz_AsmCodeRange_End();
 
 // Globals
 
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUuhUxouhUxouhwUnkUlyquivUznwGEUhgwkxsOlyq@clfs;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUuhUxouhUxouhwUnkUlyquivUznwGEUhgwkxsOlyq@clfs;
 protected: static unsigned long CClfsBaseFile::m_cbDefaultSecurity;
 protected: static unsigned long CClfsBaseFile::m_cbNoSecurity;
 protected: static bool CClfsBaseFile::m_fInitialized;

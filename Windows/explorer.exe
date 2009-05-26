@@ -2035,12 +2035,12 @@ _XcptFilter();
 
 // Globals
 
-__@@_PchSym_@00@UignOlyqOznwGEuivUhsvooUoryUezifgroUlyquivUznwGEUhglxpeziOlyq@varutil;
-__@@_PchSym_@00@UignOlyqOznwGEuivUhsvooUoryUhglxpUlyquivUznwGEUhglxpOlyq@stock;
-__@@_PchSym_@00@UignOlyqOznwGEuivUhsvooUoryUifmlmxvUlyquivUznwGEUkivxlnkOlyq@runonce;
-__@@_PchSym_@00@UignOlyqOznwGEuivUhsvooUoryUkilkhbhPhsvooDCUlyquivUznwGEUkivxlnkOlyq@propsys_shell32_all;
-__@@_PchSym_@00@UignOlyqOznwGEuivUhsvooUvckoliviUdrmmgUlyquivUznwGEUxzyrmvgOlyq@explorer;
-__@@_PchSym_@00@UignOlyqOznwGEuivUhsvooUvckoliviUwvhpglkCUlyquivUznwGEUwvhpglkCOlyq@dv2host;
+__@@_PchSym_@00@UlyqOznwGEuivUhsvooUoryUezifgroUlyquivUznwGEUhglxpeziOlyq@varutil;
+__@@_PchSym_@00@UlyqOznwGEuivUhsvooUoryUhglxpUlyquivUznwGEUhglxpOlyq@stock;
+__@@_PchSym_@00@UlyqOznwGEuivUhsvooUoryUifmlmxvUlyquivUznwGEUkivxlnkOlyq@runonce;
+__@@_PchSym_@00@UlyqOznwGEuivUhsvooUoryUkilkhbhPhsvooDCUlyquivUznwGEUkivxlnkOlyq@propsys_shell32_all;
+__@@_PchSym_@00@UlyqOznwGEuivUhsvooUvckoliviUdrmmgUlyquivUznwGEUxzyrmvgOlyq@explorer;
+__@@_PchSym_@00@UlyqOznwGEuivUhsvooUvckoliviUwvhpglkCUlyquivUznwGEUwvhpglkCOlyq@dv2host;
 class ATL::CComModule * ATL::_pModule;
 public: static struct tagRECT ATL::CWindow::rcDefault;
 struct _GUID ATL::GUID_ATLVer30;

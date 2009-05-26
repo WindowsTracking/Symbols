@@ -148,7 +148,7 @@ wmain();
 
 // Globals
 
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUhfyhbhUhnUhvieviUlyquivUznwGEUhnhiekOlyq@smss;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUhfyhbhUhnUhvieviUlyquivUznwGEUhnhiekOlyq@smss;
 DebugLog;
 DebugLogIndex;
 HotPatchBuffer;

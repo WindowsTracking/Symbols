@@ -5316,13 +5316,13 @@ XformRect();
 
 // Globals
 
-__@@_PchSym_@00@UignOlyqOznwGEuivUnfogrnvwrzUwrivxgcUwctUkhtkUrmgvoUwcJUwzbglmzdngUlyquivUznwGEUkxsOlyq@iwpsgp;
-__@@_PchSym_@00@UignOlyqOznwGEuivUnfogrnvwrzUwrivxgcUwctUwDwJUfgroUwzbglmzUlyquivUznwGEUkxsOlyq@d3dutil;
-__@@_PchSym_@00@UignOlyqOznwGEuivUnfogrnvwrzUwrivxgcUwctUwDwJUgmoUwzbglmzUlyquivUznwGEUkxsOlyq@d3dtnl;
-__@@_PchSym_@00@UignOlyqOznwGEuivUnfogrnvwrzUwrivxgcUwctUwDwJUhsezoUwzbglmzUlyquivUznwGEUkxsOlyq@d3dsv;
-__@@_PchSym_@00@UignOlyqOznwGEuivUnfogrnvwrzUwrivxgcUwctUwDwJUivuUwzbglmzUlyquivUznwGEUkxsOlyq@d3dref;
-__@@_PchSym_@00@UignOlyqOznwGEuivUnfogrnvwrzUwrivxgcUwctUwDwJUudUwzbglmzUlyquivUznwGEUkxsOlyq@d3dfw;
-__@@_PchSym_@00@UignOlyqOznwGEuivUnfogrnvwrzUwrivxgcUwctUwDwJUuvUwzbglmzUlyquivUznwGEUkxsOlyq@d3dfe;
+__@@_PchSym_@00@UlyqOznwGEuivUnfogrnvwrzUwrivxgcUwctUkhtkUrmgvoUwcJUwzbglmzdngUlyquivUznwGEUkxsOlyq@iwpsgp;
+__@@_PchSym_@00@UlyqOznwGEuivUnfogrnvwrzUwrivxgcUwctUwDwJUfgroUwzbglmzUlyquivUznwGEUkxsOlyq@d3dutil;
+__@@_PchSym_@00@UlyqOznwGEuivUnfogrnvwrzUwrivxgcUwctUwDwJUgmoUwzbglmzUlyquivUznwGEUkxsOlyq@d3dtnl;
+__@@_PchSym_@00@UlyqOznwGEuivUnfogrnvwrzUwrivxgcUwctUwDwJUhsezoUwzbglmzUlyquivUznwGEUkxsOlyq@d3dsv;
+__@@_PchSym_@00@UlyqOznwGEuivUnfogrnvwrzUwrivxgcUwctUwDwJUivuUwzbglmzUlyquivUznwGEUkxsOlyq@d3dref;
+__@@_PchSym_@00@UlyqOznwGEuivUnfogrnvwrzUwrivxgcUwctUwDwJUudUwzbglmzUlyquivUznwGEUkxsOlyq@d3dfw;
+__@@_PchSym_@00@UlyqOznwGEuivUnfogrnvwrzUwrivxgcUwctUwDwJUuvUwzbglmzUlyquivUznwGEUkxsOlyq@d3dfe;
 unsigned long __all_one;
 public: static struct AMD_ASM::definition const * const AMD_ASM::dictionary::m_defs;
 public: static long AMDPSGP::DJ_SerialNumber::dj_SerialNumber;

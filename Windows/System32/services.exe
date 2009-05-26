@@ -681,8 +681,8 @@ _XcptFilter();
 
 // Globals
 
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUhxivtUhxUhvieviUlyquivUznwGEUkivxlnkOlyq@services;
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUkmkUkilcbUlyquivUznwGEUkivxlnkOlyq@pnpproxy;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUhxivtUhxUhvieviUlyquivUznwGEUkivxlnkOlyq@services;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUkmkUkilcbUlyquivUznwGEUkivxlnkOlyq@pnpproxy;
 AliasAccountOpsSid;
 AliasAdminsSid;
 AliasBackupOpsSid;

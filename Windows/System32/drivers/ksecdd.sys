@@ -1212,7 +1212,7 @@ X931_keygen_free_arrays();
 
 // Globals
 
-__@@_PchSym_@00@UignOlyqOznwGEuivUwhUhvxfirgbUyzhvUohzUhvxfirgbUwireviUlyquivUznwGEUhvxkxsCOlyq@ksecdd;
+__@@_PchSym_@00@UlyqOznwGEuivUwhUhvxfirgbUyzhvUohzUhvxfirgbUwireviUlyquivUznwGEUhvxkxsCOlyq@ksecdd;
 AesInvMatrixMult;
 AesInvSbox;
 AesInvSboxMatrixMult;

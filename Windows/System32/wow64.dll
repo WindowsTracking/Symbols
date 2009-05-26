@@ -693,8 +693,8 @@ WriteReturnLengthStatus();
 
 // Globals
 
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUdldGEUdldGEUlyquivUznwGEUkxsOlyq@wow64;
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUdrmDCUxorvmgUdldGEUlyquivUznwGEUyzhvwooOlyq@csrbase;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUdldGEUdldGEUlyquivUznwGEUkxsOlyq@wow64;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUdrmDCUxorvmgUdldGEUlyquivUznwGEUyzhvwooOlyq@csrbase;
 bHandleTableInit;
 bReflectorStatusOn;
 CpuThreadSize;

@@ -270,7 +270,7 @@ BlStatusPrint();
 BlTblFindEntry();
 BlTblMap();
 BlTblSetEntry();
-BlTcgSetMemoryOverwriteRequestBit();
+BlTcgFwSetMemoryOverwriteRequestBit();
 BlTftpGetImage();
 BlTftpQueryFileSize();
 BlTimeGetRelativeTime();
@@ -451,7 +451,6 @@ createUpdate();
 Dbg1394_CalculateCrc();
 Dbg1394_EnablePhysicalAccess();
 Dbg1394_InitializeController();
-Dbg1394_StallExecution();
 DbgBreakPoint();
 DbgBreakPointWithStatus();
 DbgBreakPointWithStatusEnd();
@@ -827,7 +826,7 @@ NtfspReadDirectoryIndexAllocationBuffer();
 NtfspReadWriteAttribute();
 NtfspReadWriteCompressedAttribute();
 NtfspReadWriteNonResidentAttributeEx();
-NtfspSearchForFileIndexEntry();
+NtfspSearchForFileIndexEntryEx();
 NtfsPurgeCache();
 NtfsRead();
 NtfsSetInformation();
@@ -1346,7 +1345,7 @@ public: virtual int __cdecl XslTemplate::output(int (__cdecl*)(unsigned short co
 
 // Globals
 
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUyllgUvmerilmUoryUywUkxzgUlyquivUznwGEUywOlyq@bd;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUyllgUvmerilmUoryUywUkxzgUlyquivUznwGEUywOlyq@bd;
 AesInvMatrixMult;
 AesInvSbox;
 AesInvSboxMatrixMult;
@@ -1388,6 +1387,10 @@ BlImgCatalogDeviceId;
 BlImgCatalogDirectoryId;
 BlImgCatalogDirectoryPath;
 BlImgCatalogEnumerationFinished;
+BlImgCatalogEnumerationPass;
+BlImgCatalogPolicy;
+BlImgCatalogPrecedenceList;
+BlImgCatalogPrecedenceListEntries;
 BlImgCodeIntegrityInitializationAttempts;
 BlImgCodeIntegrityInitialized;
 BlImgLastFoundCatalogFileName;

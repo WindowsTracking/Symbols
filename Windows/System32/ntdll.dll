@@ -1,5 +1,5 @@
 /*
- * PDB file: ntdll.pdb\C43EA3129CCD4F36AEE8C7BADA1D24C32\ntdll.pdb
+ * PDB file: ntdll.pdb\441D43C059B84ACE88BAA2BCED236B532\ntdll.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -333,7 +333,6 @@ union _WHEA_PERSISTENCE_INFO;
 enum _WHEA_RAW_DATA_FORMAT;
 union _WHEA_REVISION;
 union _WHEA_TIMESTAMP;
-struct _WOW64_PROCESS;
 struct _XMM_SAVE_AREA32;
 
 #include <pshpack1.h>
@@ -679,6 +678,7 @@ typedef struct _DEVICE_MAP
 {
   struct _OBJECT_DIRECTORY* DosDevicesDirectory;
   struct _OBJECT_DIRECTORY* GlobalDosDevicesDirectory;
+  void* DosDevicesDirectoryHandle;
   unsigned long ReferenceCount;
   unsigned long DriveMap;
   unsigned char DriveType[32];
@@ -1023,7 +1023,7 @@ typedef struct _EPROCESS
   void* LockedPagesList;
   struct _LIST_ENTRY ThreadListHead;
   void* SecurityPort;
-  struct _WOW64_PROCESS* Wow64Process;
+  void* Wow64Process;
   volatile unsigned long ActiveThreads;
   unsigned long ImagePathHash;
   unsigned long DefaultHardErrorProcessing;
@@ -5040,7 +5040,13 @@ typedef enum _REG_NOTIFY_CLASS
   RegNtPreSetKeySecurity = 38,
   RegNtPostSetKeySecurity = 39,
   RegNtCallbackObjectContextCleanup = 40,
-  MaxRegNtNotifyClass = 41,
+  RegNtPreRestoreKey = 41,
+  RegNtPostRestoreKey = 42,
+  RegNtPreSaveKey = 43,
+  RegNtPostSaveKey = 44,
+  RegNtPreReplaceKey = 45,
+  RegNtPostReplaceKey = 46,
+  MaxRegNtNotifyClass = 47,
 } REG_NOTIFY_CLASS, *PREG_NOTIFY_CLASS;
 
 enum ReplacesCorHdrNumericDefines
@@ -5372,6 +5378,20 @@ typedef union _SLIST_HEADER
         unsigned __int64 NextEntry : 60; /* bit position: 4 */
       }; /* bitfield */
     } Header16;
+    struct
+    {
+      struct /* bitfield */
+      {
+        unsigned __int64 Depth : 16; /* bit position: 0 */
+        unsigned __int64 Sequence : 48; /* bit position: 16 */
+      }; /* bitfield */
+      struct /* bitfield */
+      {
+        unsigned __int64 HeaderType : 1; /* bit position: 0 */
+        unsigned __int64 Reserved : 3; /* bit position: 1 */
+        unsigned __int64 NextEntry : 60; /* bit position: 4 */
+      }; /* bitfield */
+    } HeaderX64;
   };
 } SLIST_HEADER, *PSLIST_HEADER;
 
@@ -6320,11 +6340,6 @@ typedef union _WHEA_TIMESTAMP
   };
 } WHEA_TIMESTAMP, *PWHEA_TIMESTAMP;
 
-typedef struct _WOW64_PROCESS
-{
-  void* Wow64;
-} WOW64_PROCESS, *PWOW64_PROCESS;
-
 typedef struct _XMM_SAVE_AREA32
 {
   unsigned short ControlWord;
@@ -6456,7 +6471,6 @@ CsrAllocateMessagePointer();
 CsrCaptureMessageBuffer();
 CsrCaptureMessageMultiUnicodeStringsInPlace();
 CsrCaptureMessageString();
-CsrCaptureMessageUnicodeStringInPlace();
 CsrCaptureTimeout();
 CsrClientCallServer();
 CsrClientConnectToServer();
@@ -6528,7 +6542,6 @@ EtwpAllocateTraceBuffers();
 EtwpCreateEtwThread();
 EtwpCreateFile();
 EtwpCreateRegGuidsContext();
-EtwpDeinitializeDll();
 EtwpDisableTraceProvider();
 EtwpFinalizeLogFileHeader();
 EtwpFlushAllBuffers();
@@ -6586,8 +6599,11 @@ _except1();
 ExpInterlockedFlushSList();
 ExpInterlockedPopEntrySList();
 ExpInterlockedPopEntrySListEnd();
+ExpInterlockedPopEntrySListEnd8();
 ExpInterlockedPopEntrySListFault();
+ExpInterlockedPopEntrySListFault8();
 ExpInterlockedPopEntrySListResume();
+ExpInterlockedPopEntrySListResume8();
 ExpInterlockedPushEntrySList();
 fabs();
 _fclrf();
@@ -6823,7 +6839,6 @@ LdrpModuleReferenceRelease();
 LdrpMUIDbgOutput();
 LdrpMultiSZCchLength();
 LdrpMungHeapImportsForTagging();
-LdrpNtCreateFileUnredirected();
 LdrpOpenKey();
 LdrpProcessInitializationComplete();
 LdrpQueryValueKey();
@@ -7553,6 +7568,8 @@ ResCCultureMapPopulate();
 ResCCultureMapValidateHeader();
 ResCDirectoryCreateAndPopulate();
 ResCDirectoryFree();
+ResCDirectoryGetEntry();
+ResCDirectoryGetEntryCopy();
 ResCDirectoryGetEntryEx();
 ResCDirectoryGetEntryIndexEx();
 ResCDirectoryGetSegmentName();
@@ -7964,6 +7981,7 @@ RtlGetUnloadEventTrace();
 RtlGetUnloadEventTraceEx();
 RtlGetUserInfoHeap();
 RtlGetUserPreferredUILanguages();
+RtlGetUserTpWaitCallback();
 RtlGetVersion();
 RtlGUIDFromString();
 RtlHashUnicodeString();
@@ -8126,11 +8144,9 @@ RtlpAddVectoredHandler();
 RtlpAllocateActivationContextStackFrame();
 RtlpAllocateAffinityIndex();
 RtlpAllocateAtom();
-RtlpAllocateDebugInfo();
 RtlpAllocateEnvBlock();
 RtlpAllocateHeap();
 RtlpAllocateHotpatchMemory();
-RtlpAllocateListLookup();
 RtlpAllocateTags();
 RtlpAllocateUserBlock();
 RtlpAllocationSize();
@@ -8186,8 +8202,6 @@ RtlpCopyMappedMemoryEx_ExceptionFilter();
 RtlpCopyProcString();
 RtlpCrackActivationContextStringSectionHeader();
 RtlpCreateCriticalSectionSem();
-RtlpCreateHeapEncoding();
-RtlpCreateLowFragHeap();
 RtlpCreateNewDirectoryReference();
 RtlpCreateProcessRegistryInfo();
 RtlpCreateServerAcl();
@@ -8205,6 +8219,7 @@ RtlpDeCommitQueryDebugInfo();
 RtlpDeleteData();
 RtlpDeleteStackTraceDataBase();
 RtlpDestroyHeapSegment();
+RtlpDestroyTags();
 RtlpDetermineDosPathNameType4();
 RtlpDidUnicodeToOemWork();
 RtlpDosPathNameToRelativeNtPathName_U();
@@ -8275,9 +8290,7 @@ RtlpGetHeapInterceptorIndex();
 RtlpGetInstalledLanguageType();
 RtlpGetLCIDFromLangInfoNode();
 RtlpGetLengthWithoutLastPathElement();
-RtlpGetLFHContext();
 RtlpGetLocaleDataKey();
-RtlpGetLowFragHeapSize();
 RtlpGetMemoryFlag();
 RtlpGetModifiedProcessCookie();
 RtlpGetMUIRedirectedFilePath();
@@ -8307,7 +8320,6 @@ RtlpHasMachineUILock();
 RtlpHeapExceptionFilter();
 RtlpHeapGenerateRandomValue64();
 RtlpHeapHandleError();
-RtlpHeapIsLocked();
 RtlpHeapLogRangeCreate();
 RtlpHeapLogRangeDestroy();
 RtlpHeapLogRangeRelease();
@@ -8336,13 +8348,11 @@ RtlpInitializeHandleTableForAtomTable();
 RtlpInitializeHeapSegment();
 RtlpInitializeLangRegistryInfo();
 RtlpInitializeLeakDetection();
-RtlpInitializeLowFragHeap();
 RtlpInitializeLowFragHeapManager();
 RtlpInitializeMap();
 RtlpInitializeStackTraceDataBase();
 RtlpInitializeStackTraceLog();
 RtlpInitializeUCRIndex();
-RtlpInitializeUserList();
 RtlpInitMuiCriticalSection();
 RtlpInitParameterBlock();
 RtlpInitRandomExVector();
@@ -8465,14 +8475,12 @@ RtlpMuiRegResizeStringPool();
 _RtlpMuiRegSerializeRegistryInfo();
 RtlpMuiRegTryToAppendLangId();
 RtlpMuiRegTryToAppendLanguageName();
-RtlpMuiRegTryToAppendLanguageToMuiszFromLangList();
 _RtlpMuiRegValidateAndGetInstallFallbackBase();
 RtlpMuiRegValidateConfigNode();
 RtlpNameprepAsciiWorker();
 RtlpNewSecurityObject();
-RtlpNlsGetLcidIndex();
+RtlpNlsCompareUnicodeString();
 RtlpNlsGetNameIndex();
-RtlpNlsGetNeutralNameFromLcid();
 RtlpNlsGetNeutralNameToLcidRecord();
 RtlpNonNegativeDecrement();
 RtlpNormalizePeHeaderForIdHash();
@@ -8513,6 +8521,7 @@ RtlpQueryExtendedHeapInformation();
 RtlpQueryExtendedInformationAllHeaps();
 RtlpQueryExtendedInformationHeap();
 RtlpQueryFilesInAssemblyInformationActivationContextDetailedInformation();
+RtlpQueryInformationActivationContextBasicInformation();
 RtlpQueryInformationActivationContextDetailedInformation();
 RtlpQueryMemoryUsageHeap();
 RtlpQueryProcessDebugInformationFromWow64();
@@ -8553,7 +8562,6 @@ RtlProtectHeap();
 RtlpRunOnceWaitForInit();
 RtlpRunOnceWakeAll();
 RtlpSafeAcquireSRWLockExclusive();
-RtlpSafeAcquireSRWLockShared();
 RtlpSafewcslen();
 RtlpSameFunction();
 RtlpScanEnvironment();
@@ -9019,7 +9027,6 @@ TpDbgDumpHeapUsage();
 TpDbgSetLogRoutine();
 TpDereferenceGlobalPool();
 TpDisassociateCallback();
-TpInitializePackage();
 TpIsTimerSet();
 TppAdjustRunningThreadGoal();
 TppAllocThreadData();
@@ -9031,6 +9038,7 @@ TppCallbackCheckThreadAfterCallback();
 TppCallbackCheckThreadBeforeCallback();
 TppCallbackEpilog();
 TppCheckForTransactions();
+TppCheckLdrLockHeld();
 TppCleanupGroupAddMember();
 TppCleanupGroupMemberAddCallback();
 TppCleanupGroupMemberCallbackProlog();
@@ -9121,6 +9129,7 @@ TppWaitpFree();
 TppWaitpSet();
 TppWaitpStopCallbackGeneration();
 TppWorkCallbackEpilog();
+TppWorkCallbackProlog();
 TppWorkCallbackPrologRelease();
 TppWorkCancelPendingCallbacks();
 TppWorkDestroy();
@@ -9651,9 +9660,9 @@ zzz_AsmCodeRange_End();
 
 // Globals
 
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUgsivzwklloUmgwooUwzbglmzUlyquivUznwGEUgkkOlyq@tp;
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUgsivzwklloUxlnkzgUwzbglmzUlyquivUznwGEUgkxlnkzgOlyq@tpcompat;
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUmgwooUwzbglmzUlyquivUznwGEUkxsOlyq@ntdll;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUgsivzwklloUmgwooUwzbglmzUlyquivUznwGEUgkkOlyq@tp;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUgsivzwklloUxlnkzgUwzbglmzUlyquivUznwGEUgkxlnkzgOlyq@tpcompat;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUmgwooUwzbglmzUlyquivUznwGEUkxsOlyq@ntdll;
 AlternateResourceModuleCount;
 AlternateResourceModules;
 AltResMemBlockCount;

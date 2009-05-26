@@ -1,5 +1,5 @@
 /*
- * PDB file: hal.pdb\E120557D0A6E40F892FDE10BAEF1FA592\hal.pdb
+ * PDB file: hal.pdb\5E5C6555035349D9950043A182DF64702\hal.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -2000,7 +2000,13 @@ typedef enum _REG_NOTIFY_CLASS
   RegNtPreSetKeySecurity = 38,
   RegNtPostSetKeySecurity = 39,
   RegNtCallbackObjectContextCleanup = 40,
-  MaxRegNtNotifyClass = 41,
+  RegNtPreRestoreKey = 41,
+  RegNtPostRestoreKey = 42,
+  RegNtPreSaveKey = 43,
+  RegNtPostSaveKey = 44,
+  RegNtPreReplaceKey = 45,
+  RegNtPostReplaceKey = 46,
+  MaxRegNtNotifyClass = 47,
 } REG_NOTIFY_CLASS, *PREG_NOTIFY_CLASS;
 
 typedef struct _RSDP
@@ -2113,6 +2119,20 @@ typedef union _SLIST_HEADER
         unsigned __int64 NextEntry : 60; /* bit position: 4 */
       }; /* bitfield */
     } Header16;
+    struct
+    {
+      struct /* bitfield */
+      {
+        unsigned __int64 Depth : 16; /* bit position: 0 */
+        unsigned __int64 Sequence : 48; /* bit position: 16 */
+      }; /* bitfield */
+      struct /* bitfield */
+      {
+        unsigned __int64 HeaderType : 1; /* bit position: 0 */
+        unsigned __int64 Reserved : 3; /* bit position: 1 */
+        unsigned __int64 NextEntry : 60; /* bit position: 4 */
+      }; /* bitfield */
+    } HeaderX64;
   };
 } SLIST_HEADER, *PSLIST_HEADER;
 
@@ -3142,6 +3162,7 @@ HalpInitializeLocalUnit();
 HalpInitializePciBus();
 HalpInitializePICs();
 HalpInitializeProfiling();
+HalpInitializeWheaPhysicalMappings();
 HalpInitIntiInfo();
 HalpInitMpInfo();
 HalpInitNonBusHandler();
@@ -3270,6 +3291,8 @@ HalpReadPartitionTable();
 HalpReadPCIConfig();
 HalpReadRtcStdPCAT();
 HalpReadStdCmosData();
+HalpReadWheaPhysicalMemory();
+HalpReadWriteWheaPhysicalMemory();
 HalpRegisterPciDebuggingDeviceInfo();
 HalpRegisterVector();
 HalpReleaseCmosSpinLock();
@@ -3278,6 +3301,7 @@ HalpRemapVirtualAddress64();
 HalpReportMachineCheck();
 HalpReportResourceUsage();
 HalpRequestIpiSpecifyVector();
+HalpReserveHalPtes();
 HalpResetAllProcessors();
 HalpResetSBF();
 HalpResetThisProcessor();
@@ -3328,6 +3352,7 @@ HalpUpdateProcessorApicId();
 HalPutDmaAdapter();
 HalPutScatterGatherList();
 HalpValidPCISlot();
+HalpVerifyIOUnit();
 HalpWaitForPending();
 HalpWhackICHUsbSmi();
 HalpWriteCmosTime();
@@ -3336,6 +3361,7 @@ HalpWritePCIConfig();
 HalpWriteResetCommand();
 HalpWriteRtcStdPCAT();
 HalpWriteStdCmosData();
+HalpWriteWheaPhysicalMemory();
 HalQueryDisplayParameters();
 HalQueryEnvironmentVariableInfoEx();
 HalQueryMaximumProcessorCount();
@@ -3660,6 +3686,7 @@ HalpBroken440BX;
 HalpBrokenAcpiTimer;
 HalpBusType;
 HalpCallbackRecord;
+HalpCentaurHauls;
 HalpChipHackCount;
 HalpChipHacksTable;
 HalpClockInterrupt;
@@ -3735,6 +3762,7 @@ HalpGlobal8259Mask;
 HalpGlobalVolatile;
 HalpHardwareLockFlags;
 HalpHardwareTimeRollover;
+HalpHeapEnd;
 HalpHeapStart;
 HalpHiberInProgress;
 HalpHiberProcState;
@@ -3806,6 +3834,7 @@ HalpMaxProcsPerCluster;
 HalpMcaScanTime;
 HalpMceDataFound;
 HalpMceErrorSourceId;
+HalpMceLock;
 HalpMceRecovered;
 HalpMcUpdateLockFunc;
 HalpMcUpdateMicrocodeFunc;
@@ -3864,6 +3893,8 @@ HalpPmTimerSleepModeLock;
 HalpPmTimerTimeBias;
 HalpProc0TSCHz;
 HalpProcessedACPIPhase0;
+HalpProcessorInMceHandler;
+HalpProcessorInNmiHandler;
 HalpProcessorPCR;
 HalpProcessorReplaceSupported;
 HalpProcessorRestarting;
@@ -3927,6 +3958,12 @@ HalpVirtAddrForFlush;
 HalpWAETDeviceFlags;
 HalpWakeupState;
 HalpWakeVector;
+HalpWheaMappingLock;
+HalpWheaMappingMceLock;
+HalpWheaMappingMceReservation;
+HalpWheaMappingNmiLock;
+HalpWheaMappingNmiReservation;
+HalpWheaMappingReservation;
 HalpWheaReady;
 HiberFreeCR3;
 HotPatchBuffer;

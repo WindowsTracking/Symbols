@@ -2254,9 +2254,9 @@ ZwUserYieldTask();
 
 // Globals
 
-__@@_PchSym_@00@UignOlyqOznwGEuivUdrmwldhUxlivUigoUxorvmgUlyquivUznwGEUkivxlnkOlyq@w32crtl;
-__@@_PchSym_@00@UignOlyqOznwGEuivUdrmwldhUxlivUmgfhviUhvieviUlyquivUznwGEUkivxlnkOlyq@usersrvl;
-__@@_PchSym_@00@UignOlyqOznwGEuivUdrmwldhUxlivUmgxlmUhvieviUlyquivUznwGEUkivxlnkOlyq@consrvl;
+__@@_PchSym_@00@UlyqOznwGEuivUdrmwldhUxlivUigoUxorvmgUlyquivUznwGEUkivxlnkOlyq@w32crtl;
+__@@_PchSym_@00@UlyqOznwGEuivUdrmwldhUxlivUmgfhviUhvieviUlyquivUznwGEUkivxlnkOlyq@usersrvl;
+__@@_PchSym_@00@UlyqOznwGEuivUdrmwldhUxlivUmgxlmUhvieviUlyquivUznwGEUkivxlnkOlyq@consrvl;
 AppHungEvent;
 AppVetoEvent;
 ColorBuffer;

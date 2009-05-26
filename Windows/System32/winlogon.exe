@@ -52,7 +52,7 @@
 ? `CUser::UpdateUserEnvironment'::`1'::fin$0;
 ? `DisplayLegalNotices'::`1'::fin$0;
 ? `FoundDebugger'::`1'::fin$0;
-? `GetInputDesktopName'::`1'::fin$0;
+? `GetInputDesktopNameEx'::`1'::fin$0;
 ? `GetLegalNotices'::`1'::fin$0;
 ? `GetNextProcessFromJob'::`1'::fin$0;
 ? `GetSubscriberDisplayName'::`1'::fin$0;
@@ -418,7 +418,7 @@ void __cdecl FreeRpcBinding(struct _NOTIFICATION_COMPONENT *);
 _get_image_app_type();
 long __cdecl GetBooleanAttributeValue(void *,unsigned int,int *);
 long __cdecl GetHexByteAttributeValue(void *,unsigned int,unsigned char *);
-unsigned long __cdecl GetInputDesktopName(unsigned short * *);
+unsigned long __cdecl GetInputDesktopNameEx(struct HDESK__ *,unsigned short * *);
 unsigned long __cdecl GetLegalNotices(unsigned short const *,struct _LEGALINFO *);
 unsigned long __cdecl GetLogonHoursExtension(class CUser *,int);
 GetModuleBaseNameW();
@@ -1016,7 +1016,7 @@ long __cdecl XmlGetAttributeValue(void *,unsigned int,unsigned int *,unsigned sh
 
 // Globals
 
-__@@_PchSym_@00@UignOlyqOznwGEuivUwhUhvxfirgbUfnhgzigfkUdrmoltlmUxlivUlyquivUznwGEUkivxlnkOlyq@winlogon;
+__@@_PchSym_@00@UlyqOznwGEuivUwhUhvxfirgbUfnhgzigfkUdrmoltlmUxlivUlyquivUznwGEUkivxlnkOlyq@winlogon;
 ClientMPNotify_v1_0_c_ifspec;
 ClientWMsgAPIs_v1_0_c_ifspec;
 _commode;

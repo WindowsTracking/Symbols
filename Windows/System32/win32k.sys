@@ -1,5 +1,5 @@
 /*
- * PDB file: win32k.pdb\ECBBACF6FC76475BAFABC5427025CD6F2\win32k.pdb
+ * PDB file: win32k.pdb\8802F87638724C48916E6B2EBF3332852\win32k.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -2482,7 +2482,13 @@ typedef enum _REG_NOTIFY_CLASS
   RegNtPreSetKeySecurity = 38,
   RegNtPostSetKeySecurity = 39,
   RegNtCallbackObjectContextCleanup = 40,
-  MaxRegNtNotifyClass = 41,
+  RegNtPreRestoreKey = 41,
+  RegNtPostRestoreKey = 42,
+  RegNtPreSaveKey = 43,
+  RegNtPostSaveKey = 44,
+  RegNtPreReplaceKey = 45,
+  RegNtPostReplaceKey = 46,
+  MaxRegNtNotifyClass = 47,
 } REG_NOTIFY_CLASS, *PREG_NOTIFY_CLASS;
 
 enum ReplacesCorHdrNumericDefines
@@ -2626,6 +2632,20 @@ typedef union _SLIST_HEADER
         unsigned __int64 NextEntry : 60; /* bit position: 4 */
       }; /* bitfield */
     } Header16;
+    struct
+    {
+      struct /* bitfield */
+      {
+        unsigned __int64 Depth : 16; /* bit position: 0 */
+        unsigned __int64 Sequence : 48; /* bit position: 16 */
+      }; /* bitfield */
+      struct /* bitfield */
+      {
+        unsigned __int64 HeaderType : 1; /* bit position: 0 */
+        unsigned __int64 Reserved : 3; /* bit position: 1 */
+        unsigned __int64 NextEntry : 60; /* bit position: 4 */
+      }; /* bitfield */
+    } HeaderX64;
   };
 } SLIST_HEADER, *PSLIST_HEADER;
 
@@ -3807,6 +3827,7 @@ bSetXform();
 int __cdecl bShadowAlphaCursor(struct _SURFOBJ *,struct _SURFOBJ *,struct _SURFOBJ *,struct _XLATEOBJ *,struct _XLATEOBJ *,struct _RECTL *,int);
 int __cdecl bSpBltFromScreen(struct _SURFOBJ *,struct _SURFOBJ *,struct _SURFOBJ *,struct _CLIPOBJ *,struct _XLATEOBJ *,struct _RECTL *,struct _POINTL *,struct _POINTL *,struct _BRUSHOBJ *,struct _POINTL *,unsigned long);
 int __cdecl bSpBltScreenToScreen(struct _SURFOBJ *,struct _SURFOBJ *,struct _SURFOBJ *,struct _CLIPOBJ *,struct _XLATEOBJ *,struct _RECTL *,struct _POINTL *,struct _POINTL *,struct _BRUSHOBJ *,struct _POINTL *,unsigned long);
+int __cdecl bSpCreateShape(class SPRITE *,struct _POINTL *,struct _SURFOBJ *,struct _XLATEOBJ *,struct _RECTL *,class PALETTE *,unsigned long,unsigned long,struct _RECTL *);
 int __cdecl bSpDwmCreateShape(struct HDEV__ *,class DWMSPRITE *,struct tagSIZE *);
 int __cdecl bSpDwmUpdateCursor(struct HSPRITE__ *,struct _SURFOBJ *,struct _SURFOBJ *,struct _XLATEOBJ *,struct _RECTL *);
 int __cdecl bSpDwmUpdateDragRectShape(struct HDEV__ *,class DWMSPRITE *,struct tagPOINT *,struct tagSIZE *,unsigned long *);
@@ -3964,6 +3985,8 @@ CleanupAndFreeDdeConv();
 CleanUpDHI();
 CleanupGDI();
 CleanupMonitorsAndWindowsSnapShot();
+void __cdecl CleanUpPFF(class PFF *);
+CleanupPowerRequestList();
 void __cdecl CleanupPvtData(class PFF *);
 void __cdecl CleanUpRegion(class REGION *);
 CleanupRemoteHandles();
@@ -4176,6 +4199,7 @@ DerefPageOnlyRequest();
 _DeregisterShellHookWindow();
 DesktopAlloc();
 DesktopBuildPaint();
+_DesktopHasWatermarkText();
 DesktopOpenProcedure();
 DestroyBitmap();
 DestroyCacheDC();
@@ -5183,7 +5207,6 @@ GreCreateWatchdogs();
 struct HBRUSH__ * __cdecl GreDCSelectBrush(class DC *,struct HBRUSH__ *);
 struct HPEN__ * __cdecl GreDCSelectPen(class DC *,struct HPEN__ *);
 GreDecQuotaCount();
-GreDeleteDC();
 GreDeleteObject();
 GreDeleteSemaphore();
 GreDeleteServerMetaFile();
@@ -7010,6 +7033,7 @@ public: unsigned long __cdecl PFEOBJ::cKernPairs(struct _FD_KERNINGPAIR * *);
 public: unsigned long __cdecl PFEOBJ::dpNtmi(void);
 public: unsigned long __cdecl PFEOBJ::flFontType(void);
 public: struct _FD_GLYPHSET * __cdecl PFEOBJ::pfdg(void);
+public: void __cdecl PFEOBJ::vDelete(void);
 public: void __cdecl PFEOBJ::vFreepfdg(void);
 public: int __cdecl PFFMEMOBJ::bAddEntry(unsigned long,struct _FD_GLYPHSET *,unsigned __int64,struct _IFIMETRICS *,unsigned __int64,void *,struct _UNIVERSAL_FONT_ID *,struct _EUDCLOAD *);
 public: int __cdecl PFFMEMOBJ::bLoadDeviceFontTable(class PDEVOBJ *);
@@ -7021,9 +7045,9 @@ public: int __cdecl PFFOBJ::bAddHash(int);
 public: int __cdecl PFFOBJ::bAddPvtData(unsigned long);
 public: int __cdecl PFFOBJ::bCreatePFEC(unsigned long);
 public: int __cdecl PFFOBJ::bDeleteLoadRef(unsigned long,struct tagPvtData *,int *);
-public: int __cdecl PFFOBJ::bDeleteRFONTRef(void);
 public: int __cdecl PFFOBJ::bRemovePvtData(struct tagPvtData *);
 public: struct tagPvtData * __cdecl PFFOBJ::pPvtDataMatch(void);
+public: void __cdecl PFFOBJ::vDeleteRFONTRef(void);
 public: void __cdecl PFFOBJ::vGetEUDC(struct _EUDCLOAD *);
 public: void __cdecl PFFOBJ::vKill(void);
 public: void __cdecl PFFOBJ::vPFFC_Delete(class PFFCLEANUP *);
@@ -7048,7 +7072,6 @@ PlaySndClient_midl_user_free();
 PlaySoundConnect();
 PlaySoundPostMessage();
 PopState();
-PopThreadGuardedObjectWithCheck();
 PostAccessibility();
 PostDeviceNotification();
 PostEventMessage();
@@ -7074,6 +7097,7 @@ class PFE * __cdecl ppfeGetPFEFromUFI(struct _UNIVERSAL_FONT_ID *,int,int);
 class PFE * __cdecl ppfeGetPFEFromUFIInternal(struct _UNIVERSAL_FONT_ID *,int,int);
 pppUserModeCallback();
 PrepareForLogoff();
+PrepareGammaRampData();
 PreventInterMonitorBlts();
 ProbeAndCaptureSoftKbdData();
 ProbeAndConvertXFORM();
@@ -7254,6 +7278,7 @@ ResetOrg();
 ResetRedirectedWindows();
 ResetSharedDesktops();
 ResStrCmp();
+void __cdecl RestartInactiveHelper(class RFONT *);
 RestoreGammaRamp();
 RestoreMonitorsAndWindowsRects();
 RestoreSpb();
@@ -7262,7 +7287,6 @@ public: int __cdecl RFONTOBJ::bCalcEscapementP(class EXFORMOBJ &,long);
 public: int __cdecl RFONTOBJ::bCalcLayoutUnits(class XDCOBJ *);
 public: int __cdecl RFONTOBJ::bCheckEudcFontCaps(class IFIOBJ &);
 public: int __cdecl RFONTOBJ::bCheckMetricsCache(void);
-public: int __cdecl RFONTOBJ::bDeleteRFONT(class PDEVOBJ *,class PFFOBJ *);
 public: int __cdecl RFONTOBJ::bFindRFONT(struct _FD_XFORM *,unsigned long,unsigned long,class PDEVOBJ &,class EXFORMOBJ *,class PFE *,int,int,int,unsigned long);
 public: int __cdecl RFONTOBJ::bGetDEVICEMETRICS(struct _FD_DEVICEMETRICS *);
 public: int __cdecl RFONTOBJ::bGetGlyphMetrics(unsigned long,struct _GLYPHPOS *,unsigned short *,class XDCOBJ *,class ESTROBJ *);
@@ -7300,7 +7324,7 @@ public: unsigned char * __cdecl RFONTOBJ::pjTable(unsigned long,unsigned long *)
 public: void __cdecl RFONTOBJ::PostTextOut(class XDCOBJ &);
 public: void __cdecl RFONTOBJ::PreTextOut(class XDCOBJ &);
 public: unsigned long __cdecl RFONTOBJ::ulSimpleOrientation(class XDCOBJ *);
-public: void __cdecl RFONTOBJ::vDeleteCache(void);
+public: void __cdecl RFONTOBJ::vDeleteRFONT(class PDEVOBJ *,class PFFOBJ *,int);
 public: void __cdecl RFONTOBJ::vFixUpGlyphIndices(unsigned short *,unsigned int);
 public: void __cdecl RFONTOBJ::vFlushCache(void);
 public: void __cdecl RFONTOBJ::vInit(class XDCOBJ &,class PFE *,struct _EUDCLOGFONT *,int);
@@ -7858,6 +7882,7 @@ UnlinkCursor();
 UnlinkHook();
 UnlinkSendListSms();
 UnlinkWindow();
+UnlockDesktopMenu();
 UnlockMFMWFPWindow();
 UnlockNotifyWindow();
 UnlockPopupMenu();
@@ -8005,6 +8030,7 @@ void __cdecl vCosSinPrecise(class EFLOAT,class EFLOAT *,class EFLOAT *);
 vCvtToBoldBmp();
 vCvtToBoldItalicBmp();
 vCvtToItalicBmp();
+void __cdecl vDeletePFE(class PFE *);
 void __cdecl vDeleteSpriteShape(class DWMSPRITE *,int);
 void __cdecl vDetermineSurfaceBounds(struct _SURFOBJ *,unsigned char,long,long,struct _RECTL *);
 void __cdecl vDIBnPatBltSrccopy6x6(class SURFACE *,struct _CLIPOBJ *,struct _RECTL *,struct _BRUSHOBJ *,struct _POINTL *,void (__cdecl*)(struct _PATBLTFRAME *,int));
@@ -8198,6 +8224,10 @@ void __cdecl vRectBlt8(unsigned char *,unsigned long,long,long,long,long);
 vReleasePointerCallback();
 vRemoveAllInactiveRFONTs();
 void __cdecl vResetSurfacePalette(struct HDEV__ *);
+void __cdecl vRestartbRealizeFont(class RFONT *);
+void __cdecl vRestartKillEudcRFONTs(class RFONT *);
+void __cdecl vRestartKillRFONTList(class RFONT *);
+void __cdecl vRestartRemoveAllInactiveRFONTs(class RFONT * *);
 void __cdecl vRestorePath(class XDCOBJ &,long);
 void __cdecl vRestoreRegion(class DCOBJ &,long);
 void __cdecl vRop2Function0(unsigned long *,unsigned long *,unsigned long *,unsigned long);
@@ -8245,7 +8275,6 @@ void __cdecl vSpComputeUncoveredRegion(struct _SPRITESTATE *,int);
 void __cdecl vSpComputeUnlockedRegion(struct _SPRITESTATE *);
 void __cdecl vSpCorrectHdevReferences(struct _SPRITESTATE *,struct HDEV__ *);
 void __cdecl vSpCreateExMirror(struct HDEV__ *);
-void __cdecl vSpCreateShape(class SPRITE *,struct _POINTL *,struct _SURFOBJ *,struct _XLATEOBJ *,struct _RECTL *,class PALETTE *,unsigned long,unsigned long,struct _RECTL *);
 void __cdecl vSpDeleteExMirror(struct HDEV__ *);
 void __cdecl vSpDeletePerPixelAlphaFromColorKey(struct _SURFOBJ *,unsigned long,struct _RECTL *,unsigned char *);
 void __cdecl vSpDeleteShape(class SPRITE *);
@@ -8431,6 +8460,7 @@ void __cdecl vTryToCacheRealization(class EBRUSHOBJ *,class RBRUSH *,class BRUSH
 void __cdecl vUnlinkAllEudcFromRFONTList(int,int);
 vUnmapFile();
 vUnmapRemoteFonts();
+void __cdecl vUnreferencePdevWorker(struct tagUNREFDATA *);
 void __cdecl vUpdateClientRgnOnSpriteOverlap(class EWNDOBJ *,class RGNOBJ &);
 vVtfdFill_IFIMetrics();
 VWPLAdd();
@@ -9323,10 +9353,10 @@ zzzWakeInputIdle();
 
 // Globals
 
-__@@_PchSym_@00@UignOlyqOznwGEuivUdrmwldhUxlivUigoUpvimvoUlyquivUznwGEUkivxlnkOlyq@w32krtl;
-__@@_PchSym_@00@UignOlyqOznwGEuivUdrmwldhUxlivUmgfhviUigoUpvimvoUwzbglmzUlyquivUznwGEUkivxlnkOlyq@userkrtl;
-__@@_PchSym_@00@UignOlyqOznwGEuivUdrmwldhUxlivUmgfhviUpvimvoUlyquivUznwGEUkivxlnkOlyq@userk;
-__@@_PchSym_@00@UignOlyqOznwGEuivUdrmwldhUxlivUmgtwrUtivUwzbglmzUlyquivUznwGEUkivxlnkOlyq@gre;
+__@@_PchSym_@00@UlyqOznwGEuivUdrmwldhUxlivUigoUpvimvoUlyquivUznwGEUkivxlnkOlyq@w32krtl;
+__@@_PchSym_@00@UlyqOznwGEuivUdrmwldhUxlivUmgfhviUigoUpvimvoUwzbglmzUlyquivUznwGEUkivxlnkOlyq@userkrtl;
+__@@_PchSym_@00@UlyqOznwGEuivUdrmwldhUxlivUmgfhviUpvimvoUlyquivUznwGEUkivxlnkOlyq@userk;
+__@@_PchSym_@00@UlyqOznwGEuivUdrmwldhUxlivUmgtwrUtivUwzbglmzUlyquivUznwGEUkivxlnkOlyq@gre;
 aAccessibilityProc;
 unsigned int * aArrayOfSquares;
 aASCII_Latin1_EndBreak;

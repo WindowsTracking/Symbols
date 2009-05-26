@@ -309,6 +309,7 @@ __delayLoadHelper2();
 DeleteClientClipboardHandle();
 DeleteLinkCount();
 DeregisterShellHookWindow();
+DesktopHasWatermarkText();
 DesktopWndProcA();
 DesktopWndProcW();
 DesktopWndProcWorker();
@@ -3202,9 +3203,9 @@ ZwUserYieldTask();
 
 // Globals
 
-__@@_PchSym_@00@UignOlyqOznwGEuivUdrmwldhUxlivUigoUxorvmgUlyquivUznwGEUkivxlnkOlyq@w32crtl;
-__@@_PchSym_@00@UignOlyqOznwGEuivUdrmwldhUxlivUmgfhviUigoUxorvmgUwzbglmzUlyquivUznwGEUkivxlnkOlyq@userrtl;
-__@@_PchSym_@00@UignOlyqOznwGEuivUdrmwldhUxlivUmgfhviUxorvmgUwzbglmzUlyquivUznwGEUkivxlnkOlyq@user32;
+__@@_PchSym_@00@UlyqOznwGEuivUdrmwldhUxlivUigoUxorvmgUlyquivUznwGEUkivxlnkOlyq@w32crtl;
+__@@_PchSym_@00@UlyqOznwGEuivUdrmwldhUxlivUmgfhviUigoUxorvmgUwzbglmzUlyquivUznwGEUkivxlnkOlyq@userrtl;
+__@@_PchSym_@00@UlyqOznwGEuivUdrmwldhUxlivUmgfhviUxorvmgUwzbglmzUlyquivUznwGEUkivxlnkOlyq@user32;
 aASCII_Latin1_EndBreak;
 achSlashStar;
 aCJKSymbol_EndBreak;

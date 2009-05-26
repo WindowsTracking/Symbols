@@ -2921,7 +2921,7 @@ ZwUserYieldTask();
 
 // Globals
 
-__@@_PchSym_@00@UignOlyqOznwGEuivUdrmwldhUxlivUmgfhviUxorvmgUdldGEUlyquivUznwGEUkivxlnkOlyq@csruser;
+__@@_PchSym_@00@UlyqOznwGEuivUdrmwldhUxlivUmgfhviUxorvmgUdldGEUlyquivUznwGEUkivxlnkOlyq@csruser;
 apfnClientAClient;
 apfnClientAKernel;
 apfnClientWClient;

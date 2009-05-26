@@ -1,5 +1,5 @@
 /*
- * PDB file: fltMgr.pdb\1064F644C2424747A7EAC19F9E0BBE822\fltMgr.pdb
+ * PDB file: fltMgr.pdb\E273737EB5E34B25A4C29CE60A999ECE2\fltMgr.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -3355,7 +3355,13 @@ typedef enum _REG_NOTIFY_CLASS
   RegNtPreSetKeySecurity = 38,
   RegNtPostSetKeySecurity = 39,
   RegNtCallbackObjectContextCleanup = 40,
-  MaxRegNtNotifyClass = 41,
+  RegNtPreRestoreKey = 41,
+  RegNtPostRestoreKey = 42,
+  RegNtPreSaveKey = 43,
+  RegNtPostSaveKey = 44,
+  RegNtPreReplaceKey = 45,
+  RegNtPostReplaceKey = 46,
+  MaxRegNtNotifyClass = 47,
 } REG_NOTIFY_CLASS, *PREG_NOTIFY_CLASS;
 
 enum ReplacesCorHdrNumericDefines
@@ -3511,6 +3517,20 @@ typedef union _SLIST_HEADER
         unsigned __int64 NextEntry : 60; /* bit position: 4 */
       }; /* bitfield */
     } Header16;
+    struct
+    {
+      struct /* bitfield */
+      {
+        unsigned __int64 Depth : 16; /* bit position: 0 */
+        unsigned __int64 Sequence : 48; /* bit position: 16 */
+      }; /* bitfield */
+      struct /* bitfield */
+      {
+        unsigned __int64 HeaderType : 1; /* bit position: 0 */
+        unsigned __int64 Reserved : 3; /* bit position: 1 */
+        unsigned __int64 NextEntry : 60; /* bit position: 4 */
+      }; /* bitfield */
+    } HeaderX64;
   };
 } SLIST_HEADER, *PSLIST_HEADER;
 
@@ -5070,7 +5090,7 @@ zzz_AsmCodeRange_End();
 
 // Globals
 
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUuhUurogvintiUurogviUlyquivUznwGEUkxsOlyq@fltMgr;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUuhUurogvintiUurogviUlyquivUznwGEUkxsOlyq@fltMgr;
 ContextTypeInfo;
 FltGlobals;
 FLTMGR_FILTER_FAILED_INSTANCE_SETUP;

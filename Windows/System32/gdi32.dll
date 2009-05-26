@@ -546,6 +546,7 @@ IcmGetOrCreateColorSpaceByColorSpace();
 IcmGetOrCreateColorSpaceByName();
 IcmGetProfileColorFormat();
 IcmGetTranslateInfo();
+IcmGetUnusedIcmInfo();
 IcmInitialize();
 IcmInitIcmInfo();
 IcmInitLocalDC();
@@ -2619,7 +2620,7 @@ ZwUserYieldTask();
 
 // Globals
 
-__@@_PchSym_@00@UignOlyqOznwGEuivUdrmwldhUxlivUmgtwrUxorvmgUwzbglmzUlyquivUznwGEUkivxlnkOlyq@gdi32;
+__@@_PchSym_@00@UlyqOznwGEuivUdrmwldhUxlivUmgtwrUxorvmgUwzbglmzUlyquivUznwGEUkivxlnkOlyq@gdi32;
 int (__cdecl MR::** afnbMRCheck)(struct tagHANDLETABLE *);
 int (__cdecl MR::** afnbMRPlay)(void *,struct tagHANDLETABLE *,unsigned int);
 ahStockObjects;
@@ -2740,6 +2741,7 @@ struct CharEquivalents * KangXi;
 LegalWmfCodesTable;
 ListCachedColorSpace;
 ListCachedColorTransform;
+ListIcmInfo;
 __NULL_IMPORT_DESCRIPTOR;
 pAFRTNodeList;
 pcfDeleteList;
@@ -2757,6 +2759,7 @@ __security_cookie_complement;
 semColorSpaceCache;
 semColorTransformCache;
 semGlLoad;
+semListIcmInfo;
 semLocal;
 semUMPD;
 w3rgnEmpty;

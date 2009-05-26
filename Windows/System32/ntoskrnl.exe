@@ -1,5 +1,5 @@
 /*
- * PDB file: ntkrnlmp.pdb\AAFD50F81F4A41F3A99CECBB18945C1F2\ntkrnlmp.pdb
+ * PDB file: ntkrnlmp.pdb\98C6BA00FE174241BA3FDB915995EA9C2\ntkrnlmp.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -532,9 +532,8 @@ struct _PO_HIBER_PERF;
 struct _PO_IRP_MANAGER;
 struct _PO_IRP_QUEUE;
 struct PO_MEMORY_IMAGE;
-struct _PO_MEMORY_RANGE_ARRAY;
-struct _PO_MEMORY_RANGE_ARRAY_LINK;
-struct _PO_MEMORY_RANGE_ARRAY_RANGE;
+struct _PO_MEMORY_RANGE;
+struct _PO_MEMORY_RANGE_TABLE;
 struct _PO_NOTIFY_ORDER_LEVEL;
 enum _POLICY_AUDIT_EVENT_TYPE;
 struct _POOL_BLOCK_HEAD;
@@ -756,7 +755,6 @@ struct _WMI_TRACE_PACKET;
 struct _WNODE_HEADER;
 struct _WORK_QUEUE_ENTRY;
 struct _WORK_QUEUE_ITEM;
-struct _WOW64_PROCESS;
 enum _WOW64_SHARED_INFORMATION;
 struct _X86_DBGKD_CONTROL_SET;
 struct _XMM_SAVE_AREA32;
@@ -2681,6 +2679,7 @@ typedef struct _DEVICE_MAP
 {
   struct _OBJECT_DIRECTORY* DosDevicesDirectory;
   struct _OBJECT_DIRECTORY* GlobalDosDevicesDirectory;
+  void* DosDevicesDirectoryHandle;
   unsigned long ReferenceCount;
   unsigned long DriveMap;
   unsigned char DriveType[32];
@@ -3273,7 +3272,7 @@ typedef struct _EPROCESS
   void* LockedPagesList;
   struct _LIST_ENTRY ThreadListHead;
   void* SecurityPort;
-  struct _WOW64_PROCESS* Wow64Process;
+  void* Wow64Process;
   volatile unsigned long ActiveThreads;
   unsigned long ImagePathHash;
   unsigned long DefaultHardErrorProcessing;
@@ -9961,7 +9960,6 @@ struct PO_MEMORY_IMAGE
   unsigned long WakeCheck;
   unsigned __int64 TotalPages;
   unsigned __int64 FirstTablePage;
-  unsigned __int64 LastFilePage;
   struct _PO_HIBER_PERF PerfInfo;
   unsigned long FirmwareRuntimeInformationPages;
   unsigned __int64 FirmwareRuntimeInformation[1];
@@ -9973,35 +9971,19 @@ struct PO_MEMORY_IMAGE
   long __PADDING__[1];
 };
 
-typedef struct _PO_MEMORY_RANGE_ARRAY
+typedef struct _PO_MEMORY_RANGE
 {
-  union
-  {
-    struct _PO_MEMORY_RANGE_ARRAY_RANGE Range;
-    struct
-    {
-      struct _PO_MEMORY_RANGE_ARRAY_LINK Link;
-      long __PADDING__[2];
-    };
-  };
-} PO_MEMORY_RANGE_ARRAY, *PPO_MEMORY_RANGE_ARRAY;
-
-typedef struct _PO_MEMORY_RANGE_ARRAY_LINK
-{
-  struct _PO_MEMORY_RANGE_ARRAY* Next;
-  unsigned __int64 NextTable;
-  unsigned long CheckSum;
-  unsigned long EntryCount;
-} PO_MEMORY_RANGE_ARRAY_LINK, *PPO_MEMORY_RANGE_ARRAY_LINK;
-
-typedef struct _PO_MEMORY_RANGE_ARRAY_RANGE
-{
-  unsigned __int64 PageNo;
   unsigned __int64 StartPage;
   unsigned __int64 EndPage;
-  unsigned long CheckSum;
-  long __PADDING__[1];
-} PO_MEMORY_RANGE_ARRAY_RANGE, *PPO_MEMORY_RANGE_ARRAY_RANGE;
+} PO_MEMORY_RANGE, *PPO_MEMORY_RANGE;
+
+typedef struct _PO_MEMORY_RANGE_TABLE
+{
+  struct _PO_MEMORY_RANGE_TABLE* Next;
+  unsigned __int64 NextTable;
+  unsigned long EntryCount;
+  struct _PO_MEMORY_RANGE Range[1];
+} PO_MEMORY_RANGE_TABLE, *PPO_MEMORY_RANGE_TABLE;
 
 typedef struct _PO_NOTIFY_ORDER_LEVEL
 {
@@ -10205,7 +10187,7 @@ typedef struct _POP_HIBER_CONTEXT
   union _LARGE_INTEGER HiberPte;
   long Status;
   struct PO_MEMORY_IMAGE* MemoryImage;
-  struct _PO_MEMORY_RANGE_ARRAY* TableHead;
+  struct _PO_MEMORY_RANGE_TABLE* TableHead;
   unsigned char* CompressionWorkspace;
   unsigned char* CompressedWriteBuffer;
   unsigned long* PerformanceStats;
@@ -10917,7 +10899,13 @@ typedef enum _REG_NOTIFY_CLASS
   RegNtPreSetKeySecurity = 38,
   RegNtPostSetKeySecurity = 39,
   RegNtCallbackObjectContextCleanup = 40,
-  MaxRegNtNotifyClass = 41,
+  RegNtPreRestoreKey = 41,
+  RegNtPostRestoreKey = 42,
+  RegNtPreSaveKey = 43,
+  RegNtPostSaveKey = 44,
+  RegNtPreReplaceKey = 45,
+  RegNtPostReplaceKey = 46,
+  MaxRegNtNotifyClass = 47,
 } REG_NOTIFY_CLASS, *PREG_NOTIFY_CLASS;
 
 typedef struct _REMOTE_PORT_VIEW
@@ -11546,6 +11534,20 @@ typedef union _SLIST_HEADER
         unsigned __int64 NextEntry : 60; /* bit position: 4 */
       }; /* bitfield */
     } Header16;
+    struct
+    {
+      struct /* bitfield */
+      {
+        unsigned __int64 Depth : 16; /* bit position: 0 */
+        unsigned __int64 Sequence : 48; /* bit position: 16 */
+      }; /* bitfield */
+      struct /* bitfield */
+      {
+        unsigned __int64 HeaderType : 1; /* bit position: 0 */
+        unsigned __int64 Reserved : 3; /* bit position: 1 */
+        unsigned __int64 NextEntry : 60; /* bit position: 4 */
+      }; /* bitfield */
+    } HeaderX64;
   };
 } SLIST_HEADER, *PSLIST_HEADER;
 
@@ -13560,11 +13562,6 @@ typedef struct _WORK_QUEUE_ITEM
   void* Parameter;
 } WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM;
 
-typedef struct _WOW64_PROCESS
-{
-  void* Wow64;
-} WOW64_PROCESS, *PWOW64_PROCESS;
-
 typedef enum _WOW64_SHARED_INFORMATION
 {
   SharedNtdll32LdrInitializeThunk = 0,
@@ -14020,6 +14017,7 @@ CcAcquireByteRangeForWrite();
 CcAdjustThrottle();
 CcAdjustVacbLevelLockCount();
 CcAllocateInitializeBcb();
+CcAllocateInitializeMbcb();
 CcAllocateInitializeVacbArray();
 CcAllocateObcb();
 CcAllocateVacbLevel();
@@ -14064,6 +14062,7 @@ CcGetLsnForFileObject();
 CcGetVacbLargeOffset();
 CcGetVacbMiss();
 CcGetVirtualAddress();
+CcGetVirtualAddressIfMapped();
 CcHasInactiveViews();
 CcIncrementWriteBehindPriority();
 CcInitializeCacheManager();
@@ -14430,6 +14429,7 @@ CmpFindNameInList();
 CmpFindPathByName();
 CmpFindRSDTTable();
 CmpFindSecurityCellCacheIndex();
+CmpFindSubKeyByHash();
 CmpFindSubKeyByName();
 CmpFindSubKeyByNumber();
 CmpFindSubKeyByNumberFromMergedView();
@@ -14499,7 +14499,6 @@ CmpGetVirtualizationIDFromFullVirtualPath();
 CmpGetVirtualStoreRoot();
 CmpHiveRootSecurityDescriptor();
 CmpHwprofileDefaultSelect();
-CmpIncrementCachedSecurityRefcount();
 CmpInitBackupHive();
 CmpInitCallbacks();
 CmpInitCmPrivateAlloc();
@@ -14627,7 +14626,6 @@ CmpRemoveFromDelayedClose();
 CmpRemoveFromHiveFileList();
 CmpRemoveFromSecurityCache();
 CmpRemoveHiveFromMapping();
-CmpRemoveKeyControlBlock();
 CmpRemoveKeyHash();
 CmpRemoveSecurityCellList();
 CmpRemoveSubKey();
@@ -14711,6 +14709,7 @@ CmpTryAcquireIXLockIntent();
 CmpTryConvertKCBLockSharedToExclusive();
 CmpTryLockRegistryExclusive();
 CmpTryToLockHashEntryByIndexExclusive();
+CmpTxrLogFailEvent();
 CmpUnblockHiveWrites();
 CmpUnblockTwoHiveWrites();
 CmpUndoDeleteKeyForTrans();
@@ -15323,6 +15322,7 @@ ExpAllocateUuids();
 ExpBlockOnLockedHandleEntry();
 ExpBoostOwnerThread();
 ExpBootFinishedDispatch();
+ExpCacheProvidersHelper();
 ExpCenturyDpcRoutine();
 ExpCheckDynamicThreadCount();
 ExpCheckForLookaside();
@@ -15334,7 +15334,6 @@ ExpCloseWorkerFactory();
 ExpConvertArcName();
 ExpConvertSignatureName();
 ExpCopyProcessInfo();
-ExpCopyThreadInfo();
 ExpCovCreateUnloadedModuleEntry();
 ExpCovDeleteUnloadedModuleEntry();
 ExpCovFreeUnloadedModuleEntry();
@@ -15368,6 +15367,7 @@ ExpFreeHandleTable();
 ExpFreeHandleTableEntry();
 ExpFreeLowLevelTable();
 ExpFreeTablePagedPool();
+ExpGenuinePolicyCacheProvider();
 ExpGetCurrentUserUILanguage();
 ExpGetGlobalLocaleSection();
 ExpGetHandleInfo();
@@ -15386,7 +15386,6 @@ ExpGetSystemEmulationProcessorInformation();
 ExpGetSystemFirmwareTableInformation();
 ExpGetSystemProcessorInformation();
 ExpGetUILanguagePolicy();
-ExpInitEmptyCache();
 ExpInitializeBootEnvironment();
 ExpInitializeCallbacks();
 ExpInitializeExecutive();
@@ -15401,8 +15400,11 @@ ExpInsertPoolTrackerExpansion();
 ExpInterlockedFlushSList();
 ExpInterlockedPopEntrySList();
 ExpInterlockedPopEntrySListEnd();
+ExpInterlockedPopEntrySListEnd8();
 ExpInterlockedPopEntrySListFault();
+ExpInterlockedPopEntrySListFault8();
 ExpInterlockedPopEntrySListResume();
+ExpInterlockedPopEntrySListResume8();
 ExpInterlockedPushEntrySList();
 ExpIsDevicePathForRemovableMedia();
 ExpIsLoaderValid();
@@ -15459,7 +15461,6 @@ ExpSetCurrentUserUILanguage();
 ExpSetDriverEntry();
 ExpSetDynamicTimeZoneInformation();
 ExpSetProcessorMicrocodeUpdateInformation();
-ExpSetResetProxyPolicySupport();
 ExpSetSwappingKernelApc();
 ExpSetSystemTime();
 ExpSetTimeZoneInformation();
@@ -15625,10 +15626,12 @@ FsRtlAddEntry();
 FsRtlAddLargeMcbEntry();
 FsRtlAddMcbEntry();
 FsRtlAddToTunnelCache();
+FsRtlAllocateExclusiveLock();
 FsRtlAllocateExtraCreateParameter();
 FsRtlAllocateExtraCreateParameterFromLookasideList();
 FsRtlAllocateExtraCreateParameterList();
 FsRtlAllocateFileLock();
+FsRtlAllocateLockInfo();
 FsRtlAllocateLockTreeNode();
 FsRtlAllocateOplock();
 FsRtlAllocatePool();
@@ -15655,6 +15658,7 @@ FsRtlCheckNoSharedConflict();
 FsRtlCheckNotifyForDelete();
 FsRtlCheckOplock();
 FsRtlCheckOplockEx();
+FsRtlCompareNodeAndKey();
 FsRtlCompleteLockIrpReal();
 FsRtlCompletionRoutinePriv();
 FsRtlCopyRead();
@@ -15813,6 +15817,7 @@ FsRtlPrivateLock();
 FsRtlPrivateRemoveLock();
 FsRtlPrivateResetLowestLockOffset();
 FsRtlProcessFileLock();
+FsRtlPruneTunnelCache();
 FsRtlPTeardownPerFileObjectContexts();
 FsRtlpValidateExtraCreateParameters();
 FsRtlRegisterFileSystemFilterCallbacks();
@@ -16084,6 +16089,7 @@ InbvUpdateProgressBar();
 INCREASE_MAPPED_TRANSFER_BYTE_COUNT();
 INCREMENT_ADAPTER_CHANNELS();
 InitBootProcessor();
+InitializeDynamicPartitioningPolicy();
 InitializePagedPool();
 InitializePalette();
 InitializePool();
@@ -16231,6 +16237,7 @@ IoGetRequestorProcessId();
 IoGetRequestorSessionId();
 IoGetSfioStreamIdentifier();
 IoGetStackLimits();
+IoGetSymlinkSupportInformation();
 IoGetTopLevelIrp();
 IoGetTransactionParameterBlock();
 IoInitializeCrashDump();
@@ -16455,6 +16462,7 @@ IopGetMaxValidMemorySizeDown();
 IopGetModeInformation();
 IopGetMountFlag();
 IopGetNetworkOpenInformation();
+IopGetPhysicalMemoryBlock();
 IopGetRegistryKeyInformation();
 IopGetRegistryValue();
 IopGetRegistryValues();
@@ -16647,7 +16655,6 @@ IopSymlinkGetECP();
 IopSymlinkGetRelatedMountPoint();
 IopSymlinkInitializeSymlinkInfo();
 IopSymlinkProcessReparse();
-IopSymlinkPropagateToExtensionIfNeeded();
 IopSymlinkQueryEnabledClasses();
 IopSymlinkRegistryCallback();
 IopSymlinkRegistryInitCallback();
@@ -16759,6 +16766,7 @@ IoUnregisterFileSystem();
 IoUnregisterFsRegistrationChange();
 IoUnregisterPlugPlayNotification();
 IoUnregisterShutdownNotification();
+IoUpdateDumpPhysicalRanges();
 IoUpdateShareAccess();
 IoValidateDeviceIoControlAccess();
 IovAllocateIrp();
@@ -17235,7 +17243,6 @@ KeTestSpinLock();
 KeThawAllThreads();
 KeThawExecution();
 KeTryToAcquireGuardedMutex();
-KeTryToAcquireInStackQueuedSpinLockAtDpcLevel();
 KeTryToAcquireQueuedSpinLock();
 KeTryToAcquireQueuedSpinLockRaiseToSynch();
 KeTryToAcquireSpinLockAtDpcLevel();
@@ -17411,6 +17418,8 @@ KiOpDecode();
 KiOpDecodeModRM();
 KiOpFetchBytes();
 KiOpFetchNextByte();
+KiOpIsPrefix();
+KiOpLocateDecodeEntry();
 KiOpPatchCode();
 KiOpPreprocessAccessViolation();
 KiOpRetrieveRegMemAddress();
@@ -17466,6 +17475,7 @@ KiSetAffinityThread();
 KiSetCacheInformation();
 KiSetCacheInformationAmd();
 KiSetCacheInformationIntel();
+KiSetCacheInformationVia();
 KiSetFeatureBits();
 KiSetInternalEvent();
 KiSetPriorityThread();
@@ -17573,7 +17583,6 @@ _local_unwind();
 longjmp();
 LookupEntryPoint();
 LpcExitProcess();
-LpcInitializeProcess();
 LpcInitSystem();
 LpcpReplyWaitReplyPort();
 LpcpRequestWaitReplyPort();
@@ -18015,6 +18024,7 @@ MiMakeSystemAddressValidSystemWs();
 MiMakeZeroedPageTables();
 MiMapCacheExceptionFilter();
 MiMapImageInSystemCache();
+MiMapImageInSystemProcess();
 MiMapInitialNonPagedPool();
 MiMapLockedPagesInUserSpace();
 MiMapLockedPagesInUserSpaceHelper();
@@ -19229,7 +19239,6 @@ PfLogEvent();
 PfLogFileDataAccess();
 PfLogForegroundProcess();
 PfLogPagefileSectionCreation();
-PfLogPagefileSectionDeletion();
 PfpCopyEvent();
 PfpCopyUserPfnPrioRequest();
 PfpCreateEvent();
@@ -19329,7 +19338,6 @@ PfSetSuperfetchInformation();
 PfSnActivateTrace();
 PfSnAddProcessTrace();
 PfSnBeginAppLaunch();
-PfSnBeginBootPhase();
 PfSnBeginBootPhaseInternal();
 PfSnBeginTrace();
 PfSnBootQueueEndTraceTimer();
@@ -19772,6 +19780,7 @@ PnprFreeMappingReserve();
 PnprGetMillisecondCounter();
 PnprGetPageDestination();
 PnprGetPluginDriverImagePath();
+PnprGetStackLimits();
 PnprHardwareMemoryMirroring();
 PnprIdentifyUnits();
 PnprInitializeMappingReserve();
@@ -19906,6 +19915,7 @@ PopBcdSetupResumeObject();
 PopBootLoaderTraceCopyPfnList();
 PopBootLoaderTraceProcess();
 PopBootLoaderTraceReservePages();
+PopBufferCompressedPageSet();
 PopBuildDeviceNotifyList();
 PopBuildDeviceNotifyListWatchdog();
 PopBuildMemoryImageHeader();
@@ -20319,7 +20329,6 @@ PpmGetMasterPrcb();
 PpmGetSimulatedProcessorLoads();
 PpmHypervisorEnlightenmentCallback();
 PpmHypervisorEnlightenmentWork();
-PpmIdleCountToMs();
 PpmInstallNewIdleStates();
 PpmInstallPerfStates();
 PpmInstallPerfStatesCallback();
@@ -20400,7 +20409,6 @@ PsEnumProcesses();
 PsEnumProcessThreads();
 PsEstablishWin32Callouts();
 PsExitSpecialApc();
-PsGetBaseTrapFrame();
 PsGetContextThread();
 PsGetCurrentProcess();
 PsGetCurrentProcessId();
@@ -20583,7 +20591,6 @@ PspRateControlNormalRoutine();
 PspReadIFEOPerfOptions();
 PspReadUserQuotaLimits();
 PspReaper();
-PspReleaseProcessQuota();
 PspReleaseReturnedQuota();
 PspRemoveProcessFromJob();
 PspRemoveQuotaBlock();
@@ -21092,6 +21099,8 @@ RtlpHeapExceptionFilter();
 RtlpHeapGenerateRandomValue64();
 RtlpHeapHandleError();
 RtlpImageDirectoryEntryToData32();
+RtlpImageDirectoryEntryToData64();
+RtlpImageDirectoryEntryToDataEx();
 RtlPinAtomInAtomTable();
 RtlpInheritAcl();
 RtlpInheritAcl2();
@@ -21349,7 +21358,6 @@ RtlUnicodeStringToAnsiString();
 RtlUnicodeStringToCountedOemString();
 RtlUnicodeStringToInteger();
 RtlUnicodeStringToOemString();
-RtlUnicodeStringValidateEx();
 RtlUnicodeToCustomCPN();
 RtlUnicodeToMultiByteN();
 RtlUnicodeToMultiByteSize();
@@ -23174,6 +23182,7 @@ xHalPostMicrocodeUpdate();
 xHalPrepareForBugcheck();
 xHalQueryBusSlots();
 xHalQuerySystemInformation();
+xHalReadWheaPhysicalMemory();
 xHalReferenceHandler();
 xHalRegisterBusHandler();
 xHalSetSystemInformation();
@@ -23183,6 +23192,7 @@ xHalStartMirroring();
 xHalTranslateBusAddress();
 xHalUnloadMicrocode();
 xHalVectorToIDTEntry();
+xHalWriteWheaPhysicalMemory();
 XIPDispatch();
 XIPInit();
 XIPLocatePages();
@@ -23594,24 +23604,24 @@ zzz_AsmCodeRange_End();
 
 // Globals
 
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUmglhUevirurviUnkUlyquivUznwGEUeukxsOlyq@verifier;
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUmglhUgnUnkUlyquivUznwGEUgnkOlyq@tm;
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUmglhUhvUnkUlyquivUznwGEUkxsOlyq@se;
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUmglhUkhUnkUlyquivUznwGEUkhkOlyq@ps;
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUmglhUklUnkUlyquivUznwGEUklkOlyq@po;
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUmglhUlyUnkUlyquivUznwGEUlykOlyq@ob;
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUmglhUokxUzokxUnkUlyquivUznwGEUzokxkOlyq@alpc;
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUmglhUpvUnkUlyquivUznwGEUprOlyq@ke;
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUmglhUpwGEUnkUlyquivUznwGEUpwkOlyq@kd;
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUmglhUrlUkmkntiUnkUlyquivUznwGEUkmkntikOlyq@pnpmgr;
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUmglhUrlUnkUlyquivUznwGEUrlkOlyq@io;
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUmglhUrlUrlntiUnkUlyquivUznwGEUrlntiOlyq@iomgr;
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUmglhUseoUnkUlyquivUznwGEUseokOlyq@hvl;
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUmglhUuhigoUnkUlyquivUznwGEUuhigokOlyq@FsRtl;
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUmglhUvcUnkUlyquivUznwGEUvckOlyq@ex;
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUmglhUvgdUnkUlyquivUznwGEUvemgkOlyq@etw;
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUmglhUxlmurtUnkUlyquivUznwGEUxnkOlyq@config;
-__@@_PchSym_@00@UignOlyqOznwGEuivUyzhvUmglhUxzxsvUnkUlyquivUznwGEUxxOlyq@cache;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUmglhUevirurviUnkUlyquivUznwGEUeukxsOlyq@verifier;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUmglhUgnUnkUlyquivUznwGEUgnkOlyq@tm;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUmglhUhvUnkUlyquivUznwGEUkxsOlyq@se;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUmglhUkhUnkUlyquivUznwGEUkhkOlyq@ps;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUmglhUklUnkUlyquivUznwGEUklkOlyq@po;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUmglhUlyUnkUlyquivUznwGEUlykOlyq@ob;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUmglhUokxUzokxUnkUlyquivUznwGEUzokxkOlyq@alpc;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUmglhUpvUnkUlyquivUznwGEUprOlyq@ke;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUmglhUpwGEUnkUlyquivUznwGEUpwkOlyq@kd;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUmglhUrlUkmkntiUnkUlyquivUznwGEUkmkntikOlyq@pnpmgr;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUmglhUrlUnkUlyquivUznwGEUrlkOlyq@io;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUmglhUrlUrlntiUnkUlyquivUznwGEUrlntiOlyq@iomgr;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUmglhUseoUnkUlyquivUznwGEUseokOlyq@hvl;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUmglhUuhigoUnkUlyquivUznwGEUuhigokOlyq@FsRtl;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUmglhUvcUnkUlyquivUznwGEUvckOlyq@ex;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUmglhUvgdUnkUlyquivUznwGEUvemgkOlyq@etw;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUmglhUxlmurtUnkUlyquivUznwGEUxnkOlyq@config;
+__@@_PchSym_@00@UlyqOznwGEuivUyzhvUmglhUxzxsvUnkUlyquivUznwGEUxxOlyq@cache;
 abWPAStringKey;
 AcquireOpsEvent;
 AcquireOpsReservePool;
@@ -23869,6 +23879,7 @@ CmpHoldLazyFlush;
 CmPhysicalAddressExtension;
 CmpID1;
 CmpID2;
+CmpID3;
 CmpIdleWorkerEvent;
 CmpInitRmLogOnLoad;
 CmpIntegrityGroupAttributes;
@@ -24190,6 +24201,7 @@ ExpBootLicensingData;
 ExpBootLicensingDataLength;
 ExpBootLicensingDataType;
 ExpCacheLineSize;
+ExpCacheProviders;
 ExpCallbackEvent;
 ExpCallBackFlush;
 ExpCallbackMapping;
@@ -24232,6 +24244,7 @@ ExpLicensingCacheAge;
 ExpLicensingCacheAgingEnabled;
 ExpLicensingCacheAllowedAge;
 ExpLicensingCacheCorrupt;
+ExpLicensingCacheHeaderFlagsInternal;
 ExpLicensingCallback;
 ExpLicensingDescriptors;
 ExpLicensingDescriptorsCount;
@@ -24281,7 +24294,6 @@ ExpProductTypeKey;
 ExpProductTypeValueInfo;
 ExpProfileMapping;
 ExpProfileStateMutex;
-ExpProxyPolicySupportAvailable;
 ExpRealTimeIsUniversal;
 ExpRefreshFailures;
 ExpResourceSpinLock;
@@ -25053,6 +25065,9 @@ KiIdleSummary;
 KiInitialPCR;
 KiInitialProcess;
 KiInitialThread;
+KiInterlockedPopEntrySListEndEntryPoint;
+KiInterlockedPopEntrySListFaultEntryPoint;
+KiInterlockedPopEntrySListResumeEntryPoint;
 KiInterruptInitTable;
 KiLastProcessor;
 KiLockQuantumTarget;
@@ -25459,6 +25474,7 @@ MmDereferenceSegmentHeader;
 MmDisablePagingExecutive;
 MmDriverCommit;
 MmDynamicMemoryLock;
+MmDynamicMemorySupported;
 MmDynamicPfn;
 MmEnforceWriteProtection;
 MmExpansionLock;
@@ -26277,6 +26293,9 @@ PspSystemDlls;
 PspSystemQuotaBlock;
 PspThreadMapping;
 PspUseJobSchedulingClasses;
+PspUserPopEntrySListEnd8;
+PspUserPopEntrySListFault8;
+PspUserPopEntrySListResume8;
 PspUserThreadStart;
 PspVariableQuantums;
 PspW32JobCallout;
@@ -26306,6 +26325,7 @@ RawMountedQueue;
 READ_UCHAR;
 REG_EVENT_FLUSH_IO_FAIL;
 REG_EVENT_SELFHEAL;
+REG_EVENT_TXR_INIT_CLFS_LOG_OPEN_FAIL;
 RegistryProvGuid;
 ReleaseOpsEvent;
 ReleaseOpsReservePool;
@@ -26535,9 +26555,7 @@ Start;
 StringTerminators;
 SystemHiveFullPathBuffer;
 SystemHiveFullPathName;
-SystemRmGuidString;
 SystemStateNames;
-SystemTmGuidString;
 SystemTraceControlGuid;
 szBias;
 szDaylightBias;

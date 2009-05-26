@@ -1,5 +1,5 @@
 /*
- * PDB file: ole32.pdb\6F224BB1EB074553BCB6C99865FD6B832\ole32.pdb
+ * PDB file: ole32.pdb\A470A43A574E49329640683C3BF21BC22\ole32.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -4691,6 +4691,7 @@ struct tagSTRINGBINDING;
 enum tagSTRUCTURED_QUERY_MULTIOPTION;
 enum tagSTRUCTURED_QUERY_PARSE_ERROR;
 enum tagSTRUCTURED_QUERY_SINGLE_OPTION;
+enum tagSTRUCTURED_QUERY_SYNTAX;
 struct tagSTYLEBUFA;
 struct tagSTYLEBUFW;
 struct tagSTYLESTRUCT;
@@ -6772,6 +6773,7 @@ struct ASSOCIATIONELEMENT_
 
 struct AsyncIAdviseSink
 {
+  struct AsyncIAdviseSinkVtbl* lpVtbl;
 };
 
 struct AsyncIAdviseSink2
@@ -8045,6 +8047,7 @@ enum CClassCache::CCEHashTable::eFlags
   fDO_NOT_HASH = 4,
   fCOMPLUS = 8,
   fSIDE_BY_SIDE = 16,
+  fSIDE_BY_SIDE_WITH_NO_HASHING = 32,
 };
 
 class CClassCache::CClassEntry
@@ -8064,6 +8067,8 @@ class CClassCache::CClassEntry
     const unsigned long TREAT_AS_SIG;
     const unsigned long CLASS_ENTRY_SIG;
     const unsigned long INCOMPLETE_ENTRY_SIG;
+    unsigned long _dwSxSMaxHashCount;
+    unsigned long _dwSxSHashCount;
     class CPageAllocator _palloc;
     const unsigned long _cNumPerPage;
   };
@@ -8076,6 +8081,7 @@ enum CClassCache::CClassEntry::eFlags
   fDO_NOT_HASH = 4,
   fCOMPLUS = 8,
   fSIDE_BY_SIDE = 16,
+  fSIDE_BY_SIDE_WITH_NO_HASHING = 32,
 };
 
 enum CClassCache::CClassEntry::eGUIDIndex
@@ -8256,7 +8262,11 @@ class CClassCache::IMiniMoniker
 {
 };
 
-struct CClassCache::ReleaseCatalogObjects::__l2::STmpCI;
+struct CClassCache::ReleaseCatalogObjects::__l2::STmpCI
+{
+  struct IComClassInfo* arCI[10];
+  struct CClassCache::ReleaseCatalogObjects::__l2::STmpCI* pNext;
+};
 
 struct CClassCache::SDPEHashKey
 {
@@ -12664,7 +12674,7 @@ typedef struct _COORD
 typedef struct _COSERVERINFO
 {
   unsigned long dwReserved1;
-  unsigned short* pwszName;
+  wchar_t* pwszName;
   struct _COAUTHINFO* pAuthInfo;
   unsigned long dwReserved2;
   long __PADDING__[1];
@@ -14841,7 +14851,11 @@ struct CStdMarshal::Deactivate::__l3::tagServerRefs
   void* pServer;
 };
 
-struct CStdMarshal::DisconnectCliIPIDs::__l6::_IPIDReleaseSet;
+struct CStdMarshal::DisconnectCliIPIDs::__l6::_IPIDReleaseSet
+{
+  unsigned short cRifRef;
+  struct tagREMINTERFACEREF* pRifRef;
+};
 
 struct CStdMarshal::DiscSinkNode
 {
@@ -16650,7 +16664,7 @@ typedef struct _EXCEPTION_RECORD
 
 typedef struct _EXCEPTION_RECORD32
 {
-  long ExceptionCode;
+  unsigned long ExceptionCode;
   unsigned long ExceptionFlags;
   unsigned long ExceptionRecord;
   unsigned long ExceptionAddress;
@@ -18925,6 +18939,7 @@ struct IAdviseSink
 
 struct IAdviseSink2
 {
+  struct IAdviseSink2Vtbl* lpVtbl;
 };
 
 struct IAdviseSink2Vtbl
@@ -19551,6 +19566,7 @@ struct IEnumSTATPROPBAG
 
 struct IEnumSTATPROPSETSTG
 {
+  struct IEnumSTATPROPSETSTGVtbl* lpVtbl;
 };
 
 struct IEnumSTATPROPSETSTGVtbl
@@ -21564,7 +21580,6 @@ struct IOleControlSite
 
 struct IOleInPlaceActiveObject
 {
-  struct IOleInPlaceActiveObjectVtbl* lpVtbl;
 };
 
 struct IOleInPlaceActiveObjectVtbl
@@ -21669,7 +21684,6 @@ struct IOplockStorage
 
 struct IOrpcDebugNotify
 {
-  struct IOrpcDebugNotifyVtbl* lpVtbl;
 };
 
 struct IOrpcDebugNotifyVtbl
@@ -22047,6 +22061,7 @@ struct IRpcCall
 
 struct IRpcChannelBuffer
 {
+  struct IRpcChannelBufferVtbl* lpVtbl;
 };
 
 struct IRpcChannelBuffer2
@@ -22496,6 +22511,7 @@ struct IUnkInner
 
 struct IUnknown
 {
+  struct IUnknownVtbl* lpVtbl;
 };
 
 struct IUnknownVtbl
@@ -22535,6 +22551,7 @@ struct IUserTokenWithImpersonate
 
 struct IViewObject
 {
+  struct IViewObjectVtbl* lpVtbl;
 };
 
 struct IViewObject2
@@ -24805,7 +24822,7 @@ typedef struct __midl_frag1019_t
 
 typedef struct __midl_frag101_t
 {
-  struct _NDR64_CONF_VAR_ARRAY_HEADER_FORMAT frag1;
+  struct _NDR64_CONF_ARRAY_HEADER_FORMAT frag1;
   struct
   {
     struct _NDR64_REPEAT_FORMAT frag1;
@@ -24817,6 +24834,7 @@ typedef struct __midl_frag101_t
     unsigned char frag3;
     char __PADDING__[7];
   } frag2;
+  struct _NDR64_ARRAY_ELEMENT_INFO frag3;
 } _midl_frag101_t, *P_midl_frag101_t;
 
 typedef struct __midl_frag1021_t
@@ -25108,10 +25126,9 @@ typedef struct __midl_frag109_t
 
 typedef struct __midl_frag10_t
 {
-  unsigned int frag1;
-  struct _NDR64_EXPR_OPERATOR frag2;
-  struct _NDR64_EXPR_VAR frag3;
-  struct _NDR64_EXPR_VAR frag4;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
+  struct _NDR64_PARAM_FORMAT frag3;
 } _midl_frag10_t, *P_midl_frag10_t;
 
 typedef struct __midl_frag1102_t
@@ -25473,8 +25490,8 @@ typedef struct __midl_frag1269_t
 
 typedef struct __midl_frag126_t
 {
-  unsigned int frag1;
-  struct _NDR64_EXPR_VAR frag2;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
 } _midl_frag126_t, *P_midl_frag126_t;
 
 typedef struct __midl_frag1275_t
@@ -25549,7 +25566,7 @@ typedef struct __midl_frag1298_t
 
 typedef struct __midl_frag12_t
 {
-  struct _NDR64_STRUCTURE_HEADER_FORMAT frag1;
+  struct _NDR64_CONF_VAR_BOGUS_ARRAY_HEADER_FORMAT frag1;
 } _midl_frag12_t, *P_midl_frag12_t;
 
 typedef struct __midl_frag1301_t
@@ -27178,7 +27195,8 @@ typedef struct __midl_frag188_t
 
 typedef struct __midl_frag189_t
 {
-  struct _NDR64_STRUCTURE_HEADER_FORMAT frag1;
+  unsigned int frag1;
+  struct _NDR64_EXPR_VAR frag2;
 } _midl_frag189_t, *P_midl_frag189_t;
 
 typedef struct __midl_frag18_t
@@ -27234,8 +27252,7 @@ typedef struct __midl_frag197_t
 
 typedef struct __midl_frag199_t
 {
-  unsigned int frag1;
-  struct _NDR64_EXPR_VAR frag2;
+  struct _NDR64_POINTER_FORMAT frag1;
 } _midl_frag199_t, *P_midl_frag199_t;
 
 typedef struct __midl_frag19_t
@@ -27265,12 +27282,8 @@ typedef struct __midl_frag201_t
 
 typedef struct __midl_frag202_t
 {
-  struct _NDR64_PROC_FORMAT frag1;
-  struct _NDR64_PARAM_FORMAT frag2;
-  struct _NDR64_PARAM_FORMAT frag3;
-  struct _NDR64_PARAM_FORMAT frag4;
-  struct _NDR64_PARAM_FORMAT frag5;
-  struct _NDR64_PARAM_FORMAT frag6;
+  unsigned int frag1;
+  struct _NDR64_EXPR_VAR frag2;
 } _midl_frag202_t, *P_midl_frag202_t;
 
 typedef struct __midl_frag204_t
@@ -27457,10 +27470,8 @@ typedef struct __midl_frag231_t
 
 typedef struct __midl_frag232_t
 {
-  struct _NDR64_PROC_FORMAT frag1;
-  struct _NDR64_PARAM_FORMAT frag2;
-  struct _NDR64_PARAM_FORMAT frag3;
-  struct _NDR64_PARAM_FORMAT frag4;
+  unsigned int frag1;
+  struct _NDR64_EXPR_VAR frag2;
 } _midl_frag232_t, *P_midl_frag232_t;
 
 typedef struct __midl_frag234_t
@@ -27524,8 +27535,9 @@ typedef struct __midl_frag241_t
 
 typedef struct __midl_frag242_t
 {
-  unsigned int frag1;
-  struct _NDR64_EXPR_VAR frag2;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
+  struct _NDR64_PARAM_FORMAT frag3;
 } _midl_frag242_t, *P_midl_frag242_t;
 
 typedef struct __midl_frag244_t
@@ -27964,18 +27976,10 @@ typedef struct __midl_frag29_t
 
 typedef struct __midl_frag2_t
 {
-  struct _NDR64_STRUCTURE_HEADER_FORMAT frag1;
-  struct
-  {
-    struct _NDR64_NO_REPEAT_FORMAT frag1;
-    struct _NDR64_POINTER_INSTANCE_HEADER_FORMAT frag2;
-    struct _NDR64_POINTER_FORMAT frag3;
-    struct _NDR64_NO_REPEAT_FORMAT frag4;
-    struct _NDR64_POINTER_INSTANCE_HEADER_FORMAT frag5;
-    struct _NDR64_POINTER_FORMAT frag6;
-    unsigned char frag7;
-    char __PADDING__[7];
-  } frag2;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
+  struct _NDR64_PARAM_FORMAT frag3;
+  struct _NDR64_PARAM_FORMAT frag4;
 } _midl_frag2_t, *P_midl_frag2_t;
 
 typedef struct __midl_frag301_t
@@ -28086,11 +28090,7 @@ typedef struct __midl_frag313_t
 
 typedef struct __midl_frag315_t
 {
-  struct _NDR64_PROC_FORMAT frag1;
-  struct _NDR64_PARAM_FORMAT frag2;
-  struct _NDR64_PARAM_FORMAT frag3;
-  struct _NDR64_PARAM_FORMAT frag4;
-  struct _NDR64_PARAM_FORMAT frag5;
+  struct _NDR64_POINTER_FORMAT frag1;
 } _midl_frag315_t, *P_midl_frag315_t;
 
 typedef struct __midl_frag316_t
@@ -28228,7 +28228,9 @@ typedef struct __midl_frag349_t
 
 typedef struct __midl_frag34_t
 {
-  struct _NDR64_STRUCTURE_HEADER_FORMAT frag1;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
+  struct _NDR64_PARAM_FORMAT frag3;
 } _midl_frag34_t, *P_midl_frag34_t;
 
 typedef struct __midl_frag355_t
@@ -28304,8 +28306,6 @@ typedef struct __midl_frag371_t
 {
   struct _NDR64_PROC_FORMAT frag1;
   struct _NDR64_PARAM_FORMAT frag2;
-  struct _NDR64_PARAM_FORMAT frag3;
-  struct _NDR64_PARAM_FORMAT frag4;
 } _midl_frag371_t, *P_midl_frag371_t;
 
 typedef struct __midl_frag373_t
@@ -28340,27 +28340,35 @@ typedef struct __midl_frag378_t
 
 typedef struct __midl_frag379_t
 {
-  struct _NDR64_PROC_FORMAT frag1;
-  struct _NDR64_PARAM_FORMAT frag2;
-  struct _NDR64_PARAM_FORMAT frag3;
-  struct _NDR64_PARAM_FORMAT frag4;
+  unsigned int frag1;
+  struct _NDR64_EXPR_VAR frag2;
 } _midl_frag379_t, *P_midl_frag379_t;
 
 typedef struct __midl_frag381_t
 {
-  struct _NDR64_CONF_ARRAY_HEADER_FORMAT frag1;
+  struct _NDR64_BOGUS_STRUCTURE_HEADER_FORMAT frag1;
   struct
   {
-    struct _NDR64_REPEAT_FORMAT frag1;
-    struct
-    {
-      struct _NDR64_POINTER_INSTANCE_HEADER_FORMAT frag1;
-      struct _NDR64_POINTER_FORMAT frag2;
-    } frag2;
-    unsigned char frag3;
-    char __PADDING__[7];
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag1;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag2;
+    struct _NDR64_MEMPAD_FORMAT frag3;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag4;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag5;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag6;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag7;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag8;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag9;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag10;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag11;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag12;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag13;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag14;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag15;
+    struct _NDR64_EMBEDDED_COMPLEX_FORMAT frag16;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag17;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag18;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag19;
   } frag2;
-  struct _NDR64_ARRAY_ELEMENT_INFO frag3;
 } _midl_frag381_t, *P_midl_frag381_t;
 
 typedef struct __midl_frag382_t
@@ -28390,8 +28398,9 @@ typedef struct __midl_frag385_t
 
 typedef struct __midl_frag387_t
 {
-  struct _NDR64_CONF_ARRAY_HEADER_FORMAT frag1;
-  struct _NDR64_ARRAY_ELEMENT_INFO frag2;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
+  struct _NDR64_PARAM_FORMAT frag3;
 } _midl_frag387_t, *P_midl_frag387_t;
 
 typedef struct __midl_frag388_t
@@ -28895,7 +28904,7 @@ typedef struct __midl_frag49_t
 
 typedef struct __midl_frag4_t
 {
-  struct _NDR64_CONF_STRUCTURE_HEADER_FORMAT frag1;
+  struct _NDR64_STRUCTURE_HEADER_FORMAT frag1;
 } _midl_frag4_t, *P_midl_frag4_t;
 
 typedef struct __midl_frag503_t
@@ -29191,8 +29200,8 @@ typedef struct __midl_frag59_t
 
 typedef struct __midl_frag5_t
 {
-  struct _NDR64_CONF_ARRAY_HEADER_FORMAT frag1;
-  struct _NDR64_ARRAY_ELEMENT_INFO frag2;
+  unsigned int frag1;
+  struct _NDR64_EXPR_VAR frag2;
 } _midl_frag5_t, *P_midl_frag5_t;
 
 typedef struct __midl_frag602_t
@@ -29566,8 +29575,15 @@ typedef struct __midl_frag698_t
 
 typedef struct __midl_frag6_t
 {
-  unsigned int frag1;
-  struct _NDR64_EXPR_VAR frag2;
+  struct _NDR64_BOGUS_STRUCTURE_HEADER_FORMAT frag1;
+  struct
+  {
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag1;
+    struct _NDR64_MEMPAD_FORMAT frag2;
+    struct _NDR64_EMBEDDED_COMPLEX_FORMAT frag3;
+    struct _NDR64_BUFFER_ALIGN_FORMAT frag4;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag5;
+  } frag2;
 } _midl_frag6_t, *P_midl_frag6_t;
 
 typedef struct __midl_frag702_t
@@ -33416,7 +33432,12 @@ struct PARAM_DESCRIPTION
 
 typedef struct _PARAM_STRUCT
 {
-  struct IAdviseSink* This;
+  struct ILockBytes* This;
+  union _ULARGE_INTEGER ulOffset;
+  const unsigned char* pv;
+  unsigned long cb;
+  char Pad0[4];
+  unsigned long* pcbWritten;
   HRESULT _RetVal;
   long __PADDING__[1];
 } PARAM_STRUCT, *PPARAM_STRUCT;
@@ -34910,7 +34931,7 @@ struct PROCESSOR_IDLESTATE_POLICY
   {
     union
     {
-      unsigned short AsUSHORT;
+      unsigned short AsWORD;
       struct /* bitfield */
       {
         unsigned short AllowScaling : 1; /* bit position: 0 */
@@ -35816,7 +35837,7 @@ typedef struct _REQUEST_RAW_ENCRYPTED_DATA
 typedef struct _RESOLVED_USERNAME_INFO
 {
   int bResolved;
-  wchar_t* pszResolvedName;
+  unsigned short* pszResolvedName;
 } RESOLVED_USERNAME_INFO, *PRESOLVED_USERNAME_INFO;
 
 typedef struct _RESOLVED_USERNAME_LIST
@@ -36472,7 +36493,16 @@ typedef struct _RTL_CALLER_ALLOCATED_ACTIVATION_CONTEXT_STACK_FRAME_EXTENDED
 
 typedef struct _RTL_CONDITION_VARIABLE
 {
-  void* Ptr;
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned __int64 WakeCount : 3; /* bit position: 0 */
+      unsigned __int64 Waking : 1; /* bit position: 3 */
+    }; /* bitfield */
+    unsigned __int64 Value;
+    void* Ptr;
+  };
 } RTL_CONDITION_VARIABLE, *PRTL_CONDITION_VARIABLE;
 
 typedef class _RTL_CONSTANT_STRING_remove_const_template_class<1>
@@ -36972,12 +37002,7 @@ typedef struct _RTL_RESOURCE
 
 typedef union _RTL_RUN_ONCE
 {
-  union
-  {
-    void* Ptr;
-    unsigned __int64 Value;
-    unsigned __int64 State : 2; /* bit position: 0 */
-  };
+  void* Ptr;
 } RTL_RUN_ONCE, *PRTL_RUN_ONCE;
 
 typedef struct _RTL_RXACT_CONTEXT
@@ -38712,6 +38737,20 @@ typedef union _SLIST_HEADER
         unsigned __int64 NextEntry : 60; /* bit position: 4 */
       }; /* bitfield */
     } Header16;
+    struct
+    {
+      struct /* bitfield */
+      {
+        unsigned __int64 Depth : 16; /* bit position: 0 */
+        unsigned __int64 Sequence : 48; /* bit position: 16 */
+      }; /* bitfield */
+      struct /* bitfield */
+      {
+        unsigned __int64 HeaderType : 1; /* bit position: 0 */
+        unsigned __int64 Reserved : 3; /* bit position: 1 */
+        unsigned __int64 NextEntry : 60; /* bit position: 4 */
+      }; /* bitfield */
+    } HeaderX64;
   };
 } SLIST_HEADER, *PSLIST_HEADER;
 
@@ -40994,7 +41033,11 @@ typedef enum _TABLE_SEARCH_RESULT
 
 typedef enum _TAG_UNNAMED_1
 {
-  WPP_TRACE_OPTIONS = 43,
+  sevInfo = 0,
+  sevProblem = 1,
+  sevAttn = 2,
+  sevFatal = 3,
+  sevMax = 4,
 } TAG_UNNAMED_1, *PTAG_UNNAMED_1;
 
 typedef enum _TAG_UNNAMED_10
@@ -41017,8 +41060,9 @@ typedef enum _TAG_UNNAMED_10
 
 typedef enum _TAG_UNNAMED_11
 {
-  RIFFLG_HASCOUNTERPART = 1,
-  RIFFLG_HASCLSID = 2,
+  WPP_VER_WIN2K_CB_FORWARD_PTR = 1,
+  WPP_VER_WHISTLER_CB_FORWARD_PTR = 2,
+  WPP_VER_LH_CB_FORWARD_PTR = 3,
 } TAG_UNNAMED_11, *PTAG_UNNAMED_11;
 
 typedef enum _TAG_UNNAMED_12
@@ -41079,12 +41123,11 @@ typedef enum _TAG_UNNAMED_19
 
 typedef enum _TAG_UNNAMED_2
 {
-  dliStartProcessing = 0,
-  dliNotePreLoadLibrary = 1,
-  dliNotePreGetProcAddress = 2,
-  dliFailLoadLib = 3,
-  dliFailGetProc = 4,
-  dliNoteEndProcessing = 5,
+  QIC_STATICMARSHAL = 1,
+  QIC_DISCONNECTED = 2,
+  QIC_ASYNC = 4,
+  QIC_WEAKCLIENT = 8,
+  QIC_BEGINCALLED = 16,
 } TAG_UNNAMED_2, *PTAG_UNNAMED_2;
 
 typedef enum _TAG_UNNAMED_20
@@ -41122,6 +41165,12 @@ typedef enum _TAG_UNNAMED_24
 
 typedef enum _TAG_UNNAMED_25
 {
+  skipping = 0,
+  tied = 1,
+} TAG_UNNAMED_25, *PTAG_UNNAMED_25;
+
+typedef enum _TAG_UNNAMED_26
+{
   skipws = 1,
   left = 2,
   right = 4,
@@ -41137,67 +41186,57 @@ typedef enum _TAG_UNNAMED_25
   fixed = 4096,
   unitbuf = 8192,
   stdio = 16384,
-} TAG_UNNAMED_25, *PTAG_UNNAMED_25;
-
-typedef enum _TAG_UNNAMED_26
-{
-  skipping = 0,
-  tied = 1,
 } TAG_UNNAMED_26, *PTAG_UNNAMED_26;
 
 typedef enum _TAG_UNNAMED_3
 {
-  AUMGR_ALLLOCAL = 1,
-  AUMGR_IUNKNOWN = 2,
-  AUMGR_IMULTIQI = 3,
+  dliStartProcessing = 0,
+  dliNotePreLoadLibrary = 1,
+  dliNotePreGetProcAddress = 2,
+  dliFailLoadLib = 3,
+  dliFailGetProc = 4,
+  dliNoteEndProcessing = 5,
 } TAG_UNNAMED_3, *PTAG_UNNAMED_3;
 
 typedef enum _TAG_UNNAMED_4
 {
-  QIC_STATICMARSHAL = 1,
-  QIC_DISCONNECTED = 2,
-  QIC_ASYNC = 4,
-  QIC_WEAKCLIENT = 8,
-  QIC_BEGINCALLED = 16,
+  AVT_OSVERSIONINFO = 1,
+  AVT_PATCHINFO = 2,
 } TAG_UNNAMED_4, *PTAG_UNNAMED_4;
 
 typedef enum _TAG_UNNAMED_5
+{
+  AUMGR_ALLLOCAL = 1,
+  AUMGR_IUNKNOWN = 2,
+  AUMGR_IMULTIQI = 3,
+} TAG_UNNAMED_5, *PTAG_UNNAMED_5;
+
+typedef enum _TAG_UNNAMED_6
 {
   hdBase = 0,
   hdSym = 1,
   hdSrc = 2,
   hdMax = 3,
-} TAG_UNNAMED_5, *PTAG_UNNAMED_5;
-
-typedef enum _TAG_UNNAMED_6
-{
-  WPP_VER_WIN2K_CB_FORWARD_PTR = 1,
-  WPP_VER_WHISTLER_CB_FORWARD_PTR = 2,
-  WPP_VER_LH_CB_FORWARD_PTR = 3,
 } TAG_UNNAMED_6, *PTAG_UNNAMED_6;
 
 typedef enum _TAG_UNNAMED_7
-{
-  sevInfo = 0,
-  sevProblem = 1,
-  sevAttn = 2,
-  sevFatal = 3,
-  sevMax = 4,
-} TAG_UNNAMED_7, *PTAG_UNNAMED_7;
-
-typedef enum _TAG_UNNAMED_8
-{
-  AVT_OSVERSIONINFO = 1,
-  AVT_PATCHINFO = 2,
-} TAG_UNNAMED_8, *PTAG_UNNAMED_8;
-
-typedef enum _TAG_UNNAMED_9
 {
   sfImage = 0,
   sfDbg = 1,
   sfPdb = 2,
   sfMpd = 3,
   sfMax = 4,
+} TAG_UNNAMED_7, *PTAG_UNNAMED_7;
+
+typedef enum _TAG_UNNAMED_8
+{
+  RIFFLG_HASCOUNTERPART = 1,
+  RIFFLG_HASCLSID = 2,
+} TAG_UNNAMED_8, *PTAG_UNNAMED_8;
+
+typedef enum _TAG_UNNAMED_9
+{
+  WPP_TRACE_OPTIONS = 43,
 } TAG_UNNAMED_9, *PTAG_UNNAMED_9;
 
 struct tagABORTPATH
@@ -42540,7 +42579,7 @@ struct tagCustomPrivResolverInfo
   struct tagOXID_INFO OxidInfo;
   unsigned __int64 LocalMidOfRemote;
   unsigned long DllServerModel;
-  unsigned short* pwszDllServer;
+  wchar_t* pwszDllServer;
   int FoundInROT;
   long __PADDING__[1];
 };
@@ -42548,9 +42587,9 @@ struct tagCustomPrivResolverInfo
 struct tagCustomPrivScmInfo
 {
   long Apartment;
-  wchar_t* pwszWinstaDesktop;
+  unsigned short* pwszWinstaDesktop;
   unsigned __int64 ProcessSignature;
-  wchar_t* pEnvBlock;
+  unsigned short* pEnvBlock;
   unsigned long EnvBlockLength;
   long __PADDING__[1];
 };
@@ -44316,6 +44355,8 @@ enum tagINSTALLMESSAGE
   INSTALLMESSAGE_TERMINATE = 0xd000000,
   INSTALLMESSAGE_SHOWDIALOG = 0xe000000,
   INSTALLMESSAGE_RMFILESINUSE = 0x19000000,
+  INSTALLMESSAGE_INSTALLSTART = 0x1a000000,
+  INSTALLMESSAGE_INSTALLEND = 0x1b000000,
 };
 
 enum tagINSTALLUILEVEL
@@ -44334,7 +44375,7 @@ enum tagINSTALLUILEVEL
 
 struct tagInstanceInfoData
 {
-  wchar_t* fileName;
+  unsigned short* fileName;
   unsigned long mode;
   struct tagMInterfacePointer* ifdROT;
   struct tagMInterfacePointer* ifdStg;
@@ -45623,7 +45664,7 @@ enum tagOLEUPDATE
 struct tagOLEVERB
 {
   long lVerb;
-  unsigned short* lpszVerbName;
+  wchar_t* lpszVerbName;
   unsigned long fuFlags;
   unsigned long grfAttribs;
 };
@@ -47498,7 +47539,7 @@ struct tagSTATPROPSETSTG
 
 struct tagSTATPROPSTG
 {
-  wchar_t* lpwstrName;
+  unsigned short* lpwstrName;
   unsigned long propid;
   unsigned short vt;
   char __PADDING__[2];
@@ -47539,7 +47580,7 @@ enum tagSTDID_FLAGS
   STDID_DEFHANDLER = 1024,
   STDID_AGGID = 2048,
   STDID_STCMRSHL = 4096,
-  STDID_DESTROYID = 8192,
+  STDID_REMOVEDFROMIDOBJ = 8192,
   STDID_SYSTEM = 16384,
   STDID_FTM = 0xffff8000,
   STDID_NOIEC = 0x10000,
@@ -47700,6 +47741,7 @@ enum tagSTRUCTURED_QUERY_MULTIOPTION
   SQMO_VIRTUAL_PROPERTY = 0,
   SQMO_DEFAULT_PROPERTY = 1,
   SQMO_GENERATOR_FOR_TYPE = 2,
+  SQMO_MAP_PROPERTY = 3,
 };
 
 enum tagSTRUCTURED_QUERY_PARSE_ERROR
@@ -47722,6 +47764,15 @@ enum tagSTRUCTURED_QUERY_SINGLE_OPTION
   SQSO_AUTOMATIC_WILDCARD = 4,
   SQSO_TRACE_LEVEL = 5,
   SQSO_LANGUAGE_KEYWORDS = 6,
+  SQSO_SYNTAX = 7,
+  SQSO_TIME_ZONE = 8,
+};
+
+enum tagSTRUCTURED_QUERY_SYNTAX
+{
+  SQS_NO_SYNTAX = 0,
+  SQS_ADVANCED_QUERY_SYNTAX = 1,
+  SQS_NATURAL_QUERY_SYNTAX = 2,
 };
 
 struct tagSTYLEBUFA
@@ -51548,7 +51599,6 @@ void `dynamic initializer for 's_catalogObject''(void);
 void `vector constructor iterator'(void *, unsigned __int64, int, void *(*)(void *));
 void `vector destructor iterator'(void *, unsigned __int64, int, void (*)(void *));
 unsigned long ActErrorPriority(HRESULT);
-HRESULT ActivationProcessInit(void);
 void *ActivationProperties::`scalar deleting destructor'(unsigned int);
 unsigned long ActivationProperties::AddRef(void);
 HRESULT ActivationProperties::AddSerializableIfs(class SerializableProperty *);
@@ -52115,6 +52165,7 @@ HRESULT CBindStatusCallback::Reset(void);
 HRESULT CBindStatusCallback::Signal(void);
 HRESULT CBindStatusCallback::Wait(unsigned long, unsigned long);
 void CBindStatusCallback::~CBindStatusCallback(void);
+void *CCache::`scalar deleting destructor'(unsigned int);
 HRESULT CCache::AddElement(unsigned long, unsigned char *, unsigned short, unsigned short *, struct IUnknown *, struct IUnknown **);
 void CCache::CCache(__int64);
 HRESULT CCache::Flush(unsigned short);
@@ -52291,6 +52342,7 @@ HRESULT CClassCache::CpUnkMoniker::BindToObject(const struct _GUID &, void **);
 HRESULT CClassCache::CpUnkMoniker::BindToObjectNoSwitch(const struct _GUID &, void **);
 HRESULT CClassCache::CpUnkMoniker::CheckApt(void);
 HRESULT CClassCache::CpUnkMoniker::CheckNotComPlus(void);
+void CClassCache::CpUnkMoniker::CpUnkMoniker(class CClassCache::CLSvrClassEntry *, HRESULT &);
 HRESULT CClassCache::CpUnkMoniker::GetDCE(class CClassCache::CDllClassEntry **);
 HRESULT CClassCache::CpUnkMoniker::QueryInterface(const struct _GUID &, void **);
 unsigned long CClassCache::CpUnkMoniker::Release(void);
@@ -52512,7 +52564,6 @@ HRESULT CComApartment::StartServer(void);
 HRESULT CComApartment::StartServerExternal(void);
 HRESULT CComApartment::StopServer(void);
 HRESULT CComApartment::WaitForAccess(void);
-void CComApartment::~CComApartment(void);
 void *CComCat::`scalar deleting destructor'(unsigned int);
 unsigned long CComCat::AddRef(void);
 unsigned long CComCat::CInnerUnk::AddRef(void);
@@ -52806,7 +52857,6 @@ void CConnectionPoint::SetParent(struct IDocfileAsyncConnectionPoint *);
 void CConnectionPoint::~CConnectionPoint(void);
 void CContextLife::Release(void);
 class CContext *CContextList::_Find(unsigned long);
-void *CContextList::`scalar deleting destructor'(unsigned int);
 void CContextList::Add(class CContext *);
 void CContextList::CContextList(void);
 unsigned long CContextList::CountContexts(void);
@@ -52818,7 +52868,6 @@ void CContextPropList::Initialize(void);
 int CContextPropList::operator==(const class CContextPropList &);
 void CContextPropList::Remove(const struct _GUID &);
 void CContextPropList::SerializeToVector(struct tagContextProperty *&);
-void CContextPropList::~CContextPropList(void);
 void *CContextSwitcher::`scalar deleting destructor'(unsigned int);
 unsigned long CContextSwitcher::AddRef(void);
 HRESULT CContextSwitcher::ContextCallback(HRESULT (*)(struct tagComCallData *), struct tagComCallData *, const struct _GUID &, int, struct IUnknown *);
@@ -53929,9 +53978,9 @@ long CExposedStream::Validate(void);
 HRESULT CExposedStream::ValidateWriteAccess(void);
 HRESULT CExposedStream::Write(const void *, unsigned long, unsigned long *);
 void CExposedStream::~CExposedStream(void);
-HRESULT CExpParameterValidate::Clone(struct IStream **);
+HRESULT CExpParameterValidate::Clone(struct IEnumSTATSTG **);
 HRESULT CExpParameterValidate::Commit(unsigned long);
-HRESULT CExpParameterValidate::CopyTo(struct IStream *, union _ULARGE_INTEGER, union _ULARGE_INTEGER *, union _ULARGE_INTEGER *);
+HRESULT CExpParameterValidate::CopyTo(unsigned long, const struct _GUID *, wchar_t **, struct IStorage *);
 HRESULT CExpParameterValidate::CreateStorage(const wchar_t *, unsigned long, unsigned long, unsigned long, struct IStorage **);
 HRESULT CExpParameterValidate::CreateStream(const wchar_t *, unsigned long, unsigned long, unsigned long, struct IStream **);
 HRESULT CExpParameterValidate::DestroyElement(const wchar_t *);
@@ -54357,7 +54406,6 @@ HRESULT CItemMonikerCF_CreateInstance(struct IUnknown *, const struct _GUID &, v
 HRESULT ClassRegistration::Register(void);
 HRESULT ClassRegistration::Unregister(void);
 void CleanAllMemoryResources(struct tagACL_DESCRIPTOR *, struct tagPCB *);
-void CleanROTForApartment(void);
 void CleanupChannelHooks(void);
 void CleanupCtxTableEntry(struct SHashChain *);
 void CleanupExtEntry(struct SHashChain *);
@@ -54375,6 +54423,7 @@ void CleanupThreadCallObjects(struct tagSOleTlsData *);
 void CleanupTlsMap(int);
 void CleanupTlsState(struct tagSOleTlsData *, int);
 __int64 ClientDocWndProc(struct HWND__ *, unsigned int, unsigned __int64, __int64);
+unsigned long ClientGetSize(unsigned long *, class CMessageCall *);
 HRESULT ClientNotify(union WireThat *, unsigned long, void **, unsigned long, HRESULT, class CMessageCall *);
 unsigned long ClientResolveOXID(void *, void *, unsigned __int64 *, struct tagDUALSTRINGARRAY *, long, struct tagOXID_INFO *, unsigned __int64 *, unsigned long *, unsigned char **, unsigned short *);
 int CLinkable::IsLinked(void);
@@ -55539,7 +55588,6 @@ HRESULT CPolicySet::AddPolicy(unsigned long, const struct _GUID &, struct IPolic
 unsigned long CPolicySet::AddRef(void);
 void CPolicySet::Cleanup(void);
 HRESULT CPolicySet::DeliverEvents(class CRpcCall *, enum tagCallType, class CCtxCall *);
-void CPolicySet::DestroyPSCache(class CObjectContext *);
 HRESULT CPolicySet::FillBuffer(class CRpcCall *, enum tagCallType, class CCtxCall *);
 HRESULT CPolicySet::GetSize(class CRpcCall *, enum tagCallType, class CCtxCall *);
 class CPolicySet *CPolicySet::HashChainToPolicySet(struct SHashChain *);
@@ -55709,7 +55757,6 @@ void CPSTable::Cleanup(void);
 void CPSTable::Initialize(void);
 HRESULT CPSTable::Lookup(class CObjectContext *, class CObjectContext *, class CPolicySet **);
 void CPSTable::Remove(class CPolicySet *);
-void CPSTable::ThreadCleanup(int);
 void CPtrBlock::Add(void *);
 int CPtrBlock::Full(void);
 long CPtrCache::Add(void *);
@@ -55848,6 +55895,7 @@ void CRefCache::ChangeRef(struct tagIPIDEntry *, int, struct tagREMINTERFACEREF 
 void CRefCache::CleanupStrong(struct tagREMINTERFACEREF **, unsigned short *);
 void CRefCache::CleanupWeak(struct tagREMINTERFACEREF **, unsigned short *);
 struct IRCEntry *CRefCache::ClientFindIRCEntry(const struct _GUID &);
+void CRefCache::CRefCache(void);
 unsigned long CRefCache::DecRefCnt(void);
 unsigned long CRefCache::DecTableStrongCnt(int, struct tagREMINTERFACEREF **, unsigned short *);
 HRESULT CRefCache::GetSharedRefs(struct tagIPIDEntry *, unsigned long);
@@ -55890,6 +55938,7 @@ void *CRetailMalloc_Realloc(struct IMalloc *, void *, unsigned __int64);
 unsigned char CRGTypeSizes::operator[](int);
 HRESULT CRIFTable::AddEntry(const struct _GUID &, const struct _GUID &, unsigned long, struct tagRIFEntry **);
 void CRIFTable::Cleanup(void);
+struct _RPC_CLIENT_INTERFACE *CRIFTable::GetClientInterfaceInfo(const struct _GUID &);
 HRESULT CRIFTable::GetPSClsid(const struct _GUID &, struct _GUID *, struct tagRIFEntry **);
 HRESULT CRIFTable::GetPSClsidHelper(const struct _GUID &, struct _GUID *, struct tagRIFEntry **);
 void CRIFTable::Initialize(void);
@@ -56041,6 +56090,7 @@ struct _SECURITY_DESCRIPTOR *CRpcResolver::GetDefaultAccessRestrictionsSD(void);
 HRESULT CRpcResolver::GetFQDN(wchar_t **);
 HRESULT CRpcResolver::GetLocalResolverBindings(class CDualStringArray **);
 HRESULT CRpcResolver::GetPersistentInstance(struct IActivationPropertiesIn *, struct IActivationPropertiesOut **, int *);
+struct ISCMLocalActivator *CRpcResolver::GetSCM(int);
 HRESULT CRpcResolver::GetSelfSID(void **);
 HRESULT CRpcResolver::GetSystemSecurityDescriptors(enum tagCOMSD, void **);
 void CRpcResolver::GetThreadID(unsigned long *);
@@ -56498,6 +56548,7 @@ void CStdMarshal::Begin_RemQIAndUnmarshal(unsigned short, struct _GUID *, struct
 void CStdMarshal::Begin_RemQIAndUnmarshal1(unsigned short, struct _GUID *, struct tagQICONTEXT *);
 void CStdMarshal::Begin_RemQIAndUnmarshal2(unsigned short, struct _GUID *, struct tagQICONTEXT *);
 unsigned char CStdMarshal::CanRunDown(unsigned long);
+void CStdMarshal::ChainIPIDEntry(struct tagIPIDEntry *);
 int CStdMarshal::CheckSecureRemUnk(void);
 HRESULT CStdMarshal::ConnectCliIPIDEntry(struct tagSTDOBJREF *, class OXIDEntry *, struct tagIPIDEntry *);
 HRESULT CStdMarshal::ConnectSrvIPIDEntry(struct tagIPIDEntry *, struct IUnknown *);
@@ -56544,7 +56595,6 @@ unsigned long CStdMarshal::LockClient(void);
 HRESULT CStdMarshal::MakeCliIPIDEntry(const struct _GUID &, struct tagSTDOBJREF *, class OXIDEntry *, struct tagIPIDEntry **);
 HRESULT CStdMarshal::MarshalClientIPID(const struct _GUID &, unsigned long, unsigned long, struct tagIPIDEntry **);
 HRESULT CStdMarshal::MarshalInterface(struct IStream *, const struct _GUID &, void *, unsigned long, void *, unsigned long);
-HRESULT CStdMarshal::MarshalIPID(const struct _GUID &, unsigned long, unsigned long, struct tagIPIDEntry **, struct IUnknown *);
 HRESULT CStdMarshal::MarshalObjRef(struct tagOBJREF &, const struct _GUID &, unsigned long, unsigned long, void *, struct IUnknown *);
 HRESULT CStdMarshal::MarshalServerIPID(const struct _GUID &, unsigned long, unsigned long, struct tagIPIDEntry **, struct IUnknown *);
 void CStdMarshal::NotifyDisconnect(void);
@@ -56804,6 +56854,7 @@ void CTSSet::CTSSet(void);
 class PTSetMember *CTSSet::FindName(const class CDfName *, unsigned long);
 void CTSSet::RemoveMember(class PTSetMember *);
 void CTSSet::RenameMember(const class CDfName *, unsigned long, const class CDfName *);
+void *CtxEntry::`scalar deleting destructor'(unsigned int);
 void CtxEntry::AddToFreeList(class CtxEntry **, unsigned long);
 void CtxEntry::Cleanup(void);
 void CtxEntry::DeleteCtxEntries(class CtxEntry *&, unsigned long);
@@ -57685,6 +57736,7 @@ HRESULT IMoniker_RemoteBindToStorage_Proxy(struct IMoniker *, struct IBindCtx *,
 void IMoniker_RemoteBindToStorage_Thunk(struct _MIDL_STUB_MESSAGE *);
 HRESULT ImplicitPropVariantToVariantChangeType(struct tagPROPVARIANT *, const struct tagPROPVARIANT *, unsigned long);
 int Index(struct FMT *, unsigned short, unsigned __int64, unsigned __int64 *);
+int InitCallFrame(void);
 HRESULT InitChannelIfNecessary(void);
 HRESULT InitGlobals(void);
 void InitHookOle(void);
@@ -59071,7 +59123,6 @@ void LogEventCleanup(void);
 void LogEventClientCall(unsigned __int64 *);
 void LogEventClientReturn(unsigned __int64 *);
 void LogEventDisconnect(const struct _GUID *, class MIDEntry *, int);
-HRESULT LogEventGetClassObject(const struct _GUID &, void **);
 void LogEventInitialize(void);
 int LogEventIsActive(void);
 void LogEventMarshal(struct tagOBJREF &);
@@ -59504,6 +59555,7 @@ void OXIDEntry::OXIDEntry(const unsigned __int64 &, class MIDEntry *, struct tag
 HRESULT OXIDEntry::PostCallToSTA(class CMessageCall *);
 HRESULT OXIDEntry::RegisterOXIDAndOIDs(unsigned long *, unsigned __int64 *);
 HRESULT OXIDEntry::SendCallToSTA(class CMessageCall *);
+HRESULT OXIDEntry::SetAuthnService(struct tagOXID_INFO *);
 HRESULT OXIDEntry::StartServer(void);
 HRESULT OXIDEntry::StopServer(void);
 HRESULT OXIDEntry::UnmarshalRemUnk(const struct _GUID &, void **);
@@ -59576,6 +59628,7 @@ int PrivHeapFree(void *, unsigned long, void *);
 void *PrivMemAlloc8(unsigned __int64);
 HRESULT PrivRegisterBindStatusCallback(struct IBindCtx *, struct IBindStatusCallback *, struct IBindStatusCallback **, unsigned long);
 HRESULT PrivRevokeBindStatusCallback(struct IBindCtx *, struct IBindStatusCallback *);
+HRESULT PrivSetServerHResult(struct tagRPCOLEMESSAGE *, void *, HRESULT);
 HRESULT PrivSetServerHRESULTInTLS(void *, HRESULT);
 HRESULT ProcessActivatorInitializing(void *, void *, unsigned long *);
 HRESULT ProcessActivatorPaused(void *, void *, unsigned long *);
@@ -59939,7 +59992,6 @@ long SerializedPropertyReader::ReadSafeArray(unsigned long *, const struct tagSA
 long SerializedPropertyReader::ReadVarType(unsigned short *);
 long SerializedPropertyReader::ReadWorkerNoSwap(void *, unsigned long);
 void SerializedPropertyReader::SerializedPropertyReader(const struct tagSERIALIZEDPROPERTYVALUE *, unsigned long, long *);
-void *Serializer::`scalar deleting destructor'(unsigned int);
 HRESULT Serializer::Commit(void);
 HRESULT Serializer::CopyTo(class Serializer *, unsigned long, unsigned long);
 HRESULT Serializer::GetAvailableSize(__int64 *);
@@ -59952,10 +60004,12 @@ HRESULT Serializer::SetStream(struct IStream *, unsigned long, unsigned long);
 HRESULT Serializer::Write(unsigned char *, unsigned long);
 void Serializer::~Serializer(void);
 long SerializeSafeArrayBounds(const struct tagSAFEARRAY *, unsigned char *, unsigned long *);
+unsigned long ServerAllocateOXIDAndOIDs(void *, void *, unsigned __int64 *, long, unsigned long, unsigned __int64 *, unsigned long *, struct tagOXID_INFO *, struct tagDUALSTRINGARRAY *, struct tagDUALSTRINGARRAY *, unsigned __int64 *, struct tagDUALSTRINGARRAY **);
 void *ServerContextWorkData::`scalar deleting destructor'(unsigned int);
 void ServerContextWorkData::ServerContextWorkData(void);
 void ServerContextWorkData::~ServerContextWorkData(void);
 long ServerExceptionFilter(struct _EXCEPTION_POINTERS *);
+unsigned long ServerGetSize(unsigned long *, class CMessageCall *);
 void *ServerLocationInfo::`scalar deleting destructor'(unsigned int);
 unsigned long ServerLocationInfo::AddRef(void);
 HRESULT ServerLocationInfo::GetApartment(unsigned long *);
@@ -60638,17 +60692,17 @@ void XSLOCK::~XSLOCK(void);
 
 // Globals
 
-int __@@_PchSym_@00@UignOlyqOznwGEuivUxlnUlovDCUhgtUhrnkUwzbglmzUlyquivUznwGEUhrnksvzwOlyq@simp;
-int __@@_PchSym_@00@UignOlyqOznwGEuivUxlnUlovDCUhgtUkilkhUwzbglmzUlyquivUznwGEUkxsOlyq@props;
-int __@@_PchSym_@00@UignOlyqOznwGEuivUxlnUlovDCUhgtUnhuUwzbglmzUlyquivUznwGEUnhusvzwOlyq@msf;
-int __@@_PchSym_@00@UignOlyqOznwGEuivUxlnUlovDCUhgtUvckUwzbglmzUlyquivUznwGEUvcksvzwOlyq@exp;
-int __@@_PchSym_@00@UignOlyqOznwGEuivUxlnUlovDCUhgtUwlxurovUwzbglmzUlyquivUznwGEUwusvzwOlyq@docfile;
-int __@@_PchSym_@00@UignOlyqOznwGEuivUxlnUlovDCUhgtUzhbmxUwlxurovUwzbglmzUlyquivUznwGEUzhgtsvzwOlyq@asyncstg;
-int __@@_PchSym_@00@UignOlyqOznwGEuivUxlnUlovDCUlovCDCUrmxUwzbglmzUlyquivUznwGEUovCrmgOlyq@empty;
-int __@@_PchSym_@00@UignOlyqOznwGEuivUxlnUlovDCUxlnUgcuUgcuzfcUhgzgrxUlyquivUznwGEUhgwkxsOlyq@TxfAuxStaticLib;
-int __@@_PchSym_@00@UignOlyqOznwGEuivUxlnUlovDCUxlnUgcuUhszivwUxlnivtrhgizgrlmUlyquivUznwGEUhgwkxsOlyq@ComRegistration;
-int __@@_PchSym_@00@UignOlyqOznwGEuivUxlnUlovDCUxlnUgcuUxzoouiznvUhgzgrxUlyquivUznwGEUhgwkxsOlyq@CallFrameStatic;
-int __@@_PchSym_@00@UignOlyqOznwGEuivUxlnUlovDCUxlnUrmxUwzbglmzUlyquivUznwGEUxlnCrmgOlyq@inc;
+int __@@_PchSym_@00@UlyqOznwGEuivUxlnUlovDCUhgtUhrnkUwzbglmzUlyquivUznwGEUhrnksvzwOlyq@simp;
+int __@@_PchSym_@00@UlyqOznwGEuivUxlnUlovDCUhgtUkilkhUwzbglmzUlyquivUznwGEUkxsOlyq@props;
+int __@@_PchSym_@00@UlyqOznwGEuivUxlnUlovDCUhgtUnhuUwzbglmzUlyquivUznwGEUnhusvzwOlyq@msf;
+int __@@_PchSym_@00@UlyqOznwGEuivUxlnUlovDCUhgtUvckUwzbglmzUlyquivUznwGEUvcksvzwOlyq@exp;
+int __@@_PchSym_@00@UlyqOznwGEuivUxlnUlovDCUhgtUwlxurovUwzbglmzUlyquivUznwGEUwusvzwOlyq@docfile;
+int __@@_PchSym_@00@UlyqOznwGEuivUxlnUlovDCUhgtUzhbmxUwlxurovUwzbglmzUlyquivUznwGEUzhgtsvzwOlyq@asyncstg;
+int __@@_PchSym_@00@UlyqOznwGEuivUxlnUlovDCUlovCDCUrmxUwzbglmzUlyquivUznwGEUovCrmgOlyq@empty;
+int __@@_PchSym_@00@UlyqOznwGEuivUxlnUlovDCUxlnUgcuUgcuzfcUhgzgrxUlyquivUznwGEUhgwkxsOlyq@TxfAuxStaticLib;
+int __@@_PchSym_@00@UlyqOznwGEuivUxlnUlovDCUxlnUgcuUhszivwUxlnivtrhgizgrlmUlyquivUznwGEUhgwkxsOlyq@ComRegistration;
+int __@@_PchSym_@00@UlyqOznwGEuivUxlnUlovDCUxlnUgcuUxzoouiznvUhgzgrxUlyquivUznwGEUhgwkxsOlyq@CallFrameStatic;
+int __@@_PchSym_@00@UlyqOznwGEuivUxlnUlovDCUxlnUrmxUwzbglmzUlyquivUznwGEUxlnCrmgOlyq@inc;
 unsigned char abCDocfileUnmarshalFactory[24];
 struct _RPC_CLIENT_INTERFACE AccCntrlPickle___RpcClientInterface;
 void *AccCntrlPickle__MIDL_AutoBindHandle;
@@ -60801,6 +60855,8 @@ class CRWLock CClassCache::_mxs;
 void (*CClassCache::_mxs$initializer$)(void);
 class CClassCache::CLSvrClassEntry *CClassCache::_NTALSvrsFront;
 class CClassCache::CCollectable *CClassCache::_ObjectsForCollection;
+unsigned long CClassCache::CClassEntry::_dwSxSHashCount;
+unsigned long CClassCache::CClassEntry::_dwSxSMaxHashCount;
 class CPageAllocator CClassCache::CClassEntry::_palloc;
 void (*CClassCache::CClassEntry::_palloc$initializer$)(void);
 const unsigned long CClassCache::CClassEntry::CLASS_ENTRY_SIG;
@@ -63237,7 +63293,7 @@ struct tagProxyFileInfo mega_ProxyFileInfo;
 const struct tagCInterfaceProxyVtbl *_mega_ProxyVtblList[86];
 const struct tagCInterfaceStubVtbl *_mega_StubVtblList[86];
 struct SHashChain MIDBuckets[23];
-struct _NDR64_POINTER_FORMAT __midl_frag10;
+struct __midl_frag10_t __midl_frag10;
 struct __midl_frag100_t __midl_frag100;
 const unsigned char __midl_frag1000;
 struct _NDR64_POINTER_FORMAT __midl_frag1001;
@@ -64240,7 +64296,7 @@ struct __midl_frag296_t __midl_frag296;
 struct __midl_frag297_t __midl_frag297;
 struct __midl_frag298_t __midl_frag298;
 struct _NDR64_USER_MARSHAL_FORMAT __midl_frag299;
-const unsigned char __midl_frag3;
+struct _NDR64_CONFORMANT_STRING_FORMAT __midl_frag3;
 const unsigned char __midl_frag30;
 struct _NDR64_POINTER_FORMAT __midl_frag300;
 struct __midl_frag301_t __midl_frag301;
@@ -64664,7 +64720,7 @@ struct __midl_frag696_t __midl_frag696;
 struct __midl_frag697_t __midl_frag697;
 struct __midl_frag698_t __midl_frag698;
 const unsigned char __midl_frag699;
-struct __midl_frag7_t __midl_frag7;
+const unsigned char __midl_frag7;
 struct _NDR64_POINTER_FORMAT __midl_frag70;
 const unsigned char __midl_frag700;
 struct _NDR64_POINTER_FORMAT __midl_frag701;
@@ -64872,7 +64928,7 @@ struct __midl_frag896_t __midl_frag896;
 struct _NDR64_POINTER_FORMAT __midl_frag897;
 struct _NDR64_POINTER_FORMAT __midl_frag898;
 struct _NDR64_CONSTANT_IID_FORMAT __midl_frag899;
-const unsigned char __midl_frag9;
+struct __midl_frag9_t __midl_frag9;
 struct _NDR64_POINTER_FORMAT __midl_frag90;
 const unsigned char __midl_frag900;
 struct __midl_frag901_t __midl_frag901;
