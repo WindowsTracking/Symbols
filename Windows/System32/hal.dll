@@ -1,5 +1,5 @@
 /*
- * PDB file: hal.pdb\5E5C6555035349D9950043A182DF64702\hal.pdb
+ * PDB file: hal.pdb\0C72B43B8AC64E22AB88B564E69330372\hal.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -32,6 +32,7 @@ struct _ETHREAD;
 struct _EVENT_DATA_DESCRIPTOR;
 struct _EVENT_DESCRIPTOR;
 enum _EVENT_TYPE;
+struct _EXCEPTION_REGISTRATION_RECORD;
 struct _FACS;
 struct _FADT;
 struct _FAST_IO_DISPATCH;
@@ -47,6 +48,10 @@ struct _GEN_ADDR;
 struct _GENERAL_LOOKASIDE;
 struct _GENERAL_LOOKASIDE_POOL;
 struct _GUID;
+struct _HAL_ENLIGHTENMENT;
+enum _HALP_DMA_MAP_BUFFER_TYPE;
+struct HalpMpInfo;
+struct _HARDWARE_PTE;
 struct _INITIAL_PRIVILEGE_SET;
 struct _INTERFACE;
 enum _INTERFACE_TYPE;
@@ -65,7 +70,6 @@ struct _IO_TIMER;
 struct _IOAPIC;
 struct _IOSAPIC;
 struct _IRP;
-enum _IRQ_DEVICE_POLICY;
 enum _IRQ_PRIORITY;
 struct _ISA_VECTOR;
 struct _KAPC;
@@ -74,12 +78,17 @@ struct _KDEVICE_QUEUE;
 struct _KDEVICE_QUEUE_ENTRY;
 struct _KDPC;
 struct _KEVENT;
+union _KGDTENTRY64;
+union _KIDTENTRY64;
+struct _KPCR;
 struct _KPRCB;
 struct _KPROCESS;
 struct _KPROCESSOR_STATE;
 struct _KSEMAPHORE;
 struct _KSPECIAL_REGISTERS;
+struct _KSPIN_LOCK_QUEUE;
 struct _KTHREAD;
+struct _KTSS64;
 union _LARGE_INTEGER;
 struct LIST_ENTRY32;
 struct LIST_ENTRY64;
@@ -90,9 +99,12 @@ struct _LUID;
 struct _LUID_AND_ATTRIBUTES;
 struct _M128A;
 struct _MAPIC;
+union _MCG_STATUS;
+union _MCI_STATUS;
 struct _MDL;
 enum _MEMORY_CACHING_TYPE_ORIG;
 struct _NPAGED_LOOKASIDE_LIST;
+struct _NT_TIB;
 struct _OBJECT_ATTRIBUTES;
 struct _OBJECT_TYPE;
 struct _OWNER_ENTRY;
@@ -110,6 +122,10 @@ enum _REG_NOTIFY_CLASS;
 struct _RSDP;
 struct _RSDT_32;
 struct _RTL_BITMAP;
+struct _RTL_DYNAMIC_HASH_TABLE;
+struct _RTL_DYNAMIC_HASH_TABLE_CONTEXT;
+struct _RTL_DYNAMIC_HASH_TABLE_ENTRY;
+struct _RTL_DYNAMIC_HASH_TABLE_ENUMERATOR;
 struct _SCSI_REQUEST_BLOCK;
 struct _SECTION_OBJECT_POINTERS;
 enum _SECURITY_IMPERSONATION_LEVEL;
@@ -126,8 +142,10 @@ union _ULARGE_INTEGER;
 struct _UNICODE_STRING;
 struct _VPB;
 struct _WAIT_CONTEXT_BLOCK;
-struct _WHEA_ERROR_PACKET;
+enum _WHEA_CPU_VENDOR;
+enum _WHEA_ERROR_PACKET_DATA_FORMAT;
 union _WHEA_ERROR_PACKET_FLAGS;
+struct _WHEA_ERROR_PACKET_V2;
 struct _WHEA_ERROR_RECORD;
 struct _WHEA_ERROR_RECORD_HEADER;
 union _WHEA_ERROR_RECORD_HEADER_FLAGS;
@@ -137,34 +155,16 @@ union _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR_FLAGS;
 union _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR_VALIDBITS;
 enum _WHEA_ERROR_SEVERITY;
 enum _WHEA_ERROR_SOURCE_TYPE;
-union _WHEA_ERROR_STATUS;
 enum _WHEA_ERROR_TYPE;
-struct _WHEA_GENERIC_PROCESSOR_ERROR;
-union _WHEA_GENERIC_PROCESSOR_ERROR_VALIDBITS;
-struct _WHEA_MEMORY_ERROR;
-union _WHEA_MEMORY_ERROR_VALIDBITS;
-struct _WHEA_NMI_ERROR;
-union _WHEA_NMI_ERROR_FLAGS;
-union _WHEA_PCIEXPRESS_BRIDGE_CONTROL_STATUS;
-union _WHEA_PCIEXPRESS_COMMAND_STATUS;
-struct _WHEA_PCIEXPRESS_DEVICE_ID;
-enum WHEA_PCIEXPRESS_DEVICE_TYPE;
-struct _WHEA_PCIEXPRESS_ERROR;
-union _WHEA_PCIEXPRESS_ERROR_VALIDBITS;
-union _WHEA_PCIEXPRESS_VERSION;
-union _WHEA_PCIXBUS_COMMAND;
-struct _WHEA_PCIXBUS_ERROR;
-union _WHEA_PCIXBUS_ERROR_VALIDBITS;
-union _WHEA_PCIXBUS_ID;
-struct _WHEA_PCIXDEVICE_ERROR;
-union _WHEA_PCIXDEVICE_ERROR_VALIDBITS;
-struct _WHEA_PCIXDEVICE_ID;
-struct WHEA_PCIXDEVICE_REGISTER_PAIR;
 union _WHEA_PERSISTENCE_INFO;
-enum _WHEA_RAW_DATA_FORMAT;
+struct _WHEA_PROCESSOR_GENERIC_ERROR_SECTION;
+union _WHEA_PROCESSOR_GENERIC_ERROR_SECTION_VALIDBITS;
 union _WHEA_REVISION;
 union _WHEA_TIMESTAMP;
-struct _XMM_SAVE_AREA32;
+struct _WHEA_XPF_MCA_SECTION;
+struct _WHEA_XPF_PROCESSOR_ERROR_SECTION;
+union _WHEA_XPF_PROCESSOR_ERROR_SECTION_VALIDBITS;
+struct _XSAVE_FORMAT;
 
 #include <pshpack1.h>
 
@@ -202,6 +202,7 @@ enum BUS_QUERY_ID_TYPE
   BusQueryCompatibleIDs = 2,
   BusQueryInstanceID = 3,
   BusQueryDeviceSerialNumber = 4,
+  BusQueryContainerID = 5,
 };
 
 typedef struct _CM_FULL_RESOURCE_DESCRIPTOR
@@ -232,7 +233,8 @@ typedef struct _CM_PARTIAL_RESOURCE_DESCRIPTOR
       } Port;
       struct
       {
-        unsigned long Level;
+        unsigned short Level;
+        unsigned short Group;
         unsigned long Vector;
         unsigned __int64 Affinity;
       } Interrupt;
@@ -242,14 +244,15 @@ typedef struct _CM_PARTIAL_RESOURCE_DESCRIPTOR
         {
           struct
           {
-            unsigned short Reserved;
+            unsigned short Group;
             unsigned short MessageCount;
             unsigned long Vector;
             unsigned __int64 Affinity;
           } Raw;
           struct
           {
-            unsigned long Level;
+            unsigned short Level;
+            unsigned short Group;
             unsigned long Vector;
             unsigned __int64 Affinity;
           } Translated;
@@ -359,7 +362,7 @@ typedef struct _CONTEXT
   unsigned __int64 Rip;
   union
   {
-    struct _XMM_SAVE_AREA32 FltSave;
+    struct _XSAVE_FORMAT FltSave;
     struct
     {
       struct _M128A Header[2];
@@ -438,7 +441,8 @@ typedef struct _DEVICE_CAPABILITIES
     unsigned long NonDynamic : 1; /* bit position: 15 */
     unsigned long WarmEjectSupported : 1; /* bit position: 16 */
     unsigned long NoDisplayInUI : 1; /* bit position: 17 */
-    unsigned long Reserved : 14; /* bit position: 18 */
+    unsigned long Reserved1 : 1; /* bit position: 18 */
+    unsigned long Reserved : 13; /* bit position: 19 */
   }; /* bitfield */
   unsigned long Address;
   unsigned long UINumber;
@@ -505,6 +509,7 @@ typedef enum _DEVICE_RELATION_TYPE
   RemovalRelations = 3,
   TargetDeviceRelation = 4,
   SingleBusRelations = 5,
+  TransportRelations = 6,
 } DEVICE_RELATION_TYPE, *PDEVICE_RELATION_TYPE;
 
 enum DEVICE_TEXT_TYPE
@@ -537,22 +542,50 @@ typedef struct _DISPATCHER_HEADER
       unsigned char Type;
       union
       {
+        unsigned char TimerControlFlags;
+        struct /* bitfield */
+        {
+          unsigned char Absolute : 1; /* bit position: 0 */
+          unsigned char Coalescable : 1; /* bit position: 1 */
+          unsigned char KeepShifting : 1; /* bit position: 2 */
+          unsigned char EncodedTolerableDelay : 5; /* bit position: 3 */
+        }; /* bitfield */
         unsigned char Abandoned;
-        unsigned char Absolute;
-        unsigned char NpxIrql;
         struct
         {
           unsigned char Signalling;
           union
           {
-            unsigned char Size;
+            unsigned char ThreadControlFlags;
+            struct /* bitfield */
+            {
+              unsigned char CpuThrottled : 1; /* bit position: 0 */
+              unsigned char CycleProfiling : 1; /* bit position: 1 */
+              unsigned char CounterProfiling : 1; /* bit position: 2 */
+              unsigned char Reserved : 5; /* bit position: 3 */
+            }; /* bitfield */
+            unsigned char Hand;
             struct
             {
-              unsigned char Hand;
+              unsigned char Size;
               union
               {
-                unsigned char Inserted;
+                unsigned char TimerMiscFlags;
+                struct /* bitfield */
+                {
+                  unsigned char Index : 6; /* bit position: 0 */
+                  unsigned char Inserted : 1; /* bit position: 6 */
+                  volatile unsigned char Expired : 1; /* bit position: 7 */
+                }; /* bitfield */
                 unsigned char DebugActive;
+                struct /* bitfield */
+                {
+                  unsigned char ActiveDR7 : 1; /* bit position: 0 */
+                  unsigned char Instrumented : 1; /* bit position: 1 */
+                  unsigned char Reserved2 : 4; /* bit position: 2 */
+                  unsigned char UmsScheduled : 1; /* bit position: 6 */
+                  unsigned char UmsPrimary : 1; /* bit position: 7 */
+                }; /* bitfield */
                 unsigned char DpcActive;
               };
             };
@@ -644,6 +677,8 @@ typedef enum _EVENT_TYPE
   NotificationEvent = 0,
   SynchronizationEvent = 1,
 } EVENT_TYPE, *PEVENT_TYPE;
+
+struct _EXCEPTION_REGISTRATION_RECORD;
 
 typedef struct _FACS
 {
@@ -751,7 +786,7 @@ typedef struct _FAST_MUTEX
   volatile long Count;
   struct _KTHREAD* Owner;
   unsigned long Contention;
-  struct _KEVENT Gate;
+  struct _KEVENT Event;
   unsigned long OldIrql;
   long __PADDING__[1];
 } FAST_MUTEX, *PFAST_MUTEX;
@@ -820,7 +855,12 @@ typedef enum _FILE_INFORMATION_CLASS
   FileNormalizedNameInformation = 48,
   FileNetworkPhysicalNameInformation = 49,
   FileIdGlobalTxDirectoryInformation = 50,
-  FileMaximumInformation = 51,
+  FileIsRemoteDeviceInformation = 51,
+  FileAttributeCacheInformation = 52,
+  FileNumaNodeInformation = 53,
+  FileStandardLinkInformation = 54,
+  FileRemoteProtocolInformation = 55,
+  FileMaximumInformation = 56,
 } FILE_INFORMATION_CLASS, *PFILE_INFORMATION_CLASS;
 
 typedef struct _FILE_NETWORK_OPEN_INFORMATION
@@ -1000,6 +1040,66 @@ typedef struct _GUID
   unsigned char Data4[8];
 } GUID, *PGUID;
 
+typedef struct _HAL_ENLIGHTENMENT
+{
+  unsigned long Enlightenments;
+  unsigned long HypervisorConnected;
+  void* EndOfInterrupt /* function */;
+  void* ApicWriteIcr /* function */;
+  unsigned long Reserved0;
+  unsigned long SpinCountMask;
+  void* LongSpinWait /* function */;
+  void* GetReferenceTime /* function */;
+} HAL_ENLIGHTENMENT, *PHAL_ENLIGHTENMENT;
+
+typedef enum _HALP_DMA_MAP_BUFFER_TYPE
+{
+  HalpDmaContiguousMapBuffer = 0,
+  HalpDmaNonContiguousMapBuffer = 1,
+  HalpDmaMaximumMapBufferType = 2,
+} HALP_DMA_MAP_BUFFER_TYPE, *PHALP_DMA_MAP_BUFFER_TYPE;
+
+struct HalpMpInfo
+{
+  unsigned long ApicVersion;
+  unsigned long ProcessorCount;
+  unsigned long DynamicProcessorCount;
+  unsigned long NtProcessors;
+  unsigned long StartedPackages;
+  unsigned long BusCount;
+  unsigned long IoApicCount;
+  unsigned long IoApicIntiCount;
+  unsigned long LintiCount;
+  unsigned long IMCRPresent;
+  unsigned long LocalApicBase;
+  unsigned long** IoApicBase;
+  unsigned long* IoApicPhys;
+  unsigned long* IoApicIntiBase;
+};
+
+typedef struct _HARDWARE_PTE
+{
+  struct /* bitfield */
+  {
+    unsigned __int64 Valid : 1; /* bit position: 0 */
+    unsigned __int64 Write : 1; /* bit position: 1 */
+    unsigned __int64 Owner : 1; /* bit position: 2 */
+    unsigned __int64 WriteThrough : 1; /* bit position: 3 */
+    unsigned __int64 CacheDisable : 1; /* bit position: 4 */
+    unsigned __int64 Accessed : 1; /* bit position: 5 */
+    unsigned __int64 Dirty : 1; /* bit position: 6 */
+    unsigned __int64 LargePage : 1; /* bit position: 7 */
+    unsigned __int64 Global : 1; /* bit position: 8 */
+    unsigned __int64 CopyOnWrite : 1; /* bit position: 9 */
+    unsigned __int64 Prototype : 1; /* bit position: 10 */
+    unsigned __int64 reserved0 : 1; /* bit position: 11 */
+    unsigned __int64 PageFrameNumber : 28; /* bit position: 12 */
+    unsigned __int64 reserved1 : 12; /* bit position: 40 */
+    unsigned __int64 SoftwareWsIndex : 11; /* bit position: 52 */
+    unsigned __int64 NoExecute : 1; /* bit position: 63 */
+  }; /* bitfield */
+} HARDWARE_PTE, *PHARDWARE_PTE;
+
 typedef struct _INITIAL_PRIVILEGE_SET
 {
   unsigned long PrivilegeCount;
@@ -1105,7 +1205,8 @@ typedef struct _IO_RESOURCE_DESCRIPTOR
       {
         unsigned long MinimumVector;
         unsigned long MaximumVector;
-        enum _IRQ_DEVICE_POLICY AffinityPolicy;
+        unsigned short AffinityPolicy;
+        unsigned short Group;
         enum _IRQ_PRIORITY PriorityPolicy;
         unsigned __int64 TargetedProcessors;
       } Interrupt;
@@ -1460,7 +1561,8 @@ typedef struct _IOSAPIC
 {
   unsigned char Type;
   unsigned char Length;
-  unsigned short Reserved;
+  unsigned char IOSAPICID;
+  unsigned char Reserved;
   unsigned long SystemVectorBase;
   unsigned __int64 IOSAPICAddress;
 } IOSAPIC, *PIOSAPIC;
@@ -1536,16 +1638,6 @@ typedef struct _IRP
     };
   } Tail;
 } IRP, *PIRP;
-
-typedef enum _IRQ_DEVICE_POLICY
-{
-  IrqPolicyMachineDefault = 0,
-  IrqPolicyAllCloseProcessors = 1,
-  IrqPolicyOneCloseProcessor = 2,
-  IrqPolicyAllProcessorsInMachine = 3,
-  IrqPolicySpecifiedProcessors = 4,
-  IrqPolicySpreadMessagesAcrossAllProcessors = 5,
-} IRQ_DEVICE_POLICY, *PIRQ_DEVICE_POLICY;
 
 typedef enum _IRQ_PRIORITY
 {
@@ -1636,21 +1728,126 @@ typedef struct _KEVENT
   struct _DISPATCHER_HEADER Header;
 } KEVENT, *PKEVENT;
 
+typedef union _KGDTENTRY64
+{
+  union
+  {
+    struct
+    {
+      unsigned short LimitLow;
+      unsigned short BaseLow;
+      union
+      {
+        struct
+        {
+          unsigned char BaseMiddle;
+          unsigned char Flags1;
+          unsigned char Flags2;
+          unsigned char BaseHigh;
+        } Bytes;
+        struct
+        {
+          struct
+          {
+            struct /* bitfield */
+            {
+              unsigned long BaseMiddle : 8; /* bit position: 0 */
+              unsigned long Type : 5; /* bit position: 8 */
+              unsigned long Dpl : 2; /* bit position: 13 */
+              unsigned long Present : 1; /* bit position: 15 */
+              unsigned long LimitHigh : 4; /* bit position: 16 */
+              unsigned long System : 1; /* bit position: 20 */
+              unsigned long LongMode : 1; /* bit position: 21 */
+              unsigned long DefaultBig : 1; /* bit position: 22 */
+              unsigned long Granularity : 1; /* bit position: 23 */
+              unsigned long BaseHigh : 8; /* bit position: 24 */
+            }; /* bitfield */
+          } Bits;
+          unsigned long BaseUpper;
+          unsigned long MustBeZero;
+        };
+      };
+    };
+    unsigned __int64 Alignment;
+  };
+} KGDTENTRY64, *PKGDTENTRY64;
+
+typedef union _KIDTENTRY64
+{
+  union
+  {
+    struct
+    {
+      unsigned short OffsetLow;
+      unsigned short Selector;
+      struct /* bitfield */
+      {
+        unsigned short IstIndex : 3; /* bit position: 0 */
+        unsigned short Reserved0 : 5; /* bit position: 3 */
+        unsigned short Type : 5; /* bit position: 8 */
+        unsigned short Dpl : 2; /* bit position: 13 */
+        unsigned short Present : 1; /* bit position: 15 */
+      }; /* bitfield */
+      unsigned short OffsetMiddle;
+      unsigned long OffsetHigh;
+      unsigned long Reserved1;
+    };
+    unsigned __int64 Alignment;
+  };
+} KIDTENTRY64, *PKIDTENTRY64;
+
+typedef struct _KPCR
+{
+  union
+  {
+    struct _NT_TIB NtTib;
+    struct
+    {
+      union _KGDTENTRY64* GdtBase;
+      struct _KTSS64* TssBase;
+      unsigned __int64 UserRsp;
+      struct _KPCR* Self;
+      struct _KPRCB* CurrentPrcb;
+      struct _KSPIN_LOCK_QUEUE* LockArray;
+      void* Used_Self;
+    };
+  };
+  union _KIDTENTRY64* IdtBase;
+  unsigned __int64 Unused[2];
+  unsigned char Irql;
+  unsigned char SecondLevelCacheAssociativity;
+  unsigned char ObsoleteNumber;
+  unsigned char Fill0;
+  unsigned long Unused0[3];
+  unsigned short MajorVersion;
+  unsigned short MinorVersion;
+  unsigned long StallScaleFactor;
+  void* Unused1[3];
+  unsigned long KernelReserved[15];
+  unsigned long SecondLevelCacheSize;
+  unsigned long HalReserved[16];
+  unsigned long Unused2;
+  void* KdVersionBlock;
+  void* Unused3;
+  unsigned long PcrAlign1[24];
+} KPCR, *PKPCR;
+
 typedef struct _KPRCB
 {
   unsigned long MxCsr;
-  unsigned short Number;
+  unsigned char LegacyNumber;
+  unsigned char ReservedMustBeZero;
   unsigned char InterruptRequest;
   unsigned char IdleHalt;
   struct _KTHREAD* CurrentThread;
   struct _KTHREAD* NextThread;
   struct _KTHREAD* IdleThread;
   unsigned char NestingLevel;
-  unsigned char Group;
-  unsigned char PrcbPad00[6];
+  unsigned char PrcbPad00[3];
+  unsigned long Number;
   unsigned __int64 RspBase;
   unsigned __int64 PrcbLock;
-  unsigned __int64 SetMember;
+  unsigned __int64 PrcbPad01;
   struct _KPROCESSOR_STATE ProcessorState;
   char CpuType;
   char CpuID;
@@ -1676,7 +1873,10 @@ typedef struct _KPRCB
   void* AcpiReserved;
   unsigned long InitialApicId;
   unsigned long Stride;
-  unsigned __int64 PrcbPad01[3];
+  unsigned short Group;
+  unsigned __int64 GroupSetMember;
+  unsigned char GroupIndex;
+  char __PADDING__[7];
 } KPRCB, *PKPRCB;
 
 struct _KPROCESS;
@@ -1725,7 +1925,25 @@ typedef struct _KSPECIAL_REGISTERS
   unsigned __int64 MsrSyscallMask;
 } KSPECIAL_REGISTERS, *PKSPECIAL_REGISTERS;
 
+typedef struct _KSPIN_LOCK_QUEUE
+{
+  struct _KSPIN_LOCK_QUEUE* volatile Next;
+  unsigned __int64* volatile Lock;
+} KSPIN_LOCK_QUEUE, *PKSPIN_LOCK_QUEUE;
+
 struct _KTHREAD;
+
+typedef struct _KTSS64
+{
+  unsigned long Reserved0;
+  unsigned __int64 Rsp0;
+  unsigned __int64 Rsp1;
+  unsigned __int64 Rsp2;
+  unsigned __int64 Ist[8];
+  unsigned __int64 Reserved1;
+  unsigned short Reserved2;
+  unsigned short IoMapBase;
+} KTSS64, *PKTSS64;
 
 typedef union _LARGE_INTEGER
 {
@@ -1803,6 +2021,51 @@ typedef struct _MAPIC
   unsigned long APICTables[1];
 } MAPIC, *PMAPIC;
 
+typedef union _MCG_STATUS
+{
+  union
+  {
+    struct
+    {
+      struct /* bitfield */
+      {
+        unsigned long RestartIpValid : 1; /* bit position: 0 */
+        unsigned long ErrorIpValid : 1; /* bit position: 1 */
+        unsigned long MachineCheckInProgress : 1; /* bit position: 2 */
+        unsigned long Reserved1 : 29; /* bit position: 3 */
+      }; /* bitfield */
+      unsigned long Reserved2;
+    };
+    unsigned __int64 QuadPart;
+  };
+} MCG_STATUS, *PMCG_STATUS;
+
+typedef union _MCI_STATUS
+{
+  union
+  {
+    struct
+    {
+      unsigned short McaErrorCode;
+      unsigned short ModelErrorCode;
+      struct /* bitfield */
+      {
+        unsigned long OtherInformation : 23; /* bit position: 0 */
+        unsigned long ActionRequired : 1; /* bit position: 23 */
+        unsigned long Signalling : 1; /* bit position: 24 */
+        unsigned long ContextCorrupt : 1; /* bit position: 25 */
+        unsigned long AddressValid : 1; /* bit position: 26 */
+        unsigned long MiscValid : 1; /* bit position: 27 */
+        unsigned long ErrorEnabled : 1; /* bit position: 28 */
+        unsigned long UncorrectedError : 1; /* bit position: 29 */
+        unsigned long StatusOverFlow : 1; /* bit position: 30 */
+        unsigned long Valid : 1; /* bit position: 31 */
+      }; /* bitfield */
+    };
+    unsigned __int64 QuadPart;
+  };
+} MCI_STATUS, *PMCI_STATUS;
+
 typedef struct _MDL
 {
   struct _MDL* Next;
@@ -1825,6 +2088,21 @@ typedef struct _NPAGED_LOOKASIDE_LIST
   struct _GENERAL_LOOKASIDE L;
 } NPAGED_LOOKASIDE_LIST, *PNPAGED_LOOKASIDE_LIST;
 
+typedef struct _NT_TIB
+{
+  struct _EXCEPTION_REGISTRATION_RECORD* ExceptionList;
+  void* StackBase;
+  void* StackLimit;
+  void* SubSystemTib;
+  union
+  {
+    void* FiberData;
+    unsigned long Version;
+  };
+  void* ArbitraryUserPointer;
+  struct _NT_TIB* Self;
+} NT_TIB, *PNT_TIB;
+
 typedef struct _OBJECT_ATTRIBUTES
 {
   unsigned long Length;
@@ -1842,7 +2120,12 @@ typedef struct _OWNER_ENTRY
   unsigned __int64 OwnerThread;
   union
   {
-    long OwnerCount;
+    struct /* bitfield */
+    {
+      unsigned long IoPriorityBoosted : 1; /* bit position: 0 */
+      unsigned long OwnerReferenced : 1; /* bit position: 1 */
+      unsigned long OwnerCount : 30; /* bit position: 2 */
+    }; /* bitfield */
     unsigned long TableSize;
   };
   long __PADDING__[1];
@@ -1944,6 +2227,8 @@ typedef struct _PROCLOCALSAPIC
   unsigned char APICEID;
   unsigned char Reserved[3];
   unsigned long Flags;
+  unsigned long ACPIProcessorUIDInteger;
+  char ACPIProcessorUIDString[1];
 } PROCLOCALSAPIC, *PPROCLOCALSAPIC;
 
 typedef enum _REG_NOTIFY_CLASS
@@ -2033,6 +2318,40 @@ typedef struct _RTL_BITMAP
   unsigned long SizeOfBitMap;
   unsigned long* Buffer;
 } RTL_BITMAP, *PRTL_BITMAP;
+
+typedef struct _RTL_DYNAMIC_HASH_TABLE
+{
+  unsigned long Flags;
+  unsigned long Shift;
+  unsigned long TableSize;
+  unsigned long Pivot;
+  unsigned long DivisorMask;
+  unsigned long NumEntries;
+  unsigned long NonEmptyBuckets;
+  unsigned long NumEnumerators;
+  void* Directory;
+} RTL_DYNAMIC_HASH_TABLE, *PRTL_DYNAMIC_HASH_TABLE;
+
+typedef struct _RTL_DYNAMIC_HASH_TABLE_CONTEXT
+{
+  struct _LIST_ENTRY* ChainHead;
+  struct _LIST_ENTRY* PrevLinkage;
+  unsigned __int64 Signature;
+} RTL_DYNAMIC_HASH_TABLE_CONTEXT, *PRTL_DYNAMIC_HASH_TABLE_CONTEXT;
+
+typedef struct _RTL_DYNAMIC_HASH_TABLE_ENTRY
+{
+  struct _LIST_ENTRY Linkage;
+  unsigned __int64 Signature;
+} RTL_DYNAMIC_HASH_TABLE_ENTRY, *PRTL_DYNAMIC_HASH_TABLE_ENTRY;
+
+typedef struct _RTL_DYNAMIC_HASH_TABLE_ENUMERATOR
+{
+  struct _RTL_DYNAMIC_HASH_TABLE_ENTRY HashEntry;
+  struct _LIST_ENTRY* ChainHead;
+  unsigned long BucketIndex;
+  long __PADDING__[1];
+} RTL_DYNAMIC_HASH_TABLE_ENUMERATOR, *PRTL_DYNAMIC_HASH_TABLE_ENUMERATOR;
 
 struct _SCSI_REQUEST_BLOCK;
 
@@ -2229,37 +2548,25 @@ typedef struct _WAIT_CONTEXT_BLOCK
   struct _KDPC* BufferChainingDpc;
 } WAIT_CONTEXT_BLOCK, *PWAIT_CONTEXT_BLOCK;
 
-typedef struct _WHEA_ERROR_PACKET
+typedef enum _WHEA_CPU_VENDOR
 {
-  unsigned long Signature;
-  union _WHEA_ERROR_PACKET_FLAGS Flags;
-  unsigned long Size;
-  unsigned long RawDataLength;
-  unsigned __int64 Reserved1;
-  unsigned __int64 Context;
-  enum _WHEA_ERROR_TYPE ErrorType;
-  enum _WHEA_ERROR_SEVERITY ErrorSeverity;
-  unsigned long ErrorSourceId;
-  enum _WHEA_ERROR_SOURCE_TYPE ErrorSourceType;
-  unsigned long Reserved2;
-  unsigned long Version;
-  unsigned __int64 Cpu;
-  union
-  {
-    union
-    {
-      struct _WHEA_GENERIC_PROCESSOR_ERROR ProcessorError;
-      struct _WHEA_MEMORY_ERROR MemoryError;
-      struct _WHEA_NMI_ERROR NmiError;
-      struct _WHEA_PCIEXPRESS_ERROR PciExpressError;
-      struct _WHEA_PCIXBUS_ERROR PciXBusError;
-      struct _WHEA_PCIXDEVICE_ERROR PciXDeviceError;
-    };
-  } u;
-  enum _WHEA_RAW_DATA_FORMAT RawDataFormat;
-  unsigned long RawDataOffset;
-  unsigned char RawData[1];
-} WHEA_ERROR_PACKET, *PWHEA_ERROR_PACKET;
+  WheaCpuVendorOther = 0,
+  WheaCpuVendorIntel = 1,
+  WheaCpuVendorAmd = 2,
+} WHEA_CPU_VENDOR, *PWHEA_CPU_VENDOR;
+
+typedef enum _WHEA_ERROR_PACKET_DATA_FORMAT
+{
+  WheaDataFormatIPFSalRecord = 0,
+  WheaDataFormatXPFMCA = 1,
+  WheaDataFormatMemory = 2,
+  WheaDataFormatPCIExpress = 3,
+  WheaDataFormatNMIPort = 4,
+  WheaDataFormatPCIXBus = 5,
+  WheaDataFormatPCIXDevice = 6,
+  WheaDataFormatGeneric = 7,
+  WheaDataFormatMax = 8,
+} WHEA_ERROR_PACKET_DATA_FORMAT, *PWHEA_ERROR_PACKET_DATA_FORMAT;
 
 typedef union _WHEA_ERROR_PACKET_FLAGS
 {
@@ -2268,14 +2575,36 @@ typedef union _WHEA_ERROR_PACKET_FLAGS
     struct /* bitfield */
     {
       unsigned long PreviousError : 1; /* bit position: 0 */
-      unsigned long CpuValid : 1; /* bit position: 1 */
+      unsigned long Reserved1 : 1; /* bit position: 1 */
       unsigned long HypervisorError : 1; /* bit position: 2 */
       unsigned long Simulated : 1; /* bit position: 3 */
-      unsigned long Reserved : 28; /* bit position: 4 */
+      unsigned long PlatformPfaControl : 1; /* bit position: 4 */
+      unsigned long PlatformDirectedOffline : 1; /* bit position: 5 */
+      unsigned long Reserved2 : 26; /* bit position: 6 */
     }; /* bitfield */
     unsigned long AsULONG;
   };
 } WHEA_ERROR_PACKET_FLAGS, *PWHEA_ERROR_PACKET_FLAGS;
+
+typedef struct _WHEA_ERROR_PACKET_V2
+{
+  unsigned long Signature;
+  unsigned long Version;
+  unsigned long Length;
+  union _WHEA_ERROR_PACKET_FLAGS Flags;
+  enum _WHEA_ERROR_TYPE ErrorType;
+  enum _WHEA_ERROR_SEVERITY ErrorSeverity;
+  unsigned long ErrorSourceId;
+  enum _WHEA_ERROR_SOURCE_TYPE ErrorSourceType;
+  struct _GUID NotifyType;
+  unsigned __int64 Context;
+  enum _WHEA_ERROR_PACKET_DATA_FORMAT DataFormat;
+  unsigned long Reserved1;
+  unsigned long DataOffset;
+  unsigned long DataLength;
+  unsigned long PshedDataOffset;
+  unsigned long PshedDataLength;
+} WHEA_ERROR_PACKET_V2, *PWHEA_ERROR_PACKET_V2;
 
 typedef struct _WHEA_ERROR_RECORD
 {
@@ -2324,8 +2653,8 @@ typedef union _WHEA_ERROR_RECORD_HEADER_VALIDBITS
   {
     struct /* bitfield */
     {
-      unsigned long Timestamp : 1; /* bit position: 0 */
-      unsigned long PlatformId : 1; /* bit position: 1 */
+      unsigned long PlatformId : 1; /* bit position: 0 */
+      unsigned long Timestamp : 1; /* bit position: 1 */
       unsigned long PartitionId : 1; /* bit position: 2 */
       unsigned long Reserved : 29; /* bit position: 3 */
     }; /* bitfield */
@@ -2384,7 +2713,7 @@ typedef enum _WHEA_ERROR_SEVERITY
   WheaErrSevRecoverable = 0,
   WheaErrSevFatal = 1,
   WheaErrSevCorrected = 2,
-  WheaErrSevNone = 3,
+  WheaErrSevInformational = 3,
 } WHEA_ERROR_SEVERITY, *PWHEA_ERROR_SEVERITY;
 
 typedef enum _WHEA_ERROR_SOURCE_TYPE
@@ -2404,27 +2733,6 @@ typedef enum _WHEA_ERROR_SOURCE_TYPE
   WheaErrSrcTypeMax = 12,
 } WHEA_ERROR_SOURCE_TYPE, *PWHEA_ERROR_SOURCE_TYPE;
 
-typedef union _WHEA_ERROR_STATUS
-{
-  union
-  {
-    unsigned __int64 ErrorStatus;
-    struct /* bitfield */
-    {
-      unsigned __int64 Reserved1 : 8; /* bit position: 0 */
-      unsigned __int64 ErrorType : 8; /* bit position: 8 */
-      unsigned __int64 Address : 1; /* bit position: 16 */
-      unsigned __int64 Control : 1; /* bit position: 17 */
-      unsigned __int64 Data : 1; /* bit position: 18 */
-      unsigned __int64 Responder : 1; /* bit position: 19 */
-      unsigned __int64 Requester : 1; /* bit position: 20 */
-      unsigned __int64 FirstError : 1; /* bit position: 21 */
-      unsigned __int64 Overflow : 1; /* bit position: 22 */
-      unsigned __int64 Reserved2 : 41; /* bit position: 23 */
-    }; /* bitfield */
-  };
-} WHEA_ERROR_STATUS, *PWHEA_ERROR_STATUS;
-
 typedef enum _WHEA_ERROR_TYPE
 {
   WheaErrTypeProcessor = 0,
@@ -2436,9 +2744,26 @@ typedef enum _WHEA_ERROR_TYPE
   WheaErrTypeGeneric = 6,
 } WHEA_ERROR_TYPE, *PWHEA_ERROR_TYPE;
 
-typedef struct _WHEA_GENERIC_PROCESSOR_ERROR
+typedef union _WHEA_PERSISTENCE_INFO
 {
-  union _WHEA_GENERIC_PROCESSOR_ERROR_VALIDBITS ValidBits;
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned __int64 Signature : 16; /* bit position: 0 */
+      unsigned __int64 Length : 24; /* bit position: 16 */
+      unsigned __int64 Identifier : 16; /* bit position: 40 */
+      unsigned __int64 Attributes : 2; /* bit position: 56 */
+      unsigned __int64 DoNotLog : 1; /* bit position: 58 */
+      unsigned __int64 Reserved : 5; /* bit position: 59 */
+    }; /* bitfield */
+    unsigned __int64 AsULONGLONG;
+  };
+} WHEA_PERSISTENCE_INFO, *PWHEA_PERSISTENCE_INFO;
+
+typedef struct _WHEA_PROCESSOR_GENERIC_ERROR_SECTION
+{
+  union _WHEA_PROCESSOR_GENERIC_ERROR_SECTION_VALIDBITS ValidBits;
   unsigned char ProcessorType;
   unsigned char InstructionSet;
   unsigned char ErrorType;
@@ -2453,9 +2778,9 @@ typedef struct _WHEA_GENERIC_PROCESSOR_ERROR
   unsigned __int64 RequesterId;
   unsigned __int64 ResponderId;
   unsigned __int64 InstructionPointer;
-} WHEA_GENERIC_PROCESSOR_ERROR, *PWHEA_GENERIC_PROCESSOR_ERROR;
+} WHEA_PROCESSOR_GENERIC_ERROR_SECTION, *PWHEA_PROCESSOR_GENERIC_ERROR_SECTION;
 
-typedef union _WHEA_GENERIC_PROCESSOR_ERROR_VALIDBITS
+typedef union _WHEA_PROCESSOR_GENERIC_ERROR_SECTION_VALIDBITS
 {
   union
   {
@@ -2478,331 +2803,7 @@ typedef union _WHEA_GENERIC_PROCESSOR_ERROR_VALIDBITS
     }; /* bitfield */
     unsigned __int64 ValidBits;
   };
-} WHEA_GENERIC_PROCESSOR_ERROR_VALIDBITS, *PWHEA_GENERIC_PROCESSOR_ERROR_VALIDBITS;
-
-typedef struct _WHEA_MEMORY_ERROR
-{
-  union _WHEA_MEMORY_ERROR_VALIDBITS ValidBits;
-  union _WHEA_ERROR_STATUS ErrorStatus;
-  unsigned __int64 PhysicalAddress;
-  unsigned __int64 PhysicalAddressMask;
-  unsigned short Node;
-  unsigned short Card;
-  unsigned short Module;
-  unsigned short Bank;
-  unsigned short Device;
-  unsigned short Row;
-  unsigned short Column;
-  unsigned short BitPosition;
-  unsigned __int64 RequesterId;
-  unsigned __int64 ResponderId;
-  unsigned __int64 TargetId;
-  unsigned char ErrorType;
-} WHEA_MEMORY_ERROR, *PWHEA_MEMORY_ERROR;
-
-typedef union _WHEA_MEMORY_ERROR_VALIDBITS
-{
-  union
-  {
-    struct /* bitfield */
-    {
-      unsigned __int64 ErrorStatus : 1; /* bit position: 0 */
-      unsigned __int64 PhysicalAddress : 1; /* bit position: 1 */
-      unsigned __int64 PhysicalAddressMask : 1; /* bit position: 2 */
-      unsigned __int64 Node : 1; /* bit position: 3 */
-      unsigned __int64 Card : 1; /* bit position: 4 */
-      unsigned __int64 Module : 1; /* bit position: 5 */
-      unsigned __int64 Bank : 1; /* bit position: 6 */
-      unsigned __int64 Device : 1; /* bit position: 7 */
-      unsigned __int64 Row : 1; /* bit position: 8 */
-      unsigned __int64 Column : 1; /* bit position: 9 */
-      unsigned __int64 BitPosition : 1; /* bit position: 10 */
-      unsigned __int64 RequesterId : 1; /* bit position: 11 */
-      unsigned __int64 ResponderId : 1; /* bit position: 12 */
-      unsigned __int64 TargetId : 1; /* bit position: 13 */
-      unsigned __int64 ErrorType : 1; /* bit position: 14 */
-      unsigned __int64 Reserved : 49; /* bit position: 15 */
-    }; /* bitfield */
-    unsigned __int64 ValidBits;
-  };
-} WHEA_MEMORY_ERROR_VALIDBITS, *PWHEA_MEMORY_ERROR_VALIDBITS;
-
-typedef struct _WHEA_NMI_ERROR
-{
-  unsigned char Data[8];
-  union _WHEA_NMI_ERROR_FLAGS Flags;
-} WHEA_NMI_ERROR, *PWHEA_NMI_ERROR;
-
-typedef union _WHEA_NMI_ERROR_FLAGS
-{
-  union
-  {
-    struct /* bitfield */
-    {
-      unsigned long HypervisorError : 1; /* bit position: 0 */
-      unsigned long Reserved : 31; /* bit position: 1 */
-    }; /* bitfield */
-    unsigned long AsULONG;
-  };
-} WHEA_NMI_ERROR_FLAGS, *PWHEA_NMI_ERROR_FLAGS;
-
-typedef union _WHEA_PCIEXPRESS_BRIDGE_CONTROL_STATUS
-{
-  union
-  {
-    struct
-    {
-      unsigned short BridgeSecondaryStatus;
-      unsigned short BridgeControl;
-    };
-    unsigned long AsULONG;
-  };
-} WHEA_PCIEXPRESS_BRIDGE_CONTROL_STATUS, *PWHEA_PCIEXPRESS_BRIDGE_CONTROL_STATUS;
-
-typedef union _WHEA_PCIEXPRESS_COMMAND_STATUS
-{
-  union
-  {
-    struct
-    {
-      unsigned short Command;
-      unsigned short Status;
-    };
-    unsigned long AsULONG;
-  };
-} WHEA_PCIEXPRESS_COMMAND_STATUS, *PWHEA_PCIEXPRESS_COMMAND_STATUS;
-
-typedef struct _WHEA_PCIEXPRESS_DEVICE_ID
-{
-  unsigned short VendorID;
-  unsigned short DeviceID;
-  struct /* bitfield */
-  {
-    unsigned long ClassCode : 24; /* bit position: 0 */
-    unsigned long FunctionNumber : 8; /* bit position: 24 */
-  }; /* bitfield */
-  struct /* bitfield */
-  {
-    unsigned long DeviceNumber : 8; /* bit position: 0 */
-    unsigned long Segment : 16; /* bit position: 8 */
-    unsigned long PrimaryBusNumber : 8; /* bit position: 24 */
-  }; /* bitfield */
-  struct /* bitfield */
-  {
-    unsigned long SecondaryBusNumber : 8; /* bit position: 0 */
-    unsigned long Reserved1 : 2; /* bit position: 8 */
-    unsigned long SlotNumber : 14; /* bit position: 10 */
-    unsigned long Reserved2 : 8; /* bit position: 24 */
-  }; /* bitfield */
-} WHEA_PCIEXPRESS_DEVICE_ID, *PWHEA_PCIEXPRESS_DEVICE_ID;
-
-enum WHEA_PCIEXPRESS_DEVICE_TYPE
-{
-  WheaPciExpressEndpoint = 0,
-  WheaPciExpressLegacyEndpoint = 1,
-  WheaPciExpressRootPort = 4,
-  WheaPciExpressUpstreamSwitchPort = 5,
-  WheaPciExpressDownstreamSwitchPort = 6,
-  WheaPciExpressToPciXBridge = 7,
-  WheaPciXToExpressBridge = 8,
-  WheaPciExpressRootComplexIntegratedEndpoint = 9,
-  WheaPciExpressRootComplexEventCollector = 10,
-};
-
-typedef struct _WHEA_PCIEXPRESS_ERROR
-{
-  union _WHEA_PCIEXPRESS_ERROR_VALIDBITS ValidBits;
-  enum WHEA_PCIEXPRESS_DEVICE_TYPE PortType;
-  union _WHEA_PCIEXPRESS_VERSION Version;
-  union _WHEA_PCIEXPRESS_COMMAND_STATUS CommandStatus;
-  unsigned long Reserved;
-  struct _WHEA_PCIEXPRESS_DEVICE_ID DeviceId;
-  unsigned __int64 DeviceSerialNumber;
-  union _WHEA_PCIEXPRESS_BRIDGE_CONTROL_STATUS BridgeControlStatus;
-  unsigned char ExpressCapability[60];
-  unsigned char AerInfo[96];
-} WHEA_PCIEXPRESS_ERROR, *PWHEA_PCIEXPRESS_ERROR;
-
-typedef union _WHEA_PCIEXPRESS_ERROR_VALIDBITS
-{
-  union
-  {
-    struct /* bitfield */
-    {
-      unsigned __int64 PortType : 1; /* bit position: 0 */
-      unsigned __int64 Version : 1; /* bit position: 1 */
-      unsigned __int64 CommandStatus : 1; /* bit position: 2 */
-      unsigned __int64 DeviceId : 1; /* bit position: 3 */
-      unsigned __int64 DeviceSerialNumber : 1; /* bit position: 4 */
-      unsigned __int64 BridgeControlStatus : 1; /* bit position: 5 */
-      unsigned __int64 ExpressCapability : 1; /* bit position: 6 */
-      unsigned __int64 AerInfo : 1; /* bit position: 7 */
-      unsigned __int64 Reserved : 56; /* bit position: 8 */
-    }; /* bitfield */
-    unsigned __int64 ValidBits;
-  };
-} WHEA_PCIEXPRESS_ERROR_VALIDBITS, *PWHEA_PCIEXPRESS_ERROR_VALIDBITS;
-
-typedef union _WHEA_PCIEXPRESS_VERSION
-{
-  union
-  {
-    struct
-    {
-      unsigned char MinorVersion;
-      unsigned char MajorVersion;
-      unsigned short Reserved;
-    };
-    unsigned long AsULONG;
-  };
-} WHEA_PCIEXPRESS_VERSION, *PWHEA_PCIEXPRESS_VERSION;
-
-typedef union _WHEA_PCIXBUS_COMMAND
-{
-  union
-  {
-    struct /* bitfield */
-    {
-      unsigned __int64 Command : 56; /* bit position: 0 */
-      unsigned __int64 PCIXCommand : 1; /* bit position: 56 */
-      unsigned __int64 Reserved : 7; /* bit position: 57 */
-    }; /* bitfield */
-    unsigned __int64 AsULONGLONG;
-  };
-} WHEA_PCIXBUS_COMMAND, *PWHEA_PCIXBUS_COMMAND;
-
-typedef struct _WHEA_PCIXBUS_ERROR
-{
-  union _WHEA_PCIXBUS_ERROR_VALIDBITS ValidBits;
-  union _WHEA_ERROR_STATUS ErrorStatus;
-  unsigned short ErrorType;
-  union _WHEA_PCIXBUS_ID BusId;
-  unsigned long Reserved;
-  unsigned __int64 BusAddress;
-  unsigned __int64 BusData;
-  union _WHEA_PCIXBUS_COMMAND BusCommand;
-  unsigned __int64 RequesterId;
-  unsigned __int64 CompleterId;
-  unsigned __int64 TargetId;
-} WHEA_PCIXBUS_ERROR, *PWHEA_PCIXBUS_ERROR;
-
-typedef union _WHEA_PCIXBUS_ERROR_VALIDBITS
-{
-  union
-  {
-    struct /* bitfield */
-    {
-      unsigned __int64 ErrorStatus : 1; /* bit position: 0 */
-      unsigned __int64 ErrorType : 1; /* bit position: 1 */
-      unsigned __int64 BusId : 1; /* bit position: 2 */
-      unsigned __int64 BusAddress : 1; /* bit position: 3 */
-      unsigned __int64 BusData : 1; /* bit position: 4 */
-      unsigned __int64 BusCommand : 1; /* bit position: 5 */
-      unsigned __int64 RequesterId : 1; /* bit position: 6 */
-      unsigned __int64 CompleterId : 1; /* bit position: 7 */
-      unsigned __int64 TargetId : 1; /* bit position: 8 */
-      unsigned __int64 Reserved : 55; /* bit position: 9 */
-    }; /* bitfield */
-    unsigned __int64 ValidBits;
-  };
-} WHEA_PCIXBUS_ERROR_VALIDBITS, *PWHEA_PCIXBUS_ERROR_VALIDBITS;
-
-typedef union _WHEA_PCIXBUS_ID
-{
-  union
-  {
-    struct
-    {
-      unsigned char BusNumber;
-      unsigned char BusSegment;
-    };
-    unsigned short AsUSHORT;
-  };
-} WHEA_PCIXBUS_ID, *PWHEA_PCIXBUS_ID;
-
-typedef struct _WHEA_PCIXDEVICE_ERROR
-{
-  union _WHEA_PCIXDEVICE_ERROR_VALIDBITS ValidBits;
-  union _WHEA_ERROR_STATUS ErrorStatus;
-  struct _WHEA_PCIXDEVICE_ID IdInfo;
-  unsigned long MemoryNumber;
-  unsigned long IoNumber;
-  struct WHEA_PCIXDEVICE_REGISTER_PAIR RegisterDataPairs[4];
-} WHEA_PCIXDEVICE_ERROR, *PWHEA_PCIXDEVICE_ERROR;
-
-typedef union _WHEA_PCIXDEVICE_ERROR_VALIDBITS
-{
-  union
-  {
-    struct /* bitfield */
-    {
-      unsigned __int64 ErrorStatus : 1; /* bit position: 0 */
-      unsigned __int64 IdInfo : 1; /* bit position: 1 */
-      unsigned __int64 MemoryNumber : 1; /* bit position: 2 */
-      unsigned __int64 IoNumber : 1; /* bit position: 3 */
-      unsigned __int64 RegisterDataPairs : 1; /* bit position: 4 */
-      unsigned __int64 Reserved : 59; /* bit position: 5 */
-    }; /* bitfield */
-    unsigned __int64 ValidBits;
-  };
-} WHEA_PCIXDEVICE_ERROR_VALIDBITS, *PWHEA_PCIXDEVICE_ERROR_VALIDBITS;
-
-typedef struct _WHEA_PCIXDEVICE_ID
-{
-  unsigned short VendorId;
-  unsigned short DeviceId;
-  struct /* bitfield */
-  {
-    unsigned long ClassCode : 24; /* bit position: 0 */
-    unsigned long FunctionNumber : 8; /* bit position: 24 */
-  }; /* bitfield */
-  struct /* bitfield */
-  {
-    unsigned long DeviceNumber : 8; /* bit position: 0 */
-    unsigned long BusNumber : 8; /* bit position: 8 */
-    unsigned long SegmentNumber : 8; /* bit position: 16 */
-    unsigned long Reserved1 : 8; /* bit position: 24 */
-  }; /* bitfield */
-  unsigned long Reserved2;
-} WHEA_PCIXDEVICE_ID, *PWHEA_PCIXDEVICE_ID;
-
-struct WHEA_PCIXDEVICE_REGISTER_PAIR
-{
-  unsigned __int64 Register;
-  unsigned __int64 Data;
-};
-
-typedef union _WHEA_PERSISTENCE_INFO
-{
-  union
-  {
-    struct /* bitfield */
-    {
-      unsigned __int64 Signature : 16; /* bit position: 0 */
-      unsigned __int64 Length : 24; /* bit position: 16 */
-      unsigned __int64 Identifier : 16; /* bit position: 40 */
-      unsigned __int64 Attributes : 2; /* bit position: 56 */
-      unsigned __int64 DoNotLog : 1; /* bit position: 58 */
-      unsigned __int64 Reserved : 5; /* bit position: 59 */
-    }; /* bitfield */
-    unsigned __int64 AsULONGLONG;
-  };
-} WHEA_PERSISTENCE_INFO, *PWHEA_PERSISTENCE_INFO;
-
-typedef enum _WHEA_RAW_DATA_FORMAT
-{
-  WheaRawDataFormatIPFSalRecord = 0,
-  WheaRawDataFormatIA32MCA = 1,
-  WheaRawDataFormatIntel64MCA = 2,
-  WheaRawDataFormatAMD64MCA = 3,
-  WheaRawDataFormatMemory = 4,
-  WheaRawDataFormatPCIExpress = 5,
-  WheaRawDataFormatNMIPort = 6,
-  WheaRawDataFormatPCIXBus = 7,
-  WheaRawDataFormatPCIXDevice = 8,
-  WheaRawDataFormatGeneric = 9,
-  WheaRawDataFormatMax = 10,
-} WHEA_RAW_DATA_FORMAT, *PWHEA_RAW_DATA_FORMAT;
+} WHEA_PROCESSOR_GENERIC_ERROR_SECTION_VALIDBITS, *PWHEA_PROCESSOR_GENERIC_ERROR_SECTION_VALIDBITS;
 
 typedef union _WHEA_REVISION
 {
@@ -2826,7 +2827,8 @@ typedef union _WHEA_TIMESTAMP
       unsigned __int64 Seconds : 8; /* bit position: 0 */
       unsigned __int64 Minutes : 8; /* bit position: 8 */
       unsigned __int64 Hours : 8; /* bit position: 16 */
-      unsigned __int64 Reserved : 8; /* bit position: 24 */
+      unsigned __int64 Precise : 1; /* bit position: 24 */
+      unsigned __int64 Reserved : 7; /* bit position: 25 */
       unsigned __int64 Day : 8; /* bit position: 32 */
       unsigned __int64 Month : 8; /* bit position: 40 */
       unsigned __int64 Year : 8; /* bit position: 48 */
@@ -2836,7 +2838,48 @@ typedef union _WHEA_TIMESTAMP
   };
 } WHEA_TIMESTAMP, *PWHEA_TIMESTAMP;
 
-typedef struct _XMM_SAVE_AREA32
+typedef struct _WHEA_XPF_MCA_SECTION
+{
+  unsigned long VersionNumber;
+  enum _WHEA_CPU_VENDOR CpuVendor;
+  union _LARGE_INTEGER Timestamp;
+  unsigned long ProcessorNumber;
+  union _MCG_STATUS GlobalStatus;
+  unsigned __int64 InstructionPointer;
+  unsigned long BankNumber;
+  union _MCI_STATUS Status;
+  unsigned __int64 Address;
+  unsigned __int64 Misc;
+  unsigned long ExtendedRegisterCount;
+  unsigned long Reserved2;
+  unsigned __int64 ExtendedRegisters[24];
+} WHEA_XPF_MCA_SECTION, *PWHEA_XPF_MCA_SECTION;
+
+typedef struct _WHEA_XPF_PROCESSOR_ERROR_SECTION
+{
+  union _WHEA_XPF_PROCESSOR_ERROR_SECTION_VALIDBITS ValidBits;
+  unsigned __int64 LocalAPICId;
+  unsigned char CpuId[48];
+  unsigned char VariableInfo[1];
+} WHEA_XPF_PROCESSOR_ERROR_SECTION, *PWHEA_XPF_PROCESSOR_ERROR_SECTION;
+
+typedef union _WHEA_XPF_PROCESSOR_ERROR_SECTION_VALIDBITS
+{
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned __int64 LocalAPICId : 1; /* bit position: 0 */
+      unsigned __int64 CpuId : 1; /* bit position: 1 */
+      unsigned __int64 ProcInfoCount : 6; /* bit position: 2 */
+      unsigned __int64 ContextInfoCount : 6; /* bit position: 8 */
+      unsigned __int64 Reserved : 50; /* bit position: 14 */
+    }; /* bitfield */
+    unsigned __int64 ValidBits;
+  };
+} WHEA_XPF_PROCESSOR_ERROR_SECTION_VALIDBITS, *PWHEA_XPF_PROCESSOR_ERROR_SECTION_VALIDBITS;
+
+typedef struct _XSAVE_FORMAT
 {
   unsigned short ControlWord;
   unsigned short StatusWord;
@@ -2854,7 +2897,7 @@ typedef struct _XMM_SAVE_AREA32
   struct _M128A FloatRegisters[8];
   struct _M128A XmmRegisters[16];
   unsigned char Reserved4[96];
-} XMM_SAVE_AREA32, *PXMM_SAVE_AREA32;
+} XSAVE_FORMAT, *PXSAVE_FORMAT;
 
 #include <poppack.h>
 
@@ -2868,8 +2911,8 @@ Amd64InitializeProfiling();
 Amd64OverflowHandler();
 Amd64QueryInformation();
 Amd64SetInterval();
+ArbDeleteMmConfigRange();
 atoi();
-DbgBreakPoint();
 DbgPrint();
 DefaultDisableMonitoring();
 DefaultEnableMonitoring();
@@ -2894,7 +2937,6 @@ ExReleaseSpinLockExclusive();
 ExReleaseSpinLockShared();
 __GSHandlerCheck();
 __GSHandlerCheckCommon();
-HalaAcpiTimerInit();
 HalAcpiEmCheckOperator();
 HalAcpiGetAllTablesDispatch();
 HalAcpiGetFacsMappingDispatch();
@@ -2910,6 +2952,7 @@ HalAdjustResourceList();
 HalAllocateAdapterChannel();
 HalAllocateCommonBuffer();
 HalAllocateCrashDumpRegisters();
+HalAllocateHardwareCounters();
 HalAllProcessorsStarted();
 HalAssignSlotResources();
 HalBugCheckSystem();
@@ -2927,6 +2970,7 @@ HalEnumerateEnvironmentVariablesEx();
 HalEnumerateProcessors();
 HalFlushCommonBuffer();
 HalFreeCommonBuffer();
+HalFreeHardwareCounters();
 HalGetAdapter();
 HalGetBusData();
 HalGetBusDataByOffset();
@@ -2935,6 +2979,7 @@ HalGetEnvironmentVariable();
 HalGetEnvironmentVariableEx();
 HalGetInterruptTargetInformation();
 HalGetInterruptVector();
+HalGetMemoryCachingRequirements();
 HalGetMessageRoutingInfo();
 HalGetProcessorIdByNtNumber();
 HalGetScatterGatherList();
@@ -2945,7 +2990,6 @@ HaliAcpiMachineStateInit();
 HaliAcpiQueryFlags();
 HaliAcpiSleep();
 HaliAcpiTimerCarry();
-HaliAcpiTimerInit();
 HaliGetDmaAdapter();
 HaliGetInterruptTranslator();
 HaliHaltSystem();
@@ -2955,10 +2999,6 @@ HaliInitPowerManagement();
 HaliIsVectorValid();
 HaliLocateHiberRanges();
 HalInitializeBios();
-HalInitializeCMC();
-HalInitializeErrSrc();
-HalInitializeMCA();
-HalInitializeNMI();
 HalInitializeOnResume();
 HalInitializeProcessor();
 HalInitSystem();
@@ -2977,6 +3017,7 @@ HalMatchAcpiOemId();
 HalMatchAcpiOemRevision();
 HalMatchAcpiOemTableId();
 HalMatchAcpiRevision();
+HalMcUpdateReadPCIConfig();
 HalpAcpiAllocateMemory();
 HalpAcpiCacheTable();
 HalpAcpiCheckAndMapTable();
@@ -3004,14 +3045,25 @@ HalpAcquireCmosSpinLockEx();
 HalpAcquireHighLevelLock();
 HalpAddAdapterToList();
 HalpAddDevice();
+HalpAddInterruptDest();
+HalpAddMcaToProcessorGenericSection();
+HalpAddMcaToProcessorSpecificSection();
 HalpAllocateAdapterCallback();
 HalpAllocateCR3Root();
 HalpAllocateMapRegisters();
+HalpAllocateNumaConfigData();
 HalpAllocPhysicalMemory();
 HalpApicRebootService();
+HalpApicReserveResources();
 HalpApicSpuriousService();
-HalpAssignDriveLetters();
 HalpAssignSlotResourcesStub();
+HalpAuditAcpiTables();
+HalpAuditAllocateRsdtArrayTable();
+HalpAuditEnumerateRsdts();
+HalpAuditEnumerateRsdtsInRange();
+HalpAuditEnumerateSlicTables();
+HalpAuditSelectRsdtOrXsdt();
+HalpAuditSlicTables();
 HalpBiosDisplayReset();
 HalpBroadcastCallService();
 HalpBugCheckCallback();
@@ -3023,25 +3075,50 @@ HalpBuildTiledCR3Ex();
 HalpcGetCmosDataByType();
 HalpCheckLowMemoryPostSleep();
 HalpCheckLowMemoryPreSleep();
+HalpCheckNonBspTimerCompatibility();
 HalpCheckPowerButton();
 HalpCheckWakeupTimeAndAdjust();
-HalpCmciCurrentProcessorInitErrorPacket();
-HalpCmciCurrentProcessorSetConfigAMD();
-HalpCmciCurrentProcessorSetConfigIntel();
+HalpClockGetMessageRoutingInfo();
+HalpClockSetMessageInterruptRouting();
+HalpClusterModeSupportedByProcessor();
+HalpCmcDeferredRoutine();
+HalpCmciDeferredRoutine();
 HalpCmciInit();
+HalpCmciInitializeErrorPacket();
+HalpCmciInitProcessor();
+HalpCmciLoadThresholdConfiguration();
+HalpCmcInitializePolling();
+HalpCmciPollProcessor();
 HalpCmciService();
-HalpCmciSetConfigAMD();
-HalpCmcPollingDpcRoutine();
-HalpCmcPollingWorkerRoutine();
+HalpCmciSetProcessorConfig();
+HalpCmciSetProcessorConfigAMD();
+HalpCmciSetProcessorConfigIntel();
+HalpCmciSetProcessorMiscConfigAMD();
+HalpCmcPollProcessor();
+HalpCmcStartPolling();
+HalpCmcWorkerRoutine();
 HalpCmosNullReference();
 HalpCmosRangeHandler();
 HalpCmosReadByte();
 HalpCmosWriteByte();
 HalpCommitCR3Worker();
 HalpConsumeLowMemory();
+HalpCorrectErrSrc();
+HalpCorrectGenericErrSrc();
+HalpCorrectNMIErrSrc();
 HalpCpuID();
+HalpCreateErrorRecord();
 HalpCreateInterrupt();
+HalpCreateMachineCheckErrorRecord();
+HalpCreateMcaMemoryErrorRecord();
+HalpCreateMcaProcessorErrorRecord();
+HalpCreateNMIErrorRecord();
 HalpcSetCmosDataByType();
+HalpDeferredRecoveryService();
+HalpDetectAlwaysRunningApicTimer();
+HalpDetermineSystemApicMode();
+HalpDisableCmciOnProcessor();
+HalpDisableMSIInterrupt();
 HalpDisableSystemInterrupt();
 HalpDispatchPnp();
 HalpDispatchPower();
@@ -3072,7 +3149,6 @@ HalpDmaCommitScatterMapBuffers();
 HalpDmaFinalizeDoubleBufferingDisposition();
 HalpDmaFlushScatterTransfer();
 HalpDmaForceAllocation();
-HalpDmaFreeChildAdapter();
 HalpDmaFreeChildAdapterWorker();
 HalpDmaFreeMapRegisters();
 HalpDmaGetTranslationEntries();
@@ -3093,81 +3169,110 @@ HalpDmaReturnToScatterPool();
 HalpDmaSyncMapBuffers();
 HalpDmaSyncMapBuffersWithEmergencyResources();
 HalpDmaZeroMapBuffers();
+HalpDpGetInterruptReplayState();
+HalpDpMaskLevelTriggeredInterrupts();
+HalpDpPostReplace();
 HalpDpPostReplaceInitialization();
 HalpDpReplaceBegin();
 HalpDpReplaceControl();
 HalpDpReplaceEnd();
 HalpDpReplaceTarget();
+HalpDpReplayInterrupts();
 HalpDpStartProcessor();
 HalpDpSwapProcessorIdentifiers();
+HalpDpUnmaskLevelTriggeredInterrupts();
 HalpDriverEntry();
 HalpECmosReadByte();
 HalpECmosWriteByte();
 HalpEfiInitialization();
 HalpEfiInitializeOnResume();
+HalpEnableMSIInterrupt();
 HalpEnableNMI();
-HalpEnablePerfInterupt();
+HalpEnablePerfInterrupt();
 HalpEnableRedirEntry();
 HalpEnableSystemInterrupt();
 HalpEndOfBoot();
 HalpFDMANotificationCallback();
-HalpFillAMD64ProcessorErrorSection();
-HalpFillIntel64ProcessorErrorSection();
 HalpFindBusAddressTranslation();
-HalpFixupPhysicalIntiDestinations();
 HalpFreeTiledCR3Ex();
 HalpGenericCall();
 HalpGenericPolledDpcRoutine();
 HalpGenericPolledWorkerRoutine();
 HalpGetAcpiStaticNumaTopology();
-HalpGetApicIdByProcessorNumber();
+HalpGetApicIdByProcessorIndex();
 HalpGetApicInti();
 HalpGetApicVersion();
 HalpGetChipHacks();
 HalpGetCmosData();
-HalpGetCPUVendor();
+HalpGetCpuInfo();
 HalpGetDisplayBiosInformation();
-HalpGetEisaData();
 HalpGetFeatureBits();
-HalpGetMcaLog();
+HalpGetHypervisorInformation();
+HalpGetIdealQueryPerformanceCounterSource();
 HalpGetNextProcessorApicId();
+HalpGetNumaProcMemoryCount();
 HalpGetParameters();
 HalpGetPCIData();
+HalpGetPlatformTimerInformation();
 HalpGetPmTimerPerfCounterValue();
 HalpGetPmTimerSleepModePerfCounterValue();
 HalpGetProcessorBrandString();
+HalpGetProcessorCounterAttributes();
 HalpGetResourceSortValue();
 HalpGetSetCmosData();
 HalpGrowMapBufferWorker();
 HalpHalt();
+HalpHandlePreviousMcaErrors();
+HalpHandlePreviousMcaErrorsOnProcessor();
 HalpHpetClockInterrupt();
 HalpHpetClockInterruptStub();
 HalpHpetClockInterruptWork();
-HalpHpetInitializeClock();
+HalpHpetEnableHypervisorTimer();
+HalpHpetEnableLineBasedInterrupts();
+HalpHpetHypervisorInterruptStub();
+HalpHpetProgramClock();
+HalpHpetProgramHypervisorTimer();
+HalpHpetProgramRolloverTimer();
+HalpHpetQueryCount();
 HalpHpetRolloverInterrupt();
 HalpHpetStartProfileInterrupt();
 HalpHpetWriteEtwEvent();
+HalpHvApicWaitForIcr();
+HalpHvApicWriteIcr();
 HalpHvCpuid();
+HalpHvIsReferenceTimeAvailable();
+HalpHwPolicyInitialize();
 HalpInitChipHacks();
 HalpInitGenericErrorSourceEntry();
 HalpInitGenericErrorSourcePollingRoutine();
 HalpInitializeApicAddressing();
 HalpInitializeClock();
 HalpInitializeCmos();
+HalpInitializeConfigurationFromMadt();
+HalpInitializeErrSrc();
 HalpInitializeGenericErrorSource();
 HalpInitializeHpet();
+HalpInitializeInterruptRemapping();
 HalpInitializeIOUnit();
-HalpInitializeIOUnits();
 HalpInitializeLocalUnit();
-HalpInitializePciBus();
+HalpInitializeMce();
+HalpInitializeNMI();
+HalpInitializePciStubs();
 HalpInitializePICs();
 HalpInitializeProfiling();
 HalpInitializeWheaPhysicalMappings();
 HalpInitIntiInfo();
 HalpInitMpInfo();
 HalpInitNonBusHandler();
+HalpInitSystem();
+HalpInitTimerSource();
+HalpInterruptRemappingEnabled();
+HalpInvalidateIRTCacheEntry();
 HalpIoDelay();
+HalpIpiReserveResources();
 HalpIsCmciImplemented();
+HalpIsHardwareWatchdogTimerPresent();
+HalpIsHvPresent();
 HalpIsMicrosoftCompatibleHvLoaded();
 HalpKdAllocateAddressRange();
 HalpKdConfigureCardBusSocket();
@@ -3194,6 +3299,11 @@ HalpKdWidenPciBridgeBusRange();
 HalpKdWidenPciBridgeIoRange();
 HalpKdWidenPciBridgeMemoryRange();
 HalpKdWritePCIConfig();
+HalpLegacyApicEndOfInterrupt();
+HalpLegacyApicReadGenericReg();
+HalpLegacyApicWaitForIcr();
+HalpLegacyApicWriteGenericReg();
+HalpLegacyApicWriteIcr();
 HalpLMIdentityStub();
 HalpLMIdentityStubEnd();
 HalpLMStub();
@@ -3206,27 +3316,38 @@ HalpMapPhysicalMemory64();
 HalpMapPhysicalMemoryWriteThrough64();
 HalpMapTransfer();
 HalpMarkProcessorStarted();
-HalpMcaCurrentProcessorInitErrorPacket();
-HalpMcaCurrentProcessorSetConfig();
-HalpMcaExceptionHandler();
-HalpMcaInit();
+HalpMcaClearError();
+HalpMcaInitializePcrContext();
 HalpMcaQueueDpc();
-HalpMcaReadProcessorException();
-HalpMcaReadRegisterInterface();
+HalpMcaReadError();
+HalpMcaReadErrorPresence();
+HalpMcaReportError();
+HalpMcaResumeProcessorConfig();
+HalpMcaSetProcessorConfig();
+HalpMceBarrierWait();
+HalpMceHandler();
+HalpMceHandlerWithRendezvous();
+HalpMceInit();
+HalpMceInitializeErrorPacket();
+HalpMceInitializeRecovery();
+HalpMceMemoryErrorDeferredRecovery();
+HalpMceRecovery();
 HalpMcUpdateFindDataTableEntry();
 HalpMcUpdateInitialize();
 HalpMcUpdateLock();
 HalpMcUpdateMicrocode();
 HalpMcUpdatePostUpdate();
 HalpMcUpdateUnlock();
-HalpNMIHalt();
 HalPnpGetDmaAdapter();
 HalPnpInterfaceDereference();
 HalPnpInterfaceReference();
 HalpNumaAddRangeProximity();
 HalpNumaInitializeStaticConfiguration();
+HalpNumaQueryNodeCapacity();
+HalpNumaQueryNodeDistance();
 HalpNumaQueryPageToNode();
 HalpNumaQueryProcessorNode();
+HalpNumaQueryProximityId();
 HalpNumaQueryProximityNode();
 HalpNumaSortMemoryRanges();
 HalpOfflineProcessor();
@@ -3235,7 +3356,6 @@ HalpPciAddMmConfigEntry();
 HalpPCIConfig();
 HalpPCIConfigHoldingConfigLock();
 HalpPCIEndConfigAccess();
-HalpPciInitializeMmConfigAccess();
 HalpPCIISALine2Pin();
 HalpPCIPerformConfigAccess();
 HalpPCIPin2ISALine();
@@ -3264,27 +3384,30 @@ HalpPhase0GetPciDataByOffset();
 HalpPhase0SetPciDataByOffset();
 HalpPiix4Detect();
 HalpPmTimerTickCountStall();
+HalpPostSleepMP();
 HalpPowerStateCallback();
 HalpPreAllocateKInterrupts();
 HalpPrepareForBugcheck();
 HalpPreserveNvsArea();
 HalpProbeIoApic();
-HalpProcessAcpiStartDevice();
 HalpProcessorFence();
 HalpProfileInterrupt();
-HalpProgramHpetClock();
+HalpProgramDrhd();
 HalpProgramRtcClock();
+HalpPteReserveResources();
 HalpPutAcpiHacksInRegistry();
 HalpQueryAcpiResourceRequirements();
 HalpQueryDeviceRelations();
-HalpQueryHpetCount();
 HalpQueryIdFdo();
 HalpQueryIdPdo();
 HalpQueryInterface();
+HalpQueryMaximumRegisteredProcessorCount();
 HalpQueryPciRegistryInfo();
+HalpQueryProcessorCounterSynchronization();
 HalpQueryResources();
+HalpQueryWakeTime();
 HalpQueueMapBufferWorker();
-HalpReadErrorInfo();
+HalpReadCmosTime();
 HalpReadGenericErrorInfo();
 HalpReadLocalApicID();
 HalpReadPartitionTable();
@@ -3293,31 +3416,38 @@ HalpReadRtcStdPCAT();
 HalpReadStdCmosData();
 HalpReadWheaPhysicalMemory();
 HalpReadWriteWheaPhysicalMemory();
+HalpRegisterApicAddressUsage();
 HalpRegisterPciDebuggingDeviceInfo();
 HalpRegisterVector();
 HalpReleaseCmosSpinLock();
 HalpReleaseHighLevelLock();
 HalpRemapVirtualAddress64();
-HalpReportMachineCheck();
+HalpRemoveInterruptDest();
+HalpReportIdleStateUsage();
 HalpReportResourceUsage();
 HalpRequestIpiSpecifyVector();
 HalpReserveHalPtes();
 HalpResetAllProcessors();
+HalpResetProcessorCounter();
 HalpResetSBF();
 HalpResetThisProcessor();
 HalpRestartProfileTimeInterrupt();
 HalpRestoreDmaControllerState();
+HalpRestoreIdealStallSource();
 HalpRestoreInterruptControllerState();
+HalpRestoreInterruptRemappingUnits();
+HalpRestoreIoApicRedirTable();
 HalpRestoreNvsArea();
 HalpRestorePerformanceCounter();
+HalpRestoreProcessorCounter();
 HalpResumeClock();
 HalProcessorIdle();
 HalpRtcClockInterrupt();
 HalpRtcClockInterruptStub();
-HalpSaveContextTargetProcessor();
 HalpSaveDmaControllerState();
 HalpSavePerformanceCounter();
 HalpSaveProcessorStateAndWait();
+HalpScaleQueryPerformanceCounter();
 HalpScaleTimers();
 HalpSendFlatIpi();
 HalpSendNodeIpi64();
@@ -3329,32 +3459,66 @@ HalpSetCmosData();
 HalpSetHandlerAddressToIDTIrql();
 HalpSetInternalVector();
 HalpSetInterruptControllerWakeupState();
+HalpSetIrtEntry();
 HalpSetPartitionInformation();
 HalpSetPCIData();
 HalpSetProfileSourceInterval();
 HalpSetRedirEntry();
 HalpSetSystemInformation();
 HalpSetupAcpiPhase0();
+HalpSetupApicRegisterAccessFunctions();
 HalpSetupRealModeResume();
 HalpSetupSystemClockSupport();
 HalpSetWakeAlarm();
+HalpShutdown();
 HalpSortLocalApicTable();
 HalpStartProcessor();
+HalpStopLegacyUsbInterrupts();
 HalpStopOhciInterrupt();
 HalpStopUhciInterrupt();
 HalpStoreFreeCr3();
 HalpSuspendClock();
+HalpSwitchToEarlyStallSource();
+HalpSwitchToX2ApicMode();
 HalpTranslateBusAddress();
+HalpTscAdvSynchCalculateRemoteDelta();
+HalpTscAdvSynchCalculateRemoteDeltas();
+HalpTscAdvSynchComputeMinimumDelta();
+HalpTscAdvSynchLeader();
+HalpTscAdvSynchReadTimeStamp();
+HalpTscAdvSynchSkewCounter();
+HalpTscAdvSynchTarget();
+HalpTscAdvSynchToLeader();
+HalpTscAdvSynchToTarget();
+HalpTscCompatibilitySynchronization();
+HalpTscFallback();
+HalpTscFallbackToPlatformSource();
+HalpTscFinalizeDisposition();
+HalpTscInitializeSynchronizationContext();
+HalpTscReserveResources();
+HalpTscStallExecutionProcessor();
+HalpTscSynchronization();
+HalpTscSynchronizationWorker();
+HalpTscTraceProcessorSynchronization();
+HalpTscTraceStatus();
 HalpUnloadMicrocode();
 HalpUnmapVirtualAddress();
 HalpUnmaskCriticalClockInterruptSources();
+HalpUpdateConfigurationFromMsct();
+HalpUpdateExtendedDestination();
+HalpUpdateInterruptDest();
+HalpUpdateIrtDestinationId();
 HalpUpdateProcessorApicId();
+HalpUpdateSingleTargetExtendedDestination();
+HalpUpSendIpi();
 HalPutDmaAdapter();
 HalPutScatterGatherList();
 HalpValidPCISlot();
 HalpVerifyIOUnit();
-HalpWaitForPending();
+HalpVerifySratEntryLengthAndFlag();
+HalpWaitForPhase0ClockTick();
 HalpWhackICHUsbSmi();
+HalpWheaInitProcessorGenericSection();
 HalpWriteCmosTime();
 HalpWritePartitionTable();
 HalpWritePCIConfig();
@@ -3362,6 +3526,14 @@ HalpWriteResetCommand();
 HalpWriteRtcStdPCAT();
 HalpWriteStdCmosData();
 HalpWriteWheaPhysicalMemory();
+HalpX2ApicEndOfInterrupt();
+HalpX2ApicModeSupportedByProcessor();
+HalpX2ApicReadGenericReg();
+HalpX2ApicSendLogicalIpi();
+HalpX2ApicSendPhysicalIpi();
+HalpX2ApicWaitForIcr();
+HalpX2ApicWriteGenericReg();
+HalpX2ApicWriteIcr();
 HalQueryDisplayParameters();
 HalQueryEnvironmentVariableInfoEx();
 HalQueryMaximumProcessorCount();
@@ -3371,6 +3543,8 @@ HalRealAllocateAdapterChannel();
 HalRegisterDynamicProcessor();
 HalRegisterErrataCallbacks();
 HalReportResourceUsage();
+HalRequestClockInterrupt();
+HalRequestDeferredRecoveryServiceInterrupt();
 HalRequestIpi();
 HalRequestSoftwareInterrupt();
 HalReturnToFirmware();
@@ -3392,42 +3566,53 @@ HalStopProfileInterrupt();
 HalSystemVectorDispatchEntry();
 HalTranslateBusAddress();
 HalWriteBootRegister();
-_invalid_parameter();
 IoFlushAdapterBuffers();
 IoFreeAdapterChannel();
 IoFreeMapRegisters();
 IoMapTransfer();
-_iswctype_l();
 KdRestore();
+KeAddProcessorAffinityEx();
+KeAndAffinityEx();
+KeAndGroupAffinityEx();
+KeCheckProcessorAffinityEx();
+KeComplementAffinityEx();
+KeCountSetBitsAffinityEx();
+KeEnumerateNextProcessor();
 KeFlushWriteBuffer();
+KeGetProcessorIndexFromNumber();
+KeGetProcessorNumberFromIndex();
+KeInitializeAffinityEx();
+KeInitializeEnumerationContext();
+KeInterlockedClearProcessorAffinityEx();
+KeIsEmptyAffinityEx();
+KeProcessorGroupAffinity();
 KeQueryPerformanceCounter();
+KeRemoveProcessorAffinityEx();
+KeSaveStateForHibernate();
 KeStallExecutionProcessor();
 longjmp();
 memcmp();
 memcpy();
 memmove();
 memset();
-PicNopHandlerInt();
 PicSpuriousService37();
 PoSetFixedWakeSource();
 PshedGetErrorSourceInfo();
 PshedIsSystemWheaEnabled();
 PshedRetrieveErrorInfo();
+__report_gsfailure();
 RtlMoveMemory();
 RtlStringCbPrintfW();
 __security_check_cookie();
+__security_init_cookie();
 _setjmp();
 _stricmp();
 strncmp();
 strncpy_s();
 strstr();
 _vsnwprintf();
-_wchartodigit();
 _wcsicmp();
 wcstoul();
-WheaGetErrorSource();
-WheaRegisterErrSrcInitializer();
-WheaReportHwError();
 x86BiosAllocateBuffer();
 x86BiosCall();
 x86BiosExecuteInterruptShadowed();
@@ -3604,27 +3789,20 @@ AcpiRootPdo;
 Amd64ProfileInterface;
 Amd64ProfileSourceDescriptorTable;
 BadIOAddrList;
-__clocalestr;
+CMC_NOTIFY_TYPE_GUID;
 CmosRangeHandlersStdPCAT;
 CounterStatus;
 CurTiledCr3LowPart;
 DefaultProfileInterface;
 DefaultProfileSourceDescriptor;
-EisaNMIMsg;
-EM64TCounterDescriptor;
-EM64TESCRDescriptor;
-EM64THyperThreadingActive;
-EM64TProfileSourceDescriptors;
 EmonCounterResolution;
 EmonCounterStatus;
 EmonNumberCounters;
 EmonProfileInterface;
 EmonProfileSourceDescriptorTable;
 EmonVersion;
-errno;
 False;
-__fastflag;
-_fltused;
+GENERIC_NOTIFY_TYPE_GUID;
 GUID_ACPI_CMOS_INTERFACE_STANDARD;
 GUID_BUS_INTERFACE_STANDARD;
 GUID_EM_DISABLE_MSI_RULE;
@@ -3637,9 +3815,17 @@ GUID_HAL_CALLBACK_ACPI_OEM_TABLE_ID;
 GUID_HAL_CALLBACK_ACPI_REVISION;
 GUID_ISA_FDMA_INTERFACE;
 GUID_TARGET_DEVICE_QUERY_REMOVE;
+HAL_ETW_EVENT_EXPECTED_FALLBACK;
+HAL_ETW_EVENT_FIRMWARE_SLEEP_CORRUPTION;
 HAL_ETW_EVENT_HPET_INTERRUPT_ERROR;
+HAL_ETW_EVENT_HPET_MSI_FAILURE;
 HAL_ETW_EVENT_HPET_UNSUPPORTED_TABLE;
 HAL_ETW_EVENT_HPET_UNSUPPORTED_TIMER;
+HAL_ETW_EVENT_TIMER_PROC_DELTA_REPORT;
+HAL_ETW_EVENT_TIMER_PROC_SYNCH_REPORT;
+HAL_ETW_EVENT_TIMER_SYNCH_FAILED;
+HAL_ETW_EVENT_TIMER_SYNCH_SUMMARY;
+HAL_ETW_EVENT_UNEXPECTED_FALLBACK;
 HAL_ETW_PROVIDER;
 HalAcpiDispatchTable;
 HalDispatchTable;
@@ -3652,7 +3838,6 @@ HalFirmwareTypeEfi;
 HalHardwareIdString;
 HalName;
 Halp1stPhysicalPageVaddr;
-Halp8259Counts;
 HalpAccountingLock;
 HalpAcpiCountDown;
 HalpAcpiCountReset;
@@ -3660,6 +3845,7 @@ HalpAcpiFacsMapping;
 HalpAcpiFlags;
 HalpAcpiInterruptMasked;
 HalpAcpiInterruptRunning;
+HalpAcpiMsct;
 HalpAcpiMultiNode;
 HalpAcpiNvsData;
 HalpAcpiSrat;
@@ -3668,37 +3854,61 @@ HalpAcpiTableCacheLock;
 HalpAcpiTableMatchList;
 HalpAcpiTablePointers;
 HalpAcpiVerifiedTable;
-HalpActiveProcessors;
 HalpAddressUsageList;
 HalpAllocationDescriptorArray;
 HalpApicErrorLog;
 HalpApicMaxCluster;
+HalpApicReadGenericReg;
 HalpApicTable;
 HalpApicUsage;
+HalpApicWaitForIcr;
+HalpApicWriteGenericReg;
+HalpApicWriteIcr;
+HalpAuditResults;
+HalpAuditStatus;
 HalpAuthenticAMD;
 HalpAvoidMmConfigAccessMethod;
 HalpBarrier;
+HalpBiosCallCount;
+HalpBootProcIntMap;
 HalpBroadcastContext;
 HalpBroadcastFunction;
 HalpBroadcastLock;
 HalpBroadcastTargets;
 HalpBroken440BX;
 HalpBrokenAcpiTimer;
-HalpBusType;
+HalpBugcheckInProgress;
+HalpCachingRequirements;
+HalpCachingRequirementsEntryCount;
 HalpCallbackRecord;
-HalpCentaurHauls;
 HalpChipHackCount;
 HalpChipHacksTable;
 HalpClockInterrupt;
 HalpClockInterruptStub;
+HalpClockMessageInterruptRouting;
 HalpClockSource;
 HalpClockWorkUnion;
+HalpClusterAffinity;
+HalpClusterCount;
+HalpClusterId;
 HalpCmcContext;
 HalpCmcErrorPacket;
 HalpCmcErrorSource;
 HalpCmcErrorSourceId;
-HalpCmcInitPass;
+HalpCmcFallbackLock;
+HalpCmciConfigurationLoaded;
+HalpCmciEnabled;
+HalpCmciImplementationChecked;
+HalpCmciImplementationPresent;
 HalpCmciRegister;
+HalpCmciRevertToPolledMode;
+HalpCmciThresholdCount;
+HalpCmciThresholdTime;
+HalpCmcLock;
+HalpCmcPollingInitialized;
+HalpCmcPollingStartDeferred;
+HalpCmcPollingStarted;
+HalpCmcReserveErrorPacket;
 HalpCmosBusParameterTable;
 HalpCmosCenturyOffset;
 HalpComIoSpace;
@@ -3712,6 +3922,8 @@ HalpCurrentRateIndex;
 HalpCurrentRTCRegisterA;
 HalpCurrentTimePort;
 HalpDebugPortTable;
+HalpDeepIdleStatesDisableTscSource;
+HalpDeepIdleStatesInUse;
 HalpDefaultApicDestinationModeMask;
 HalpDefaultPcIoSpace;
 HalpDevLevel;
@@ -3736,12 +3948,13 @@ HalpDriverObject;
 HalpDynamicProcLocalApicTable;
 HalpEisaAdapter;
 HalpEisaControlBase;
-HalpEisaDma;
-HalpEisaELCR;
-HalpEisaIoSpace;
+HalpEnabledSmiRteCount;
 HalpEnlightenment;
+HalPerformEndOfInterrupt;
 HalpFakePciBusData;
 HalpFakePciBusHandler;
+HalpFallbackPlatformClock;
+HalpFallbackPlatformClockSupported;
 HalpFDMAAvail;
 HalpFDMAChecked;
 HalpFDMAInterface;
@@ -3749,7 +3962,9 @@ HalpFeatureBits;
 HalpFixedAcpiDescTable;
 HalpForceApicPhysicalDestinationMode;
 HalpForceClusteredApicMode;
+HalpForceLegacyApicMode;
 HalpFrameBufferBase;
+HalpGenericConfiguration;
 HalpGenericInitDone;
 HalpGenericNmiErrorSourceListHead;
 HalpGenericNmiInitDone;
@@ -3768,27 +3983,33 @@ HalpHiberInProgress;
 HalpHiberProcState;
 HalpHpetAddress;
 HalpHpetClockTable;
-HalpHpetClockTimerIrq;
+HalpHpetClockTimerInti;
 HalpHpetCurrentProfileComparator;
 HalpHpetCurrentProfileTickCount;
 HalpHpetCurrentTime;
 HalpHpetFrequency;
 HalpHpetHalfRollover;
+HalpHpetHypervisorTimerInti;
 HalpHpetInitializationStatus;
 HalpHpetInitialized;
+HalpHpetIrqOffset;
+HalpHpetIrqPolicy;
 HalpHpetLegacyInterruptCapable;
 HalpHpetMemoryUsage;
+HalpHpetMessageInterruptsEnabled;
 HalpHpetMinimumOneShotTickCount;
 HalpHpetPeriod;
 HalpHpetPreviousTimeBias;
-HalpHpetProfileTimerIrq;
-HalpHpetRolloverTimerIrq;
+HalpHpetProfileTimerInti;
+HalpHpetRolloverTimerInti;
 HalpHpetTimeBias;
 HalpHpetTimerCount;
 HalpHpetTimerState;
 HalpHvLaunchRequested;
+HalpHvReferenceTimeBias;
 HalpHybridApicPhysicalTargets;
 HalpHyperThreadingEnabled;
+HalpHypervisorInterruptCount;
 HalpIdtExclusionList;
 HalpIDTUsage;
 HalpIDTUsageFlags;
@@ -3796,6 +4017,7 @@ HalpImcrIoSpace;
 HalpInitialRtcClockRateIndex;
 HalpInitLevel;
 HalpIntDestMap;
+HalpIntDestMapEx;
 HalpInterruptObjectList;
 HalpIntiInfo;
 HalpInvalidAcpiTable;
@@ -3808,10 +4030,13 @@ HalpIpiClock;
 HalpIpiPhysicalApicId;
 HalpIpiPhysicalTargetMask;
 HalpIpiPhysicalTargets;
+HalpIpiResGroupsReserved;
 HalpIpiRoutine;
 HalpIpiTargetLookup;
 HalpIpiTargetMask;
 HalpIrqlTablesInitialized;
+HalpKdInitialResourceConstraints;
+HalpKdSavedResourceConstraints;
 HalpKInterruptHeap;
 HalpKInterruptHeapUsed;
 HalpKInterruptPostPhaseZero;
@@ -3822,20 +4047,44 @@ HalpLocalApicErrorCount;
 HalpLocalApicErrorLock;
 HalpLocalNmiSources;
 HalpLowMemoryMap;
-HalpLowMemoryMapBitmapBuffer;
+HalpLowMemoryMapBuffer;
+HalpLowMemoryMapStack;
+HalpLowMemoryMapStackBuffer;
 HalpLowStub;
 HalpLowStubPhysicalAddress;
+HalpMachineCheckConfiguration;
 HalpMachineType;
+HalpManualClusterModeSpecified;
 HalpMaxApicInti;
 HalpMaxHotPlugMemoryAddress;
+HalpMaximumClockDomainCount;
+HalpMaximumGroupSize;
+HalpMaximumProcessorDependencyFlags;
 HalpMaxPciBus;
 HalpMaxProcs;
 HalpMaxProcsPerCluster;
+HalpMcaBanksValidOnBoot;
+HalpMcaEnabled;
+HalpMcaMemoryErrorContext;
+HalpMcaMemoryErrorDrsObject;
+HalpMcaMiscImplemented;
+HalpMcaNumberOfBanks;
+HalpMcaPcrContextData;
+HalpMcaPollForCmc;
+HalpMcaRecoveryPolicy;
+HalpMcaRecoverySupported;
 HalpMcaScanTime;
-HalpMceDataFound;
+HalpMcaWheaReady;
+HalpMceBackupErrorBuffer;
+HalpMceBroadcast;
+HalpMceEnabled;
+HalpMceErrorFound;
+HalpMceErrorSource;
 HalpMceErrorSourceId;
 HalpMceLock;
-HalpMceRecovered;
+HalpMceProcessorCount;
+HalpMceRendezvousCount;
+HalpMceRendezvousInProgress;
 HalpMcUpdateLockFunc;
 HalpMcUpdateMicrocodeFunc;
 HalpMcUpdatePostUpdateFunc;
@@ -3848,6 +4097,7 @@ HalpMsiSupportDetermined;
 HalpMsiSupported;
 HalpNewAdapter;
 HalpNextRateIndex;
+HalpNmiConfiguration;
 HalpNMIDumpFlag;
 HalpNmiInfo;
 HalpNumaConfig;
@@ -3891,14 +4141,15 @@ HalpPmTimerCurrentTime;
 HalpPmTimerSleepModeEnabled;
 HalpPmTimerSleepModeLock;
 HalpPmTimerTimeBias;
+HalpPmuHandle;
+HalpPmuInUse;
 HalpProc0TSCHz;
 HalpProcessedACPIPhase0;
+HalpProcessorCounterLastWake;
 HalpProcessorInMceHandler;
 HalpProcessorInNmiHandler;
 HalpProcessorPCR;
-HalpProcessorReplaceSupported;
 HalpProcessorRestarting;
-HalpProcessorsInMceHandler;
 HalpProcessorsNotHalted;
 HalpProcLocalApicTable;
 HalpProfileInterface;
@@ -3906,10 +4157,11 @@ HalpProfileRunning;
 HalpProfileTimerHandler;
 HalpProfileTimerSource;
 HalpPteForFlush;
+HalpQueryPerformanceCounterOriginalSource;
+HalpQueryPerformanceCounterOriginalSourceFrequency;
 HalpQueryPerformanceCounterSource;
 HalpRateCorrection;
 HalpRebootNow;
-HalpReserveCmcErrorPacket;
 HalpResumeFromHibernate;
 HalpResumeStructuresAllocated;
 HalPrivateDispatchTable;
@@ -3917,15 +4169,16 @@ HalpRMStub;
 HalpRtcRegA;
 HalpRtcRegB;
 HalpRtcTimeIncrements;
-HalpSavedProcLocalApicTable;
+HalpSafeBootMode;
+HalpSavedProcessorCounter;
 HalpScaleWithPmTimer;
-HalpSerialLen;
-HalpSerialNumber;
+HalpShutdownActive;
 HalpShutdownContext;
 HalpSimpleBootFlagTable;
 HalpSleepContext;
 HalpSleepPageLock;
 HalpSleepSync;
+HalpStallExecutionProcessorSavedSource;
 HalpStallExecutionProcessorSource;
 HalpStaticIntAffinity;
 HalpSystemHardwareLock;
@@ -3935,22 +4188,34 @@ HalpSzDisallowMmConfig;
 HalpSzDisallowMsi;
 HalpSzForceClusterMode;
 HalpSzForceMSI;
+HalpSzGroupSize;
 HalpSzHypervisorLaunchRequested;
 HalpSzInterruptAffinity;
 HalpSzMaxApicCluster;
 HalpSzOneCpu;
 HalpSzPciLock;
-HalpSzSerialNumber;
-HalpSzSystem;
 HalpSzTimerRes;
 HalpSzUse8254;
+HalpSzUseLegacyApicMode;
 HalpSzUseLowMemory;
 HalpSzUsePhysicalApic;
-HalpTemporaryLogicalProcessorToApicIdMap;
+HalpSzUsePlatformClock;
 HalpTiledCr3Addresses;
 HalpTimeSourceInitializationComplete;
+HalpTscBitShift;
+HalpTscDeltas;
+HalpTscFallbackLock;
+HalpTscInvariantIdleStates;
+HalpTscInvariantPerfStates;
+HalpTscMaximumCounterSyncSpread;
+HalpTscNopCycles;
+HalpTscProcessorFeatureFallback;
+HalpTscSkewOffset;
+HalpTscSynchronizationFailureFallback;
+HalpTscWaves;
 HalpUsedAllocDescriptors;
 HalpUseDbgPrint;
+HalpUsePlatformClock;
 HalpVectorInit;
 HalpVectorToIRQL;
 HalpVerifierInUse;
@@ -3964,55 +4229,32 @@ HalpWheaMappingMceReservation;
 HalpWheaMappingNmiLock;
 HalpWheaMappingNmiReservation;
 HalpWheaMappingReservation;
-HalpWheaReady;
+HalpX2ApicModeEnabled;
+HalpX2ApicPolicy;
 HiberFreeCR3;
 HotPatchBuffer;
 __IMPORT_DESCRIPTOR_KDCOM;
 __IMPORT_DESCRIPTOR_ntoskrnl;
 __IMPORT_DESCRIPTOR_PSHED;
-__initiallocalestructinfo;
-__initiallocinfo;
 IoAdapterObjectType;
 KdComPortInUse;
 KdDebuggerEnabled;
 KdDebuggerNotPresent;
 KiBugCheckData;
 LastKnownGood;
-__lc_clike;
-__lc_codepage;
-__lc_collate_cp;
-__lc_handle;
-__lconv;
-__lconv_c;
-__lconv_static_decimal;
-__lconv_static_null;
-_ldused;
 LessThan16Mb;
 MasterAdapter24;
 MasterAdapter32;
-McaBlockErrorClearing;
-McaMutex;
-McaNumberOfBanks;
-McaSavedAffinity;
-McaSavedBankNumber;
-McaSavedStatus;
-McaSavedTimeStamp;
-McaStatusCount;
 McaWmiCallback;
+MCE_NOTIFY_TYPE_GUID;
+MEMORY_ERROR_SECTION_GUID;
 MsgMCEPending;
-__newclmap;
-__newctype;
-__newcumap;
+NMI_NOTIFY_TYPE_GUID;
 NMI_SECTION_GUID;
 __NULL_IMPORT_DESCRIPTOR;
 PCIDeref;
-PCIEXPRESS_SECTION_GUID;
-PciIsaIrq;
-_pctype;
 PmAcpiDispatchTable;
-PROCESSOR_GENERIC_SECTION_GUID;
-__ptlocinfo;
-_pwctype;
+PROCESSOR_GENERIC_ERROR_SECTION_GUID;
 rgzApicNotVerified;
 rgzBadApicVersion;
 rgzBadDefault;
@@ -4036,13 +4278,13 @@ rgzRTCNotFound;
 rgzSessionManager;
 rgzSuspendCallbackName;
 __security_cookie;
-__setloc_data;
+__security_cookie_complement;
 True;
-_wctype;
+TscRequest;
 WHEA_BUSCHECK_GUID;
 WHEA_CACHECHECK_GUID;
+WHEA_ERROR_PACKET_SECTION_GUID;
 WHEA_MSCHECK_GUID;
-WHEA_PACKET_SECTION_GUID;
 WHEA_TLBCHECK_GUID;
 x86BiosBufferAllocated;
 x86BiosFrameBuffer;
@@ -4067,3 +4309,5 @@ XmPciBiosPresent;
 XmPCIConfigAddress;
 XmSetPciData;
 XmStatus;
+XPF_MCA_SECTION_GUID;
+XPF_PROCESSOR_ERROR_SECTION_GUID;
