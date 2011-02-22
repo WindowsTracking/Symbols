@@ -1,5 +1,5 @@
 /*
- * PDB file: ntkrnlmp.pdb\F8E2A8B5C9B74BF4A6E4A48F180099942\ntkrnlmp.pdb
+ * PDB file: ntkrnlmp.pdb\3844DBB920174967BE7AA4A2C20430FA2\ntkrnlmp.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -2180,6 +2180,7 @@ typedef struct _CMHIVE
   long CmRmInitFailStatus;
   struct _KTHREAD* CreatorOwner;
   struct _KTHREAD* RundownThread;
+  union _LARGE_INTEGER LastWriteTime;
 } CMHIVE, *PCMHIVE;
 
 struct CMP_OFFSET_ARRAY
@@ -3751,7 +3752,7 @@ typedef struct _ETHREAD
       unsigned long ThreadInserted : 1; /* bit position: 1 */
       unsigned long HideFromDebugger : 1; /* bit position: 2 */
       unsigned long ActiveImpersonationInfo : 1; /* bit position: 3 */
-      unsigned long SystemThread : 1; /* bit position: 4 */
+      unsigned long Reserved : 1; /* bit position: 4 */
       unsigned long HardErrorsAreDisabled : 1; /* bit position: 5 */
       unsigned long BreakOnTermination : 1; /* bit position: 6 */
       unsigned long SkipCreationMsg : 1; /* bit position: 7 */
@@ -4801,8 +4802,8 @@ typedef struct _HARDWARE_PTE
     unsigned __int64 CopyOnWrite : 1; /* bit position: 9 */
     unsigned __int64 Prototype : 1; /* bit position: 10 */
     unsigned __int64 reserved0 : 1; /* bit position: 11 */
-    unsigned __int64 PageFrameNumber : 28; /* bit position: 12 */
-    unsigned __int64 reserved1 : 12; /* bit position: 40 */
+    unsigned __int64 PageFrameNumber : 36; /* bit position: 12 */
+    unsigned __int64 reserved1 : 4; /* bit position: 48 */
     unsigned __int64 SoftwareWsIndex : 11; /* bit position: 52 */
     unsigned __int64 NoExecute : 1; /* bit position: 63 */
   }; /* bitfield */
@@ -7463,7 +7464,8 @@ typedef struct _KTHREAD
       unsigned long QuantumEndMigrate : 1; /* bit position: 10 */
       unsigned long UmsDirectedSwitchEnable : 1; /* bit position: 11 */
       unsigned long TimerActive : 1; /* bit position: 12 */
-      unsigned long Reserved : 19; /* bit position: 13 */
+      unsigned long SystemThread : 1; /* bit position: 13 */
+      unsigned long Reserved : 18; /* bit position: 14 */
     }; /* bitfield */
     long MiscFlags;
   };
@@ -7502,7 +7504,9 @@ typedef struct _KTHREAD
       volatile unsigned long EnableStackSwap : 1; /* bit position: 6 */
       volatile unsigned long GuiThread : 1; /* bit position: 7 */
       volatile unsigned long UmsPerformingSyscall : 1; /* bit position: 8 */
-      volatile unsigned long ReservedFlags : 23; /* bit position: 9 */
+      volatile unsigned long VdmSafe : 1; /* bit position: 9 */
+      volatile unsigned long UmsDispatched : 1; /* bit position: 10 */
+      volatile unsigned long ReservedFlags : 21; /* bit position: 11 */
     }; /* bitfield */
     volatile long ThreadFlags;
   };
@@ -11542,7 +11546,6 @@ typedef struct _PPM_IDLE_STATES
   unsigned long TargetState;
   unsigned long ActualState;
   unsigned long OldState;
-  unsigned char NewlyUnparked;
   struct _KAFFINITY_EX TargetProcessors;
   struct _PPM_IDLE_STATE State[1];
 } PPM_IDLE_STATES, *PPPM_IDLE_STATES;
@@ -12726,6 +12729,8 @@ typedef struct _SHARED_CACHE_MAP
   struct _VOLUME_CACHE_MAP* VolumeCacheMap;
   unsigned long ProcImagePathHash;
   unsigned long WritesInProgress;
+  unsigned long PipelinedReadAheadSize;
+  long __PADDING__[1];
 } SHARED_CACHE_MAP, *PSHARED_CACHE_MAP;
 
 typedef struct _SHARED_CACHE_MAP_LIST_CURSOR
@@ -13776,6 +13781,7 @@ typedef struct _UMS_CONTROL_BLOCK
           volatile unsigned long UmsAssociatedQueueUsed : 1; /* bit position: 1 */
           volatile unsigned long UmsThreadParked : 1; /* bit position: 2 */
           volatile unsigned long UmsPrimaryDeliveredContext : 1; /* bit position: 3 */
+          volatile unsigned long UmsPerformingSingleStep : 1; /* bit position: 4 */
         }; /* bitfield */
       };
       unsigned short TebSelector;
@@ -14955,9 +14961,7 @@ AlpcpExposeAttributes();
 AlpcpExposeContextAttribute32();
 AlpcpExposeHandleAttribute();
 AlpcpExposeHandleAttribute32();
-AlpcpExposeSecurityAttribute32();
 AlpcpExposeViewAttribute();
-AlpcpExposeViewAttribute32();
 AlpcpFlushCancelQueue();
 AlpcpFlushMessagesByRequestor();
 AlpcpFlushMessagesPort();
@@ -15527,6 +15531,7 @@ CcFlushCache();
 CcFreeUnusedVacbLevels();
 CcFreeVacbArray();
 CcFreeVirtualAddress();
+CcGetBcbListHead();
 CcGetBcbListHeadLargeOffset();
 CcGetDirtyPages();
 CcGetFileObjectFromBcb();
@@ -15611,6 +15616,7 @@ CcSetValidData();
 CcSlowReferenceSharedCacheMapFileObject();
 CcTestControl();
 CcUninitializeCacheMap();
+CcUninitializeVolumeCacheMap();
 CcUnmapInactiveViews();
 CcUnmapVacb();
 CcUnmapVacbArray();
@@ -16903,6 +16909,7 @@ ExInitializeRundownProtection();
 ExInitializeRundownProtectionCacheAware();
 ExInitializeSystemLookasideList();
 ExInitializeTimeRefresh();
+ExInitializeUtcTimeZoneBias();
 ExInitializeZone();
 ExInitLicenseCallback();
 ExInitLicenseData();
@@ -17025,6 +17032,7 @@ ExpGetSystemProcessorInformation();
 ExpGetUILanguagePolicy();
 ExpInitializeBootEnvironment();
 ExpInitializeCallbacks();
+ExpInitializeExecutive();
 ExpInitializeExtensions();
 ExpInitializeMicrocodeUpdateLock();
 ExpInitializePcw();
@@ -18780,6 +18788,10 @@ KeConnectInterrupt();
 KeContextFromKframes();
 KeContextToKframes();
 KeCopyAffinityEx();
+KeCopyContextFromUch();
+KeCopyContextFromUmsContext();
+KeCopyContextToUch();
+KeCopyContextToUmsContext();
 KeCopyPage();
 KeCountSetBitsAffinityEx();
 KeCountSetBitsGroupAffinity();
@@ -18977,6 +18989,8 @@ KeResetEvent();
 KeResetLegacyFloatingPointState();
 KeRestoreExtendedProcessorState();
 KeRestoreFloatingPointState();
+KeRestoreLegacyFloatingPointControlWord();
+KeRestoreLegacyFloatingPointState();
 KeRestoreMtrr();
 KeRestoreProcessorSpecificFeatures();
 KeResumeThread();
@@ -19060,7 +19074,6 @@ KeTryToAcquireQueuedSpinLockRaiseToSynch();
 KeTryToAcquireSpinLockAtDpcLevel();
 KeTryToFreezeThreadStack();
 KeUnInitializeUmsThread();
-KeUninitThread();
 KeUnstackDetachProcess();
 KeUpdatePrimaryThreadContext();
 KeUpdateRunTime();
@@ -19118,6 +19131,7 @@ KiCompleteEffectiveRangeChange();
 KiComputeDueTime();
 KiComputeEnabledFeatures();
 KiComputeProcessorDataSize();
+KiComputeSwitchingNpxState();
 KiConfigureDynamicProcessor();
 KiConfigureProcessorBlock();
 KiConnectInterrupt();
@@ -19339,6 +19353,7 @@ KiRestoreCacheErrataSupport();
 KiRestoreDebugRegisterState();
 KiRestoreProcessorControlState();
 KiRestoreProcessorState();
+KiRestoreUchFromUmsContext();
 KiRestoreXSaveSupport();
 KiResumeUmsThread();
 KiRetireDpcList();
@@ -19372,7 +19387,6 @@ KiSetCacheInformationVia();
 KiSetCr4AndXcr0();
 KiSetFeatureBits();
 KiSetIdealNodeProcessByGroup();
-KiSetPageAttributesTable();
 KiSetPriorityThread();
 KiSetProcessorPebsIndexAddress();
 KiSetServerWaitClientEvent();
@@ -19590,7 +19604,6 @@ MiAllocateWsle();
 MiAllowGuardFault();
 MiAllowWorkingSetExpansion();
 MiAppendSubsectionChain();
-MiApplyCompressedFixups();
 MiApplyRawFixups();
 MiAttachAndLockWorkingSet();
 MiAttachSession();
@@ -19622,6 +19635,7 @@ MiCaptureWriteWatchDirtyBit();
 MiCauseOverCommitPopup();
 MiChargeCommitment();
 MiChargeCommitmentCantExpand();
+MiChargeGlobalResidentAvailable();
 MiChargeProcessCommitment();
 MiChargeProcessPhysicalPages();
 MiChargeResidentAvailable();
@@ -19794,6 +19808,7 @@ MiExtendPagingFiles();
 MiFaultPteIntact();
 MiFillRemovedPages();
 MiFindActualFaultingPte();
+MiFindClearBitsAligned();
 MiFindContiguousMemoryInPool();
 MiFindContiguousPages();
 MiFindDriverNonPagedSections();
@@ -19867,7 +19882,6 @@ MiGetProtoPteAddressExtended();
 MiGetReadyInPageBlock();
 MiGetSharedProtos();
 MiGetSharedProtosAtDpcLevel();
-MiGetSystemCacheReverseMap();
 MiGetSystemPteStatistics();
 MiGetTopLevelPfn();
 MiGetWorkingSetInfo();
@@ -19971,6 +19985,7 @@ MiIssueHardFault();
 MiIssueNoPtesBugcheck();
 MiIssuePageExtendRequest();
 MiIssuePageExtendRequestNoWait();
+MiIsVaRangeAvailable();
 MiIsWsleHashValid();
 MiJoinSession();
 MiLabelDriverImageRange();
@@ -20196,7 +20211,6 @@ MiReturnLargePages();
 MiReturnNonPagedPoolVa();
 MiReturnPageTablePageCommitment();
 MiReturnPhysicalPoolPages();
-MiReturnResidentAvailable();
 MiReturnSessionVaCharges();
 MiReturnSlush();
 MiReturnSystemPtes();
@@ -20209,6 +20223,7 @@ __misaligned_access();
 MiScanPagefiles();
 MiScanPagefileSpace();
 MiScanRelocationPage();
+MiScanUserAddressSpace();
 MiSectionCreated();
 MiSectionDelete();
 MiSectionInitialization();
@@ -20278,6 +20293,7 @@ MiTrimAllSystemPagableMemory();
 MiTrimSegmentCache();
 MiTrimSharedPagesFromWorkingSets();
 MiTrimWorkingSet();
+MiTryLargePagesForImageMap();
 MiTryLockControlAreaFileObjectExclusive();
 MiTryLockLeafAndContainingPagesAtDpc();
 MiTryLockLeafPage();
@@ -20536,7 +20552,6 @@ MmQuerySpecialPoolBlockType();
 MmQuerySystemSize();
 MmQuerySystemWorkingSetInformation();
 MmQueryWorkingSetInformation();
-MmQuitNextSession();
 MmRaisePoolQuota();
 MmReadProcessPageTables();
 MmReleaseDumpAddresses();
@@ -20547,7 +20562,6 @@ MmResetDriverPaging();
 MmResourcesAvailable();
 MmReturnPoolQuota();
 MmRotatePhysicalView();
-MmScanUserAddressSpace();
 MmSectionToSectionObjectPointers();
 MmSecureVirtualMemory();
 MmSecureVirtualMemoryAgainstWrites();
@@ -22014,7 +22028,7 @@ PoInitSystem();
 PoNotifySystemTimeSet();
 PopAcquireAwaymodeLock();
 PopAcquirePolicyLock();
-PopAcquirePowerRequestMutex();
+PopAcquirePowerRequestPushLock();
 PopAcquirePowerRequestSpinLock();
 PopAcquireTransitionLock();
 PopAcquireWakeSourceSpinLock();
@@ -22306,7 +22320,7 @@ PopRegisterForDeviceNotification();
 PopRegisterIdleDetectionFunction();
 PopReleaseAwaymodeLock();
 PopReleasePolicyLock();
-PopReleasePowerRequestMutex();
+PopReleasePowerRequestPushLock();
 PopReleaseTransitionLock();
 PopReleaseWakeSourceSpinLock();
 PopRemoveReasonRecordByReasonCode();
@@ -23229,6 +23243,7 @@ RtlGetProductInfo();
 RtlGetSaclSecurityDescriptor();
 RtlGetSetBootStatusData();
 RtlGetThreadLangIdByIndex();
+RtlGetUmsContextExtendedSize();
 RtlGetVersion();
 RtlGUIDFromString();
 RtlHashUnicodeString();
@@ -23238,7 +23253,6 @@ RtlIdnToUnicode();
 RtlImageDirectoryEntryToData();
 RtlImageNtHeader();
 RtlImageNtHeaderEx();
-RtlImpersonateSelfEx();
 RtlInitAnsiString();
 RtlInitAnsiStringEx();
 RtlInitCodePageTable();
@@ -23350,7 +23364,6 @@ RtlOemStringToUnicodeString();
 RtlOemToUnicodeN();
 RtlOpenCurrentUser();
 RtlOwnerAcesPresent();
-RtlpAddData();
 RtlpAddIntersectingRanges();
 RtlpAddKnownAce();
 RtlpAddRange();
@@ -23369,7 +23382,6 @@ RtlpBreakWithStatusInstruction();
 RtlpCallQueryRegistryRoutine();
 RtlpCheckDynamicTimeZoneInformation();
 RtlpCoalesceFreeBlocks();
-RtlpCompareAces();
 RtlpCompareKnownAces();
 RtlpCompareKnownObjectAces();
 RtlpComputeMergedAcl();
@@ -23379,7 +23391,6 @@ RtlpConvertToMergedRange();
 RtlpCopyAces();
 RtlpCopyAndNormalizePeHeaderForHash();
 RtlpCopyContext();
-RtlpCopyContextChunk();
 RtlpCopyEffectiveAce();
 RtlpCopyExtendedContext();
 RtlpCopyLegacyContext();
@@ -23387,6 +23398,7 @@ RtlpCopyLegacyContextAmd64();
 RtlpCopyLegacyContextIa64();
 RtlpCopyLegacyContextX86();
 RtlpCopyRangeListEntry();
+RtlpCopyXStateChunk();
 RtlpCreateRangeListEntry();
 RtlpCreateServerAcl();
 RtlpCreateSplitBlock();
@@ -23724,6 +23736,7 @@ RtlUnicodeStringToAnsiString();
 RtlUnicodeStringToCountedOemString();
 RtlUnicodeStringToInteger();
 RtlUnicodeStringToOemString();
+RtlUnicodeStringValidateEx();
 RtlUnicodeToCustomCPN();
 RtlUnicodeToMultiByteN();
 RtlUnicodeToMultiByteSize();
@@ -23747,6 +23760,7 @@ RtlValidAcl();
 RtlValidateUnicodeString();
 RtlValidRelativeSecurityDescriptor();
 RtlValidSecurityDescriptor();
+RtlValidSecurityDescriptorSacl();
 RtlValidSid();
 RtlVerifyVersionInfo();
 RtlVirtualUnwind();
@@ -28451,6 +28465,7 @@ MiFlushTbForAttributeChange;
 MiFreeListDiscard;
 MiFreePageSlist;
 MiFreeSharedImageVa;
+MiFreeSystemCache;
 MiFreeSystemCacheVa;
 MiFullyInitialized;
 MiHalScratchPte;
@@ -28695,7 +28710,6 @@ MmDynamicMemorySupported;
 MmDynamicPfn;
 MmEnforceWriteProtection;
 MmExpansionLock;
-MmFirstFreeSystemCache;
 MmFreePageListHead;
 MmFreePagesByColor;
 MmHalfSecond;
@@ -28720,7 +28734,6 @@ MmLargePageDriverBufferLength;
 MmLargePageDriverBufferType;
 MmLargePageMinimum;
 MmLargeStacks;
-MmLastFreeSystemCache;
 MmLastUnloadedDriver;
 MmLoadedUserImageList;
 MmLockedIoPagesHead;
@@ -29115,6 +29128,7 @@ PnpEnumerationLock;
 PnpEnumerationRequestList;
 PnpEtwHandle;
 PnpEventQueueEmpty;
+PnpFindBestConfigurationTimeout;
 PnpHwProfileNotifyLock;
 PnPInitialized;
 PnPIrpNames;
@@ -29344,10 +29358,10 @@ PopPolicyLockThread;
 PopPolicyWorker;
 PopPowerRequestAttributes;
 PopPowerRequestMapping;
-PopPowerRequestMutex;
 PopPowerRequestObjectCount;
 PopPowerRequestObjectList;
 PopPowerRequestObjectType;
+PopPowerRequestPushLock;
 PopPowerRequestSpinLock;
 PopPowerSettingCallbackReturned;
 PopPowerSettings;

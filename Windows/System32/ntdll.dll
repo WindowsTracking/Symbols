@@ -1,5 +1,5 @@
 /*
- * PDB file: ntdll.pdb\CFF40300FD804691B73E12CF2A150EE02\ntdll.pdb
+ * PDB file: ntdll.pdb\6192BFDB9F04442995FFCB0BE95172E12\ntdll.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -1277,7 +1277,7 @@ typedef struct _ETHREAD
       unsigned long ThreadInserted : 1; /* bit position: 1 */
       unsigned long HideFromDebugger : 1; /* bit position: 2 */
       unsigned long ActiveImpersonationInfo : 1; /* bit position: 3 */
-      unsigned long SystemThread : 1; /* bit position: 4 */
+      unsigned long Reserved : 1; /* bit position: 4 */
       unsigned long HardErrorsAreDisabled : 1; /* bit position: 5 */
       unsigned long BreakOnTermination : 1; /* bit position: 6 */
       unsigned long SkipCreationMsg : 1; /* bit position: 7 */
@@ -1948,8 +1948,8 @@ typedef struct _HARDWARE_PTE
     unsigned __int64 CopyOnWrite : 1; /* bit position: 9 */
     unsigned __int64 Prototype : 1; /* bit position: 10 */
     unsigned __int64 reserved0 : 1; /* bit position: 11 */
-    unsigned __int64 PageFrameNumber : 28; /* bit position: 12 */
-    unsigned __int64 reserved1 : 12; /* bit position: 40 */
+    unsigned __int64 PageFrameNumber : 36; /* bit position: 12 */
+    unsigned __int64 reserved1 : 4; /* bit position: 48 */
     unsigned __int64 SoftwareWsIndex : 11; /* bit position: 52 */
     unsigned __int64 NoExecute : 1; /* bit position: 63 */
   }; /* bitfield */
@@ -3824,7 +3824,8 @@ typedef struct _KTHREAD
       unsigned long QuantumEndMigrate : 1; /* bit position: 10 */
       unsigned long UmsDirectedSwitchEnable : 1; /* bit position: 11 */
       unsigned long TimerActive : 1; /* bit position: 12 */
-      unsigned long Reserved : 19; /* bit position: 13 */
+      unsigned long SystemThread : 1; /* bit position: 13 */
+      unsigned long Reserved : 18; /* bit position: 14 */
     }; /* bitfield */
     long MiscFlags;
   };
@@ -3863,7 +3864,9 @@ typedef struct _KTHREAD
       volatile unsigned long EnableStackSwap : 1; /* bit position: 6 */
       volatile unsigned long GuiThread : 1; /* bit position: 7 */
       volatile unsigned long UmsPerformingSyscall : 1; /* bit position: 8 */
-      volatile unsigned long ReservedFlags : 23; /* bit position: 9 */
+      volatile unsigned long VdmSafe : 1; /* bit position: 9 */
+      volatile unsigned long UmsDispatched : 1; /* bit position: 10 */
+      volatile unsigned long ReservedFlags : 21; /* bit position: 11 */
     }; /* bitfield */
     volatile long ThreadFlags;
   };
@@ -5154,7 +5157,6 @@ typedef struct _PPM_IDLE_STATES
   unsigned long TargetState;
   unsigned long ActualState;
   unsigned long OldState;
-  unsigned char NewlyUnparked;
   struct _KAFFINITY_EX TargetProcessors;
   struct _PPM_IDLE_STATE State[1];
 } PPM_IDLE_STATES, *PPPM_IDLE_STATES;
@@ -6645,8 +6647,6 @@ AlpcRegisterCompletionListWorkerThread();
 AlpcRundownCompletionList();
 AlpcUnregisterCompletionList();
 AlpcUnregisterCompletionListWorkerThread();
-ApiSetpSearchForApiSetHost();
-ApiSetResolveToHost();
 ARRAY_FITS();
 __ascii_memicmp();
 __ascii_stricmp();
@@ -7034,6 +7034,7 @@ LdrpApplyFileNameRedirection();
 LdrpApplyHotPatch();
 LdrpCalcAllocSize();
 LdrpCallTlsInitializers();
+LdrpCheckAppDirType();
 LdrpCheckForwardedEntries();
 LdrpCleanUpTebData();
 LdrpCleanupThreadTlsData();
@@ -7101,6 +7102,7 @@ LdrpInitializeThread();
 LdrpInitializeTls();
 LdrpInitMuiCrits();
 LdrpIsReparsePoint();
+LdrpIsSystemwideUserCallbackExceptionFilterDisabled();
 LdrpLangFallbackListAppendNode();
 LdrpLangFallbackListFindNode();
 LdrpLoadDll();
@@ -7129,6 +7131,8 @@ LdrpMungHeapImportsForTagging();
 LdrpOpenKey();
 LdrpProcessInitializationComplete();
 LdrpProcessStaticImports();
+LdrpProtectAndRelocateImage();
+LdrpQueryIllegalCWDDevices();
 LdrpQuerySxSMUIFile();
 LdrpQueryValueKey();
 LdrpQueueDeferredTlsData();
@@ -7345,6 +7349,7 @@ Normalization__Normalize();
 Normalization__NormalizeCharacter();
 NormalizationList__InitDone();
 NormalizationList__Initialize();
+NormalizationList__Lock();
 NormalizationList__Lookup();
 NormalizationList__Unlock();
 NormalizationListEntry_Alloc();
@@ -8060,6 +8065,7 @@ RtlConvertSharedToExclusive();
 RtlConvertSidToUnicodeString();
 RtlConvertToAutoInheritSecurityObject();
 RtlConvertUiListToApiList();
+RtlCopyContext();
 RtlCopyExtendedContext();
 RtlCopyLuid();
 RtlCopyLuidAndAttributesArray();
@@ -8328,6 +8334,7 @@ RtlGetThreadPreferredUILanguages();
 RtlGetTickCount();
 RtlGetUILanguageInfo();
 RtlGetUmsCompletionListEvent();
+RtlGetUmsContextExtendedSize();
 RtlGetUnloadEventTrace();
 RtlGetUnloadEventTraceEx();
 RtlGetUserInfoHeap();
@@ -8564,7 +8571,6 @@ RtlpConvertToAutoInheritSecurityObject();
 RtlpCopyAces();
 RtlpCopyAndNormalizePeHeaderForHash();
 RtlpCopyContext();
-RtlpCopyContextChunk();
 RtlpCopyEffectiveAce();
 RtlpCopyExtendedContext();
 RtlpCopyLegacyContext();
@@ -8574,6 +8580,7 @@ RtlpCopyLegacyContextX86();
 RtlpCopyMappedMemoryEx();
 RtlpCopyMappedMemoryEx_ExceptionFilter();
 RtlpCopyProcString();
+RtlpCopyXStateChunk();
 RtlpCrackActivationContextStringSectionHeader();
 RtlpCreateCriticalSectionSem();
 RtlpCreateNewDirectoryReference();
@@ -9081,8 +9088,6 @@ RtlpWalkFrameChain();
 RtlpWalkHeap();
 RtlpWalkLFHBlock();
 RtlpWin32NTNameToNtPathName_U();
-RtlpWow64EnableFsRedirection();
-RtlpWow64EnableFsRedirectionEx();
 RtlpWow64ThunkEnvironment32To64();
 RtlQueryActivationContextApplicationSettings();
 RtlQueryAtomInAtomTable();
@@ -9336,6 +9341,8 @@ RtlWalkHeap();
 RtlWeaklyEnumerateEntryHashTable();
 RtlWerpReportException();
 RtlWow64CallFunction64();
+RtlWow64EnableFsRedirection();
+RtlWow64EnableFsRedirectionEx();
 RtlWow64GetThreadContext();
 RtlWow64GetThreadSelectorEntry();
 RtlWow64LogMessageInEventLogger();
@@ -10360,6 +10367,7 @@ LdrpHeap;
 LdrpHotpatchCount;
 LdrpHotPatchList;
 LdrpHotpatchModuleInfoList;
+LdrpIllegalCWDDevices;
 LdrpImageEntry;
 LdrpInLdrInit;
 LdrpInvertedFunctionTable;

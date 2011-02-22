@@ -17,6 +17,7 @@ ExecScript();
 _FindPESection();
 FreeLibrary();
 _get_image_app_type();
+GetArgs();
 GetLastError();
 GetProcAddress();
 ? GetRegisteredLocation;

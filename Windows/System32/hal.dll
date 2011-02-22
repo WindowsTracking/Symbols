@@ -1,5 +1,5 @@
 /*
- * PDB file: hal.pdb\0C72B43B8AC64E22AB88B564E69330372\hal.pdb
+ * PDB file: hal.pdb\A085D08B9C5D4BFDBA48AC285BDA03F22\hal.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -1093,8 +1093,8 @@ typedef struct _HARDWARE_PTE
     unsigned __int64 CopyOnWrite : 1; /* bit position: 9 */
     unsigned __int64 Prototype : 1; /* bit position: 10 */
     unsigned __int64 reserved0 : 1; /* bit position: 11 */
-    unsigned __int64 PageFrameNumber : 28; /* bit position: 12 */
-    unsigned __int64 reserved1 : 12; /* bit position: 40 */
+    unsigned __int64 PageFrameNumber : 36; /* bit position: 12 */
+    unsigned __int64 reserved1 : 4; /* bit position: 48 */
     unsigned __int64 SoftwareWsIndex : 11; /* bit position: 52 */
     unsigned __int64 NoExecute : 1; /* bit position: 63 */
   }; /* bitfield */
@@ -3274,6 +3274,7 @@ HalpIsCmciImplemented();
 HalpIsHardwareWatchdogTimerPresent();
 HalpIsHvPresent();
 HalpIsMicrosoftCompatibleHvLoaded();
+HalpIsMsiSupported();
 HalpKdAllocateAddressRange();
 HalpKdConfigureCardBusSocket();
 HalpKdConfigureDebuggingDevice();
@@ -3352,9 +3353,9 @@ HalpNumaQueryProximityNode();
 HalpNumaSortMemoryRanges();
 HalpOfflineProcessor();
 HalpPassIrpFromFdoToPdo();
+HalpPciAccessMmConfigSpace();
 HalpPciAddMmConfigEntry();
 HalpPCIConfig();
-HalpPCIConfigHoldingConfigLock();
 HalpPCIEndConfigAccess();
 HalpPCIISALine2Pin();
 HalpPCIPerformConfigAccess();
@@ -4035,6 +4036,7 @@ HalpIpiRoutine;
 HalpIpiTargetLookup;
 HalpIpiTargetMask;
 HalpIrqlTablesInitialized;
+HalpIrtCacheInvalidationLock;
 HalpKdInitialResourceConstraints;
 HalpKdSavedResourceConstraints;
 HalpKInterruptHeap;
@@ -4186,6 +4188,7 @@ HalpSzBreak;
 HalpSzClockLevel;
 HalpSzDisallowMmConfig;
 HalpSzDisallowMsi;
+HalpSzEnableX2ApicPolicy;
 HalpSzForceClusterMode;
 HalpSzForceMSI;
 HalpSzGroupSize;

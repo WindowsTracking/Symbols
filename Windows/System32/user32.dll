@@ -3482,6 +3482,7 @@ IID_IDropTarget;
 IID_IEnumOfflineFilesItems;
 IID_IEnumOfflineFilesSettings;
 IID_IOfflineFilesCache;
+IID_IOfflineFilesCache2;
 IID_IOfflineFilesChangeInfo;
 IID_IOfflineFilesConnectionInfo;
 IID_IOfflineFilesDirectoryItem;

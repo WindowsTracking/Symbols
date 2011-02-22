@@ -1,5 +1,5 @@
 /*
- * PDB file: ndis.pdb\40D6C85AC9F74887A652601839A1F56D2\ndis.pdb
+ * PDB file: ndis.pdb\65FCE9C9B4B7490BBA7BB3141A00ADA02\ndis.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -46,8 +46,10 @@ union _DL_OUI;
 struct _DMA_ADAPTER;
 struct _DMA_OPERATIONS;
 enum _DOT11_PHY_TYPE;
+struct _DOT11_RSN_REKEY_PARAMETERS;
 struct _DRIVER_EXTENSION;
 struct _DRIVER_OBJECT;
+struct _EAPOL_REQUEST_ID_MESSAGE_WOL_PACKET_PARAMETERS;
 struct _ECP_LIST;
 struct _EPROCESS;
 struct _ERESOURCE;
@@ -109,8 +111,12 @@ struct _IO_STACK_LOCATION;
 struct _IO_STATUS_BLOCK32;
 struct _IO_STATUS_BLOCK;
 struct _IO_TIMER;
+struct _IPV4_ARP_PARAMETERS;
 struct _IPV4_HEADER;
+struct _IPV4_TCP_SYN_WOL_PACKET_PARAMETERS;
 struct _IPV6_FRAGMENT_HEADER;
+struct _IPV6_NS_PARAMETERS;
+struct _IPV6_TCP_SYN_WOL_PACKET_PARAMETERS;
 struct _IRP;
 enum _IRQ_PRIORITY;
 struct _KAPC;
@@ -234,6 +240,7 @@ enum _NDIS_DEVICE_PNP_EVENT;
 enum _NDIS_DEVICE_POWER_STATE;
 struct _NDIS_DPC_TRACKER;
 struct _NDIS_DPC_WORK_ITEM;
+struct _NDIS_ENTRY_HEADER;
 struct _NDIS_EVENT;
 struct _NDIS_FILTER_ATTACH_LIST;
 struct _NDIS_FILTER_ATTACH_PARAMETERS;
@@ -250,6 +257,7 @@ enum _NDIS_FILTER_TYPE;
 enum _NDIS_FRAME_HEADER;
 struct _NDIS_FRAME_TYPE_AND_OPEN;
 struct _NDIS_FRAME_TYPE_RECORD;
+struct _NDIS_GLOBAL_TRIAGE_BLOCK;
 struct _NDIS_GUID;
 enum _NDIS_HALT_ACTION;
 struct _NDIS_HD_SPLIT_CURRENT_CONFIG;
@@ -288,7 +296,10 @@ struct _NDIS_MINIPORT_TIMER;
 struct _NDIS_MINIPORT_WORK_ITEM;
 enum _NDIS_NDIS5_DRIVER_STATE;
 enum _NDIS_NET_BUFFER_LIST_INFO;
+struct _NDIS_NET_BUFFER_LIST_POOL;
+struct _NDIS_NET_BUFFER_POOL;
 struct _NDIS_NIC_SWITCH_CAPABILITIES;
+struct _NDIS_NPAGED_LOOKASIDE_LIST;
 struct _NDIS_NSI_COMPARTMENT_RW;
 struct _NDIS_NSI_NETWORK_RW;
 struct _NDIS_OBJECT_HEADER;
@@ -296,11 +307,14 @@ struct _NDIS_OFFLOAD;
 struct _NDIS_OFFLOAD_ENCAPSULATION;
 struct _NDIS_OFFLOAD_HANDLE;
 struct _NDIS_OID_REQUEST;
+struct _NDIS_OID_REQUEST_FLAGS;
+struct _NDIS_OID_REQUEST_RESERVED;
 struct _NDIS_OPEN_BLOCK;
 struct _NDIS_OPEN_OFFLOAD;
 enum _NDIS_OPEN_STATE;
 enum _NDIS_OPEN_TRANSLATION_STATE;
 struct _NDIS_PACKET;
+struct _NDIS_PACKET_PATTERN_ENTRY;
 struct _NDIS_PACKET_PRIVATE;
 struct _NDIS_PACKET_STACK;
 struct _NDIS_PACKET_WRAPPER;
@@ -314,15 +328,24 @@ struct _NDIS_PKT_POOL;
 struct _NDIS_PKT_POOL_HDR;
 struct _NDIS_PM_ADMIN_GONFIG;
 struct _NDIS_PM_CAPABILITIES;
+struct _NDIS_PM_COUNTED_STRING;
+struct _NDIS_PM_PACKET_PATTERN;
 struct _NDIS_PM_PARAMETERS;
+struct _NDIS_PM_PROTOCOL_OFFLOAD;
+enum _NDIS_PM_PROTOCOL_OFFLOAD_TYPE;
 struct _NDIS_PM_WAKE_UP_CAPABILITIES;
+enum _NDIS_PM_WOL_PACKET;
+struct _NDIS_PM_WOL_PATTERN;
 struct _NDIS_PNP_CAPABILITIES;
 enum _NDIS_PNP_DEVICE_STATE;
+struct _NDIS_POOL_HEADER;
 struct _NDIS_PORT;
 struct _NDIS_PORT_AUTHENTICATION_PARAMETERS;
 enum _NDIS_PORT_AUTHORIZATION_STATE;
+struct _NDIS_PORT_BLOCK;
 struct _NDIS_PORT_CHARACTERISTICS;
 enum _NDIS_PORT_CONTROL_STATE;
+enum _NDIS_PORT_PNP_STATE;
 enum _NDIS_PORT_TYPE;
 enum _NDIS_PROCESSOR_VENDOR;
 struct _NDIS_PROTOCOL_BLOCK;
@@ -343,6 +366,7 @@ struct _NDIS_RECEIVE_SCALE_CAPABILITIES;
 struct _NDIS_RECEIVE_SCALE_PARAMETERS;
 struct _NDIS_REQUEST;
 enum _NDIS_REQUEST_TYPE;
+struct _NDIS_REQUEST_XLATION_CONTEXT;
 struct _NDIS_RESTART_ATTRIBUTES;
 struct _NDIS_RESTART_GENERAL_ATTRIBUTES;
 struct _NDIS_RW_LOCK_EX;
@@ -365,6 +389,7 @@ struct _NDIS_TIMER;
 struct _NDIS_TIMER_ENTRY;
 struct _NDIS_TRACK_MEM;
 struct _NDIS_WAN_PACKET;
+struct _NDIS_WOL_XLATION_CONTEXT;
 struct _NDIS_WORK_ITEM;
 enum _NDIS_WORK_ITEM_TYPE;
 struct _NDIS_WORK_QUEUE;
@@ -434,6 +459,7 @@ union _POWER_STATE;
 enum _POWER_STATE_TYPE;
 struct _PRIVILEGE_SET;
 struct _PROCESSOR_NUMBER;
+union _PROTOCOL_OFFLOAD_PARAMETERS;
 enum _PS_ATTRIBUTE_NUM;
 enum PS_CREATE_STATE;
 enum _PS_IFEO_KEY_STATE;
@@ -515,6 +541,8 @@ enum _WHEA_ERROR_TYPE;
 union _WHEA_PERSISTENCE_INFO;
 union _WHEA_REVISION;
 union _WHEA_TIMESTAMP;
+struct _WOL_BITMAP_PATTERN;
+union _WOL_PATTERN;
 struct _WORK_QUEUE_ITEM;
 enum _WORK_QUEUE_TYPE;
 struct _X_FILTER;
@@ -1150,6 +1178,14 @@ typedef enum _DOT11_PHY_TYPE
   dot11_phy_type_IHV_end = -1,
 } DOT11_PHY_TYPE, *PDOT11_PHY_TYPE;
 
+typedef struct _DOT11_RSN_REKEY_PARAMETERS
+{
+  unsigned long Flags;
+  unsigned char KCK[16];
+  unsigned char KEK[16];
+  unsigned __int64 KeyReplayCounter;
+} DOT11_RSN_REKEY_PARAMETERS, *PDOT11_RSN_REKEY_PARAMETERS;
+
 typedef struct _DRIVER_EXTENSION
 {
   struct _DRIVER_OBJECT* DriverObject;
@@ -1176,6 +1212,11 @@ typedef struct _DRIVER_OBJECT
   void* DriverUnload /* function */;
   void* MajorFunction[28] /* function */;
 } DRIVER_OBJECT, *PDRIVER_OBJECT;
+
+typedef struct _EAPOL_REQUEST_ID_MESSAGE_WOL_PACKET_PARAMETERS
+{
+  unsigned long Flags;
+} EAPOL_REQUEST_ID_MESSAGE_WOL_PACKET_PARAMETERS, *PEAPOL_REQUEST_ID_MESSAGE_WOL_PACKET_PARAMETERS;
 
 struct _ECP_LIST;
 
@@ -2221,6 +2262,15 @@ typedef struct _IO_STATUS_BLOCK32
 
 struct _IO_TIMER;
 
+typedef struct _IPV4_ARP_PARAMETERS
+{
+  unsigned long Flags;
+  unsigned char RemoteIPv4Address[4];
+  unsigned char HostIPv4Address[4];
+  unsigned char MacAddress[6];
+  char __PADDING__[2];
+} IPV4_ARP_PARAMETERS, *PIPV4_ARP_PARAMETERS;
+
 typedef struct _IPV4_HEADER
 {
   union
@@ -2262,6 +2312,15 @@ typedef struct _IPV4_HEADER
   struct in_addr DestinationAddress;
 } IPV4_HEADER, *PIPV4_HEADER;
 
+typedef struct _IPV4_TCP_SYN_WOL_PACKET_PARAMETERS
+{
+  unsigned long Flags;
+  unsigned char IPv4SourceAddress[4];
+  unsigned char IPv4DestAddress[4];
+  unsigned short TCPSourcePortNumber;
+  unsigned short TCPDestPortNumber;
+} IPV4_TCP_SYN_WOL_PACKET_PARAMETERS, *PIPV4_TCP_SYN_WOL_PACKET_PARAMETERS;
+
 typedef struct _IPV6_FRAGMENT_HEADER
 {
   unsigned char NextHeader;
@@ -2279,6 +2338,25 @@ typedef struct _IPV6_FRAGMENT_HEADER
   };
   unsigned int Id;
 } IPV6_FRAGMENT_HEADER, *PIPV6_FRAGMENT_HEADER;
+
+typedef struct _IPV6_NS_PARAMETERS
+{
+  unsigned long Flags;
+  unsigned char RemoteIPv6Address[16];
+  unsigned char SolicitedNodeIPv6Address[16];
+  unsigned char MacAddress[6];
+  unsigned char TargetIPv6Addresses[16][2];
+  char __PADDING__[2];
+} IPV6_NS_PARAMETERS, *PIPV6_NS_PARAMETERS;
+
+typedef struct _IPV6_TCP_SYN_WOL_PACKET_PARAMETERS
+{
+  unsigned long Flags;
+  unsigned char IPv6SourceAddress[16];
+  unsigned char IPv6DestAddress[16];
+  unsigned short TCPSourcePortNumber;
+  unsigned short TCPDestPortNumber;
+} IPV6_TCP_SYN_WOL_PACKET_PARAMETERS, *PIPV6_TCP_SYN_WOL_PACKET_PARAMETERS;
 
 typedef struct _IRP
 {
@@ -4239,6 +4317,14 @@ typedef struct _NDIS_DPC_WORK_ITEM
   unsigned __int64 Lock;
 } NDIS_DPC_WORK_ITEM, *PNDIS_DPC_WORK_ITEM;
 
+typedef struct _NDIS_ENTRY_HEADER
+{
+  struct _NDIS_POOL_HEADER* PoolHeader;
+  struct _LIST_ENTRY Linkage;
+  unsigned long LookasideProcIndex;
+  long __PADDING__[1];
+} NDIS_ENTRY_HEADER, *PNDIS_ENTRY_HEADER;
+
 typedef struct _NDIS_EVENT
 {
   struct _KEVENT Event;
@@ -4425,6 +4511,7 @@ typedef struct _NDIS_FILTER_DRIVER_BLOCK
   enum _NDIS_FILTER_TYPE FilterType;
   enum _NDIS_FILTER_RUN_TYPE FilterRunType;
   struct _UNICODE_STRING FilterClass;
+  struct _UNICODE_STRING ImageName;
 } NDIS_FILTER_DRIVER_BLOCK, *PNDIS_FILTER_DRIVER_BLOCK;
 
 typedef struct _NDIS_FILTER_DRIVER_CHARACTERISTICS
@@ -4536,6 +4623,62 @@ typedef struct _NDIS_FRAME_TYPE_RECORD
   unsigned int NumEntries;
   struct _NDIS_FRAME_TYPE_AND_OPEN Entry[16];
 } NDIS_FRAME_TYPE_RECORD, *PNDIS_FRAME_TYPE_RECORD;
+
+typedef struct _NDIS_GLOBAL_TRIAGE_BLOCK
+{
+  unsigned long Signature;
+  unsigned short Revision;
+  unsigned short Size;
+  unsigned short MiniportBlockSize;
+  unsigned short MiniportAdapterContextOffset;
+  unsigned short AdapterInstanceNameOffset;
+  unsigned short MiniportLowestFilterOffset;
+  unsigned short MiniportOpenQueueOffset;
+  unsigned short MiniportDriverHandleOffset;
+  unsigned short MiniportPendingOidOffset;
+  unsigned short MiniportSymbolicLinkOffset;
+  unsigned short MDriverBlockSize;
+  unsigned short MiniportServiceNameOffset;
+  unsigned short MiniportImageNameOffset;
+  unsigned short FilterBlockSize;
+  unsigned short FilterDriverOffset;
+  unsigned short FilterModuleContextOffset;
+  unsigned short FilterHigherFilterOffset;
+  unsigned short FilterFriendlyNameOffset;
+  unsigned short FilterPendingOidOffset;
+  unsigned short FilterMiniportOffset;
+  unsigned short FilterDriverBlockSize;
+  unsigned short FilterDriverFriendlyNameOffset;
+  unsigned short FilterServiceNameOffset;
+  unsigned short FilterImageNameOffset;
+  unsigned short OpenBlockSize;
+  unsigned short ProtocolHandleOffset;
+  unsigned short ProtocolBindingContextOffset;
+  unsigned short MiniportNextOpenOffset;
+  unsigned short OpenMiniportOffset;
+  unsigned short ProtocolBlockSize;
+  unsigned short ProtocolNameOffset;
+  unsigned short ProtocolImageNameOffset;
+  unsigned short NBLPoolListOffset;
+  unsigned short AllocatedListOffset;
+  unsigned short OwnerHandleOffset;
+  unsigned short LookasideListOffset;
+  unsigned short EntryLinkageOffset;
+  unsigned short EntryHeaderSize;
+  unsigned short LookasideListSize;
+  unsigned short SListHeadOffset;
+  unsigned short BackupSListHeadOffset;
+  unsigned short NblSize;
+  unsigned short NblCurrentOwnerOffset;
+  unsigned short SourceHandleOffset;
+  unsigned short NdisOidRequestSize;
+  unsigned short NdisTrackNblOwner;
+  unsigned short MaxNumberOfProcessors;
+  unsigned __int64 GlobalNetBufferListPoolList;
+  unsigned __int64 BugcheckMiniport;
+  unsigned __int64 PendingNBL[32];
+  unsigned short PendingNBLCount[32];
+} NDIS_GLOBAL_TRIAGE_BLOCK, *PNDIS_GLOBAL_TRIAGE_BLOCK;
 
 typedef struct _NDIS_GUID
 {
@@ -4924,6 +5067,7 @@ typedef struct _NDIS_M_DRIVER_BLOCK
   void* RemoveDeviceHandler /* function */;
   void* FilterResourceRequirementsHandler /* function */;
   void* StartDeviceHandler /* function */;
+  struct _UNICODE_STRING ImageName;
 } NDIS_M_DRIVER_BLOCK, *PNDIS_M_DRIVER_BLOCK;
 
 typedef enum _NDIS_M_PERIODIC_RECEIVE_STATE
@@ -5128,7 +5272,11 @@ typedef struct _NDIS_MINIPORT_BLOCK
   unsigned short SetInfoBufLen;
   unsigned short MaxSendPackets;
   int FakeStatus;
-  void* Reserved24;
+  union
+  {
+    void* Reserved24;
+    void* GlobalTriageBlock;
+  };
   struct _NDIS_RECEIVE_SCALE_PARAMETERS* CombinedNdisRSSParameters;
   union
   {
@@ -5475,6 +5623,8 @@ typedef struct _NDIS_MINIPORT_BLOCK
   unsigned short* NumaDistances;
   struct _UNICODE_STRING* pModifiedInstanceName;
   struct _WORK_QUEUE_ITEM DeleteMiniportWorkItem;
+  void* ProcessingOpen;
+  long __PADDING__[2];
 } NDIS_MINIPORT_BLOCK, *PNDIS_MINIPORT_BLOCK;
 
 typedef struct _NDIS_MINIPORT_DRIVER_CHARACTERISTICS
@@ -5743,6 +5893,44 @@ typedef enum _NDIS_NET_BUFFER_LIST_INFO
   MaxNetBufferListInfo = 19,
 } NDIS_NET_BUFFER_LIST_INFO, *PNDIS_NET_BUFFER_LIST_INFO;
 
+typedef struct _NDIS_NET_BUFFER_LIST_POOL
+{
+  struct _NDIS_OBJECT_HEADER Header;
+  unsigned __int64 ListLock;
+  struct _LIST_ENTRY AllocatedList;
+  void* Signature;
+  unsigned short ItemLength;
+  unsigned short ContextSize;
+  void* OwnerHandle;
+  void* Allocator;
+  unsigned long Tag;
+  unsigned long Flags;
+  unsigned __int64 Lock;
+  struct _LIST_ENTRY GlobalNetBufferListPoolList;
+  unsigned char ProtocolId;
+  unsigned long DataSize;
+  unsigned long MdlSize;
+  struct _NDIS_NPAGED_LOOKASIDE_LIST NetBufferListPoolList[1];
+} NDIS_NET_BUFFER_LIST_POOL, *PNDIS_NET_BUFFER_LIST_POOL;
+
+typedef struct _NDIS_NET_BUFFER_POOL
+{
+  struct _NDIS_OBJECT_HEADER Header;
+  unsigned __int64 ListLock;
+  struct _LIST_ENTRY AllocatedList;
+  void* Signature;
+  unsigned short ItemLength;
+  void* OwnerHandle;
+  void* Allocator;
+  unsigned long Tag;
+  unsigned __int64 Lock;
+  struct _LIST_ENTRY GlobalNetBufferPoolList;
+  unsigned long Flags;
+  unsigned long DataSize;
+  unsigned long MdlSize;
+  struct _NDIS_NPAGED_LOOKASIDE_LIST NetBufferPoolList[1];
+} NDIS_NET_BUFFER_POOL, *PNDIS_NET_BUFFER_POOL;
+
 typedef struct _NDIS_NIC_SWITCH_CAPABILITIES
 {
   struct _NDIS_OBJECT_HEADER Header;
@@ -5754,6 +5942,16 @@ typedef struct _NDIS_NIC_SWITCH_CAPABILITIES
   unsigned long NdisReserved2;
   unsigned long NdisReserved3;
 } NDIS_NIC_SWITCH_CAPABILITIES, *PNDIS_NIC_SWITCH_CAPABILITIES;
+
+typedef struct _NDIS_NPAGED_LOOKASIDE_LIST
+{
+  struct _LOOKASIDE_LIST_EX List;
+  union _SLIST_HEADER BackupList;
+  union _SLIST_HEADER* AllocListPtr;
+  union _SLIST_HEADER* FreeListPtr;
+  unsigned __int64 ListSwapLock;
+  long __PADDING__[10];
+} NDIS_NPAGED_LOOKASIDE_LIST, *PNDIS_NPAGED_LOOKASIDE_LIST;
 
 typedef struct _NDIS_NSI_COMPARTMENT_RW
 {
@@ -5832,6 +6030,91 @@ typedef struct _NDIS_OID_REQUEST
   unsigned short Reserved2;
   long __PADDING__[1];
 } NDIS_OID_REQUEST, *PNDIS_OID_REQUEST;
+
+typedef struct _NDIS_OID_REQUEST_FLAGS
+{
+  struct /* bitfield */
+  {
+    unsigned long Completed : 1; /* bit position: 0 */
+    unsigned long FreeRequest : 1; /* bit position: 1 */
+    unsigned long OidInTable : 1; /* bit position: 2 */
+    unsigned long SignalEvent : 1; /* bit position: 3 */
+    unsigned long CoNdis : 1; /* bit position: 4 */
+    unsigned long FromProtocol : 1; /* bit position: 5 */
+    unsigned long FromFilter : 1; /* bit position: 6 */
+    unsigned long Passthrough : 1; /* bit position: 7 */
+    unsigned long LastRestoreFilter : 1; /* bit position: 8 */
+    unsigned long OnlyDerefOpen : 1; /* bit position: 9 */
+    unsigned long Reserved1 : 1; /* bit position: 10 */
+    unsigned long MpSaveBuf : 1; /* bit position: 11 */
+    unsigned long Reserved2 : 1; /* bit position: 12 */
+    unsigned long DownLevel : 1; /* bit position: 13 */
+    unsigned long Cloned : 1; /* bit position: 14 */
+    unsigned long Mandatory : 1; /* bit position: 15 */
+    unsigned long SentToMiniport : 1; /* bit position: 16 */
+    unsigned long SentToFilter : 1; /* bit position: 17 */
+    unsigned long ForReset : 1; /* bit position: 18 */
+    unsigned long ForRestore : 1; /* bit position: 19 */
+    unsigned long ForMpDirect : 1; /* bit position: 20 */
+    unsigned long DirectRequest : 1; /* bit position: 21 */
+    unsigned long RevisionChanged : 1; /* bit position: 22 */
+    unsigned long SkipPreProc : 1; /* bit position: 23 */
+    unsigned long SkipPostProc : 1; /* bit position: 24 */
+    unsigned long SkipSourceCompletion : 1; /* bit position: 25 */
+    unsigned long SourceCompletionOnly : 1; /* bit position: 26 */
+    unsigned long Remainder : 5; /* bit position: 27 */
+  }; /* bitfield */
+} NDIS_OID_REQUEST_FLAGS, *PNDIS_OID_REQUEST_FLAGS;
+
+typedef struct _NDIS_OID_REQUEST_RESERVED
+{
+  union
+  {
+    struct _LIST_ENTRY Entry;
+    int Status;
+  };
+  struct _NDIS_OID_REQUEST_FLAGS Flags;
+  unsigned long OidTableIndex;
+  void* Request;
+  void* SourceHandle;
+  union
+  {
+    struct
+    {
+      struct _KEVENT Event;
+      void* NdisVcHandle;
+    };
+    struct
+    {
+      void* PartyContext;
+      void* CallMgrContext;
+      void* VcContext;
+      void* AfContext;
+    } CoNdis;
+  };
+  union
+  {
+    unsigned __int64 StartCycle;
+    struct
+    {
+      struct _NDIS_REQUEST_XLATION_CONTEXT* pOidXlationContext;
+      unsigned long OriginalBufferLength;
+    };
+    struct
+    {
+      unsigned long SavedOid;
+      void* SavedInfoBuf;
+      unsigned long SavedInfoBufLen;
+      unsigned long RequestBuffer;
+    };
+    struct
+    {
+      struct _NDIS_WOL_XLATION_CONTEXT* WolXlationContext;
+      unsigned long WolPatternId;
+      struct _NDIS_PACKET_PATTERN_ENTRY* SourcePacketEntry;
+    } PMContext;
+  };
+} NDIS_OID_REQUEST_RESERVED, *PNDIS_OID_REQUEST_RESERVED;
 
 typedef struct _NDIS_OPEN_BLOCK
 {
@@ -6056,6 +6339,24 @@ typedef struct _NDIS_PACKET
   char __PADDING__[7];
 } NDIS_PACKET, *PNDIS_PACKET;
 
+typedef struct _NDIS_PACKET_PATTERN_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY Link;
+  struct _SINGLE_LIST_ENTRY DupLink;
+  unsigned long Size;
+  void* Source;
+  unsigned long Priority;
+  unsigned long EffectivePriority;
+  unsigned long Id;
+  unsigned long PortNumber;
+  union
+  {
+    struct _NDIS_PM_PACKET_PATTERN Pattern;
+    struct _NDIS_PM_WOL_PATTERN WoLPattern;
+    struct _NDIS_PM_PROTOCOL_OFFLOAD ProtocolOffload;
+  };
+} NDIS_PACKET_PATTERN_ENTRY, *PNDIS_PACKET_PATTERN_ENTRY;
+
 typedef struct _NDIS_PACKET_PRIVATE
 {
   unsigned int PhysicalCount;
@@ -6272,6 +6573,22 @@ typedef struct _NDIS_PM_CAPABILITIES
   enum _NDIS_DEVICE_POWER_STATE MinLinkChangeWakeUp;
 } NDIS_PM_CAPABILITIES, *PNDIS_PM_CAPABILITIES;
 
+typedef struct _NDIS_PM_COUNTED_STRING
+{
+  unsigned short Length;
+  wchar_t String[65];
+} NDIS_PM_COUNTED_STRING, *PNDIS_PM_COUNTED_STRING;
+
+typedef struct _NDIS_PM_PACKET_PATTERN
+{
+  unsigned long Priority;
+  unsigned long Reserved;
+  unsigned long MaskSize;
+  unsigned long PatternOffset;
+  unsigned long PatternSize;
+  unsigned long PatternFlags;
+} NDIS_PM_PACKET_PATTERN, *PNDIS_PM_PACKET_PATTERN;
+
 typedef struct _NDIS_PM_PARAMETERS
 {
   struct _NDIS_OBJECT_HEADER Header;
@@ -6280,12 +6597,56 @@ typedef struct _NDIS_PM_PARAMETERS
   unsigned long WakeUpFlags;
 } NDIS_PM_PARAMETERS, *PNDIS_PM_PARAMETERS;
 
+typedef struct _NDIS_PM_PROTOCOL_OFFLOAD
+{
+  struct _NDIS_OBJECT_HEADER Header;
+  unsigned long Flags;
+  unsigned long Priority;
+  enum _NDIS_PM_PROTOCOL_OFFLOAD_TYPE ProtocolOffloadType;
+  struct _NDIS_PM_COUNTED_STRING FriendlyName;
+  unsigned long ProtocolOffloadId;
+  unsigned long NextProtocolOffloadOffset;
+  union _PROTOCOL_OFFLOAD_PARAMETERS ProtocolOffloadParameters;
+} NDIS_PM_PROTOCOL_OFFLOAD, *PNDIS_PM_PROTOCOL_OFFLOAD;
+
+typedef enum _NDIS_PM_PROTOCOL_OFFLOAD_TYPE
+{
+  NdisPMProtocolOffloadIdUnspecified = 0,
+  NdisPMProtocolOffloadIdIPv4ARP = 1,
+  NdisPMProtocolOffloadIdIPv6NS = 2,
+  NdisPMProtocolOffload80211RSNRekey = 3,
+  NdisPMProtocolOffloadIdMaximum = 4,
+} NDIS_PM_PROTOCOL_OFFLOAD_TYPE, *PNDIS_PM_PROTOCOL_OFFLOAD_TYPE;
+
 typedef struct _NDIS_PM_WAKE_UP_CAPABILITIES
 {
   enum _NDIS_DEVICE_POWER_STATE MinMagicPacketWakeUp;
   enum _NDIS_DEVICE_POWER_STATE MinPatternWakeUp;
   enum _NDIS_DEVICE_POWER_STATE MinLinkChangeWakeUp;
 } NDIS_PM_WAKE_UP_CAPABILITIES, *PNDIS_PM_WAKE_UP_CAPABILITIES;
+
+typedef enum _NDIS_PM_WOL_PACKET
+{
+  NdisPMWoLPacketUnspecified = 0,
+  NdisPMWoLPacketBitmapPattern = 1,
+  NdisPMWoLPacketMagicPacket = 2,
+  NdisPMWoLPacketIPv4TcpSyn = 3,
+  NdisPMWoLPacketIPv6TcpSyn = 4,
+  NdisPMWoLPacketEapolRequestIdMessage = 5,
+  NdisPMWoLPacketMaximum = 6,
+} NDIS_PM_WOL_PACKET, *PNDIS_PM_WOL_PACKET;
+
+typedef struct _NDIS_PM_WOL_PATTERN
+{
+  struct _NDIS_OBJECT_HEADER Header;
+  unsigned long Flags;
+  unsigned long Priority;
+  enum _NDIS_PM_WOL_PACKET WoLPacketType;
+  struct _NDIS_PM_COUNTED_STRING FriendlyName;
+  unsigned long PatternId;
+  unsigned long NextWoLPatternOffset;
+  union _WOL_PATTERN WoLPattern;
+} NDIS_PM_WOL_PATTERN, *PNDIS_PM_WOL_PATTERN;
 
 typedef struct _NDIS_PNP_CAPABILITIES
 {
@@ -6303,6 +6664,13 @@ typedef enum _NDIS_PNP_DEVICE_STATE
   NdisPnPDeviceRemoved = 5,
   NdisPnPDeviceSurpriseRemoved = 6,
 } NDIS_PNP_DEVICE_STATE, *PNDIS_PNP_DEVICE_STATE;
+
+typedef struct _NDIS_POOL_HEADER
+{
+  struct _NDIS_OBJECT_HEADER Header;
+  unsigned __int64 ListLock;
+  struct _LIST_ENTRY AllocatedList;
+} NDIS_POOL_HEADER, *PNDIS_POOL_HEADER;
 
 typedef struct _NDIS_PORT
 {
@@ -6330,6 +6698,14 @@ typedef enum _NDIS_PORT_AUTHORIZATION_STATE
   NdisPortReauthorizing = 3,
 } NDIS_PORT_AUTHORIZATION_STATE, *PNDIS_PORT_AUTHORIZATION_STATE;
 
+typedef struct _NDIS_PORT_BLOCK
+{
+  struct _LIST_ENTRY Link;
+  enum _NDIS_PORT_PNP_STATE PortPnPState;
+  enum _NDIS_PORT_PNP_STATE PrevPortPnPState;
+  struct _NDIS_PORT_CHARACTERISTICS PortCharacteristics;
+} NDIS_PORT_BLOCK, *PNDIS_PORT_BLOCK;
+
 typedef struct _NDIS_PORT_CHARACTERISTICS
 {
   struct _NDIS_OBJECT_HEADER Header;
@@ -6353,6 +6729,18 @@ typedef enum _NDIS_PORT_CONTROL_STATE
   NdisPortControlStateControlled = 1,
   NdisPortControlStateUncontrolled = 2,
 } NDIS_PORT_CONTROL_STATE, *PNDIS_PORT_CONTROL_STATE;
+
+typedef enum _NDIS_PORT_PNP_STATE
+{
+  NdisPortPnPStateAllocating = 1,
+  NdisPortPnPStateAllocated = 2,
+  NdisPortPnPStateActivating = 3,
+  NdisPortPnPStateActivated = 4,
+  NdisPortPnPStateDeactivating = 5,
+  NdisPortPnPStateDeactivated = 6,
+  NdisPortPnPStateDeallocating = 7,
+  NdisPortPnPStateDeallocated = 8,
+} NDIS_PORT_PNP_STATE, *PNDIS_PORT_PNP_STATE;
 
 typedef enum _NDIS_PORT_TYPE
 {
@@ -6472,6 +6860,7 @@ typedef struct _NDIS_PROTOCOL_BLOCK
   void* AllocateSharedMemoryHandler /* function */;
   void* FreeSharedMemoryHandler /* function */;
   void* AllocateSharedMemoryContext;
+  struct _UNICODE_STRING ImageName;
 } NDIS_PROTOCOL_BLOCK, *PNDIS_PROTOCOL_BLOCK;
 
 typedef struct _NDIS_PROTOCOL_OFFLOAD_BLOCK_LIST
@@ -6685,6 +7074,19 @@ typedef enum _NDIS_REQUEST_TYPE
   NdisRequestGeneric4 = 11,
   NdisRequestMethod = 12,
 } NDIS_REQUEST_TYPE, *PNDIS_REQUEST_TYPE;
+
+typedef struct _NDIS_REQUEST_XLATION_CONTEXT
+{
+  unsigned long OldOid;
+  void* InfoBuf;
+  unsigned int InfoBufLength;
+  unsigned __int64 RcvErrorValue;
+  unsigned __int64 RcvNoBufferValue;
+  unsigned __int64 RcvDiscardsValue;
+  unsigned __int64 XmitErrorValue;
+  int Status;
+  long __PADDING__[1];
+} NDIS_REQUEST_XLATION_CONTEXT, *PNDIS_REQUEST_XLATION_CONTEXT;
 
 typedef struct _NDIS_RESTART_ATTRIBUTES
 {
@@ -7013,6 +7415,23 @@ typedef struct _NDIS_WAN_PACKET
   void* MacReserved3;
   void* MacReserved4;
 } NDIS_WAN_PACKET, *PNDIS_WAN_PACKET;
+
+typedef struct _NDIS_WOL_XLATION_CONTEXT
+{
+  unsigned long OriginalOid;
+  void* InformationBuffer;
+  unsigned long InformationBufferLength;
+  union
+  {
+    struct _NDIS_PM_WOL_PATTERN* WolPattern;
+    struct _NDIS_PM_PACKET_PATTERN* PacketPattern;
+    struct
+    {
+      unsigned long PatternToRemove;
+      long __PADDING__[1];
+    };
+  };
+} NDIS_WOL_XLATION_CONTEXT, *PNDIS_WOL_XLATION_CONTEXT;
 
 typedef struct _NDIS_WORK_ITEM
 {
@@ -7861,6 +8280,16 @@ typedef struct _PROCESSOR_NUMBER
   unsigned char Number;
   unsigned char Reserved;
 } PROCESSOR_NUMBER, *PPROCESSOR_NUMBER;
+
+typedef union _PROTOCOL_OFFLOAD_PARAMETERS
+{
+  union
+  {
+    struct _IPV4_ARP_PARAMETERS IPv4ARPParameters;
+    struct _IPV6_NS_PARAMETERS IPv6NSParameters;
+    struct _DOT11_RSN_REKEY_PARAMETERS Dot11RSNRekeyParameters;
+  };
+} PROTOCOL_OFFLOAD_PARAMETERS, *PPROTOCOL_OFFLOAD_PARAMETERS;
 
 typedef enum _PS_ATTRIBUTE_NUM
 {
@@ -8928,6 +9357,26 @@ typedef union _WHEA_TIMESTAMP
     union _LARGE_INTEGER AsLARGE_INTEGER;
   };
 } WHEA_TIMESTAMP, *PWHEA_TIMESTAMP;
+
+typedef struct _WOL_BITMAP_PATTERN
+{
+  unsigned long Flags;
+  unsigned long MaskOffset;
+  unsigned long MaskSize;
+  unsigned long PatternOffset;
+  unsigned long PatternSize;
+} WOL_BITMAP_PATTERN, *PWOL_BITMAP_PATTERN;
+
+typedef union _WOL_PATTERN
+{
+  union
+  {
+    struct _IPV4_TCP_SYN_WOL_PACKET_PARAMETERS IPv4TcpSynParameters;
+    struct _IPV6_TCP_SYN_WOL_PACKET_PARAMETERS IPv6TcpSynParameters;
+    struct _EAPOL_REQUEST_ID_MESSAGE_WOL_PACKET_PARAMETERS EapolRequestIdMessageParameters;
+    struct _WOL_BITMAP_PATTERN WoLBitMapPattern;
+  };
+} WOL_PATTERN, *PWOL_PATTERN;
 
 typedef struct _WORK_QUEUE_ITEM
 {
@@ -10207,6 +10656,7 @@ NdisQueryBufferSafe();
 ndisQueryBusInterface();
 ndisQueryCustomGuids();
 ndisQueryDeviceOid();
+ndisQueryDriverImageName();
 ndisQueryEnableWakeUp();
 ndisQueryFilterInstanceHandlers();
 ndisQueryFilterOffloadCaps();
@@ -10447,7 +10897,10 @@ ndisTraceDpcStart();
 ndisTracePeriodicRcvOnOff();
 ndisTracePeriodicReceivesEnd();
 ndisTracePeriodicReceivesStart();
+ndisTraceQueueWorkItem();
 ndisTraceRcv();
+ndisTraceWorkItemExecEnd();
+ndisTraceWorkItemExecStart();
 NdisTransferData();
 ndisTranslateOffloadSetsToTasks();
 ndisTranslateResources();
@@ -11025,6 +11478,7 @@ ndisGlobalPortSendAuthorizationState;
 ndisGlobalPortSendControlState;
 ndisGlobalTimerList;
 ndisGlobalTimerListLock;
+ndisGlobalTriageBlock;
 ndisHandledNdis5Ndis6_802_3_Oids;
 ndisHandledNdis5Ndis6GenOids;
 ndisHandledNdis5Only_802_5_Oids;

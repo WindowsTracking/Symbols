@@ -3325,7 +3325,7 @@ public: void __cdecl CRasterizerState::FinalRelease(void);
 public: virtual void __cdecl CRasterizerState::GetDesc(struct D3D11_RASTERIZER_DESC *);
 public: __cdecl CRasterizerState::~CRasterizerState(void);
 CreateDXGIFactory1();
-void __cdecl CreateGSFillIOScratch(struct D3D11DDIARG_CREATEGEOMETRYSHADERWITHSTREAMOUTPUT &,unsigned int const *,class std::vector<struct D3D11DDIARG_STREAM_OUTPUT_DECLARATION_ENTRY,class std::allocator<struct D3D11DDIARG_STREAM_OUTPUT_DECLARATION_ENTRY> > &,class std::vector<unsigned int,class std::allocator<unsigned int> > &,struct SD3D11LayeredGeometryShaderCreationArgs const *,class CSignatureParser &,class CSignatureParser5 &,struct D3D10DDIARG_STAGE_IO_SIGNATURES &);
+void __cdecl CreateGSFillIOScratch(struct D3D11DDIARG_CREATEGEOMETRYSHADERWITHSTREAMOUTPUT &,unsigned int const *,unsigned int const *,class std::vector<struct D3D11DDIARG_STREAM_OUTPUT_DECLARATION_ENTRY,class std::allocator<struct D3D11DDIARG_STREAM_OUTPUT_DECLARATION_ENTRY> > &,class std::vector<unsigned int,class std::allocator<unsigned int> > &,struct SD3D11LayeredGeometryShaderCreationArgs const *,class CSignatureParser &,class CSignatureParser5 &,struct D3D10DDIARG_STAGE_IO_SIGNATURES &);
 public: void __cdecl CRenderTargetView::CLS::FinalConstruct(class CContext *,struct CRenderTargetView::TConstructorArgs const *);
 public: __cdecl CRenderTargetView::CRenderTargetView(struct CRenderTargetView::TConstructorArgs const &);
 public: void __cdecl CRenderTargetView::FinalConstruct(struct CRenderTargetView::TConstructorArgs const &);

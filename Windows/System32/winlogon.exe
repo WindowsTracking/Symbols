@@ -26,6 +26,7 @@
 ? `CreateBackupRestoreWizard'::`1'::fin$0;
 ? `CreateLowPrivilegedTokenForScreenSaver'::`1'::fin$0;
 ? `CSession::CreatePrimaryTerminal'::`1'::fin$0;
+? `CSession::ForceSwitchDesktopToDefaultDesktop'::`1'::fin$0;
 ? `CSession::Initialize'::`1'::fin$0;
 ? `CSession::PerformDelayedSwitchToApplicationDesktop'::`1'::fin$0;
 ? `CSession::SetUserDesktopSecurity'::`1'::fin$0;
@@ -52,7 +53,7 @@
 ? `CUser::UpdateUserEnvironment'::`1'::fin$0;
 ? `DisplayLegalNotices'::`1'::fin$0;
 ? `FoundDebugger'::`1'::fin$0;
-? `GetInputDesktopName'::`1'::fin$0;
+? `GetInputDesktopNameEx'::`1'::fin$0;
 ? `GetLegalNotices'::`1'::fin$0;
 ? `GetNextProcessFromJob'::`1'::fin$0;
 ? `GetSubscriberDisplayName'::`1'::fin$0;
@@ -237,6 +238,7 @@ void __cdecl CredsStaleReminderEventCallback(struct _TP_CALLBACK_INSTANCE *,void
 public: unsigned long __cdecl CSession::CreatePrimaryTerminal(struct _LUID *,int);
 public: unsigned long __cdecl CSession::CreateScreenSaverDesktop(void *);
 public: __cdecl CSession::CSession(void);
+public: void __cdecl CSession::ForceSwitchDesktopToDefaultDesktop(int *);
 public: void * __cdecl CSession::GetAccessibilityJobObject(int);
 public: static int __cdecl CSession::GetDesktopName(struct HDESK__ *,unsigned short * *);
 public: unsigned long __cdecl CSession::GetLogonDialogTimeout(void *,int);
@@ -311,7 +313,7 @@ FreeLibrary();
 void __cdecl FreeRpcBinding(struct _NOTIFICATION_COMPONENT *);
 _get_image_app_type();
 GetBasicProfileFolderPath();
-unsigned long __cdecl GetInputDesktopName(unsigned short * *);
+unsigned long __cdecl GetInputDesktopNameEx(struct HDESK__ *,unsigned short * *);
 GetLastError();
 unsigned long __cdecl GetLegalNotices(unsigned short const *,struct _LEGALINFO *);
 unsigned long __cdecl GetLogonHoursExtension(class CUser *,int);

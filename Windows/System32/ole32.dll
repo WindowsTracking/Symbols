@@ -1,5 +1,5 @@
 /*
- * PDB file: ole32.pdb\83F5E007224D43FD8E7EC59AA2572F5E2\ole32.pdb
+ * PDB file: ole32.pdb\EE489189724F4D47AECCFDB5534824352\ole32.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -2321,13 +2321,13 @@ enum __MIDL___MIDL_itf_shdeprecated_0000_0006_0001;
 enum __MIDL___MIDL_itf_shpriv_0000_0199_0001;
 enum __MIDL___MIDL_itf_shpriv_0000_0210_0001;
 enum __MIDL___MIDL_itf_shpriv_0000_0240_0001;
-enum __MIDL___MIDL_itf_shpriv_0000_0367_0001;
-enum __MIDL___MIDL_itf_shpriv_0000_0367_0002;
-enum __MIDL___MIDL_itf_shpriv_0000_0368_0001;
-enum __MIDL___MIDL_itf_shpriv_0000_0368_0002;
+enum __MIDL___MIDL_itf_shpriv_0000_0369_0001;
+enum __MIDL___MIDL_itf_shpriv_0000_0369_0002;
 enum __MIDL___MIDL_itf_shpriv_0000_0370_0001;
-enum __MIDL___MIDL_itf_shpriv_0000_0386_0001;
-enum __MIDL___MIDL_itf_shpriv_0000_0449_0001;
+enum __MIDL___MIDL_itf_shpriv_0000_0370_0002;
+enum __MIDL___MIDL_itf_shpriv_0000_0372_0001;
+enum __MIDL___MIDL_itf_shpriv_0000_0388_0001;
+enum __MIDL___MIDL_itf_shpriv_0000_0451_0001;
 enum __MIDL___MIDL_itf_structuredquery_0000_0012_0001;
 union __MIDL___MIDL_itf_wtypes_0000_0001_0001::__MIDL___MIDL_itf_wtypes_0000_0001_0005;
 struct __MIDL___MIDL_itf_wtypes_0000_0001_0001;
@@ -3638,6 +3638,7 @@ enum PUSHSTATE;
 struct pvalueA;
 struct pvalueW;
 struct _QUAD;
+struct _QUERY_PERFORMANCE_COUNTER_FLAGS;
 struct _QUERY_SERVICE_CONFIGA;
 struct _QUERY_SERVICE_CONFIGW;
 struct _QUERY_SERVICE_LOCK_STATUSA;
@@ -4200,6 +4201,7 @@ struct _SYSTEM_PROCESSOR_PERFORMANCE_INFORMATION;
 struct _SYSTEM_PROCESSOR_PERFORMANCE_STATE_DISTRIBUTION;
 struct _SYSTEM_PROCESSOR_POLICY_INFORMATION;
 struct _SYSTEM_PROCESSOR_POWER_INFORMATION;
+struct _SYSTEM_QUERY_PERFORMANCE_COUNTER_INFORMATION;
 struct _SYSTEM_QUERY_TIME_ADJUST_INFORMATION;
 struct _SYSTEM_REF_TRACE_INFORMATION;
 struct _SYSTEM_REGISTRY_APPEND_STRING_PARAMETERS;
@@ -5161,6 +5163,7 @@ union _ULARGE_INTEGER;
 enum UlIsEntry;
 struct _UMS_CREATE_THREAD_ATTRIBUTES;
 struct _UMS_SCHEDULER_STARTUP_INFO;
+struct _UMS_SYSTEM_THREAD_INFORMATION;
 struct _UNICODE_PREFIX_TABLE;
 struct _UNICODE_PREFIX_TABLE_ENTRY;
 struct _UNICODE_STRING;
@@ -6463,6 +6466,7 @@ struct AsyncIAdviseSink
 
 struct AsyncIAdviseSink2
 {
+  struct AsyncIAdviseSink2Vtbl* lpVtbl;
 };
 
 struct AsyncIAdviseSink2Vtbl
@@ -11938,7 +11942,7 @@ typedef struct _COAUTHINFO
 {
   unsigned long dwAuthnSvc;
   unsigned long dwAuthzSvc;
-  wchar_t* pwszServerPrincName;
+  unsigned short* pwszServerPrincName;
   unsigned long dwAuthnLevel;
   unsigned long dwImpersonationLevel;
   struct _COAUTHIDENTITY* pAuthIdentityData;
@@ -12059,11 +12063,9 @@ enum COleCache::GetExtent::__l2::tagCacheType
 enum COleCache::Locate::__l2::tagFormatType
 {
   FORMATTYPE_NONE = 0,
-  FORMATTYPE_ANY = 1,
-  FORMATTYPE_ENHMF = 2,
-  FORMATTYPE_DIB = 3,
-  FORMATTYPE_MFPICT = 4,
-  FORMATTYPE_USER = 5,
+  FORMATTYPE_DIB = 1,
+  FORMATTYPE_MFPICT = 2,
+  FORMATTYPE_ENHMF = 3,
 };
 
 class COleConditionVariable
@@ -14828,11 +14830,7 @@ struct CStdMarshal::Deactivate::__l3::tagServerRefs
   void* pServer;
 };
 
-struct CStdMarshal::DisconnectCliIPIDs::__l6::_IPIDReleaseSet
-{
-  unsigned short cRifRef;
-  struct tagREMINTERFACEREF* pRifRef;
-};
+struct CStdMarshal::DisconnectCliIPIDs::__l6::_IPIDReleaseSet;
 
 struct CStdMarshal::DiscSinkNode
 {
@@ -17300,7 +17298,7 @@ typedef struct _EXCEPTION_POINTERS
 
 typedef struct _EXCEPTION_RECORD
 {
-  unsigned long ExceptionCode;
+  long ExceptionCode;
   unsigned long ExceptionFlags;
   struct _EXCEPTION_RECORD* ExceptionRecord;
   void* ExceptionAddress;
@@ -17320,7 +17318,7 @@ typedef struct _EXCEPTION_RECORD32
 
 typedef struct _EXCEPTION_RECORD64
 {
-  unsigned long ExceptionCode;
+  long ExceptionCode;
   unsigned long ExceptionFlags;
   unsigned __int64 ExceptionRecord;
   unsigned __int64 ExceptionAddress;
@@ -19519,9 +19517,6 @@ typedef enum _HEAP_INFORMATION_CLASS
 {
   HeapCompatibilityInformation = 0,
   HeapEnableTerminationOnCorruption = 1,
-  HeapExtendedInformation = 2,
-  HeapDetailedFailureInformation = -2147483647,
-  HeapSetDebuggingInformation = -2147483646,
 } HEAP_INFORMATION_CLASS, *PHEAP_INFORMATION_CLASS;
 
 typedef struct _HEAP_INFORMATION_ITEM
@@ -19854,7 +19849,6 @@ struct IAdviseSink
 
 struct IAdviseSink2
 {
-  struct IAdviseSink2Vtbl* lpVtbl;
 };
 
 struct IAdviseSink2Vtbl
@@ -19906,7 +19900,6 @@ struct IAsyncManagerVtbl
 
 struct IAsyncRpcChannelBuffer
 {
-  struct IAsyncRpcChannelBufferVtbl* lpVtbl;
 };
 
 struct IAsyncRpcChannelBufferVtbl
@@ -19996,7 +19989,6 @@ struct ICall
 
 struct ICallFactory
 {
-  struct ICallFactoryVtbl* lpVtbl;
 };
 
 struct ICallFactoryVtbl
@@ -20252,7 +20244,6 @@ struct IContextMarshaler
 
 struct IContinue
 {
-  struct IContinueVtbl* lpVtbl;
 };
 
 struct IContinueVtbl
@@ -20333,7 +20324,6 @@ struct IDisconnectSink
 
 struct IDispatch
 {
-  struct IDispatchVtbl* lpVtbl;
 };
 
 struct IDispatchVtbl
@@ -20480,7 +20470,6 @@ struct IEnumOleUndoUnits
 
 struct IEnumOLEVERB
 {
-  struct IEnumOLEVERBVtbl* lpVtbl;
 };
 
 struct IEnumOLEVERBVtbl
@@ -20535,6 +20524,7 @@ struct IEnumSTATPROPSETSTGVtbl
 
 struct IEnumSTATPROPSTG
 {
+  struct IEnumSTATPROPSTGVtbl* lpVtbl;
 };
 
 struct IEnumSTATPROPSTGVtbl
@@ -20550,6 +20540,7 @@ struct IEnumSTATPROPSTGVtbl
 
 struct IEnumSTATSTG
 {
+  struct IEnumSTATSTGVtbl* lpVtbl;
 };
 
 struct IEnumSTATSTGVtbl
@@ -22603,6 +22594,7 @@ struct IOleCache
 
 struct IOleCache2
 {
+  struct IOleCache2Vtbl* lpVtbl;
 };
 
 struct IOleCache2Vtbl
@@ -23061,7 +23053,6 @@ struct IRCEntry
 
 struct IRecordInfo
 {
-  struct IRecordInfoVtbl* lpVtbl;
 };
 
 struct IRecordInfoVtbl
@@ -23089,6 +23080,7 @@ struct IRecordInfoVtbl
 
 struct IReleaseMarshalBuffers
 {
+  struct IReleaseMarshalBuffersVtbl* lpVtbl;
 };
 
 struct IReleaseMarshalBuffersVtbl
@@ -23213,7 +23205,6 @@ struct IRpcOptions
 
 struct IRpcProxyBuffer
 {
-  struct IRpcProxyBufferVtbl* lpVtbl;
 };
 
 struct IRpcProxyBufferVtbl
@@ -23227,6 +23218,7 @@ struct IRpcProxyBufferVtbl
 
 struct IRpcStubBuffer
 {
+  struct IRpcStubBufferVtbl* lpVtbl;
 };
 
 struct IRpcStubBufferVtbl
@@ -23448,7 +23440,6 @@ struct IStdMarshalInfo
 
 struct IStorage
 {
-  struct IStorageVtbl* lpVtbl;
 };
 
 struct IStorageReplica
@@ -23485,7 +23476,6 @@ class istream
 
 struct IStream
 {
-  struct IStreamVtbl* lpVtbl;
 };
 
 class istream_withassign
@@ -23524,7 +23514,6 @@ struct ISurrogateService
 
 struct ISynchronize
 {
-  struct ISynchronizeVtbl* lpVtbl;
 };
 
 struct ISynchronizeContainer
@@ -23610,7 +23599,6 @@ struct ITypeFactory
 
 struct ITypeInfo
 {
-  struct ITypeInfoVtbl* lpVtbl;
 };
 
 struct ITypeInfo2
@@ -23678,7 +23666,6 @@ struct IUnkInner
 
 struct IUnknown
 {
-  struct IUnknownVtbl* lpVtbl;
 };
 
 struct IUnknownVtbl
@@ -26057,7 +26044,7 @@ typedef enum __MIDL___MIDL_itf_shpriv_0000_0240_0001
   IHVS_SORTCOLUMNS = 2,
 } _MIDL___MIDL_itf_shpriv_0000_0240_0001, *P_MIDL___MIDL_itf_shpriv_0000_0240_0001;
 
-typedef enum __MIDL___MIDL_itf_shpriv_0000_0367_0001
+typedef enum __MIDL___MIDL_itf_shpriv_0000_0369_0001
 {
   ACTIVATION_MODE_PRIVATE = 0,
   ACTIVATION_MODE_HOMEGROUP_RO = 1,
@@ -26065,52 +26052,52 @@ typedef enum __MIDL___MIDL_itf_shpriv_0000_0367_0001
   ACTIVATION_MODE_LIBRARY_ADD = 3,
   ACTIVATION_MODE_LIBRARY_REMOVAL = 4,
   ACTIVATION_MODE_OTHER = 5,
-} _MIDL___MIDL_itf_shpriv_0000_0367_0001, *P_MIDL___MIDL_itf_shpriv_0000_0367_0001;
+} _MIDL___MIDL_itf_shpriv_0000_0369_0001, *P_MIDL___MIDL_itf_shpriv_0000_0369_0001;
 
-typedef enum __MIDL___MIDL_itf_shpriv_0000_0367_0002
+typedef enum __MIDL___MIDL_itf_shpriv_0000_0369_0002
 {
   MODE_SMB = 0,
   MODE_INPLACE = 1,
   MODE_LIBRARY = 2,
   MODE_CLASSIC = 3,
-} _MIDL___MIDL_itf_shpriv_0000_0367_0002, *P_MIDL___MIDL_itf_shpriv_0000_0367_0002;
+} _MIDL___MIDL_itf_shpriv_0000_0369_0002, *P_MIDL___MIDL_itf_shpriv_0000_0369_0002;
 
-typedef enum __MIDL___MIDL_itf_shpriv_0000_0368_0001
+typedef enum __MIDL___MIDL_itf_shpriv_0000_0370_0001
 {
   SHARE_STATE_UNKNOWN = 0,
   SHARE_STATE_NOT_SHAREABLE = 1,
   SHARE_STATE_SHAREABLE = 2,
-} _MIDL___MIDL_itf_shpriv_0000_0368_0001, *P_MIDL___MIDL_itf_shpriv_0000_0368_0001;
+} _MIDL___MIDL_itf_shpriv_0000_0370_0001, *P_MIDL___MIDL_itf_shpriv_0000_0370_0001;
 
-typedef enum __MIDL___MIDL_itf_shpriv_0000_0368_0002
+typedef enum __MIDL___MIDL_itf_shpriv_0000_0370_0002
 {
   PRESENTATION_STATE_UNKNOWN = 0,
   PRESENTATION_STATE_WORKGROUP = 1,
   PRESENTATION_STATE_HOMEGROUP = 2,
   PRESENTATION_STATE_DOMAIN = 3,
-} _MIDL___MIDL_itf_shpriv_0000_0368_0002, *P_MIDL___MIDL_itf_shpriv_0000_0368_0002;
+} _MIDL___MIDL_itf_shpriv_0000_0370_0002, *P_MIDL___MIDL_itf_shpriv_0000_0370_0002;
 
-typedef enum __MIDL___MIDL_itf_shpriv_0000_0370_0001
+typedef enum __MIDL___MIDL_itf_shpriv_0000_0372_0001
 {
   UNPUBLISH_ALL_DEFAULT = 0,
   UNPUBLISH_ALL_PRESERVE_OFFLINE_CACHE = 1,
-} _MIDL___MIDL_itf_shpriv_0000_0370_0001, *P_MIDL___MIDL_itf_shpriv_0000_0370_0001;
+} _MIDL___MIDL_itf_shpriv_0000_0372_0001, *P_MIDL___MIDL_itf_shpriv_0000_0372_0001;
 
-typedef enum __MIDL___MIDL_itf_shpriv_0000_0386_0001
+typedef enum __MIDL___MIDL_itf_shpriv_0000_0388_0001
 {
   SCNSUSPEND_UNSUSPEND = 0,
   SCNSUSPEND_SUSPEND = 1,
   SCNSUSPEND_RECURSIVE = 2,
   SCNSUSPEND_TEMPORARY = 4,
-} _MIDL___MIDL_itf_shpriv_0000_0386_0001, *P_MIDL___MIDL_itf_shpriv_0000_0386_0001;
+} _MIDL___MIDL_itf_shpriv_0000_0388_0001, *P_MIDL___MIDL_itf_shpriv_0000_0388_0001;
 
-typedef enum __MIDL___MIDL_itf_shpriv_0000_0449_0001
+typedef enum __MIDL___MIDL_itf_shpriv_0000_0451_0001
 {
   ICITF_DEFAULT = 0,
   ICITF_RELOAD = 1,
   ICITF_INTERACTIVE = 2,
   ICITF_SNIFFFOLDERTYPE = 4,
-} _MIDL___MIDL_itf_shpriv_0000_0449_0001, *P_MIDL___MIDL_itf_shpriv_0000_0449_0001;
+} _MIDL___MIDL_itf_shpriv_0000_0451_0001, *P_MIDL___MIDL_itf_shpriv_0000_0451_0001;
 
 typedef enum __MIDL___MIDL_itf_structuredquery_0000_0012_0001
 {
@@ -26526,10 +26513,9 @@ typedef struct __midl_frag109_t
 
 typedef struct __midl_frag10_t
 {
-  unsigned int frag1;
-  struct _NDR64_EXPR_OPERATOR frag2;
-  struct _NDR64_EXPR_VAR frag3;
-  struct _NDR64_EXPR_VAR frag4;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
+  struct _NDR64_PARAM_FORMAT frag3;
 } _midl_frag10_t, *P_midl_frag10_t;
 
 typedef struct __midl_frag1102_t
@@ -26891,8 +26877,8 @@ typedef struct __midl_frag1269_t
 
 typedef struct __midl_frag126_t
 {
-  unsigned int frag1;
-  struct _NDR64_EXPR_VAR frag2;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
 } _midl_frag126_t, *P_midl_frag126_t;
 
 typedef struct __midl_frag1275_t
@@ -28464,14 +28450,10 @@ typedef struct __midl_frag1828_t
 
 typedef struct __midl_frag182_t
 {
-  struct _NDR64_BOGUS_STRUCTURE_HEADER_FORMAT frag1;
-  struct
-  {
-    struct _NDR64_SIMPLE_MEMBER_FORMAT frag1;
-    struct _NDR64_MEMPAD_FORMAT frag2;
-    struct _NDR64_SIMPLE_MEMBER_FORMAT frag3;
-    struct _NDR64_SIMPLE_MEMBER_FORMAT frag4;
-  } frag2;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
+  struct _NDR64_PARAM_FORMAT frag3;
+  struct _NDR64_PARAM_FORMAT frag4;
 } _midl_frag182_t, *P_midl_frag182_t;
 
 typedef struct __midl_frag1831_t
@@ -28624,8 +28606,7 @@ typedef struct __midl_frag188_t
 
 typedef struct __midl_frag189_t
 {
-  unsigned int frag1;
-  struct _NDR64_EXPR_VAR frag2;
+  struct _NDR64_STRUCTURE_HEADER_FORMAT frag1;
 } _midl_frag189_t, *P_midl_frag189_t;
 
 typedef struct __midl_frag18_t
@@ -28681,7 +28662,8 @@ typedef struct __midl_frag197_t
 
 typedef struct __midl_frag199_t
 {
-  struct _NDR64_POINTER_FORMAT frag1;
+  unsigned int frag1;
+  struct _NDR64_EXPR_VAR frag2;
 } _midl_frag199_t, *P_midl_frag199_t;
 
 typedef struct __midl_frag19_t
@@ -28841,7 +28823,11 @@ typedef struct __midl_frag222_t
 
 typedef struct __midl_frag224_t
 {
-  struct _NDR64_POINTER_FORMAT frag1;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
+  struct _NDR64_PARAM_FORMAT frag3;
+  struct _NDR64_PARAM_FORMAT frag4;
+  struct _NDR64_PARAM_FORMAT frag5;
 } _midl_frag224_t, *P_midl_frag224_t;
 
 typedef struct __midl_frag225_t
@@ -28893,8 +28879,10 @@ typedef struct __midl_frag231_t
 
 typedef struct __midl_frag232_t
 {
-  unsigned int frag1;
-  struct _NDR64_EXPR_VAR frag2;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
+  struct _NDR64_PARAM_FORMAT frag3;
+  struct _NDR64_PARAM_FORMAT frag4;
 } _midl_frag232_t, *P_midl_frag232_t;
 
 typedef struct __midl_frag234_t
@@ -28958,9 +28946,8 @@ typedef struct __midl_frag241_t
 
 typedef struct __midl_frag242_t
 {
-  struct _NDR64_PROC_FORMAT frag1;
-  struct _NDR64_PARAM_FORMAT frag2;
-  struct _NDR64_PARAM_FORMAT frag3;
+  unsigned int frag1;
+  struct _NDR64_EXPR_VAR frag2;
 } _midl_frag242_t, *P_midl_frag242_t;
 
 typedef struct __midl_frag244_t
@@ -28982,8 +28969,11 @@ typedef struct __midl_frag245_t
 
 typedef struct __midl_frag246_t
 {
-  struct _NDR64_CONF_ARRAY_HEADER_FORMAT frag1;
-  struct _NDR64_ARRAY_ELEMENT_INFO frag2;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
+  struct _NDR64_PARAM_FORMAT frag3;
+  struct _NDR64_PARAM_FORMAT frag4;
+  struct _NDR64_PARAM_FORMAT frag5;
 } _midl_frag246_t, *P_midl_frag246_t;
 
 typedef struct __midl_frag247_t
@@ -29301,7 +29291,13 @@ typedef struct __midl_frag288_t
 
 typedef struct __midl_frag289_t
 {
-  struct _NDR64_POINTER_FORMAT frag1;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
+  struct _NDR64_PARAM_FORMAT frag3;
+  struct _NDR64_PARAM_FORMAT frag4;
+  struct _NDR64_PARAM_FORMAT frag5;
+  struct _NDR64_PARAM_FORMAT frag6;
+  struct _NDR64_PARAM_FORMAT frag7;
 } _midl_frag289_t, *P_midl_frag289_t;
 
 typedef struct __midl_frag290_t
@@ -29390,11 +29386,18 @@ typedef struct __midl_frag29_t
 
 typedef struct __midl_frag2_t
 {
-  struct _NDR64_PROC_FORMAT frag1;
-  struct _NDR64_PARAM_FORMAT frag2;
-  struct _NDR64_PARAM_FORMAT frag3;
-  struct _NDR64_PARAM_FORMAT frag4;
-  struct _NDR64_PARAM_FORMAT frag5;
+  struct _NDR64_STRUCTURE_HEADER_FORMAT frag1;
+  struct
+  {
+    struct _NDR64_NO_REPEAT_FORMAT frag1;
+    struct _NDR64_POINTER_INSTANCE_HEADER_FORMAT frag2;
+    struct _NDR64_POINTER_FORMAT frag3;
+    struct _NDR64_NO_REPEAT_FORMAT frag4;
+    struct _NDR64_POINTER_INSTANCE_HEADER_FORMAT frag5;
+    struct _NDR64_POINTER_FORMAT frag6;
+    unsigned char frag7;
+    char __PADDING__[7];
+  } frag2;
 } _midl_frag2_t, *P_midl_frag2_t;
 
 typedef struct __midl_frag301_t
@@ -29404,9 +29407,14 @@ typedef struct __midl_frag301_t
 
 typedef struct __midl_frag302_t
 {
-  struct _NDR64_PROC_FORMAT frag1;
-  struct _NDR64_PARAM_FORMAT frag2;
-  struct _NDR64_PARAM_FORMAT frag3;
+  struct _NDR64_BOGUS_STRUCTURE_HEADER_FORMAT frag1;
+  struct
+  {
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag1;
+    struct _NDR64_MEMPAD_FORMAT frag2;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag3;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag4;
+  } frag2;
 } _midl_frag302_t, *P_midl_frag302_t;
 
 typedef struct __midl_frag303_t
@@ -29427,11 +29435,14 @@ typedef struct __midl_frag305_t
 
 typedef struct __midl_frag306_t
 {
-  struct _NDR64_PROC_FORMAT frag1;
-  struct _NDR64_PARAM_FORMAT frag2;
-  struct _NDR64_PARAM_FORMAT frag3;
-  struct _NDR64_PARAM_FORMAT frag4;
-  struct _NDR64_PARAM_FORMAT frag5;
+  struct _NDR64_BOGUS_STRUCTURE_HEADER_FORMAT frag1;
+  struct
+  {
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag1;
+    struct _NDR64_MEMPAD_FORMAT frag2;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag3;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag4;
+  } frag2;
 } _midl_frag306_t, *P_midl_frag306_t;
 
 typedef struct __midl_frag307_t
@@ -29531,8 +29542,18 @@ typedef struct __midl_frag317_t
 
 typedef struct __midl_frag318_t
 {
-  unsigned int frag1;
-  struct _NDR64_EXPR_VAR frag2;
+  struct _NDR64_CONF_VAR_ARRAY_HEADER_FORMAT frag1;
+  struct
+  {
+    struct _NDR64_REPEAT_FORMAT frag1;
+    struct
+    {
+      struct _NDR64_POINTER_INSTANCE_HEADER_FORMAT frag1;
+      struct _NDR64_POINTER_FORMAT frag2;
+    } frag2;
+    unsigned char frag3;
+    char __PADDING__[7];
+  } frag2;
 } _midl_frag318_t, *P_midl_frag318_t;
 
 typedef struct __midl_frag319_t
@@ -29757,19 +29778,29 @@ typedef struct __midl_frag379_t
 
 typedef struct __midl_frag381_t
 {
-  struct _NDR64_CONF_ARRAY_HEADER_FORMAT frag1;
+  struct _NDR64_BOGUS_STRUCTURE_HEADER_FORMAT frag1;
   struct
   {
-    struct _NDR64_REPEAT_FORMAT frag1;
-    struct
-    {
-      struct _NDR64_POINTER_INSTANCE_HEADER_FORMAT frag1;
-      struct _NDR64_POINTER_FORMAT frag2;
-    } frag2;
-    unsigned char frag3;
-    char __PADDING__[7];
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag1;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag2;
+    struct _NDR64_MEMPAD_FORMAT frag3;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag4;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag5;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag6;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag7;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag8;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag9;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag10;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag11;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag12;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag13;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag14;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag15;
+    struct _NDR64_EMBEDDED_COMPLEX_FORMAT frag16;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag17;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag18;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag19;
   } frag2;
-  struct _NDR64_ARRAY_ELEMENT_INFO frag3;
 } _midl_frag381_t, *P_midl_frag381_t;
 
 typedef struct __midl_frag382_t
@@ -29799,8 +29830,9 @@ typedef struct __midl_frag385_t
 
 typedef struct __midl_frag387_t
 {
-  struct _NDR64_CONF_ARRAY_HEADER_FORMAT frag1;
-  struct _NDR64_ARRAY_ELEMENT_INFO frag2;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
+  struct _NDR64_PARAM_FORMAT frag3;
 } _midl_frag387_t, *P_midl_frag387_t;
 
 typedef struct __midl_frag388_t
@@ -29870,7 +29902,8 @@ typedef struct __midl_frag396_t
 typedef struct __midl_frag397_t
 {
   unsigned int frag1;
-  struct _NDR64_EXPR_VAR frag2;
+  struct _NDR64_EXPR_OPERATOR frag2;
+  struct _NDR64_EXPR_VAR frag3;
 } _midl_frag397_t, *P_midl_frag397_t;
 
 typedef struct __midl_frag398_t
@@ -30060,9 +30093,7 @@ typedef struct __midl_frag449_t
 
 typedef struct __midl_frag44_t
 {
-  struct _NDR64_PROC_FORMAT frag1;
-  struct _NDR64_PARAM_FORMAT frag2;
-  struct _NDR64_PARAM_FORMAT frag3;
+  struct _NDR64_CONF_STRUCTURE_HEADER_FORMAT frag1;
 } _midl_frag44_t, *P_midl_frag44_t;
 
 typedef struct __midl_frag450_t
@@ -30298,7 +30329,7 @@ typedef struct __midl_frag49_t
 
 typedef struct __midl_frag4_t
 {
-  struct _NDR64_CONF_STRUCTURE_HEADER_FORMAT frag1;
+  struct _NDR64_CONF_VAR_BOGUS_ARRAY_HEADER_FORMAT frag1;
 } _midl_frag4_t, *P_midl_frag4_t;
 
 typedef struct __midl_frag503_t
@@ -30382,7 +30413,8 @@ typedef struct __midl_frag529_t
 
 typedef struct __midl_frag52_t
 {
-  struct _NDR64_POINTER_FORMAT frag1;
+  struct _NDR64_CONF_ARRAY_HEADER_FORMAT frag1;
+  struct _NDR64_ARRAY_ELEMENT_INFO frag2;
 } _midl_frag52_t, *P_midl_frag52_t;
 
 typedef struct __midl_frag534_t
@@ -30402,14 +30434,10 @@ typedef struct __midl_frag539_t
 
 typedef struct __midl_frag53_t
 {
-  struct _NDR64_BOGUS_STRUCTURE_HEADER_FORMAT frag1;
-  struct
-  {
-    struct _NDR64_SIMPLE_MEMBER_FORMAT frag1;
-    struct _NDR64_MEMPAD_FORMAT frag2;
-    struct _NDR64_SIMPLE_MEMBER_FORMAT frag3;
-    struct _NDR64_SIMPLE_MEMBER_FORMAT frag4;
-  } frag2;
+  unsigned int frag1;
+  struct _NDR64_EXPR_OPERATOR frag2;
+  struct _NDR64_EXPR_VAR frag3;
+  struct _NDR64_EXPR_CONST64 frag4;
 } _midl_frag53_t, *P_midl_frag53_t;
 
 typedef struct __midl_frag543_t
@@ -30597,8 +30625,8 @@ typedef struct __midl_frag59_t
 
 typedef struct __midl_frag5_t
 {
-  struct _NDR64_CONF_ARRAY_HEADER_FORMAT frag1;
-  struct _NDR64_ARRAY_ELEMENT_INFO frag2;
+  unsigned int frag1;
+  struct _NDR64_EXPR_VAR frag2;
 } _midl_frag5_t, *P_midl_frag5_t;
 
 typedef struct __midl_frag602_t
@@ -31236,12 +31264,8 @@ typedef struct __midl_frag79_t
 
 typedef struct __midl_frag7_t
 {
-  struct _NDR64_NON_ENCAPSULATED_UNION frag1;
-  struct _NDR64_UNION_ARM_SELECTOR frag2;
-  struct _NDR64_UNION_ARM frag3;
-  struct _NDR64_UNION_ARM frag4;
-  unsigned int frag5;
-  long __PADDING__[1];
+  unsigned int frag1;
+  struct _NDR64_EXPR_VAR frag2;
 } _midl_frag7_t, *P_midl_frag7_t;
 
 typedef struct __midl_frag801_t
@@ -31327,19 +31351,10 @@ typedef struct __midl_frag829_t
 
 typedef struct __midl_frag82_t
 {
-  struct _NDR64_CONF_ARRAY_HEADER_FORMAT frag1;
-  struct
-  {
-    struct _NDR64_REPEAT_FORMAT frag1;
-    struct
-    {
-      struct _NDR64_POINTER_INSTANCE_HEADER_FORMAT frag1;
-      struct _NDR64_POINTER_FORMAT frag2;
-    } frag2;
-    unsigned char frag3;
-    char __PADDING__[7];
-  } frag2;
-  struct _NDR64_ARRAY_ELEMENT_INFO frag3;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
+  struct _NDR64_PARAM_FORMAT frag3;
+  struct _NDR64_PARAM_FORMAT frag4;
 } _midl_frag82_t, *P_midl_frag82_t;
 
 typedef struct __midl_frag834_t
@@ -31564,8 +31579,15 @@ typedef struct __midl_frag89_t
 
 typedef struct __midl_frag8_t
 {
-  unsigned int frag1;
-  struct _NDR64_EXPR_VAR frag2;
+  struct _NDR64_STRUCTURE_HEADER_FORMAT frag1;
+  struct
+  {
+    struct _NDR64_NO_REPEAT_FORMAT frag1;
+    struct _NDR64_POINTER_INSTANCE_HEADER_FORMAT frag2;
+    struct _NDR64_POINTER_FORMAT frag3;
+    unsigned char frag4;
+    char __PADDING__[7];
+  } frag2;
 } _midl_frag8_t, *P_midl_frag8_t;
 
 typedef struct __midl_frag901_t
@@ -31955,6 +31977,7 @@ typedef enum __MIDL_IBindStatusCallbackEx_0001
   BINDF2_DISABLEAUTOCOOKIEHANDLING = 2,
   BINDF2_READ_DATA_GREATER_THAN_4GB = 4,
   BINDF2_DISABLE_HTTP_REDIRECT_XSECURITYID = 8,
+  BINDF2_RESERVED_4 = 0x10000000,
   BINDF2_RESERVED_3 = 0x20000000,
   BINDF2_RESERVED_2 = 0x40000000,
   BINDF2_RESERVED_1 = -2147483648,
@@ -32117,7 +32140,7 @@ typedef enum __MIDL_IListControl_0001
 
 typedef struct __MIDL_ILocalObjectExporter_0001
 {
-  wchar_t* pName;
+  unsigned short* pName;
   unsigned short wId;
   char __PADDING__[6];
 } _MIDL_ILocalObjectExporter_0001, *P_MIDL_ILocalObjectExporter_0001;
@@ -36130,11 +36153,11 @@ struct PARAM_DESCRIPTION
 
 typedef struct _PARAM_STRUCT
 {
-  struct IFillLockBytes* This;
-  const unsigned char* pv;
-  unsigned long cb;
+  struct IEnumFORMATETC* This;
+  unsigned long celt;
   char Pad0[4];
-  unsigned long* pcbWritten;
+  struct tagFORMATETC* rgelt;
+  unsigned long* pceltFetched;
   HRESULT _RetVal;
   long __PADDING__[1];
 } PARAM_STRUCT, *PPARAM_STRUCT;
@@ -38281,6 +38304,19 @@ typedef struct _QUAD
   };
 } QUAD, *PQUAD;
 
+typedef struct _QUERY_PERFORMANCE_COUNTER_FLAGS
+{
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned long KernelTransition : 1; /* bit position: 0 */
+      unsigned long Reserved : 31; /* bit position: 1 */
+    }; /* bitfield */
+    unsigned long ul;
+  };
+} QUERY_PERFORMANCE_COUNTER_FLAGS, *PQUERY_PERFORMANCE_COUNTER_FLAGS;
+
 typedef struct _QUERY_SERVICE_CONFIGA
 {
   unsigned long dwServiceType;
@@ -38780,7 +38816,7 @@ typedef enum _REQUESTER_TYPE
 typedef struct _RESOLVED_USERNAME_INFO
 {
   int bResolved;
-  wchar_t* pszResolvedName;
+  unsigned short* pszResolvedName;
 } RESOLVED_USERNAME_INFO, *PRESOLVED_USERNAME_INFO;
 
 typedef struct _RESOLVED_USERNAME_LIST
@@ -39528,7 +39564,7 @@ typedef struct _RTL_CRITICAL_SECTION_DEBUG
   unsigned long ContentionCount;
   unsigned long Flags;
   unsigned short CreatorBackTraceIndexHigh;
-  unsigned short SpareWORD;
+  unsigned short SpareUSHORT;
 } RTL_CRITICAL_SECTION_DEBUG, *PRTL_CRITICAL_SECTION_DEBUG;
 
 typedef struct _RTL_CRITICAL_SECTION_DEBUG32
@@ -40069,7 +40105,19 @@ typedef struct _RTL_SPLAY_LINKS
 
 typedef struct _RTL_SRWLOCK
 {
-  void* Ptr;
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned __int64 Locked : 1; /* bit position: 0 */
+      unsigned __int64 Waiting : 1; /* bit position: 1 */
+      unsigned __int64 Waking : 1; /* bit position: 2 */
+      unsigned __int64 MultipleShared : 1; /* bit position: 3 */
+      unsigned __int64 Shared : 60; /* bit position: 4 */
+    }; /* bitfield */
+    unsigned __int64 Value;
+    void* Ptr;
+  };
 } RTL_SRWLOCK, *PRTL_SRWLOCK;
 
 typedef struct _RTL_STACK_CONTEXT
@@ -43621,7 +43669,8 @@ typedef enum _SYSTEM_INFORMATION_CLASS
   SystemNodeDistanceInformation = 121,
   SystemAcpiAuditInformation = 122,
   SystemBasicPerformanceInformation = 123,
-  MaxSystemInfoClass = 124,
+  SystemQueryPerformanceCounterInformation = 124,
+  MaxSystemInfoClass = 125,
 } SYSTEM_INFORMATION_CLASS, *PSYSTEM_INFORMATION_CLASS;
 
 typedef struct _SYSTEM_INTERRUPT_INFORMATION
@@ -44233,6 +44282,13 @@ typedef struct _SYSTEM_PROCESSOR_POWER_INFORMATION
   unsigned __int64 LastProcessorIdleTime;
 } SYSTEM_PROCESSOR_POWER_INFORMATION, *PSYSTEM_PROCESSOR_POWER_INFORMATION;
 
+typedef struct _SYSTEM_QUERY_PERFORMANCE_COUNTER_INFORMATION
+{
+  unsigned long Version;
+  struct _QUERY_PERFORMANCE_COUNTER_FLAGS Flags;
+  struct _QUERY_PERFORMANCE_COUNTER_FLAGS ValidFlags;
+} SYSTEM_QUERY_PERFORMANCE_COUNTER_INFORMATION, *PSYSTEM_QUERY_PERFORMANCE_COUNTER_INFORMATION;
+
 typedef struct _SYSTEM_QUERY_TIME_ADJUST_INFORMATION
 {
   unsigned long TimeAdjustment;
@@ -44555,19 +44611,16 @@ typedef enum _TABLE_SEARCH_RESULT
 
 typedef enum _TAG_UNNAMED_1
 {
-  hdBase = 0,
-  hdSym = 1,
-  hdSrc = 2,
-  hdMax = 3,
+  QIC_STATICMARSHAL = 1,
+  QIC_DISCONNECTED = 2,
+  QIC_ASYNC = 4,
+  QIC_WEAKCLIENT = 8,
+  QIC_BEGINCALLED = 16,
 } TAG_UNNAMED_1, *PTAG_UNNAMED_1;
 
 typedef enum _TAG_UNNAMED_10
 {
-  sfImage = 0,
-  sfDbg = 1,
-  sfPdb = 2,
-  sfMpd = 3,
-  sfMax = 4,
+  WPP_TRACE_OPTIONS = 43,
 } TAG_UNNAMED_10, *PTAG_UNNAMED_10;
 
 typedef enum _TAG_UNNAMED_11
@@ -44635,8 +44688,9 @@ typedef enum _TAG_UNNAMED_19
 
 typedef enum _TAG_UNNAMED_2
 {
-  RIFFLG_HASCOUNTERPART = 1,
-  RIFFLG_HASCLSID = 2,
+  AUMGR_ALLLOCAL = 1,
+  AUMGR_IUNKNOWN = 2,
+  AUMGR_IMULTIQI = 3,
 } TAG_UNNAMED_2, *PTAG_UNNAMED_2;
 
 typedef enum _TAG_UNNAMED_20
@@ -44702,12 +44756,54 @@ typedef enum _TAG_UNNAMED_27
 
 typedef enum _TAG_UNNAMED_3
 {
-  AUMGR_ALLLOCAL = 1,
-  AUMGR_IUNKNOWN = 2,
-  AUMGR_IMULTIQI = 3,
+  sevInfo = 0,
+  sevProblem = 1,
+  sevAttn = 2,
+  sevFatal = 3,
+  sevMax = 4,
 } TAG_UNNAMED_3, *PTAG_UNNAMED_3;
 
 typedef enum _TAG_UNNAMED_4
+{
+  dliStartProcessing = 0,
+  dliNotePreLoadLibrary = 1,
+  dliNotePreGetProcAddress = 2,
+  dliFailLoadLib = 3,
+  dliFailGetProc = 4,
+  dliNoteEndProcessing = 5,
+} TAG_UNNAMED_4, *PTAG_UNNAMED_4;
+
+typedef enum _TAG_UNNAMED_5
+{
+  hdBase = 0,
+  hdSym = 1,
+  hdSrc = 2,
+  hdMax = 3,
+} TAG_UNNAMED_5, *PTAG_UNNAMED_5;
+
+typedef enum _TAG_UNNAMED_6
+{
+  sfImage = 0,
+  sfDbg = 1,
+  sfPdb = 2,
+  sfMpd = 3,
+  sfMax = 4,
+} TAG_UNNAMED_6, *PTAG_UNNAMED_6;
+
+typedef enum _TAG_UNNAMED_7
+{
+  RIFFLG_HASCOUNTERPART = 1,
+  RIFFLG_HASCLSID = 2,
+} TAG_UNNAMED_7, *PTAG_UNNAMED_7;
+
+typedef enum _TAG_UNNAMED_8
+{
+  WPP_VER_WIN2K_CB_FORWARD_PTR = 1,
+  WPP_VER_WHISTLER_CB_FORWARD_PTR = 2,
+  WPP_VER_LH_CB_FORWARD_PTR = 3,
+} TAG_UNNAMED_8, *PTAG_UNNAMED_8;
+
+typedef enum _TAG_UNNAMED_9
 {
   IMETHOD_FIRST = 3,
   IMETHOD_GetTypeInfoCount = 3,
@@ -44723,46 +44819,6 @@ typedef enum _TAG_UNNAMED_4
   IPARAM_Invoke_PVarResult = 5,
   IPARAM_Invoke_PExcepInfo = 6,
   IPARAM_Invoke_PUArgErr = 7,
-} TAG_UNNAMED_4, *PTAG_UNNAMED_4;
-
-typedef enum _TAG_UNNAMED_5
-{
-  QIC_STATICMARSHAL = 1,
-  QIC_DISCONNECTED = 2,
-  QIC_ASYNC = 4,
-  QIC_WEAKCLIENT = 8,
-  QIC_BEGINCALLED = 16,
-} TAG_UNNAMED_5, *PTAG_UNNAMED_5;
-
-typedef enum _TAG_UNNAMED_6
-{
-  WPP_TRACE_OPTIONS = 43,
-} TAG_UNNAMED_6, *PTAG_UNNAMED_6;
-
-typedef enum _TAG_UNNAMED_7
-{
-  sevInfo = 0,
-  sevProblem = 1,
-  sevAttn = 2,
-  sevFatal = 3,
-  sevMax = 4,
-} TAG_UNNAMED_7, *PTAG_UNNAMED_7;
-
-typedef enum _TAG_UNNAMED_8
-{
-  dliStartProcessing = 0,
-  dliNotePreLoadLibrary = 1,
-  dliNotePreGetProcAddress = 2,
-  dliFailLoadLib = 3,
-  dliFailGetProc = 4,
-  dliNoteEndProcessing = 5,
-} TAG_UNNAMED_8, *PTAG_UNNAMED_8;
-
-typedef enum _TAG_UNNAMED_9
-{
-  WPP_VER_WIN2K_CB_FORWARD_PTR = 1,
-  WPP_VER_WHISTLER_CB_FORWARD_PTR = 2,
-  WPP_VER_LH_CB_FORWARD_PTR = 3,
 } TAG_UNNAMED_9, *PTAG_UNNAMED_9;
 
 struct tagABORTPATH
@@ -45036,10 +45092,6 @@ struct tagBIND_OPTS
 
 struct tagBIND_OPTS2
 {
-  unsigned long cbStruct;
-  unsigned long grfFlags;
-  unsigned long grfMode;
-  unsigned long dwTickCountDeadline;
   unsigned long dwTrackFlags;
   unsigned long dwClassContext;
   unsigned long locale;
@@ -45571,7 +45623,6 @@ struct tagCIEXYZ
 
 struct tagCInterfaceProxyHeader
 {
-  const void* pStublessProxyInfo;
   const struct _GUID* piid;
 };
 
@@ -49353,7 +49404,7 @@ enum tagOLEUPDATE
 struct tagOLEVERB
 {
   long lVerb;
-  wchar_t* lpszVerbName;
+  unsigned short* lpszVerbName;
   unsigned long fuFlags;
   unsigned long grfAttribs;
 };
@@ -51180,7 +51231,7 @@ struct tagSTATPROPSETSTG
 
 struct tagSTATPROPSTG
 {
-  unsigned short* lpwstrName;
+  wchar_t* lpwstrName;
   unsigned long propid;
   unsigned short vt;
   char __PADDING__[2];
@@ -51817,7 +51868,7 @@ struct tagUSEROBJECTFLAGS
 struct tagVARDESC
 {
   long memid;
-  unsigned short* lpstrSchema;
+  wchar_t* lpstrSchema;
   union
   {
     unsigned long oInst;
@@ -52665,8 +52716,24 @@ typedef struct _THREAD_TLS_INFORMATION
 typedef struct _THREAD_UMS_INFORMATION
 {
   enum _THREAD_UMS_INFORMATION_COMMAND Command;
-  struct _RTL_UMS_COMPLETION_LIST* CompletionList;
-  struct _RTL_UMS_CONTEXT* UmsContext;
+  union
+  {
+    struct
+    {
+      struct _RTL_UMS_COMPLETION_LIST* CompletionList;
+      struct _RTL_UMS_CONTEXT* UmsContext;
+    };
+    unsigned long Flags;
+    struct
+    {
+      struct /* bitfield */
+      {
+        unsigned long IsUmsSchedulerThread : 1; /* bit position: 0 */
+        unsigned long IsUmsWorkerThread : 1; /* bit position: 1 */
+      }; /* bitfield */
+      long __PADDING__[3];
+    };
+  };
 } THREAD_UMS_INFORMATION, *PTHREAD_UMS_INFORMATION;
 
 typedef enum _THREAD_UMS_INFORMATION_COMMAND
@@ -52674,6 +52741,7 @@ typedef enum _THREAD_UMS_INFORMATION_COMMAND
   UmsInformationCommandInvalid = 0,
   UmsInformationCommandAttach = 1,
   UmsInformationCommandDetach = 2,
+  UmsInformationCommandQuery = 3,
 } THREAD_UMS_INFORMATION_COMMAND, *PTHREAD_UMS_INFORMATION_COMMAND;
 
 typedef enum _THREAD_WRITE_FLAGS
@@ -53906,6 +53974,7 @@ struct TYPEINFOVTBL
   struct tagCInterfaceStubVtbl m_stubVtbl;
   struct _MIDL_STUBLESS_PROXY_INFO m_proxyInfo;
   struct tagCInterfaceProxyVtbl m_proxyVtbl;
+  long __PADDING__[2];
 };
 
 struct TypeInfoVtbl
@@ -53918,6 +53987,7 @@ struct TypeInfoVtbl
   struct tagCInterfaceStubVtbl stubVtbl;
   struct _MIDL_STUBLESS_PROXY_INFO proxyInfo;
   struct tagCInterfaceProxyVtbl proxyVtbl;
+  long __PADDING__[2];
 };
 
 struct UDATE
@@ -53974,6 +54044,20 @@ typedef struct _UMS_SCHEDULER_STARTUP_INFO
   void* SchedulerProc /* function */;
   void* SchedulerParam;
 } UMS_SCHEDULER_STARTUP_INFO, *PUMS_SCHEDULER_STARTUP_INFO;
+
+typedef struct _UMS_SYSTEM_THREAD_INFORMATION
+{
+  unsigned long UmsVersion;
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned long IsUmsSchedulerThread : 1; /* bit position: 0 */
+      unsigned long IsUmsWorkerThread : 1; /* bit position: 1 */
+    }; /* bitfield */
+    unsigned long ThreadUmsFlags;
+  };
+} UMS_SYSTEM_THREAD_INFORMATION, *PUMS_SYSTEM_THREAD_INFORMATION;
 
 typedef struct _UNICODE_PREFIX_TABLE
 {
@@ -57232,7 +57316,7 @@ int CallAccessCheck(void *, struct _SECURITY_DESCRIPTOR *, unsigned long, int *)
 long CallBackExceptionFilter(struct _EXCEPTION_POINTERS *, void *);
 void *CallFrame::`scalar deleting destructor'(unsigned int);
 unsigned long CallFrame::AddRef(void);
-void *CallFrame::Alloc(unsigned __int64, int);
+void *CallFrame::Alloc(unsigned __int64);
 void *CallFrame::AllocBuffer(unsigned __int64);
 HRESULT CallFrame::AllocStack(unsigned __int64, int);
 int CallFrame::ByValue(const struct PARAM_ATTRIBUTES &, const unsigned char *, int);
@@ -57246,7 +57330,7 @@ const unsigned char *CallFrame::CopyEmbeddedRepeatPointers(unsigned char *, unsi
 void CallFrame::CopyWorker(unsigned char *, unsigned char **, const unsigned char *, int);
 int CallFrame::DoWeShareMemory(void);
 int CallFrame::FIndirect(unsigned char, const unsigned char *, int);
-HRESULT CallFrame::Free(struct ICallFrame *, struct ICallFrameWalker *, struct ICallFrameWalker *, unsigned long, struct ICallFrameWalker *, unsigned long);
+void CallFrame::Free(void *);
 void CallFrame::FreeEmbeddedPointers(unsigned char *, const unsigned char *);
 const unsigned char *CallFrame::FreeEmbeddedRepeatPointers(unsigned char *, const unsigned char *);
 HRESULT CallFrame::FreeParam(unsigned long, unsigned long, struct ICallFrameWalker *, unsigned long);
@@ -57739,7 +57823,6 @@ void CClassCache::CLSvrClassEntry::CLSvrClassEntry(unsigned long, struct IUnknow
 HRESULT CClassCache::CLSvrClassEntry::GetClassInterface(class CClassCache::IMiniMoniker **);
 HRESULT CClassCache::CLSvrClassEntry::GetClassObject(const struct _GUID &, const struct _GUID &, struct IUnknown **, unsigned long);
 HRESULT CClassCache::CLSvrClassEntry::GetDDEInfo(struct _tagDdeClassInfo *, class CClassCache::IMiniMoniker **);
-void CClassCache::CLSvrClassEntry::operator delete(void *);
 void *CClassCache::CLSvrClassEntry::operator new(unsigned __int64);
 HRESULT CClassCache::CLSvrClassEntry::Release(class CClassCache::CLSvrClassEntry::CFinishObject *);
 HRESULT CClassCache::CLSvrClassEntry::SafeCastFromDWORD(unsigned long, class CClassCache::CLSvrClassEntry *&);
@@ -58033,6 +58116,7 @@ HRESULT CComCatCF_CreateInstance(struct IUnknown *, const struct _GUID &, void *
 HRESULT CComCatCSCF_CreateInstance(struct IUnknown *, const struct _GUID &, void **);
 void *CComClassInfo::`scalar deleting destructor'(unsigned int);
 unsigned long CComClassInfo::AddRef(void);
+HRESULT CComClassInfo::FinalConstruct(struct IUserToken *, struct HKEY__ *, const struct _GUID *, wchar_t *, struct HKEY__ *, unsigned long, struct HKEY__ *, unsigned long, int, unsigned long);
 HRESULT CComClassInfo::GetApplication(const struct _GUID &, void **);
 HRESULT CComClassInfo::GetBinaryName(wchar_t **);
 HRESULT CComClassInfo::GetClassContext(enum tagCLSCTX, enum tagCLSCTX *);
@@ -58061,7 +58145,7 @@ HRESULT CComClassInfo::GetThreadingModel(enum tagThreadingModel *);
 HRESULT CComClassInfo::GetTypeInfo(const struct _GUID &, void **);
 HRESULT CComClassInfo::GetUserSettings(int *);
 HRESULT CComClassInfo::GetVersionNumber(unsigned long *, unsigned long *);
-HRESULT CComClassInfo::Initialize(struct HKEY__ *, struct IUserToken *, int, struct HKEY__ *, unsigned long, int);
+HRESULT CComClassInfo::Initialize(struct HKEY__ *, struct HKEY__ *, struct IUserToken *, int, struct HKEY__ *, unsigned long, int);
 HRESULT CComClassInfo::InitializeForInprocActivations(int, struct HKEY__ *);
 HRESULT CComClassInfo::InitializeForOutOfProcActivations(int, struct IUserToken *, struct HKEY__ *, unsigned long);
 HRESULT CComClassInfo::InitializeInprocHandlers(struct HKEY__ *);
@@ -58204,7 +58288,6 @@ HRESULT CComRegCatalog::GetServerGroupInfo(struct IUserToken *, const struct _GU
 HRESULT CComRegCatalog::GetTypeLibrary(struct IUserToken *, const struct _GUID &, const struct _GUID &, void **, void *);
 HRESULT CComRegCatalog::QueryInterface(const struct _GUID &, void **);
 unsigned long CComRegCatalog::Release(void);
-void CComRegCatalog::~CComRegCatalog(void);
 HRESULT CCOMSurrogate::FreeSurrogate(void);
 HRESULT CCOMSurrogate::InitializeISurrogate(struct ISurrogate *);
 HRESULT CCOMSurrogate::LoadDllServer(const struct _GUID &);
@@ -58273,10 +58356,10 @@ int CContextPropList::operator==(const class CContextPropList &);
 void CContextPropList::Remove(const struct _GUID &);
 void CContextPropList::SerializeToVector(struct tagContextProperty *&);
 void CContextPropList::~CContextPropList(void);
-void *CContextSwitcher::`scalar deleting destructor'(unsigned int);
 unsigned long CContextSwitcher::AddRef(void);
 HRESULT CContextSwitcher::ContextCallback(HRESULT (*)(struct tagComCallData *), struct tagComCallData *, const struct _GUID &, int, struct IUnknown *);
 void CContextSwitcher::operator delete(void *);
+void *CContextSwitcher::operator new(unsigned __int64);
 HRESULT CContextSwitcher::QueryInterface(const struct _GUID &, void **);
 unsigned long CContextSwitcher::Release(void);
 void CContextSwitcher::~CContextSwitcher(void);
@@ -58297,7 +58380,7 @@ HRESULT CCSuspendProcessClassObjects(void);
 void *CCtxCall::`scalar deleting destructor'(unsigned int);
 unsigned long CCtxCall::AddRef(void);
 void *CCtxCall::AllocBuffer(void);
-void CCtxCall::CCtxCall(unsigned long, unsigned long, unsigned long, unsigned long);
+void CCtxCall::CCtxCall(class CCtxCall *);
 void CCtxCall::Cleanup(void);
 HRESULT CCtxCall::ErrorHandler(const struct _GUID &, void **, int, int);
 void CCtxCall::FreeBuffer(void);
@@ -58339,7 +58422,6 @@ void *CCtxComChnl::operator new(unsigned __int64);
 HRESULT CCtxComChnl::Receive(struct tagRPCOLEMESSAGE *, unsigned long *);
 HRESULT CCtxComChnl::Send(struct tagRPCOLEMESSAGE *, struct ISynchronize *, unsigned long *);
 HRESULT CCtxComChnl::SendReceive(struct tagRPCOLEMESSAGE *, unsigned long *);
-void *CCtxConnectionManager::`scalar deleting destructor'(unsigned int);
 HRESULT CCtxConnectionManager::AddpUnk(struct IUnknown *);
 void CCtxConnectionManager::CCtxConnectionManager(HRESULT *);
 void CCtxConnectionManager::DecrementCount(void);
@@ -58864,7 +58946,6 @@ HRESULT CDestObjectWrapper::SetDestCtx(unsigned long);
 void *CDFBasis::`scalar deleting destructor'(unsigned int);
 void CDFBasis::CDFBasis(struct IMalloc * const , unsigned long, unsigned long, class CGlobalContext *);
 unsigned long CDFBasis::CountContexts(void);
-class CMStream *CDFBasis::GetBaseMultiStream(void);
 HRESULT CDFBasis::ReleaseWriteAccess(void);
 long CDFBasis::Reserve(unsigned int, enum CDFB_CLASSTYPE);
 void CDFBasis::SetBaseMultiStream(class CMStream *);
@@ -58943,7 +59024,7 @@ void CDirectStream::CDirectStream(unsigned long);
 void CDirectStream::EndCommitFromChild(unsigned long, class CTransactedStream *);
 long CDirectStream::Init(class CStgHandle *, const class CDfName *, const int);
 void CDirectStream::InitSystem(class CMStream *, unsigned long, unsigned __int64);
-void *CDirectStream::operator new(unsigned __int64, struct IMalloc * const );
+void *CDirectStream::operator new(unsigned __int64, class CDFBasis * const );
 long CDirectStream::ReadAt(unsigned __int64, void *, unsigned long, unsigned long *);
 long CDirectStream::Reserve(unsigned int, class CDFBasis * const );
 void CDirectStream::ReturnToReserve(class CDFBasis * const );
@@ -58985,7 +59066,7 @@ HRESULT CDllHost::WorkerThread(void);
 void *CDocFile::`scalar deleting destructor'(unsigned int);
 long CDocFile::ApplyChanges(class CUpdateList &);
 long CDocFile::BeginCommitFromChild(class CUpdateList &, const unsigned long, class CWrappedDocFile *);
-void CDocFile::CDocFile(class CMStream *, unsigned long, unsigned long, class CDFBasis *);
+void CDocFile::CDocFile(unsigned long, class CDFBasis *);
 long CDocFile::CopyTo(class CDocFile *, unsigned long, wchar_t **);
 long CDocFile::CreateDocFile(const class CDfName *, const unsigned long, unsigned long, class PDocFile **);
 long CDocFile::CreateStream(const class CDfName *, const unsigned long, unsigned long, class PSStream **);
@@ -59382,7 +59463,7 @@ HRESULT CExposedStream::Write(const void *, unsigned long, unsigned long *);
 void CExposedStream::~CExposedStream(void);
 HRESULT CExpParameterValidate::Clone(struct IStream **);
 HRESULT CExpParameterValidate::Commit(unsigned long);
-HRESULT CExpParameterValidate::CopyTo(struct IStream *, union _ULARGE_INTEGER, union _ULARGE_INTEGER *, union _ULARGE_INTEGER *);
+HRESULT CExpParameterValidate::CopyTo(unsigned long, const struct _GUID *, wchar_t **, struct IStorage *);
 HRESULT CExpParameterValidate::CreateStorage(const wchar_t *, unsigned long, unsigned long, unsigned long, struct IStorage **);
 HRESULT CExpParameterValidate::CreateStream(const wchar_t *, unsigned long, unsigned long, unsigned long, struct IStream **);
 HRESULT CExpParameterValidate::DestroyElement(const wchar_t *);
@@ -59655,7 +59736,6 @@ unsigned long CGIPMessageParam::Release(void);
 unsigned long CGIPTable::AddRef(void);
 HRESULT CGIPTable::ChangeUsageCount(struct tagGIPEntry *, long);
 void CGIPTable::Cleanup(void);
-void CGIPTable::ContextCleanup(void);
 void CGIPTable::ContextOrApartmentCleanup(int);
 void CGIPTable::FreeEntry(struct tagGIPEntry *);
 HRESULT CGIPTable::GetEntryPtr(unsigned long, struct tagGIPEntry **);
@@ -59759,7 +59839,6 @@ HRESULT CIDObject::GetOrCreateWrapper(int, unsigned long, class CStdWrapper **);
 HRESULT CIDObject::IncrementCallCount(void);
 void CIDObject::Initialize(void);
 int CIDObject::IsDeactivated(void);
-int CIDObject::IsOkToDisconnect(void);
 int CIDObject::IsServer(void);
 void CIDObject::NotifyOIDIsPinned(void);
 void CIDObject::NotifyOIDIsUnpinned(void);
@@ -59771,7 +59850,6 @@ class CIDObject *CIDObject::PIDChainToIDObject(struct SHashChain *);
 HRESULT CIDObject::QueryInterface(const struct _GUID &, void **);
 HRESULT CIDObject::Reactivate(struct IUnknown *);
 unsigned long CIDObject::Release(void);
-int CIDObject::RemoveStdID(void);
 int CIDObject::RemoveWrapper(void);
 void CIDObject::SetZombie(unsigned long);
 void CIDObject::StdIDRelease(void);
@@ -60112,7 +60190,6 @@ long CMStream::FlushHeader(unsigned short);
 long CMStream::GetAllTimes(const unsigned long, struct _FILETIME *, struct _FILETIME *, struct _FILETIME *);
 long CMStream::GetESect(unsigned long, unsigned long, unsigned long *);
 struct ILockBytes *CMStream::GetILB(void);
-struct IMalloc *CMStream::GetMalloc(void);
 class CDirectStream *CMStream::GetMiniStream(void);
 long CMStream::GetSect(unsigned long, unsigned long, unsigned long *);
 long CMStream::GetSize(unsigned long, unsigned __int64 *);
@@ -61265,7 +61342,6 @@ void CpUnkList::CpUnkList(HRESULT *);
 void CpUnkList::Remove(struct IUnknown *);
 void CpUnkList::RemoveAll(void);
 struct IUnknown *CpUnkList::RemoveHead(void);
-void CpUnkList::~CpUnkList(void);
 HRESULT CRandomNumberGenerator::GenerateRandomNumber(unsigned char *, unsigned long);
 HRESULT CRandomNumberGenerator::Initialize(void);
 void CRandomNumberGenerator::~CRandomNumberGenerator(void);
@@ -61984,7 +62060,6 @@ HRESULT CStdIdentity::LockObjectExternal(int, int);
 HRESULT CStdIdentity::QueryInterface(const struct _GUID &, void **);
 unsigned long CStdIdentity::Release(void);
 void CStdIdentity::ReleaseCtrlUnk(void);
-void CStdIdentity::RevokeOID(void);
 void CStdIdentity::SetConnectionStatus(HRESULT);
 void CStdIdentity::SetMapping(void *);
 HRESULT CStdIdentity::SetOID(const struct _GUID &);
@@ -62014,7 +62089,6 @@ void CStdMarshal::DisconnectAndRelease(unsigned long);
 void CStdMarshal::DisconnectCliIPIDs(void);
 HRESULT CStdMarshal::DisconnectObject(unsigned long);
 void CStdMarshal::DisconnectSrvIPIDs(unsigned long);
-void CStdMarshal::FillObjRef(struct tagOBJREF &, unsigned long, unsigned long, struct tagCOMVERSION &, struct tagIPIDEntry *);
 void CStdMarshal::FillSTD(struct tagSTDOBJREF *, unsigned long, unsigned long, struct tagIPIDEntry *);
 HRESULT CStdMarshal::FindIPIDEntryByIID(const struct _GUID &, struct tagIPIDEntry **);
 HRESULT CStdMarshal::FindIPIDEntryByInterface(void *, struct tagIPIDEntry **);
@@ -62305,6 +62379,7 @@ HRESULT CSynchronizeContainerCF_CreateInstance(struct IUnknown *, const struct _
 int CThreadCheck::VerifyThreadId(void);
 int CThreadStack::GetCurrentProcessDefaultStackCommit(void);
 unsigned __int64 CThreadStack::GetNewThreadStackCommitSize(unsigned long);
+int CThreadStack::GetPageSize(void);
 unsigned long CTrackingCompositeMoniker::AddRef(void);
 HRESULT CTrackingCompositeMoniker::EnableTracking(struct IMoniker *, unsigned long);
 HRESULT CTrackingCompositeMoniker::QueryInterface(const struct _GUID &, void **);
@@ -62646,7 +62721,7 @@ HRESULT DISPATCH_SERVER_FRAME::StubPostCheck(void);
 HRESULT DISPATCH_SERVER_FRAME::StubPreCheck(void);
 HRESULT DISPATCH_SERVER_FRAME::Unmarshal(void *, unsigned long, unsigned long, struct __MIDL_ICallFrame_0004 *, unsigned long *);
 void DISPATCH_SERVER_FRAME::~DISPATCH_SERVER_FRAME(void);
-HRESULT DispatchCall(struct tagDISPATCHDATA *);
+HRESULT DispatchCall(class CMessageCall *);
 HRESULT DLL_INSTANTIATION_PROPERTIES::Init(const wchar_t *, unsigned long, unsigned long, const struct _GUID &, int);
 int DllDebugObjectRPCHook(int, struct ORPC_INIT_ARGS *);
 HRESULT DllGetClassObject(const struct _GUID &, const struct _GUID &, void **);
@@ -62815,7 +62890,6 @@ unsigned long Forwarding_AddRef(struct IUnknown *);
 HRESULT Forwarding_QueryInterface(struct IUnknown *, const struct _GUID &, void **);
 unsigned long Forwarding_Release(struct IUnknown *);
 __int64 FrameWndFilterProc(struct HWND__ *, unsigned int, unsigned __int64, __int64);
-void FreeBuffer(unsigned char *);
 FreeDDElParam();
 void FreeDragDropInfo(void *);
 int FreeGDIdata(void *, unsigned short);
@@ -62842,7 +62916,7 @@ void GenericStream::AssignSerializedInterface(struct tagInterfaceData **);
 class GenericStream *GenericStream::Clone(void);
 HRESULT GenericStream::Commit(unsigned long);
 HRESULT GenericStream::CopyTo(struct IStream *, union _ULARGE_INTEGER, union _ULARGE_INTEGER *, union _ULARGE_INTEGER *);
-void GenericStream::GenericStream(struct tagInterfaceData *);
+void GenericStream::GenericStream(void);
 HRESULT GenericStream::GetBuffer(unsigned long *, unsigned char **);
 HRESULT GenericStream::GetCopy(unsigned char *);
 HRESULT GenericStream::GetLength(unsigned long *);
@@ -63001,7 +63075,6 @@ void *GetUserSid(void *);
 HRESULT GetVtbl(struct ITypeInfo *, const struct _GUID &, struct TypeInfoVtbl **);
 HRESULT GetWindowPropInterface(void *, void *, unsigned __int64, unsigned __int64, int, struct tagSTDOBJREF *, struct tagOXID_INFO *, unsigned long *);
 int GipBypassEnabled(void);
-void GIPTableContextUninitialize(void);
 int GrfModeIsReadable(unsigned long);
 int GrfModeIsWriteable(unsigned long);
 HRESULT GrowCacheIfNecessary(void);
@@ -65437,7 +65510,7 @@ int OleIsDcMeta(struct HDC__ *);
 int OleIsRunning(struct IOleObject *);
 HRESULT OleLoad(struct IStorage *, const struct _GUID &, struct IOleClientSite *, void **);
 HRESULT OleLoadFromStream(struct IStream *, const struct _GUID &, void **);
-HRESULT OleLoadWithoutBinding(struct IStorage *, int, const struct _GUID &, struct IOleClientSite *, void **);
+HRESULT OleLoadWithoutBinding(struct IStorage *, int, const struct _GUID &, struct IOleClientSite *, void **, void *);
 HRESULT OleLockRunning(struct IUnknown *, int, int);
 __int64 OleMainThreadWndProc(struct HWND__ *, unsigned int, unsigned __int64, __int64);
 void *OleMetafilePictFromIconAndLabel(struct HICON__ *, wchar_t *, wchar_t *, unsigned int);
@@ -65825,7 +65898,7 @@ SafeArrayAllocDescriptor();
 SafeArrayAllocDescriptorEx();
 SafeArrayDestroy();
 unsigned char *SafeArrayMarshal(unsigned long *, unsigned char *, struct tagSAFEARRAY **);
-unsigned long SafeArraySize(unsigned short, unsigned long, struct tagSAFEARRAYBOUND *);
+unsigned long SafeArraySize(unsigned long *, unsigned long, struct tagSAFEARRAY **);
 unsigned char *SafeArrayUnmarshal(unsigned long *, unsigned char *, struct tagSAFEARRAY **);
 void SafeCExposedDocFile::SafeCExposedDocFile(class CExposedDocFile *, int);
 void SafeCExposedDocFile::~SafeCExposedDocFile(void);
@@ -65999,7 +66072,6 @@ HRESULT ServerLocationInfo::UnSerializeCallBack(const struct _GUID &, struct ISe
 void ServerLocationInfo::~ServerLocationInfo(void);
 HRESULT ServerNotify(union WireThis *, unsigned long, void **, unsigned long, class CMessageCall *);
 HRESULT ServerRegisterClsid(void *, void *, struct _RegInput *, struct _RegOutput **, unsigned long *);
-void ServerRevokeClsid(void *, void *, struct _RevokeClasses *, unsigned long *);
 void Set<ICallFrame>(struct ICallFrame *&, struct ICallFrame *);
 void Set<ICallFrameEvents>(struct ICallFrameEvents *&, struct ICallFrameEvents *);
 void Set<IMarshallingManager>(struct IMarshallingManager *&, struct IMarshallingManager *);
@@ -66447,10 +66519,10 @@ HRESULT wCoRegisterComBinding(wchar_t *, wchar_t *, unsigned long);
 HRESULT wCoTreatAsClass(const struct _GUID &, const struct _GUID &);
 void wCoUninitialize(class COleTls &, int);
 HRESULT wCoUnmarshalHresult(struct IStream *, HRESULT *);
-HRESULT wCreateFromDataEx(struct IDataObject *, const struct _GUID &, unsigned long, unsigned long, unsigned long, unsigned long *, struct tagFORMATETC *, struct IAdviseSink *, unsigned long *, struct IOleClientSite *, struct IStorage *, void **);
-HRESULT wCreateFromFileEx(struct IMoniker *, struct IDataObject *, const struct _GUID &, unsigned long, unsigned long, unsigned long, unsigned long *, struct tagFORMATETC *, struct IAdviseSink *, unsigned long *, struct IOleClientSite *, struct IStorage *, void **);
+HRESULT wCreateFromDataEx(struct IDataObject *, const struct _GUID &, unsigned long, unsigned long, unsigned long, unsigned long *, struct tagFORMATETC *, struct IAdviseSink *, unsigned long *, struct IOleClientSite *, struct IStorage *, void **, void *);
+HRESULT wCreateFromFileEx(struct IMoniker *, struct IDataObject *, const struct _GUID &, unsigned long, unsigned long, unsigned long, unsigned long *, struct tagFORMATETC *, struct IAdviseSink *, unsigned long *, struct IOleClientSite *, struct IStorage *, void **, void *);
 HRESULT wCreateLinkEx(struct IMoniker *, const struct _GUID &, struct IDataObject *, const struct _GUID &, unsigned long, unsigned long, unsigned long, unsigned long *, struct tagFORMATETC *, struct IAdviseSink *, unsigned long *, struct IOleClientSite *, struct IStorage *, void **);
-HRESULT wCreateObject(struct _GUID, int, const struct _GUID &, struct IOleClientSite *, struct IStorage *, unsigned short, void **);
+HRESULT wCreateObject(struct _GUID, int, const struct _GUID &, struct IOleClientSite *, struct IStorage *, unsigned short, void **, void *);
 HRESULT wCreatePackageEx(struct IDataObject *, const struct _GUID &, unsigned long, unsigned long, unsigned long, unsigned long *, struct tagFORMATETC *, struct IAdviseSink *, unsigned long *, struct IOleClientSite *, struct IStorage *, int, void **);
 HRESULT wCreateStgAroundNative(void *, unsigned short, unsigned short, enum CNVTYP, unsigned short, struct IStorage **, struct ILockBytes **);
 void wDoLockUnlock(struct IUnknown *);
@@ -66509,7 +66581,7 @@ int wInitiate(class DDE_CHANNEL *, unsigned short, unsigned short);
 WinSqmSetDWORD();
 int wIsOldServer(unsigned short);
 HRESULT wkProgIDFromCLSID(const struct _GUID &, wchar_t **);
-HRESULT wLoadAndInitObjectEx(struct IDataObject *, const struct _GUID &, unsigned long, unsigned long, unsigned long *, struct tagFORMATETC *, struct IAdviseSink *, unsigned long *, struct IOleClientSite *, struct IStorage *, void **);
+HRESULT wLoadAndInitObjectEx(struct IDataObject *, const struct _GUID &, unsigned long, unsigned long, unsigned long *, struct tagFORMATETC *, struct IAdviseSink *, unsigned long *, struct IOleClientSite *, struct IStorage *, void **, void *);
 int wNeedToPackage(const struct _GUID &);
 WNetGetConnectionW();
 WNetGetUniversalNameW();
@@ -67371,6 +67443,7 @@ struct _GUID CLSID_StdGlobalInterfaceTable;
 struct _GUID CLSID_StdMarshal;
 struct _GUID CLSID_StdOleLink;
 struct _GUID CLSID_StdWrapper;
+struct _GUID CLSID_StdWrapperNoHeader;
 struct _GUID CLSID_Stickynote;
 struct _GUID CLSID_StructuredQueryOptions;
 struct _GUID CLSID_SuggestFilterWorker;
@@ -68632,8 +68705,10 @@ struct _GUID IID_IExplorerFrame;
 struct _GUID IID_IExplorerFrameCallback;
 struct _GUID IID_IExplorerFrameCallbackManager;
 struct _GUID IID_IExplorerHost;
+struct _GUID IID_IExplorerHost2;
 struct _GUID IID_IExplorerHostCreator;
 struct _GUID IID_IExplorerLauncher;
+struct _GUID IID_IExplorerLauncher2;
 struct _GUID IID_IExplorerToolbar;
 struct _GUID IID_IExplorerWindowManager;
 struct _GUID IID_IExternalConnection;
