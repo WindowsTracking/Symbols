@@ -36,6 +36,7 @@ _DllMainCRTStartupForGS();
 GetCurrentProcessorNumber();
 __GSHandlerCheck();
 __GSHandlerCheckCommon();
+KiFastSystemCall();
 memcpy();
 memset();
 NtTerminateProcess();
@@ -51,6 +52,7 @@ RemoveIoCompletionFault();
 RemoveIoCompletionResume();
 __report_gsfailure();
 RtlCaptureContext();
+RtlFxToFnFrame();
 RtlLookupFunctionEntry();
 RtlpWow64CtxFromAmd64();
 RtlpWow64GetContextOnAmd64();
@@ -89,13 +91,13 @@ TurboDispatchJumpAddressEnd();
 TurboDispatchJumpAddressStart();
 WaitForMultipleObjects();
 WaitForMultipleObjects32();
-X86SwitchTo64BitMode();
 
 // Globals
 
 HotPatchBuffer;
 __IMPORT_DESCRIPTOR_ntdll;
 __IMPORT_DESCRIPTOR_wow64;
+_load_config_used;
 __NULL_IMPORT_DESCRIPTOR;
 RecoverContext64;
 RecoverException64;
