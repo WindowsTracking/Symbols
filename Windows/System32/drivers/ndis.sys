@@ -1,5 +1,5 @@
 /*
- * PDB file: ndis.pdb\CF2BA8CCE5B44C5D84A7FC27E5166B982\ndis.pdb
+ * PDB file: ndis.pdb\4BB1ACFE73B64BCCB6DDCA4C9AFA1D481\ndis.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -19,7 +19,7 @@ enum BINDING_ENABLED_OR_DISABLED;
 enum BUS_QUERY_ID_TYPE;
 enum CallRunMode;
 struct _CLIENT_ID;
-struct close_kernel_handle;
+struct close_registry_handle;
 struct _CM_FULL_RESOURCE_DESCRIPTOR;
 struct _CM_PARTIAL_RESOURCE_DESCRIPTOR;
 struct _CM_PARTIAL_RESOURCE_LIST;
@@ -41,6 +41,8 @@ struct _DEVICE_OBJECT;
 struct _DEVICE_OBJECT_POWER_EXTENSION;
 enum _DEVICE_POWER_STATE;
 enum _DEVICE_RELATION_TYPE;
+struct _DEVICE_RESET_INTERFACE_STANDARD;
+enum _DEVICE_RESET_TYPE;
 enum DEVICE_TEXT_TYPE;
 enum _DEVICE_USAGE_NOTIFICATION_TYPE;
 enum _DEVICE_WAKE_DEPTH;
@@ -127,9 +129,11 @@ struct _EVENT_DESCRIPTOR;
 struct _EVENT_FILTER_DESCRIPTOR;
 struct _EVENT_HEADER;
 struct _EVENT_HEADER_EXTENDED_DATA_ITEM;
+enum _EVENT_INFO_CLASS;
 struct _EVENT_RECORD;
 enum _EVENT_TYPE;
 struct _EX_PUSH_LOCK;
+struct _EX_RUNDOWN_REF;
 enum _EXCEPTION_DISPOSITION;
 struct _EXCEPTION_RECORD;
 struct _EXCEPTION_REGISTRATION_RECORD;
@@ -174,6 +178,8 @@ struct _IO_COMPLETION_CONTEXT;
 struct _IO_DRIVER_CREATE_CONTEXT;
 struct _IO_INTERRUPT_MESSAGE_INFO;
 struct _IO_INTERRUPT_MESSAGE_INFO_ENTRY;
+enum _IO_PRIORITY_HINT;
+struct _IO_PRIORITY_INFO;
 struct _IO_REMOVE_LOCK;
 struct _IO_REMOVE_LOCK_COMMON_BLOCK;
 struct _IO_RESOURCE_DESCRIPTOR;
@@ -194,7 +200,10 @@ struct _IPV4_HEADER;
 struct _IPV6_FRAGMENT_HEADER;
 struct _IRP;
 enum _IRQ_PRIORITY;
+enum JOB_OBJECT_IO_RATE_CONTROL_FLAGS;
+enum JOB_OBJECT_NET_RATE_CONTROL_FLAGS;
 enum _JOBOBJECTINFOCLASS;
+struct KALLOCATION_TAG<1146307662,512>;
 struct KALLOCATION_TAG<1147946562,1>;
 struct KALLOCATION_TAG<1148473410,1>;
 struct KALLOCATION_TAG<1282164290,1>;
@@ -203,6 +212,7 @@ struct KALLOCATION_TAG<1396859982,1>;
 struct KALLOCATION_TAG<1920090443,1>;
 struct KALLOCATION_TAG<1920226123,512>;
 struct KALLOCATION_TAG<1935819854,1>;
+struct KALLOCATOR<1146307662,512>;
 struct KALLOCATOR<1147946562,1>;
 struct KALLOCATOR<1148473410,1>;
 struct KALLOCATOR<1282164290,1>;
@@ -216,6 +226,7 @@ struct _KBUGCHECK_CALLBACK_RECORD;
 class KCoalescingWorkItem<_NDIS_PROTOCOL_BLOCK>;
 class KCriticalRegion;
 struct KDefaultRegion;
+struct KDeletePtr<_NDIS_MINIPORT_DRIVER_CHARACTERISTICS>;
 struct KDeletePtr<NDIS_BIND_FILTER_LINK>;
 struct KDeletePtr<NDIS_BIND_PROTOCOL_LINK>;
 struct KDeletePtr<Rtl::KString>;
@@ -240,10 +251,11 @@ struct _KPCR;
 struct _KPRCB;
 struct _KPROCESS;
 struct _KPROCESSOR_STATE;
+class KPtr<_NDIS_MINIPORT_DRIVER_CHARACTERISTICS,KDeletePtr<_NDIS_MINIPORT_DRIVER_CHARACTERISTICS> >;
 class KPtr<NDIS_BIND_FILTER_LINK,KDeletePtr<NDIS_BIND_FILTER_LINK> >;
 class KPtr<NDIS_BIND_PROTOCOL_LINK,KDeletePtr<NDIS_BIND_PROTOCOL_LINK> >;
 class KPtr<Rtl::KString,KDeletePtr<Rtl::KString> >;
-class KPtr<void *,close_kernel_handle>;
+class KPtr<void *,close_registry_handle>;
 class KPushLock;
 class KPushLockBase;
 class KRef<NDIS_BIND_FILTER_DRIVER>::KRefHolder;
@@ -252,6 +264,10 @@ class KRef<NDIS_BIND_PROTOCOL_DRIVER>::KRefHolder;
 class KRef<NDIS_BIND_PROTOCOL_DRIVER>;
 enum KRegKey::BooleanDisposition;
 class KRegKey;
+class KRundown;
+class KRundownBase;
+class KRundownHolder;
+class KRundownManualConstruct;
 struct KS_COMPRESSION;
 struct KS_FRAMING_ITEM;
 struct KS_FRAMING_RANGE;
@@ -318,8 +334,11 @@ struct _KTHREAD;
 struct _KTIMER;
 struct _KTSS64;
 struct _KUSER_SHARED_DATA;
+struct _KWAIT_CHAIN;
 enum _KWAIT_REASON;
 class KWaitEvent;
+class KWaitEventBase;
+class KWaitEventManualConstruct;
 class KWorkItem<Ndis::BindEngine>;
 class KWorkItemBase<_NDIS_PROTOCOL_BLOCK,KCoalescingWorkItem<_NDIS_PROTOCOL_BLOCK> >;
 class KWorkItemBase<Ndis::BindEngine,KWorkItem<Ndis::BindEngine> >;
@@ -357,6 +376,7 @@ struct Ndis::BindStack;
 class Ndis::BindState;
 enum Ndis::ReadBindingsOptions::Flags;
 enum _NDIS_802_11_WEP_STATUS;
+struct NDIS_ADDDEVICE_PARAMETERS;
 struct _NDIS_AF_LIST;
 struct _NDIS_AOAC_COMPONENT_REF_TIME;
 enum _NDIS_ARP_HEADER_FIELD;
@@ -406,6 +426,9 @@ struct _NDIS_DPC_WORK_ITEM;
 struct _NDIS_DRIVER_OPTIONAL_HANDLERS;
 struct _NDIS_DRIVER_WRAPPER_HANDLE;
 struct _NDIS_ENCAPSULATED_PACKET_TASK_OFFLOAD;
+struct _NDIS_ENCAPSULATED_PACKET_TASK_OFFLOAD_V2::_ENCAPSULATION_PROTOCOL_INFO::_VXLAN_INFO;
+union _NDIS_ENCAPSULATED_PACKET_TASK_OFFLOAD_V2::_ENCAPSULATION_PROTOCOL_INFO;
+struct _NDIS_ENCAPSULATED_PACKET_TASK_OFFLOAD_V2;
 enum _NDIS_ENCAPSULATION;
 struct _NDIS_ENCAPSULATION_FORMAT;
 struct _NDIS_ENTRY_HEADER;
@@ -432,6 +455,7 @@ enum _NDIS_FRAME_HEADER;
 struct _NDIS_FRAME_TYPE_AND_OPEN;
 struct _NDIS_FRAME_TYPE_RECORD;
 struct _NDIS_GENERIC_OBJECT;
+struct _NDIS_GFT_OFFLOAD_CAPABILITIES;
 struct _NDIS_GLOBAL_TRIAGE_BLOCK;
 struct _NDIS_GUID;
 enum _NDIS_HALT_ACTION;
@@ -474,10 +498,12 @@ enum _NDIS_MDRV_REFTAG;
 enum _NDIS_MEDIUM;
 union _NDIS_MINIPORT_ADAPTER_ATTRIBUTES;
 struct _NDIS_MINIPORT_ADAPTER_GENERAL_ATTRIBUTES;
+struct NDIS_MINIPORT_ADAPTER_HANDLE__;
 struct _NDIS_MINIPORT_ADAPTER_HARDWARE_ASSIST_ATTRIBUTES;
 struct _NDIS_MINIPORT_ADAPTER_NATIVE_802_11_ATTRIBUTES;
 struct _NDIS_MINIPORT_ADAPTER_NDK_ATTRIBUTES;
 struct _NDIS_MINIPORT_ADAPTER_OFFLOAD_ATTRIBUTES;
+struct _NDIS_MINIPORT_ADAPTER_PACKET_DIRECT_ATTRIBUTES;
 struct _NDIS_MINIPORT_ADAPTER_REGISTRATION_ATTRIBUTES;
 struct _NDIS_MINIPORT_ADD_DEVICE_REGISTRATION_ATTRIBUTES;
 struct _NDIS_MINIPORT_AOAC;
@@ -487,6 +513,9 @@ struct _NDIS_MINIPORT_CS_TRAFFIC_STATS;
 struct _NDIS_MINIPORT_DRIVER_CHARACTERISTICS;
 enum _NDIS_MINIPORT_EVENT;
 struct _NDIS_MINIPORT_HANDLERS;
+struct NDIS_MINIPORT_HOOK_ADAPTER_HANDLE__;
+struct NDIS_MINIPORT_HOOK_DRIVER_HANDLE__;
+enum _NDIS_MINIPORT_HOOK_DRIVER_TYPE;
 struct _NDIS_MINIPORT_INIT_PARAMETERS;
 struct _NDIS_MINIPORT_INTERRUPT;
 struct _NDIS_MINIPORT_INTERRUPT_CHARACTERISTICS;
@@ -518,7 +547,10 @@ enum _NDIS_NBL_TRACKER_OWNERSHIP_EVENT;
 enum _NDIS_NBL_TRACKER_SOURCE;
 enum _NDIS_NDIS5_DRIVER_STATE;
 struct _NDIS_NDK_CAPABILITIES;
+struct _NDIS_NDK_PARAMETERS;
 struct _NDIS_NDK_PERFORMANCE_COUNTERS;
+struct _NDIS_NDK_REQUEST_PARAMETERS;
+struct _NDIS_NDK_RESPONSE_PARAMETERS;
 struct _NDIS_NET_BUFFER_LIST_8021Q_INFO;
 struct _NDIS_NET_BUFFER_LIST_FILTERING_INFO;
 enum _NDIS_NET_BUFFER_LIST_INFO;
@@ -575,6 +607,21 @@ enum NDIS_PAUSE_REASON;
 struct _NDIS_PCI_DEVICE_CUSTOM_PROPERTIES;
 struct NDIS_PCW_CONTEXT;
 struct _NDIS_PCW_DATA_BLOCK;
+struct _NDIS_PD_BLOCK;
+struct NDIS_PD_BM_DOMAIN_HANDLE__;
+struct NDIS_PD_BM_DOMAIN_MEMBER_HANDLE__;
+struct _NDIS_PD_BM_DOMAIN_MEMBER_PARAMETERS;
+struct _NDIS_PD_BM_DOMAIN_PARAMETERS;
+struct _NDIS_PD_CONFIG;
+struct _NDIS_PD_EC_UTILIZATION_COUNTER;
+struct NDIS_PD_EXT_CLIENT_CONTEXT__;
+struct _NDIS_PD_EXT_CLIENT_DISPATCH;
+struct _NDIS_PD_EXT_CLIENT_PARAM;
+struct NDIS_PD_EXT_MEMORY_HANDLE__;
+struct NDIS_PD_EXT_PROVIDER_CONTEXT__;
+struct _NDIS_PD_FILTER_COUNTER;
+struct _NDIS_PD_RECEIVE_QUEUE_COUNTER;
+struct _NDIS_PD_TRANSMIT_QUEUE_COUNTER;
 struct _NDIS_PENDING_IM_INSTANCE;
 enum _NDIS_PER_PACKET_INFO;
 struct _NDIS_PER_PROC_PERFORMANCE_COUNTERS;
@@ -677,6 +724,13 @@ union _NDIS_RW_LOCK_REFCOUNT;
 struct _NDIS_SCATTER_GATHER_LIST_PARAMETERS;
 struct _NDIS_SELECTIVE_SUSPEND;
 enum _NDIS_SEND_PATH_TYPE;
+struct NDIS_SETUP_DEVICE_EXTENSION;
+struct NDIS_SFA_CLIENT_CONTEXT__;
+struct _NDIS_SFA_CLIENT_DISPATCH;
+union _NDIS_SFA_GET_METER_DATA_FLAGS;
+struct NDIS_SFA_HANDLE__;
+struct _NDIS_SFA_METER_DATA;
+struct _NDIS_SFA_RULE_DESCRIPTOR;
 struct _NDIS_SG_DMA_BLOCK;
 struct _NDIS_SG_DMA_DESCRIPTION;
 struct _NDIS_SHARED_MEMORY_BLOCK;
@@ -741,6 +795,10 @@ struct _NDIS_WAN_LINE_DOWN;
 struct _NDIS_WAN_LINE_UP;
 struct _NDIS_WAN_PACKET;
 enum _NDIS_WAN_QUALITY;
+struct _NDIS_WDF_CX_CHARACTERISTICS;
+struct _NDIS_WDF_CX_DRIVER_BLOCK;
+struct NDIS_WDF_CX_DRIVER_CONTEXT__;
+enum _NDIS_WDF_CX_DRIVER_STATE;
 struct _NDIS_WOL_XLATION_CONTEXT;
 struct _NDIS_WORK_ITEM;
 enum _NDIS_WORK_ITEM_TYPE;
@@ -765,6 +823,8 @@ struct _NDIS_WWAN_SMS_READ;
 struct _NDIS_WWAN_SMS_SEND;
 struct _NDIS_WWAN_VISIBLE_PROVIDERS;
 enum _NDIS_XLATE_TYPE;
+enum NdisIfBlockSource;
+class NdisStopwatch;
 struct _NDK_ADAPTER;
 struct _NDK_ADAPTER_DISPATCH;
 struct _NDK_ADAPTER_INFO;
@@ -788,6 +848,7 @@ struct _NDK_PD;
 struct _NDK_PD_DISPATCH;
 struct _NDK_QP;
 struct _NDK_QP_DISPATCH;
+enum _NDK_RDMA_TECHNOLOGY;
 struct _NDK_RESULT;
 struct _NDK_RESULT_EX;
 struct _NDK_SGE;
@@ -873,6 +934,9 @@ struct _PCW_INSTANCE;
 struct _PCW_MASK_INFORMATION;
 struct _PCW_REGISTRATION;
 struct _PCW_REGISTRATION_INFORMATION;
+struct _PD_BUFFER;
+struct _PD_BUFFER_8021Q_INFO;
+struct _PD_BUFFER_VIRTUAL_SUBNET_INFO;
 struct _PEB;
 struct _PEB_LDR_DATA;
 struct _PENDING_STACK_EXPANSION_FALLBACK_WORK;
@@ -899,7 +963,9 @@ enum _PS_STD_HANDLE_STATE;
 enum _PS_WAKE_REASON;
 struct _QUAD;
 struct _QUEUED_CLOSE;
-struct _REENUMERATE_SELF_INTERFACE_STANDARD;
+struct _RECORDER_CONFIGURE_PARAMS;
+struct RECORDER_LOG__;
+struct _RECORDER_LOG_CREATE_PARAMS;
 struct _REFERENCE;
 struct _REFERENCE_EX;
 union _REFERENCE_OBJECT;
@@ -927,6 +993,7 @@ struct _RTL_DYNAMIC_HASH_TABLE_ENTRY;
 struct _RTL_DYNAMIC_HASH_TABLE_ENUMERATOR;
 struct _RTL_QUERY_REGISTRY_TABLE;
 struct _RTL_RB_TREE;
+enum _RTL_RESOURCE_POLICY_FLAGS;
 struct _RTL_SPLAY_LINKS;
 struct _RTL_USER_PROCESS_PARAMETERS;
 struct _SCATTER_GATHER_ELEMENT;
@@ -963,12 +1030,18 @@ enum TCP_UPLOAD_REASON;
 struct _TEB;
 struct _TEB_ACTIVE_FRAME;
 struct _TEB_ACTIVE_FRAME_CONTEXT;
+enum _TlgBlob_t;
+enum _TlgIn_t;
+enum _TlgOut_t;
+struct _TlgProvider_t;
+struct _TlgProviderMetadata_t;
 struct _TP_CALLBACK_ENVIRON_V3;
 struct _TP_CALLBACK_INSTANCE;
 enum _TP_CALLBACK_PRIORITY;
 struct _TP_CLEANUP_GROUP;
 struct _TP_POOL;
 enum _TRACE_INFORMATION_CLASS;
+struct _TraceLoggingMetadata_t;
 struct _TRANSPORT_HEADER_OFFSET;
 struct _TXN_PARAMETER_BLOCK;
 union _ULARGE_INTEGER;
@@ -976,6 +1049,21 @@ struct _ULONG_REFERENCE;
 struct _UNICODE_STRING;
 enum _USER_ACTIVITY_PRESENCE;
 struct _VAR_STRING;
+enum __vc_attributes::aggregatableAttribute::type_e;
+struct __vc_attributes::aggregatableAttribute;
+enum __vc_attributes::event_receiverAttribute::type_e;
+struct __vc_attributes::event_receiverAttribute;
+enum __vc_attributes::event_sourceAttribute::optimize_e;
+enum __vc_attributes::event_sourceAttribute::type_e;
+struct __vc_attributes::event_sourceAttribute;
+enum __vc_attributes::helper_attributes::usageAttribute::usage_e;
+struct __vc_attributes::helper_attributes::usageAttribute;
+enum __vc_attributes::helper_attributes::v1_alttypeAttribute::type_e;
+struct __vc_attributes::helper_attributes::v1_alttypeAttribute;
+enum __vc_attributes::moduleAttribute::type_e;
+struct __vc_attributes::moduleAttribute;
+enum __vc_attributes::threadingAttribute::threading_e;
+struct __vc_attributes::threadingAttribute;
 struct _VF_DISPATCH_TABLE_HEADER;
 enum _VF_DISPATCH_TABLE_TYPE;
 struct _VF_NDIS_DISPATCH_TABLE;
@@ -1164,7 +1252,7 @@ typedef struct _CLIENT_ID
   void* UniqueThread;
 } CLIENT_ID, *PCLIENT_ID;
 
-struct close_kernel_handle
+struct close_registry_handle
 {
 };
 
@@ -1555,6 +1643,24 @@ typedef enum _DEVICE_RELATION_TYPE
   TransportRelations = 6,
 } DEVICE_RELATION_TYPE, *PDEVICE_RELATION_TYPE;
 
+typedef struct _DEVICE_RESET_INTERFACE_STANDARD
+{
+  unsigned short Size;
+  unsigned short Version;
+  void* Context;
+  void* InterfaceReference /* function */;
+  void* InterfaceDereference /* function */;
+  void* DeviceReset /* function */;
+  unsigned long SupportedResetTypes;
+  void* Reserved;
+} DEVICE_RESET_INTERFACE_STANDARD, *PDEVICE_RESET_INTERFACE_STANDARD;
+
+typedef enum _DEVICE_RESET_TYPE
+{
+  FunctionLevelDeviceReset = 0,
+  PlatformLevelDeviceReset = 1,
+} DEVICE_RESET_TYPE, *PDEVICE_RESET_TYPE;
+
 enum DEVICE_TEXT_TYPE
 {
   DeviceTextDescription = 0,
@@ -1597,6 +1703,7 @@ typedef struct _DEVOBJ_EXTENSION
   unsigned long StartIoFlags;
   struct _VPB* Vpb;
   void* DependencyNode;
+  void* InterruptContext;
   void* VerifierContext;
 } DEVOBJ_EXTENSION, *PDEVOBJ_EXTENSION;
 
@@ -1623,25 +1730,48 @@ typedef struct _DISPATCHER_HEADER
 {
   union
   {
+    volatile long Lock;
+    long LockNV;
     struct
     {
       unsigned char Type;
+      unsigned char Signalling;
+      unsigned char Size;
+      unsigned char Reserved1;
+    };
+    struct
+    {
+      unsigned char TimerType;
       union
       {
         unsigned char TimerControlFlags;
-        struct /* bitfield */
+        struct
         {
-          unsigned char Absolute : 1; /* bit position: 0 */
-          unsigned char Wake : 1; /* bit position: 1 */
-          unsigned char EncodedTolerableDelay : 6; /* bit position: 2 */
-        }; /* bitfield */
-        unsigned char QueueControlFlags;
-        struct /* bitfield */
-        {
-          unsigned char Abandoned : 1; /* bit position: 0 */
-          unsigned char DisableIncrement : 1; /* bit position: 1 */
-        }; /* bitfield */
-        unsigned char Signalling;
+          struct /* bitfield */
+          {
+            unsigned char Absolute : 1; /* bit position: 0 */
+            unsigned char Wake : 1; /* bit position: 1 */
+            unsigned char EncodedTolerableDelay : 6; /* bit position: 2 */
+          }; /* bitfield */
+          unsigned char Hand;
+          union
+          {
+            unsigned char TimerMiscFlags;
+            struct /* bitfield */
+            {
+              unsigned char Index : 6; /* bit position: 0 */
+              unsigned char Inserted : 1; /* bit position: 6 */
+              volatile unsigned char Expired : 1; /* bit position: 7 */
+            }; /* bitfield */
+          };
+        };
+      };
+    };
+    struct
+    {
+      unsigned char Timer2Type;
+      union
+      {
         unsigned char Timer2Flags;
         struct
         {
@@ -1653,53 +1783,74 @@ typedef struct _DISPATCHER_HEADER
             unsigned char Timer2SetPending : 1; /* bit position: 3 */
             unsigned char Timer2Running : 1; /* bit position: 4 */
             unsigned char Timer2Disabled : 1; /* bit position: 5 */
-            unsigned char Reserved1 : 2; /* bit position: 6 */
+            unsigned char Timer2ReservedFlags : 2; /* bit position: 6 */
+          }; /* bitfield */
+          unsigned char Timer2Reserved1;
+          unsigned char Timer2Reserved2;
+        };
+      };
+    };
+    struct
+    {
+      unsigned char QueueType;
+      union
+      {
+        unsigned char QueueControlFlags;
+        struct
+        {
+          struct /* bitfield */
+          {
+            unsigned char Abandoned : 1; /* bit position: 0 */
+            unsigned char DisableIncrement : 1; /* bit position: 1 */
+            unsigned char QueueReservedControlFlags : 6; /* bit position: 2 */
+          }; /* bitfield */
+          unsigned char QueueSize;
+          unsigned char QueueReserved;
+        };
+      };
+    };
+    struct
+    {
+      unsigned char ThreadType;
+      unsigned char ThreadReserved;
+      union
+      {
+        unsigned char ThreadControlFlags;
+        struct
+        {
+          struct /* bitfield */
+          {
+            unsigned char CycleProfiling : 1; /* bit position: 0 */
+            unsigned char CounterProfiling : 1; /* bit position: 1 */
+            unsigned char GroupScheduling : 1; /* bit position: 2 */
+            unsigned char AffinitySet : 1; /* bit position: 3 */
+            unsigned char Tagged : 1; /* bit position: 4 */
+            unsigned char EnergyProfiling : 1; /* bit position: 5 */
+            unsigned char ThreadReservedControlFlags : 2; /* bit position: 6 */
           }; /* bitfield */
           union
           {
-            unsigned char ThreadControlFlags;
+            unsigned char DebugActive;
             struct /* bitfield */
             {
-              unsigned char CycleProfiling : 1; /* bit position: 0 */
-              unsigned char CounterProfiling : 1; /* bit position: 1 */
-              unsigned char GroupScheduling : 1; /* bit position: 2 */
-              unsigned char AffinitySet : 1; /* bit position: 3 */
-              unsigned char Reserved2 : 4; /* bit position: 4 */
+              unsigned char ActiveDR7 : 1; /* bit position: 0 */
+              unsigned char Instrumented : 1; /* bit position: 1 */
+              unsigned char Minimal : 1; /* bit position: 2 */
+              unsigned char Reserved4 : 3; /* bit position: 3 */
+              unsigned char UmsScheduled : 1; /* bit position: 6 */
+              unsigned char UmsPrimary : 1; /* bit position: 7 */
             }; /* bitfield */
-            unsigned char Hand;
-            unsigned char Reserved3;
-            struct
-            {
-              unsigned char Size;
-              union
-              {
-                unsigned char TimerMiscFlags;
-                struct /* bitfield */
-                {
-                  unsigned char Index : 6; /* bit position: 0 */
-                  unsigned char Inserted : 1; /* bit position: 6 */
-                  volatile unsigned char Expired : 1; /* bit position: 7 */
-                }; /* bitfield */
-                unsigned char DebugActive;
-                struct /* bitfield */
-                {
-                  unsigned char ActiveDR7 : 1; /* bit position: 0 */
-                  unsigned char Instrumented : 1; /* bit position: 1 */
-                  unsigned char Minimal : 1; /* bit position: 2 */
-                  unsigned char Reserved4 : 3; /* bit position: 3 */
-                  unsigned char UmsScheduled : 1; /* bit position: 6 */
-                  unsigned char UmsPrimary : 1; /* bit position: 7 */
-                }; /* bitfield */
-                unsigned char DpcActive;
-                unsigned char Reserved5;
-              };
-            };
           };
         };
       };
     };
-    volatile long Lock;
-    long LockNV;
+    struct
+    {
+      unsigned char MutantType;
+      unsigned char MutantSize;
+      unsigned char DpcActive;
+      unsigned char MutantReserved;
+    };
   };
   long SignalState;
   struct _LIST_ENTRY WaitListHead;
@@ -1804,6 +1955,11 @@ typedef struct _DMA_OPERATIONS
   void* FlushAdapterBuffersEx /* function */;
   void* FreeAdapterObject /* function */;
   void* CancelMappedTransfer /* function */;
+  void* AllocateDomainCommonBuffer /* function */;
+  void* FlushDmaBuffer /* function */;
+  void* JoinDmaDomain /* function */;
+  void* LeaveDmaDomain /* function */;
+  void* GetDmaDomain /* function */;
 } DMA_OPERATIONS, *PDMA_OPERATIONS;
 
 typedef enum _DMA_SPEED
@@ -2083,6 +2239,12 @@ struct DOT11_EXTSTA_ATTRIBUTES
   unsigned char bMFPCapable;
   unsigned long uInfraNumSupportedMcastMgmtAlgoPairs;
   struct DOT11_AUTH_CIPHER_PAIR* pInfraSupportedMcastMgmtAlgoPairs;
+  unsigned char bNeighborReportSupported;
+  unsigned char bAPChannelReportSupported;
+  unsigned char bActionFramesSupported;
+  unsigned char bANQPQueryOffloadSupported;
+  unsigned char bHESSIDConnectionSupported;
+  char __PADDING__[3];
 };
 
 struct DOT11_EXTSTA_CAPABILITY
@@ -2436,7 +2598,7 @@ typedef struct _ERESOURCE
       unsigned char WaiterPriority;
     };
   };
-  struct _KSEMAPHORE* SharedWaiters;
+  struct _KWAIT_CHAIN SharedWaiters;
   struct _KEVENT* ExclusiveWaiters;
   struct _OWNER_ENTRY OwnerEntry;
   unsigned long ActiveEntries;
@@ -2479,7 +2641,16 @@ typedef struct _EVENT_DATA_DESCRIPTOR
 {
   unsigned __int64 Ptr;
   unsigned long Size;
-  unsigned long Reserved;
+  union
+  {
+    unsigned long Reserved;
+    struct
+    {
+      unsigned char Type;
+      unsigned char Reserved1;
+      unsigned short Reserved2;
+    };
+  };
 } EVENT_DATA_DESCRIPTOR, *PEVENT_DATA_DESCRIPTOR;
 
 typedef struct _EVENT_DESCRIPTOR
@@ -2536,6 +2707,15 @@ typedef struct _EVENT_HEADER_EXTENDED_DATA_ITEM
   unsigned __int64 DataPtr;
 } EVENT_HEADER_EXTENDED_DATA_ITEM, *PEVENT_HEADER_EXTENDED_DATA_ITEM;
 
+typedef enum _EVENT_INFO_CLASS
+{
+  EventProviderBinaryTrackInfo = 0,
+  EventProviderSetEnableAllKeywords = 1,
+  EventProviderSetTraits = 2,
+  EventProviderUseDescriptorType = 3,
+  MaxEventInfo = 4,
+} EVENT_INFO_CLASS, *PEVENT_INFO_CLASS;
+
 typedef struct _EVENT_RECORD
 {
   struct _EVENT_HEADER EventHeader;
@@ -2569,6 +2749,15 @@ typedef struct _EX_PUSH_LOCK
     void* Ptr;
   };
 } EX_PUSH_LOCK, *PEX_PUSH_LOCK;
+
+typedef struct _EX_RUNDOWN_REF
+{
+  union
+  {
+    unsigned __int64 Count;
+    void* Ptr;
+  };
+} EX_RUNDOWN_REF, *PEX_RUNDOWN_REF;
 
 typedef enum _EXCEPTION_DISPOSITION
 {
@@ -2725,7 +2914,8 @@ typedef enum _FILE_INFORMATION_CLASS
   FileIdExtdDirectoryInformation = 60,
   FileReplaceCompletionInformation = 61,
   FileHardLinkFullIdInformation = 62,
-  FileMaximumInformation = 63,
+  FileIdExtdBothDirectoryInformation = 63,
+  FileMaximumInformation = 64,
 } FILE_INFORMATION_CLASS, *PFILE_INFORMATION_CLASS;
 
 typedef struct _FILE_NETWORK_OPEN_INFORMATION
@@ -2831,7 +3021,8 @@ typedef enum _FSINFOCLASS
   FileFsVolumeFlagsInformation = 10,
   FileFsSectorSizeInformation = 11,
   FileFsDataCopyInformation = 12,
-  FileFsMaximumInformation = 13,
+  FileFsMetadataSizeInformation = 13,
+  FileFsMaximumInformation = 14,
 } FSINFOCLASS, *PFSINFOCLASS;
 
 typedef struct _GDI_TEB_BATCH
@@ -3190,6 +3381,24 @@ typedef struct _IO_INTERRUPT_MESSAGE_INFO_ENTRY
   enum _KINTERRUPT_POLARITY Polarity;
   long __PADDING__[1];
 } IO_INTERRUPT_MESSAGE_INFO_ENTRY, *PIO_INTERRUPT_MESSAGE_INFO_ENTRY;
+
+typedef enum _IO_PRIORITY_HINT
+{
+  IoPriorityVeryLow = 0,
+  IoPriorityLow = 1,
+  IoPriorityNormal = 2,
+  IoPriorityHigh = 3,
+  IoPriorityCritical = 4,
+  MaxIoPriorityTypes = 5,
+} IO_PRIORITY_HINT, *PIO_PRIORITY_HINT;
+
+typedef struct _IO_PRIORITY_INFO
+{
+  unsigned long Size;
+  unsigned long ThreadPriority;
+  unsigned long PagePriority;
+  enum _IO_PRIORITY_HINT IoPriority;
+} IO_PRIORITY_INFO, *PIO_PRIORITY_INFO;
 
 typedef struct _IO_REMOVE_LOCK
 {
@@ -3804,6 +4013,20 @@ typedef enum _IRQ_PRIORITY
   IrqPriorityHigh = 3,
 } IRQ_PRIORITY, *PIRQ_PRIORITY;
 
+enum JOB_OBJECT_IO_RATE_CONTROL_FLAGS
+{
+  JOB_OBJECT_IO_RATE_CONTROL_ENABLE = 1,
+  JOB_OBJECT_IO_RATE_CONTROL_VALID_FLAGS = 1,
+};
+
+enum JOB_OBJECT_NET_RATE_CONTROL_FLAGS
+{
+  JOB_OBJECT_NET_RATE_CONTROL_ENABLE = 1,
+  JOB_OBJECT_NET_RATE_CONTROL_MAX_BANDWIDTH = 2,
+  JOB_OBJECT_NET_RATE_CONTROL_DSCP_TAG = 4,
+  JOB_OBJECT_NET_RATE_CONTROL_VALID_FLAGS = 7,
+};
+
 typedef enum _JOBOBJECTINFOCLASS
 {
   JobObjectBasicAccountingInformation = 1,
@@ -3832,6 +4055,11 @@ typedef enum _JOBOBJECTINFOCLASS
   JobObjectCycleTimeNotification = 24,
   JobObjectClearEvent = 25,
   JobObjectInterferenceInformation = 26,
+  JobObjectClearPeakJobMemoryUsed = 27,
+  JobObjectMemoryUsageInformation = 28,
+  JobObjectSharedCommit = 29,
+  JobObjectContainerId = 30,
+  JobObjectIoRateControlInformation = 31,
   JobObjectReserved1Information = 18,
   JobObjectReserved2Information = 19,
   JobObjectReserved3Information = 20,
@@ -3841,8 +4069,33 @@ typedef enum _JOBOBJECTINFOCLASS
   JobObjectReserved7Information = 24,
   JobObjectReserved8Information = 25,
   JobObjectReserved9Information = 26,
-  MaxJobObjectInfoClass = 27,
+  JobObjectReserved10Information = 27,
+  JobObjectReserved11Information = 28,
+  JobObjectReserved12Information = 29,
+  JobObjectReserved13Information = 30,
+  JobObjectReserved14Information = 31,
+  JobObjectNetRateControlInformation = 32,
+  JobObjectNotificationLimitInformation2 = 33,
+  JobObjectLimitViolationInformation2 = 34,
+  JobObjectCreateSilo = 35,
+  JobObjectSiloBasicInformation = 36,
+  JobObjectSiloRootDirectory = 37,
+  JobObjectServerSiloBasicInformation = 38,
+  JobObjectServerSiloServiceSessionId = 39,
+  JobObjectServerSiloInitialize = 40,
+  JobObjectServerSiloDefaultCompartmentId = 41,
+  MaxJobObjectInfoClass = 42,
 } JOBOBJECTINFOCLASS, *PJOBOBJECTINFOCLASS;
+
+struct KALLOCATION_TAG<1146307662,512>
+{
+  union
+  {
+    const unsigned long AllocationTag;
+    const unsigned long AllocationArena;
+  };
+  char __PADDING__[4294967293];
+};
 
 struct KALLOCATION_TAG<1147946562,1>
 {
@@ -3922,6 +4175,10 @@ struct KALLOCATION_TAG<1935819854,1>
     const unsigned long AllocationArena;
   };
   char __PADDING__[4294967293];
+};
+
+struct KALLOCATOR<1146307662,512>
+{
 };
 
 struct KALLOCATOR<1147946562,1>
@@ -4007,6 +4264,10 @@ class KCriticalRegion
 };
 
 struct KDefaultRegion
+{
+};
+
+struct KDeletePtr<_NDIS_MINIPORT_DRIVER_CHARACTERISTICS>
 {
 };
 
@@ -4267,7 +4528,7 @@ typedef struct _KPRCB
       unsigned char PendingBackupTick : 1; /* bit position: 1 */
     }; /* bitfield */
   };
-  unsigned char PrcbPad00[1];
+  unsigned char IdleState;
   unsigned long Number;
   unsigned __int64 RspBase;
   unsigned __int64 PrcbLock;
@@ -4297,11 +4558,12 @@ typedef struct _KPRCB
   unsigned char Group;
   unsigned char GroupIndex;
   unsigned char PrcbPad05[2];
-  unsigned long ApicMask;
-  unsigned long CFlushSize;
-  void* AcpiReserved;
   unsigned long InitialApicId;
-  long __PADDING__[1];
+  unsigned long ScbOffset;
+  unsigned long ApicMask;
+  void* AcpiReserved;
+  unsigned long CFlushSize;
+  unsigned long PrcbPad10;
 } KPRCB, *PKPRCB;
 
 struct _KPROCESS;
@@ -4311,6 +4573,11 @@ typedef struct _KPROCESSOR_STATE
   struct _KSPECIAL_REGISTERS SpecialRegisters;
   struct _CONTEXT ContextFrame;
 } KPROCESSOR_STATE, *PKPROCESSOR_STATE;
+
+class KPtr<_NDIS_MINIPORT_DRIVER_CHARACTERISTICS,KDeletePtr<_NDIS_MINIPORT_DRIVER_CHARACTERISTICS> >
+{
+  struct _NDIS_MINIPORT_DRIVER_CHARACTERISTICS* _p;
+};
 
 class KPtr<NDIS_BIND_FILTER_LINK,KDeletePtr<NDIS_BIND_FILTER_LINK> >
 {
@@ -4327,7 +4594,7 @@ class KPtr<Rtl::KString,KDeletePtr<Rtl::KString> >
   struct Rtl::KString* _p;
 };
 
-class KPtr<void *,close_kernel_handle>
+class KPtr<void *,close_registry_handle>
 {
   void** _p;
 };
@@ -4372,6 +4639,25 @@ enum KRegKey::BooleanDisposition
   FailIfNotFound = 0,
   DefaultToFalse = 1,
   DefaultToTrue = 2,
+};
+
+class KRundown
+{
+};
+
+class KRundownBase
+{
+  struct _EX_RUNDOWN_REF m_rundown;
+};
+
+class KRundownHolder
+{
+  class KRundown& m_rundown;
+  unsigned long m_count;
+};
+
+class KRundownManualConstruct
+{
 };
 
 struct KS_COMPRESSION
@@ -5126,7 +5412,7 @@ typedef struct _KUSER_SHARED_DATA
   unsigned __int64 RNGSeedVersion;
   unsigned long GlobalValidationRunlevel;
   volatile long TimeZoneBiasStamp;
-  unsigned long Reserved2;
+  unsigned long NtBuildNumber;
   enum _NT_PRODUCT_TYPE NtProductType;
   unsigned char ProductTypeIsValid;
   unsigned char Reserved0[1];
@@ -5138,7 +5424,7 @@ typedef struct _KUSER_SHARED_DATA
   unsigned long Reserved3;
   volatile unsigned long TimeSlip;
   enum _ALTERNATIVE_ARCHITECTURE_TYPE AlternativeArchitecture;
-  unsigned long AltArchitecturePad[1];
+  unsigned long BootId;
   union _LARGE_INTEGER SystemExpirationDate;
   unsigned long SuiteMask;
   unsigned char KdDebuggerEnabled;
@@ -5174,7 +5460,8 @@ typedef struct _KUSER_SHARED_DATA
       unsigned long DbgDynProcessorEnabled : 1; /* bit position: 5 */
       unsigned long DbgConsoleBrokerEnabled : 1; /* bit position: 6 */
       unsigned long DbgSecureBootEnabled : 1; /* bit position: 7 */
-      unsigned long SpareBits : 24; /* bit position: 8 */
+      unsigned long DbgMultiSessionSku : 1; /* bit position: 8 */
+      unsigned long SpareBits : 23; /* bit position: 9 */
     }; /* bitfield */
   };
   unsigned long DataFlagsPad[1];
@@ -5196,18 +5483,17 @@ typedef struct _KUSER_SHARED_DATA
   unsigned __int64 BaselineInterruptTimeQpc;
   unsigned __int64 QpcSystemTimeIncrement;
   unsigned __int64 QpcInterruptTimeIncrement;
-  unsigned long QpcSystemTimeIncrement32;
-  unsigned long QpcInterruptTimeIncrement32;
   unsigned char QpcSystemTimeIncrementShift;
   unsigned char QpcInterruptTimeIncrementShift;
-  unsigned char Reserved8[14];
+  unsigned short UnparkedProcessorCount;
+  unsigned char Reserved8[20];
   unsigned short UserModeGlobalLogger[16];
   unsigned long ImageFileExecutionOptions;
   unsigned long LangGenerationCount;
   unsigned __int64 Reserved4;
   volatile unsigned __int64 InterruptTimeBias;
   volatile unsigned __int64 QpcBias;
-  volatile unsigned long ActiveProcessorCount;
+  unsigned long ActiveProcessorCount;
   volatile unsigned char ActiveGroupCount;
   unsigned char Reserved9;
   union
@@ -5223,6 +5509,11 @@ typedef struct _KUSER_SHARED_DATA
   union _LARGE_INTEGER TimeZoneBiasEffectiveEnd;
   struct _XSTATE_CONFIGURATION XState;
 } KUSER_SHARED_DATA, *PKUSER_SHARED_DATA;
+
+typedef struct _KWAIT_CHAIN
+{
+  struct _SINGLE_LIST_ENTRY Head;
+} KWAIT_CHAIN, *PKWAIT_CHAIN;
 
 typedef enum _KWAIT_REASON
 {
@@ -5270,7 +5561,15 @@ typedef enum _KWAIT_REASON
 
 class KWaitEvent
 {
+};
+
+class KWaitEventBase
+{
   struct _KEVENT m_event;
+};
+
+class KWaitEventManualConstruct
+{
 };
 
 class KWorkItem<Ndis::BindEngine>
@@ -5460,6 +5759,7 @@ typedef enum _MEMORY_CACHING_TYPE
   MmNonCachedUnordered = 4,
   MmUSWCCached = 5,
   MmMaximumCacheType = 6,
+  MmNotMapped = -1,
 } MEMORY_CACHING_TYPE, *PMEMORY_CACHING_TYPE;
 
 typedef enum _MEMORY_CACHING_TYPE_ORIG
@@ -5772,6 +6072,20 @@ typedef enum _NDIS_802_11_WEP_STATUS
   Ndis802_11Encryption3Enabled = 6,
   Ndis802_11Encryption3KeyAbsent = 7,
 } NDIS_802_11_WEP_STATUS, *PNDIS_802_11_WEP_STATUS;
+
+struct NDIS_ADDDEVICE_PARAMETERS
+{
+  struct _GUID InterfaceGuid;
+  union _NET_LUID_LH NetLuid;
+  BOOL IsPhysicalMediumAvailable;
+  enum _NDIS_PHYSICAL_MEDIUM PhysicalMedium;
+  class KPtr<Rtl::KString,KDeletePtr<Rtl::KString> > ComponentId;
+  class KPtr<Rtl::KString,KDeletePtr<Rtl::KString> > ExportName;
+  class KPtr<Rtl::KString,KDeletePtr<Rtl::KString> > LegacyImFilterClass;
+  BOOL IsImMiniport;
+  unsigned long Characteristics;
+  void* MiniportAdapterContext;
+};
 
 typedef struct _NDIS_AF_LIST
 {
@@ -6467,6 +6781,9 @@ enum NDIS_DO_NOT_BIND_REASON
   Reason_MiniportNotReady = 0x20000,
   Reason_DisabledByLegacyIoctl = 0x40000,
   Reason_MiniportDeviceNotStarted = 0x80000,
+  Reason_NetEventInhibitBindsAbove = 0x100000,
+  Reason_ProtocolDependsOnVBus = 0x200000,
+  Reason_IncompatibleWithNotification = 0x400000,
 };
 
 typedef struct _NDIS_DPC_WORK_ITEM
@@ -6504,6 +6821,38 @@ typedef struct _NDIS_ENCAPSULATED_PACKET_TASK_OFFLOAD
   }; /* bitfield */
   unsigned long MaxHeaderSizeSupported;
 } NDIS_ENCAPSULATED_PACKET_TASK_OFFLOAD, *PNDIS_ENCAPSULATED_PACKET_TASK_OFFLOAD;
+
+typedef struct _NDIS_ENCAPSULATED_PACKET_TASK_OFFLOAD_V2
+{
+  struct /* bitfield */
+  {
+    unsigned long TransmitChecksumOffloadSupported : 4; /* bit position: 0 */
+    unsigned long ReceiveChecksumOffloadSupported : 4; /* bit position: 4 */
+    unsigned long LsoV2Supported : 4; /* bit position: 8 */
+    unsigned long RssSupported : 4; /* bit position: 12 */
+    unsigned long VmqSupported : 4; /* bit position: 16 */
+    unsigned long Reserved : 12; /* bit position: 20 */
+  }; /* bitfield */
+  unsigned long MaxHeaderSizeSupported;
+  union _NDIS_ENCAPSULATED_PACKET_TASK_OFFLOAD_V2::_ENCAPSULATION_PROTOCOL_INFO EncapsulationProtocolInfo;
+  unsigned long Reserved1;
+  unsigned long Reserved2;
+} NDIS_ENCAPSULATED_PACKET_TASK_OFFLOAD_V2, *PNDIS_ENCAPSULATED_PACKET_TASK_OFFLOAD_V2;
+
+typedef union _NDIS_ENCAPSULATED_PACKET_TASK_OFFLOAD_V2::_ENCAPSULATION_PROTOCOL_INFO
+{
+  union
+  {
+    struct _NDIS_ENCAPSULATED_PACKET_TASK_OFFLOAD_V2::_ENCAPSULATION_PROTOCOL_INFO::_VXLAN_INFO VxlanInfo;
+    unsigned long Value;
+  };
+} NDIS_ENCAPSULATED_PACKET_TASK_OFFLOAD_V2::_ENCAPSULATION_PROTOCOL_INFO, *PNDIS_ENCAPSULATED_PACKET_TASK_OFFLOAD_V2::_ENCAPSULATION_PROTOCOL_INFO;
+
+typedef struct _NDIS_ENCAPSULATED_PACKET_TASK_OFFLOAD_V2::_ENCAPSULATION_PROTOCOL_INFO::_VXLAN_INFO
+{
+  unsigned short VxlanUDPPortNumber;
+  unsigned short VxlanUDPPortNumberConfigurable : 1; /* bit position: 0 */
+} NDIS_ENCAPSULATED_PACKET_TASK_OFFLOAD_V2::_ENCAPSULATION_PROTOCOL_INFO::_VXLAN_INFO, *PNDIS_ENCAPSULATED_PACKET_TASK_OFFLOAD_V2::_ENCAPSULATION_PROTOCOL_INFO::_VXLAN_INFO;
 
 typedef enum _NDIS_ENCAPSULATION
 {
@@ -6734,6 +7083,7 @@ typedef struct _NDIS_FILTER_BLOCK
   struct _SINGLE_LIST_ENTRY PMProtocolOffloadList;
   struct _NDIS_PM_PARAMETERS PMCurrentParameters;
   struct NDIS_BIND_FILTER_LINK* Bind;
+  void* VerifierContext;
 } NDIS_FILTER_BLOCK, *PNDIS_FILTER_BLOCK;
 
 typedef struct _NDIS_FILTER_DRIVER_BLOCK
@@ -6926,6 +7276,30 @@ typedef struct _NDIS_GENERIC_OBJECT
   struct _DRIVER_OBJECT* DriverObject;
 } NDIS_GENERIC_OBJECT, *PNDIS_GENERIC_OBJECT;
 
+typedef struct _NDIS_GFT_OFFLOAD_CAPABILITIES
+{
+  struct _NDIS_OBJECT_HEADER Header;
+  unsigned long Flags;
+  unsigned long CounterCapabilities;
+  unsigned long SupportedTableTypes;
+  unsigned long SupportedEncapsulationTypes;
+  unsigned long SupportedIngressExactMatchTableActions;
+  unsigned long SupportedEgressExactMatchTableActions;
+  unsigned long SoftwareSupportedIngressExactMatchTableActions;
+  unsigned long SoftwareSupportedEgressExactMatchTableActions;
+  unsigned long SupportedIngressWildcardMatchTableActions;
+  unsigned long SupportedEgressWildcardMatchTableActions;
+  unsigned long SoftwareSupportedIngressWildcardMatchTableActions;
+  unsigned long SoftwareSupportedEgressWildcardMatchTableActions;
+  unsigned long NumPacketCounterObjects;
+  unsigned long NumByteCounterObjects;
+  unsigned long NumPacketAndByteCounterObjects;
+  unsigned long NumCounterObjectsPerIngressExactMatchFlowEntry;
+  unsigned long NumCounterObjectsPerEgressExactMatchFlowEntry;
+  unsigned long NumCounterObjectsPerIngressWildcardMatchFlowEntry;
+  unsigned long NumCounterObjectsPerEgressWildcardMatchFlowEntry;
+} NDIS_GFT_OFFLOAD_CAPABILITIES, *PNDIS_GFT_OFFLOAD_CAPABILITIES;
+
 typedef struct _NDIS_GLOBAL_TRIAGE_BLOCK
 {
   unsigned long Signature;
@@ -7088,10 +7462,12 @@ typedef struct _NDIS_IF_BLOCK
   struct _NDIS_IF_NETWORK_BLOCK* Network;
   struct _NDIS_IF_COMPARTMENT_BLOCK* Compartment;
   struct _KEVENT* AsyncEvent;
+  unsigned char AlreadyDeregistered;
   unsigned char bNdisIsProvider;
   unsigned char IsNdisFilter;
   unsigned char MiniportAvailable;
   unsigned long MiniportLinkReference;
+  enum NdisIfBlockSource Source;
   union
   {
     struct _NDIS_MINIPORT_BLOCK* Miniport;
@@ -7174,7 +7550,8 @@ typedef enum _NDIS_IF_REFTAG
   IFREF_CHALIAS = 11,
   IFREF_MINIPORT = 12,
   IFREF_SETDESCR = 13,
-  IFREF_NUMBER_OF_TAGS = 14,
+  IFREF_UPDATE = 14,
+  IFREF_NUMBER_OF_TAGS = 15,
 } NDIS_IF_REFTAG, *PNDIS_IF_REFTAG;
 
 typedef struct _NDIS_IF_STACK_ENTRY
@@ -7506,8 +7883,8 @@ typedef enum _NDIS_LWFDRV_REFTAG
   LWFDRV_ATTACHING = 0,
   LWFDRV_IOWORKITEM = 1,
   LWFDRV_IOWORKITEMC = 2,
-  LWFDRV_SQM = 3,
-  LWFDRV_FILTERMODULE = 4,
+  LWFDRV_FILTERMODULE = 3,
+  LWFDRV_PD_CLIENT = 4,
   LWFDRV_NUMBER_OF_TAGS = 5,
 } NDIS_LWFDRV_REFTAG, *PNDIS_LWFDRV_REFTAG;
 
@@ -7532,6 +7909,8 @@ typedef struct _NDIS_M_DRIVER_BLOCK
     struct _NDIS_MINIPORT_DRIVER_CHARACTERISTICS MiniportDriverCharacteristics;
     struct _NDIS51_MINIPORT_CHARACTERISTICS MiniportCharacteristics;
   };
+  class KPtr<_NDIS_MINIPORT_DRIVER_CHARACTERISTICS,KDeletePtr<_NDIS_MINIPORT_DRIVER_CHARACTERISTICS> > UnhookedCharacteristics;
+  struct _NDIS_WDF_CX_DRIVER_BLOCK* CxBlock;
   struct _KEVENT MiniportsRemovedEvent;
   struct _REFERENCE_EX Ref;
   struct _KMUTANT IMStartRemoveMutex;
@@ -7569,6 +7948,9 @@ typedef struct _NDIS_M_DRIVER_BLOCK
   void* ReenumerateFailedAdapterHandler /* function */;
   void* LiveDumpCallback /* function */;
   struct _UNICODE_STRING ImageName;
+  struct NDIS_MINIPORT_HOOK_DRIVER_HANDLE__* HookDriverHandle;
+  enum _NDIS_MINIPORT_HOOK_DRIVER_TYPE HookType;
+  BOOL HookRegistered;
   void* AllocateNetBufferListForwardingContextHandler /* function */;
   void* FreeNetBufferListForwardingContextHandler /* function */;
   void* AddNetBufferListDestinationHandler /* function */;
@@ -7584,6 +7966,34 @@ typedef struct _NDIS_M_DRIVER_BLOCK
   void* ReportFilteredNetBufferListsHandler /* function */;
   void* SetNetBufferListSwitchContextHandler /* function */;
   void* GetNetBufferListSwitchContextHandler /* function */;
+  void* PDExtProviderRegisterClient /* function */;
+  void* PDExtProviderDeregisterClient /* function */;
+  void* PDExtProviderGetFreePDBuffer /* function */;
+  void* PDExtProviderReturnPDBuffer /* function */;
+  void* PDExtProviderInjectPDBuffer /* function */;
+  void* PDExtProviderCopyPDBufferInfo /* function */;
+  void* PDExtProviderGetPDBufferClientContext /* function */;
+  void* PDExtProviderGetPDBufferDestinations /* function */;
+  void* PDExtProviderAddPDBufferDestination /* function */;
+  void* PDExtProviderUpdatePDBufferDestinations /* function */;
+  void* PDExtProviderGetPDBufferForwardingDetail /* function */;
+  void* PDExtProviderSetupBufferFromMemoryHandle /* function */;
+  void* PDExtProviderGrowPDBufferDestinations /* function */;
+  void* PDExtProviderGetSwitchInfo /* function */;
+  struct NDIS_SFA_HANDLE__* SfaHandle;
+  void* SfaRegisterClientHandler /* function */;
+  void* SfaDeRegisterClientHandler /* function */;
+  void* SfaCreateContextHandler /* function */;
+  void* SfaDeleteContextHandler /* function */;
+  void* SfaAddRuleHandler /* function */;
+  void* SfaRemoveRuleHandler /* function */;
+  void* SfaGetMeterDataHandler /* function */;
+  void* PDBMCreateDomain /* function */;
+  void* PDBMAddMemberToDomain /* function */;
+  void* PDBMRemoveMemberFromDomain /* function */;
+  void* PDBMDeleteDomain /* function */;
+  void* PDBMAllocateCommonBuffer /* function */;
+  void* PDBMFreeCommonBuffer /* function */;
 } NDIS_M_DRIVER_BLOCK, *PNDIS_M_DRIVER_BLOCK;
 
 typedef enum _NDIS_M_PERIODIC_RECEIVE_STATE
@@ -7684,6 +8094,7 @@ typedef union _NDIS_MINIPORT_ADAPTER_ATTRIBUTES
     struct _NDIS_MINIPORT_ADAPTER_NATIVE_802_11_ATTRIBUTES Native_802_11_Attributes;
     struct _NDIS_MINIPORT_ADAPTER_HARDWARE_ASSIST_ATTRIBUTES HardwareAssistAttributes;
     struct _NDIS_MINIPORT_ADAPTER_NDK_ATTRIBUTES NDKAttributes;
+    struct _NDIS_MINIPORT_ADAPTER_PACKET_DIRECT_ATTRIBUTES PacketDirectAttributes;
   };
 } NDIS_MINIPORT_ADAPTER_ATTRIBUTES, *PNDIS_MINIPORT_ADAPTER_ATTRIBUTES;
 
@@ -7724,6 +8135,11 @@ typedef struct _NDIS_MINIPORT_ADAPTER_GENERAL_ATTRIBUTES
   struct _NDIS_PM_CAPABILITIES* PowerManagementCapabilitiesEx;
 } NDIS_MINIPORT_ADAPTER_GENERAL_ATTRIBUTES, *PNDIS_MINIPORT_ADAPTER_GENERAL_ATTRIBUTES;
 
+struct NDIS_MINIPORT_ADAPTER_HANDLE__
+{
+  int unused;
+};
+
 typedef struct _NDIS_MINIPORT_ADAPTER_HARDWARE_ASSIST_ATTRIBUTES
 {
   struct _NDIS_OBJECT_HEADER Header;
@@ -7736,6 +8152,8 @@ typedef struct _NDIS_MINIPORT_ADAPTER_HARDWARE_ASSIST_ATTRIBUTES
   struct _NDIS_SRIOV_CAPABILITIES* CurrentSriovCapabilities;
   struct _NDIS_QOS_CAPABILITIES* HardwareQosCapabilities;
   struct _NDIS_QOS_CAPABILITIES* CurrentQosCapabilities;
+  struct _NDIS_GFT_OFFLOAD_CAPABILITIES* HardwareGftOffloadCapabilities;
+  struct _NDIS_GFT_OFFLOAD_CAPABILITIES* CurrentGftOffloadCapabilities;
 } NDIS_MINIPORT_ADAPTER_HARDWARE_ASSIST_ATTRIBUTES, *PNDIS_MINIPORT_ADAPTER_HARDWARE_ASSIST_ATTRIBUTES;
 
 typedef struct _NDIS_MINIPORT_ADAPTER_NATIVE_802_11_ATTRIBUTES
@@ -7768,6 +8186,14 @@ typedef struct _NDIS_MINIPORT_ADAPTER_OFFLOAD_ATTRIBUTES
   struct _NDIS_TCP_CONNECTION_OFFLOAD* DefaultTcpConnectionOffloadConfiguration;
   struct _NDIS_TCP_CONNECTION_OFFLOAD* TcpConnectionOffloadHardwareCapabilities;
 } NDIS_MINIPORT_ADAPTER_OFFLOAD_ATTRIBUTES, *PNDIS_MINIPORT_ADAPTER_OFFLOAD_ATTRIBUTES;
+
+typedef struct _NDIS_MINIPORT_ADAPTER_PACKET_DIRECT_ATTRIBUTES
+{
+  struct _NDIS_OBJECT_HEADER Header;
+  unsigned long Flags;
+  unsigned char DmaAddressWidth;
+  char __PADDING__[3];
+} NDIS_MINIPORT_ADAPTER_PACKET_DIRECT_ATTRIBUTES, *PNDIS_MINIPORT_ADAPTER_PACKET_DIRECT_ATTRIBUTES;
 
 typedef struct _NDIS_MINIPORT_ADAPTER_REGISTRATION_ATTRIBUTES
 {
@@ -7820,6 +8246,7 @@ typedef struct _NDIS_MINIPORT_AOAC
   struct _NDIS_AOAC_COMPONENT_REF_TIME CsRefTimes[14];
   long CsPowerTransitions;
   unsigned __int64 TotalCsActiveTime;
+  unsigned __int64 TotalCsResiliencyTime;
   unsigned __int64 CurrentActiveStartTime;
   unsigned long CsSurpriseWakes;
   unsigned long CsSpuriousWakes;
@@ -7844,14 +8271,14 @@ typedef struct _NDIS_MINIPORT_BLOCK
   };
   union
   {
-    volatile long PcwDatapathEventMask;
+    long PcwDatapathEventMask;
     void* Reserved28;
   };
   struct _NDIS_OPEN_BLOCK* OpenQueue;
   struct _REFERENCE ShortRef;
   union
   {
-    volatile long PcwDatapathCycleMask;
+    long PcwDatapathCycleMask;
     void* Reserved29;
   };
   unsigned char LinkStateIndicationFlags;
@@ -7993,7 +8420,11 @@ typedef struct _NDIS_MINIPORT_BLOCK
   struct _DEVICE_CAPABILITIES DeviceCaps;
   unsigned char S0WakeupSupported;
   unsigned long WakeUpEnable;
-  struct _IRP* pIrpWaitWake;
+  struct _IRP* WaitWakeIrp;
+  struct _KEVENT WaitWakeIrpCompleted;
+  BOOL WaitWakeIoCompletionRoutineRan;
+  BOOL WaitWakeCancelInProgress;
+  BOOL WaitWakeCancelAttempted;
   enum _SYSTEM_POWER_STATE WaitWakeSystemState;
   union _LARGE_INTEGER VcIndex;
   unsigned __int64 VcCountLock;
@@ -8074,6 +8505,7 @@ typedef struct _NDIS_MINIPORT_BLOCK
   struct _LIST_ENTRY OidRequestList;
   struct _NDIS_OID_REQUEST* PendingOidRequest;
   struct _NDIS_OID_REQUEST* ProcessedOidRequest;
+  struct _NDIS_OID_REQUEST* HookedOidRequest;
   void* NextCoOidRequestHandle;
   unsigned long Ndis6ProtocolsBound;
   unsigned long PmodeOpen6;
@@ -8223,17 +8655,15 @@ typedef struct _NDIS_MINIPORT_BLOCK
     void* WanSendHandler /* function */;
   };
   struct NDIS_NBL_TRACKER_HANDLE__* NblTracker;
-  struct _REENUMERATE_SELF_INTERFACE_STANDARD* ReenumerateSelfInterface;
+  struct _DEVICE_RESET_INTERFACE_STANDARD* ReenumerateSelfInterface;
   struct _NDIS_MINIPORT_OFFLOAD* Offload;
   void* NDKBlock;
   void* AddDeviceContext;
   struct _IO_REMOVE_LOCK RemoveLock;
   struct _UNICODE_STRING DevinterfaceNetSymbolicLinkName;
-  unsigned char RssEnable;
-  unsigned char ChimneyEnable;
   unsigned long PhysicalMediumInInf;
-  struct _UNICODE_STRING ExportName;
-  struct _UNICODE_STRING FilterClass;
+  class KPtr<Rtl::KString,KDeletePtr<Rtl::KString> > ExportName;
+  class KPtr<Rtl::KString,KDeletePtr<Rtl::KString> > FilterClass;
   void* StatusProcessingThread;
   unsigned long StatusProcessingDbgX;
   struct _UNICODE_STRING FdoName;
@@ -8316,7 +8746,18 @@ typedef struct _NDIS_MINIPORT_BLOCK
   struct Ndis::BindEngine BindEngine;
   class Rtl::KNeutralLock<enum NDIS_MINIPORT_POLICY_OWNER> MiniportOwner;
   BOOL PmInterruptedByPnp;
-  char __PADDING__[7];
+  BOOL DoNotBlockOnMiniportLock;
+  struct NDIS_MINIPORT_HOOK_ADAPTER_HANDLE__* HookAdapterHandle;
+  struct _WORK_QUEUE_ITEM InterfaceUpdateWorkItem;
+  BOOL InterfaceUpdateInProgress;
+  BOOL MacAddressUpdateQueued;
+  BOOL MtuUpdateQueued;
+  struct _IF_PHYSICAL_ADDRESS_LH PendingMacAddress;
+  unsigned long PendingMtuSize;
+  struct RECORDER_LOG__* BlackBoxHandle;
+  struct _KEVENT* PowerCompleteEvent;
+  long PowerCompleteStatus;
+  struct _NDIS_PD_BLOCK* PDBlock;
 } NDIS_MINIPORT_BLOCK, *PNDIS_MINIPORT_BLOCK;
 
 typedef struct _NDIS_MINIPORT_CO_CHARACTERISTICS
@@ -8408,7 +8849,8 @@ typedef enum _NDIS_MINIPORT_EVENT
   NdisMEventErr_FailedRestart = 73,
   NdisMEventErr_FailedPowerD0 = 74,
   NdisMEventErr_FailedPowerDx = 75,
-  NdisMEventErr_Max = 75,
+  NdisMEventErr_UninstalledByUsermode = 76,
+  NdisMEventErr_Max = 76,
 } NDIS_MINIPORT_EVENT, *PNDIS_MINIPORT_EVENT;
 
 typedef struct _NDIS_MINIPORT_HANDLERS
@@ -8441,6 +8883,23 @@ typedef struct _NDIS_MINIPORT_HANDLERS
   void* SendNetBufferListsHandler /* function */;
   void* DirectRequestHandle;
 } NDIS_MINIPORT_HANDLERS, *PNDIS_MINIPORT_HANDLERS;
+
+struct NDIS_MINIPORT_HOOK_ADAPTER_HANDLE__
+{
+  int unused;
+};
+
+struct NDIS_MINIPORT_HOOK_DRIVER_HANDLE__
+{
+  int unused;
+};
+
+typedef enum _NDIS_MINIPORT_HOOK_DRIVER_TYPE
+{
+  NdisMiniportHookDriverTypeNone = 0,
+  NdisMiniportHookDriverTypeWdi = 1,
+  NdisMiniportHookDriverType_Maximum = 2,
+} NDIS_MINIPORT_HOOK_DRIVER_TYPE, *PNDIS_MINIPORT_HOOK_DRIVER_TYPE;
 
 typedef struct _NDIS_MINIPORT_INIT_PARAMETERS
 {
@@ -8573,6 +9032,8 @@ typedef struct _NDIS_MINIPORT_OFFLOAD_REG
       unsigned long RscIPv4Disabled : 1; /* bit position: 23 */
       unsigned long RscIPv6Disabled : 1; /* bit position: 24 */
       unsigned long EncapsulatedPacketTaskOffloadDisabled : 1; /* bit position: 25 */
+      unsigned long EncapsulatedPacketTaskOffloadNvgreDisabled : 1; /* bit position: 26 */
+      unsigned long EncapsulatedPacketTaskOffloadVxlanDisabled : 1; /* bit position: 27 */
     }; /* bitfield */
     unsigned long Value;
   };
@@ -8728,31 +9189,31 @@ typedef enum _NDIS_MP_REFTAG
   MPREF_PT_NDPROXY_RULE = 53,
   MPREF_SI_BASE = 54,
   MPREF_SI_NSI = 55,
-  MPREF_IF_STATS = 56,
-  MPREF_IF_FINDTOP = 57,
-  MPREF_IF_OID = 58,
-  MPREF_IF_BASE = 59,
-  MPREF_IF_STACKENTRY = 60,
-  MPREF_IF_DELSTACK = 61,
-  MPREF_RES_ASYNCSHM = 62,
-  MPREF_RES_FREESHM = 63,
-  MPREF_RES_ADDCPU = 64,
-  MPREF_RES_IOV = 65,
-  MPREF_RES_QUEUE = 66,
-  MPREF_RES_RCVFILTER = 67,
-  MPREF_OID_QUEUED = 68,
-  MPREF_OID_QUEUEING = 69,
-  MPREF_OID_QUEUEINGD = 70,
-  MPREF_OID_TOPQUEUE = 71,
-  MPREF_OID_COMPLETING = 72,
-  MPREF_IO_PERIODICRCV = 73,
-  MPREF_IO_QUEUEDDPC = 74,
-  MPREF_IO_LEGACYDPC = 75,
-  MPREF_CO_REGAF = 76,
-  MPREF_CO_REGAFX = 77,
-  MPREF_CO_OPENAF = 78,
-  MPREF_MISC_PROCESS = 79,
-  MPREF_MISC_SQM = 80,
+  MPREF_SI_CHANGEMACMTU = 56,
+  MPREF_IF_STATS = 57,
+  MPREF_IF_FINDTOP = 58,
+  MPREF_IF_OID = 59,
+  MPREF_IF_BASE = 60,
+  MPREF_IF_STACKENTRY = 61,
+  MPREF_IF_DELSTACK = 62,
+  MPREF_RES_ASYNCSHM = 63,
+  MPREF_RES_FREESHM = 64,
+  MPREF_RES_ADDCPU = 65,
+  MPREF_RES_IOV = 66,
+  MPREF_RES_QUEUE = 67,
+  MPREF_RES_RCVFILTER = 68,
+  MPREF_OID_QUEUED = 69,
+  MPREF_OID_QUEUEING = 70,
+  MPREF_OID_QUEUEINGD = 71,
+  MPREF_OID_TOPQUEUE = 72,
+  MPREF_OID_COMPLETING = 73,
+  MPREF_IO_PERIODICRCV = 74,
+  MPREF_IO_QUEUEDDPC = 75,
+  MPREF_IO_LEGACYDPC = 76,
+  MPREF_CO_REGAF = 77,
+  MPREF_CO_REGAFX = 78,
+  MPREF_CO_OPENAF = 79,
+  MPREF_MISC_PROCESS = 80,
   MPREF_MISC_CFH = 81,
   MPREF_MISC_WPPRUNDOWN = 82,
   MPREF_UM_HANDLE = 83,
@@ -8770,7 +9231,10 @@ typedef enum _NDIS_MP_REFTAG
   MPREF_WMI_EXEC = 95,
   MPREF_API_IOWORKITEM = 96,
   MPREF_API_PORT = 97,
-  MPREF_NUMBER_OF_TAGS = 98,
+  MPREF_PD_PROVIDER = 98,
+  MPREF_PD_MEM = 99,
+  MPREF_CS_RESILIENCY_CALLBACK = 100,
+  MPREF_NUMBER_OF_TAGS = 101,
 } NDIS_MP_REFTAG, *PNDIS_MP_REFTAG;
 
 typedef enum _NDIS_MPIF_REFTAG
@@ -8791,11 +9255,11 @@ typedef enum _NDIS_MPIF_REFTAG
   MPIFREF_DEVPOWERUP = 13,
   MPIFREF_POWERDOWN = 14,
   MPIFREF_POWERDOWNFAIL = 15,
-  MPIFREF_SQM = 16,
-  MPIFREF_WMI = 17,
-  MPIFREF_INITIALSTATE = 18,
-  MPIFREF_REFMPGUID = 19,
-  MPIFREF_FATAL_ERROR = 20,
+  MPIFREF_WMI = 16,
+  MPIFREF_INITIALSTATE = 17,
+  MPIFREF_REFMPGUID = 18,
+  MPIFREF_FATAL_ERROR = 19,
+  MPIFREF_DELIFBLOCK = 20,
   MPIFREF_NUMBER_OF_TAGS = 21,
 } NDIS_MPIF_REFTAG, *PNDIS_MPIF_REFTAG;
 
@@ -8965,6 +9429,12 @@ typedef struct _NDIS_NDK_CAPABILITIES
   struct _NDK_ADAPTER_INFO* NdkInfo;
 } NDIS_NDK_CAPABILITIES, *PNDIS_NDK_CAPABILITIES;
 
+typedef struct _NDIS_NDK_PARAMETERS
+{
+  struct _NDIS_NDK_REQUEST_PARAMETERS NdkRequest;
+  struct _NDIS_NDK_RESPONSE_PARAMETERS NdkResponse;
+} NDIS_NDK_PARAMETERS, *PNDIS_NDK_PARAMETERS;
+
 typedef struct _NDIS_NDK_PERFORMANCE_COUNTERS
 {
   unsigned __int64 Connect;
@@ -8998,6 +9468,22 @@ typedef struct _NDIS_NDK_PERFORMANCE_COUNTERS
   unsigned __int64 RDMAInFrames;
   unsigned __int64 RDMAOutFrames;
 } NDIS_NDK_PERFORMANCE_COUNTERS, *PNDIS_NDK_PERFORMANCE_COUNTERS;
+
+typedef struct _NDIS_NDK_REQUEST_PARAMETERS
+{
+  unsigned char RdmaRequested;
+  unsigned int SwitchPortId;
+  unsigned long IfIndex;
+  unsigned char MacAddress[32];
+  unsigned int VlanId;
+  struct _NDIS_NDK_CAPABILITIES NdkReserved;
+} NDIS_NDK_REQUEST_PARAMETERS, *PNDIS_NDK_REQUEST_PARAMETERS;
+
+typedef struct _NDIS_NDK_RESPONSE_PARAMETERS
+{
+  unsigned char CapabilitiesAvailable;
+  struct _NDIS_NDK_CAPABILITIES ReceivedCapabilities;
+} NDIS_NDK_RESPONSE_PARAMETERS, *PNDIS_NDK_RESPONSE_PARAMETERS;
 
 typedef struct _NDIS_NET_BUFFER_LIST_8021Q_INFO
 {
@@ -9080,9 +9566,11 @@ typedef enum _NDIS_NET_BUFFER_LIST_INFO
   TcpRecvSegCoalesceInfo = 22,
   RscTcpTimestampDelta = 23,
   TcpSendOffloadsSupplementalNetBufferListInfo = 23,
-  NetBufferListInfoReserved1 = 24,
-  NetBufferListInfoReserved2 = 25,
-  MaxNetBufferListInfo = 26,
+  GftOffloadInformation = 24,
+  GftFlowEntryId = 25,
+  NetBufferListInfoReserved1 = 26,
+  NetBufferListInfoReserved2 = 27,
+  MaxNetBufferListInfo = 28,
 } NDIS_NET_BUFFER_LIST_INFO, *PNDIS_NET_BUFFER_LIST_INFO;
 
 typedef struct _NDIS_NET_BUFFER_LIST_MEDIA_SPECIFIC_INFO
@@ -9253,6 +9741,8 @@ typedef struct _NDIS_NIC_SWITCH_VPORT_PARAMETERS
   enum _NDIS_NIC_SWITCH_VPORT_STATE VPortState;
   struct _GROUP_AFFINITY ProcessorAffinity;
   unsigned long LookaheadSize;
+  struct _NDIS_NDK_PARAMETERS NdkParams;
+  unsigned long QosSqId;
   long __PADDING__[1];
 } NDIS_NIC_SWITCH_VPORT_PARAMETERS, *PNDIS_NIC_SWITCH_VPORT_PARAMETERS;
 
@@ -9375,6 +9865,9 @@ typedef struct _NDIS_OFFLOAD
   struct _NDIS_IPSEC_OFFLOAD_V2 IPsecV2;
   struct _NDIS_TCP_RECV_SEG_COALESCE_OFFLOAD Rsc;
   struct _NDIS_ENCAPSULATED_PACKET_TASK_OFFLOAD EncapsulatedPacketTaskOffloadGre;
+  struct _NDIS_ENCAPSULATED_PACKET_TASK_OFFLOAD_V2 EncapsulatedPacketTaskOffloadVxlan;
+  unsigned char EncapsulationTypes;
+  char __PADDING__[3];
 } NDIS_OFFLOAD, *PNDIS_OFFLOAD;
 
 typedef struct _NDIS_OFFLOAD_CLIENT_HANDLERS
@@ -9441,7 +9934,9 @@ typedef struct _NDIS_OID_REQUEST
   unsigned char SupportedRevision;
   unsigned char Reserved1;
   unsigned short Reserved2;
-  long __PADDING__[1];
+  unsigned long SwitchId;
+  unsigned long VPortId;
+  unsigned long Flags;
 } NDIS_OID_REQUEST, *PNDIS_OID_REQUEST;
 
 typedef union _NDIS_OID_REQUEST::_REQUEST_DATA
@@ -9517,7 +10012,8 @@ typedef struct _NDIS_OID_REQUEST_FLAGS
     unsigned long SkipPostProc : 1; /* bit position: 24 */
     unsigned long SkipSourceCompletion : 1; /* bit position: 25 */
     unsigned long SourceCompletionOnly : 1; /* bit position: 26 */
-    unsigned long Remainder : 5; /* bit position: 27 */
+    unsigned long InternalClone : 1; /* bit position: 27 */
+    unsigned long Remainder : 4; /* bit position: 28 */
   }; /* bitfield */
 } NDIS_OID_REQUEST_FLAGS, *PNDIS_OID_REQUEST_FLAGS;
 
@@ -9607,6 +10103,8 @@ typedef struct _NDIS_OPEN_BLOCK
 typedef struct _NDIS_OPEN_NDK_ADAPTER_PARAMETERS
 {
   struct NDK_VERSION Version;
+  unsigned long SwitchId;
+  unsigned long VPortId;
 } NDIS_OPEN_NDK_ADAPTER_PARAMETERS, *PNDIS_OPEN_NDK_ADAPTER_PARAMETERS;
 
 typedef struct _NDIS_OPEN_OFFLOAD
@@ -9770,6 +10268,9 @@ enum NDIS_PAUSE_REASON
   PauseReason_LowerDriverPaused = 16,
   PauseReason_RestartNeeded = 32,
   PauseReason_MandatoryMissingDuringBoot = 64,
+  PauseReason_Wdf = 128,
+  PauseReason_NetEventRequirePause = 256,
+  PauseReason_InterfaceChangeInProgress = 512,
 };
 
 typedef struct _NDIS_PCI_DEVICE_CUSTOM_PROPERTIES
@@ -9811,6 +10312,117 @@ typedef struct _NDIS_PCW_DATA_BLOCK
   unsigned long PerCpuByteStride;
   long __PADDING__[10];
 } NDIS_PCW_DATA_BLOCK, *PNDIS_PCW_DATA_BLOCK;
+
+typedef struct _NDIS_PD_BLOCK
+{
+  struct _NDIS_MINIPORT_BLOCK* Miniport;
+  unsigned long DiagnosticCode;
+  unsigned char PDEnabledRegistryValue;
+  unsigned char PDBuffersManagedByDriver;
+  unsigned char PDNonDmaAdapter;
+  unsigned long PDDomainId;
+  unsigned long PDDmaAddressWidth;
+  struct _NDIS_PD_CONFIG* PDCurrentConfig;
+  unsigned long PDCurrentConfigSize;
+  unsigned long PDCurrentConfigBufferSize;
+  struct _LIST_ENTRY PDClientList;
+  struct _LIST_ENTRY PDBlockListLink;
+  void* PDBMDomain;
+  struct NDIS_PD_BM_DOMAIN_MEMBER_HANDLE__* PDBMDomainMemberHandle;
+} NDIS_PD_BLOCK, *PNDIS_PD_BLOCK;
+
+struct NDIS_PD_BM_DOMAIN_HANDLE__
+{
+  int unused;
+};
+
+struct NDIS_PD_BM_DOMAIN_MEMBER_HANDLE__
+{
+  int unused;
+};
+
+typedef struct _NDIS_PD_BM_DOMAIN_MEMBER_PARAMETERS
+{
+  struct _NDIS_OBJECT_HEADER Header;
+  unsigned long Flags;
+  void* MiniportAdapterContext;
+} NDIS_PD_BM_DOMAIN_MEMBER_PARAMETERS, *PNDIS_PD_BM_DOMAIN_MEMBER_PARAMETERS;
+
+typedef struct _NDIS_PD_BM_DOMAIN_PARAMETERS
+{
+  struct _NDIS_OBJECT_HEADER Header;
+  unsigned long Flags;
+} NDIS_PD_BM_DOMAIN_PARAMETERS, *PNDIS_PD_BM_DOMAIN_PARAMETERS;
+
+typedef struct _NDIS_PD_CONFIG
+{
+  struct _NDIS_OBJECT_HEADER Header;
+  unsigned long Flags;
+  unsigned char Enabled;
+  unsigned long CapabilitiesOffset;
+  unsigned long CapabilitiesSize;
+  long __PADDING__[1];
+} NDIS_PD_CONFIG, *PNDIS_PD_CONFIG;
+
+typedef struct _NDIS_PD_EC_UTILIZATION_COUNTER
+{
+  unsigned long ProcessorNumber;
+  unsigned long IterationCount;
+  unsigned long BusyWaitIterationCount;
+  unsigned __int64 CpuCycleTime;
+  unsigned __int64 ThreadCycleTime;
+  unsigned __int64 ProcessingCycles;
+  unsigned __int64 BusyWaitCycles;
+  unsigned __int64 IdleCycles;
+} NDIS_PD_EC_UTILIZATION_COUNTER, *PNDIS_PD_EC_UTILIZATION_COUNTER;
+
+struct NDIS_PD_EXT_CLIENT_CONTEXT__
+{
+  int unused;
+};
+
+typedef struct _NDIS_PD_EXT_CLIENT_DISPATCH
+{
+  void* PDExtClientProcessBuffersSend /* function */;
+  void* PDExtClientProcessBuffersReceive /* function */;
+  void* PDExtClientCompleteBuffersSend /* function */;
+  void* PDExtClientCompleteBuffersReceive /* function */;
+} NDIS_PD_EXT_CLIENT_DISPATCH, *PNDIS_PD_EXT_CLIENT_DISPATCH;
+
+typedef struct _NDIS_PD_EXT_CLIENT_PARAM
+{
+  unsigned int PDExtClientBufferContextSize;
+  unsigned int PDExtClientBufferBackfillSize;
+} NDIS_PD_EXT_CLIENT_PARAM, *PNDIS_PD_EXT_CLIENT_PARAM;
+
+struct NDIS_PD_EXT_MEMORY_HANDLE__
+{
+  int unused;
+};
+
+struct NDIS_PD_EXT_PROVIDER_CONTEXT__
+{
+  int unused;
+};
+
+typedef struct _NDIS_PD_FILTER_COUNTER
+{
+  unsigned __int64 PacketsMatched;
+  unsigned __int64 BytesMatched;
+} NDIS_PD_FILTER_COUNTER, *PNDIS_PD_FILTER_COUNTER;
+
+typedef struct _NDIS_PD_RECEIVE_QUEUE_COUNTER
+{
+  unsigned __int64 PacketsReceived;
+  unsigned __int64 BytesReceived;
+  unsigned __int64 PacketsDropped;
+} NDIS_PD_RECEIVE_QUEUE_COUNTER, *PNDIS_PD_RECEIVE_QUEUE_COUNTER;
+
+typedef struct _NDIS_PD_TRANSMIT_QUEUE_COUNTER
+{
+  unsigned __int64 PacketsTransmitted;
+  unsigned __int64 BytesTransmitted;
+} NDIS_PD_TRANSMIT_QUEUE_COUNTER, *PNDIS_PD_TRANSMIT_QUEUE_COUNTER;
 
 typedef struct _NDIS_PENDING_IM_INSTANCE
 {
@@ -10334,6 +10946,7 @@ typedef enum _NDIS_PROCESSOR_TYPE
   NdisProcessorAmd64 = 4,
   NdisProcessorIA64 = 5,
   NdisProcessorArm = 6,
+  NdisProcessorArm64 = 7,
 } NDIS_PROCESSOR_TYPE, *PNDIS_PROCESSOR_TYPE;
 
 typedef enum _NDIS_PROCESSOR_VENDOR
@@ -10550,12 +11163,12 @@ typedef enum _NDIS_PT_REFTAG
   PTREF_UNBINDING = 6,
   PTREF_BINDING = 7,
   PTREF_BINDINGX = 8,
-  PTREF_SQM = 9,
-  PTREF_OPEN = 10,
-  PTREF_REENUMERATE = 11,
-  PTREF_QUNBIND = 12,
-  PTREF_BINDCOMPLETE = 13,
-  PTREF_BINDFAILNOTIFY = 14,
+  PTREF_OPEN = 9,
+  PTREF_REENUMERATE = 10,
+  PTREF_QUNBIND = 11,
+  PTREF_BINDCOMPLETE = 12,
+  PTREF_BINDFAILNOTIFY = 13,
+  PTREF_PD_CLIENT = 14,
   PTREF_NUMBER_OF_TAGS = 15,
 } NDIS_PT_REFTAG, *PNDIS_PT_REFTAG;
 
@@ -10771,7 +11384,7 @@ typedef struct _NDIS_RECEIVE_QUEUE_PARAMETERS
   struct _IF_COUNTED_STRING_LH QueueName;
   unsigned long PortId;
   unsigned long InterruptCoalescingDomainId;
-  long __PADDING__[1];
+  unsigned long QosSqId;
 } NDIS_RECEIVE_QUEUE_PARAMETERS, *PNDIS_RECEIVE_QUEUE_PARAMETERS;
 
 typedef enum _NDIS_RECEIVE_QUEUE_PNP_STATE
@@ -11140,6 +11753,80 @@ typedef enum _NDIS_SEND_PATH_TYPE
   NdisFakeSendPath = 3,
 } NDIS_SEND_PATH_TYPE, *PNDIS_SEND_PATH_TYPE;
 
+struct NDIS_SETUP_DEVICE_EXTENSION
+{
+  struct _NDIS_OBJECT_HEADER Header;
+  struct NDIS_SETUP_DEVICE_EXTENSION* Next;
+  BOOL IsDeviceInterfaceActive;
+  BOOL IsSurpriseRemoved;
+  BOOL LowPowerRequested;
+  BOOL LowPowerRequestCompleted;
+  BOOL LowPowerRequestSucceeded;
+  struct _DEVICE_OBJECT* Fdo;
+  struct _DEVICE_OBJECT* Pdo;
+  struct _DEVICE_OBJECT* NextDeviceObject;
+  struct _UNICODE_STRING SymbolicName;
+  struct _KTIMER IdleTimer;
+  struct _KDPC IdleDpc;
+  struct _IO_REMOVE_LOCK RemoveLock;
+};
+
+struct NDIS_SFA_CLIENT_CONTEXT__
+{
+  int unused;
+};
+
+typedef struct _NDIS_SFA_CLIENT_DISPATCH
+{
+  void* SfaClientStatusChange /* function */;
+} NDIS_SFA_CLIENT_DISPATCH, *PNDIS_SFA_CLIENT_DISPATCH;
+
+typedef union _NDIS_SFA_GET_METER_DATA_FLAGS
+{
+  union
+  {
+    unsigned int AsUlong;
+    struct
+    {
+      struct /* bitfield */
+      {
+        unsigned int RemoveRule : 1; /* bit position: 0 */
+        unsigned int Reserved : 31; /* bit position: 1 */
+      }; /* bitfield */
+    } Bits;
+  };
+} NDIS_SFA_GET_METER_DATA_FLAGS, *PNDIS_SFA_GET_METER_DATA_FLAGS;
+
+struct NDIS_SFA_HANDLE__
+{
+  int unused;
+};
+
+typedef struct _NDIS_SFA_METER_DATA
+{
+  unsigned __int64 PacketCount;
+  unsigned __int64 ByteCount;
+} NDIS_SFA_METER_DATA, *PNDIS_SFA_METER_DATA;
+
+typedef struct _NDIS_SFA_RULE_DESCRIPTOR
+{
+  struct _NDIS_OBJECT_HEADER Header;
+  unsigned long Length;
+  unsigned long Type;
+  unsigned long Flags;
+  unsigned short Priority;
+  unsigned char ConditionCount;
+  unsigned char ConditionType[5];
+  unsigned short ConditionSize[5];
+  unsigned long ConditionDataOffset[5];
+  unsigned char ActionCount;
+  unsigned short ActionDataSize[5];
+  unsigned long ActionDataOffset[5];
+  unsigned short TimeToLive;
+  char MssDelta;
+  char ReverseMssDelta;
+} NDIS_SFA_RULE_DESCRIPTOR, *PNDIS_SFA_RULE_DESCRIPTOR;
+
 typedef struct _NDIS_SG_DMA_BLOCK
 {
   struct _NDIS_OBJECT_HEADER Header;
@@ -11350,7 +12037,6 @@ typedef enum _NDIS_SS_STOP_REASON
   NdisSSNicQuiet = 7,
   NdisSSPnPOp = 8,
   NdisSSNotStarted = 9,
-  NdisSSMiniportFatalError = 10,
   NdisSSStopReasonMax = 15,
 } NDIS_SS_STOP_REASON, *PNDIS_SS_STOP_REASON;
 
@@ -12159,6 +12845,42 @@ typedef enum _NDIS_WAN_QUALITY
   NdisWanReliable = 2,
 } NDIS_WAN_QUALITY, *PNDIS_WAN_QUALITY;
 
+typedef struct _NDIS_WDF_CX_CHARACTERISTICS
+{
+  struct _NDIS_OBJECT_HEADER Header;
+  void* EvtCxPowerReference /* function */;
+  void* EvtCxPowerDereference /* function */;
+  void* EvtCxGetDeviceObject /* function */;
+  void* EvtCxGetNextDeviceObject /* function */;
+  void* EvtCxGetAssignedFdoIndex /* function */;
+  void* EvtCxGetNdisHandleFromDeviceObject /* function */;
+  void* EvtCxUpdatePMParameters /* function */;
+} NDIS_WDF_CX_CHARACTERISTICS, *PNDIS_WDF_CX_CHARACTERISTICS;
+
+typedef struct _NDIS_WDF_CX_DRIVER_BLOCK
+{
+  struct _NDIS_OBJECT_HEADER Header;
+  struct _DRIVER_OBJECT* DriverObject;
+  struct _UNICODE_STRING* RegistryPath;
+  struct NDIS_WDF_CX_DRIVER_CONTEXT__* CxDriverContext;
+  struct _NDIS_WDF_CX_CHARACTERISTICS Chars;
+  unsigned long ClientCount;
+  enum _NDIS_WDF_CX_DRIVER_STATE State;
+  char __PADDING__[3];
+} NDIS_WDF_CX_DRIVER_BLOCK, *PNDIS_WDF_CX_DRIVER_BLOCK;
+
+struct NDIS_WDF_CX_DRIVER_CONTEXT__
+{
+  int unused;
+};
+
+typedef enum _NDIS_WDF_CX_DRIVER_STATE
+{
+  NdisCxDriverStateInvalid = 0,
+  NdisCxDriverStateRegistered = 1,
+  NdisCxDriverStateDeregistered = 2,
+} NDIS_WDF_CX_DRIVER_STATE, *PNDIS_WDF_CX_DRIVER_STATE;
+
 typedef struct _NDIS_WOL_XLATION_CONTEXT
 {
   unsigned long OriginalOid;
@@ -12330,6 +13052,23 @@ typedef enum _NDIS_XLATE_TYPE
   XlateReturn = 3,
 } NDIS_XLATE_TYPE, *PNDIS_XLATE_TYPE;
 
+enum NdisIfBlockSource
+{
+  NdisIfBlockSourcePublicApi = 0,
+  NdisIfBlockSourcePersistedNsi = 1,
+  NdisIfBlockSourcePersistedNetSetup = 2,
+  NdisIfBlockSourceAutomaticLwFilter = 3,
+  NdisIfBlockSourceAutomaticLoopback = 4,
+  NdisIfBlockSourceBootNic = 5,
+};
+
+class NdisStopwatch
+{
+  union _LARGE_INTEGER QpcStartTime;
+  union _LARGE_INTEGER QpFrequency;
+  union _LARGE_INTEGER QpcLastStopTime;
+};
+
 typedef struct _NDK_ADAPTER
 {
   struct _NDK_OBJECT_HEADER Header;
@@ -12372,6 +13111,8 @@ typedef struct _NDK_ADAPTER_INFO
   unsigned long MaxCallerData;
   unsigned long MaxCalleeData;
   unsigned long AdapterFlags;
+  enum _NDK_RDMA_TECHNOLOGY RdmaTechnology;
+  long __PADDING__[1];
 } NDK_ADAPTER_INFO, *PNDK_ADAPTER_INFO;
 
 typedef struct _NDK_CONNECTOR
@@ -12547,6 +13288,16 @@ typedef struct _NDK_QP_DISPATCH
   void* NdkWrite /* function */;
   void* NdkSendAndInvalidate /* function */;
 } NDK_QP_DISPATCH, *PNDK_QP_DISPATCH;
+
+typedef enum _NDK_RDMA_TECHNOLOGY
+{
+  NdkUndefined = 0,
+  NdkiWarp = 1,
+  NdkInfiniBand = 2,
+  NdkRoCE = 3,
+  NdkRoCEv2 = 4,
+  NdkMaxTechnology = 5,
+} NDK_RDMA_TECHNOLOGY, *PNDK_RDMA_TECHNOLOGY;
 
 typedef struct _NDK_RESULT
 {
@@ -12724,7 +13475,7 @@ typedef struct _NET_BUFFER_LIST
     int Status;
     unsigned long NdisReserved2;
   };
-  void* NetBufferListInfo[26];
+  void* NetBufferListInfo[28];
 } NET_BUFFER_LIST, *PNET_BUFFER_LIST;
 
 typedef struct _NET_BUFFER_LIST_CONTEXT
@@ -12939,7 +13690,11 @@ typedef enum _NET_PNP_EVENT_CODE
   NetEventFilterPreDetach = 15,
   NetEventBindFailed = 16,
   NetEventSwitchActivate = 17,
-  NetEventMaximum = 18,
+  NetEventAllowBindsAbove = 18,
+  NetEventInhibitBindsAbove = 19,
+  NetEventAllowStart = 20,
+  NetEventRequirePause = 21,
+  NetEventMaximum = 22,
 } NET_PNP_EVENT_CODE, *PNET_PNP_EVENT_CODE;
 
 typedef struct _NET_PNP_EVENT_NOTIFICATION
@@ -12948,6 +13703,8 @@ typedef struct _NET_PNP_EVENT_NOTIFICATION
   unsigned long PortNumber;
   struct _NET_PNP_EVENT NetPnPEvent;
   unsigned long Flags;
+  unsigned long SwitchId;
+  unsigned long VPortId;
   long __PADDING__[1];
 } NET_PNP_EVENT_NOTIFICATION, *PNET_PNP_EVENT_NOTIFICATION;
 
@@ -13412,6 +14169,106 @@ typedef struct _PCW_REGISTRATION_INFORMATION
   void* CallbackContext;
 } PCW_REGISTRATION_INFORMATION, *PPCW_REGISTRATION_INFORMATION;
 
+typedef struct _PD_BUFFER
+{
+  struct _PD_BUFFER* NextPDBuffer;
+  struct _PD_BUFFER* NextPartialPDBuffer;
+  void* PDClientReserved;
+  void* PDClientContext;
+  unsigned char* DataBufferVirtualAddress;
+  union _LARGE_INTEGER DataBufferDmaLogicalAddress;
+  unsigned long DataBufferSize;
+  unsigned short PDClientContextSize;
+  unsigned short Attributes;
+  unsigned short Flags;
+  unsigned short DataStart;
+  unsigned long DataLength;
+  struct
+  {
+    union
+    {
+      unsigned __int64 RxFilterContext;
+      unsigned __int64 GftFlowEntryId;
+    };
+    unsigned long RxHashValue;
+    union
+    {
+      struct
+      {
+        struct /* bitfield */
+        {
+          unsigned long RxIPHeaderChecksumSucceeded : 1; /* bit position: 0 */
+          unsigned long RxTCPChecksumSucceeded : 1; /* bit position: 1 */
+          unsigned long RxUDPChecksumSucceeded : 1; /* bit position: 2 */
+          unsigned long RxIPHeaderChecksumFailed : 1; /* bit position: 3 */
+          unsigned long RxTCPChecksumFailed : 1; /* bit position: 4 */
+          unsigned long RxUDPChecksumFailed : 1; /* bit position: 5 */
+          unsigned long RxHashComputed : 1; /* bit position: 6 */
+          unsigned long RxHashWithL4PortNumbers : 1; /* bit position: 7 */
+          unsigned long RxGftExceptionPacket : 1; /* bit position: 8 */
+          unsigned long RxGftCopyPacket : 1; /* bit position: 9 */
+          unsigned long RxGftSamplePacket : 1; /* bit position: 10 */
+          unsigned long RxReserved1 : 5; /* bit position: 11 */
+          unsigned long RxCoalescedSegCount : 16; /* bit position: 16 */
+        }; /* bitfield */
+        unsigned long RxRscTcpTimestampDelta;
+      };
+      unsigned long RxOffloads[2];
+    };
+    union
+    {
+      struct
+      {
+        struct /* bitfield */
+        {
+          unsigned long TxIsIPv4 : 1; /* bit position: 0 */
+          unsigned long TxIsIPv6 : 1; /* bit position: 1 */
+          unsigned long TxTransportHeaderOffset : 10; /* bit position: 2 */
+          unsigned long TxMSS : 20; /* bit position: 12 */
+        }; /* bitfield */
+        struct /* bitfield */
+        {
+          unsigned long TxComputeIPHeaderChecksum : 1; /* bit position: 0 */
+          unsigned long TxComputeTCPChecksum : 1; /* bit position: 1 */
+          unsigned long TxComputeUDPChecksum : 1; /* bit position: 2 */
+          unsigned long TxIsEncapsulatedPacket : 1; /* bit position: 3 */
+          unsigned long TxInnerPacketOffsetsValid : 1; /* bit position: 4 */
+          unsigned long TxReserved1 : 11; /* bit position: 5 */
+          unsigned long TxInnerFrameOffset : 8; /* bit position: 16 */
+          unsigned long TxInnerIpHeaderRelativeOffset : 6; /* bit position: 24 */
+          unsigned long TxInnerIsIPv6 : 1; /* bit position: 30 */
+          unsigned long TxInnerTcpOptionsPresent : 1; /* bit position: 31 */
+        }; /* bitfield */
+      };
+      unsigned long TxOffloads[2];
+    };
+    struct _PD_BUFFER_VIRTUAL_SUBNET_INFO VirtualSubnetInfo;
+    struct _PD_BUFFER_8021Q_INFO Ieee8021qInfo;
+    unsigned short GftSourceVPortId;
+    unsigned long Reserved;
+    unsigned __int64 ProviderScratch;
+  } MetaDataV0;
+} PD_BUFFER, *PPD_BUFFER;
+
+typedef struct _PD_BUFFER_8021Q_INFO
+{
+  struct /* bitfield */
+  {
+    unsigned short UserPriority : 3; /* bit position: 0 */
+    unsigned short CanonicalFormatId : 1; /* bit position: 3 */
+    unsigned short VlanId : 12; /* bit position: 4 */
+  }; /* bitfield */
+} PD_BUFFER_8021Q_INFO, *PPD_BUFFER_8021Q_INFO;
+
+typedef struct _PD_BUFFER_VIRTUAL_SUBNET_INFO
+{
+  struct /* bitfield */
+  {
+    unsigned int VirtualSubnetId : 24; /* bit position: 0 */
+    unsigned int Reserved : 8; /* bit position: 24 */
+  }; /* bitfield */
+} PD_BUFFER_VIRTUAL_SUBNET_INFO, *PPD_BUFFER_VIRTUAL_SUBNET_INFO;
+
 typedef struct _PEB
 {
   unsigned char InheritedAddressSpace;
@@ -13639,6 +14496,7 @@ enum POWER_ACTION
   PowerActionShutdownReset = 5,
   PowerActionShutdownOff = 6,
   PowerActionWarmEject = 7,
+  PowerActionDisplayOff = 8,
 };
 
 typedef struct _POWER_SEQUENCE
@@ -13719,7 +14577,9 @@ typedef enum _PS_ATTRIBUTE_NUM
   PsAttributeUmsThread = 15,
   PsAttributeMitigationOptions = 16,
   PsAttributeProtectionLevel = 17,
-  PsAttributeMax = 18,
+  PsAttributeSecureProcess = 18,
+  PsAttributeJobList = 19,
+  PsAttributeMax = 20,
 } PS_ATTRIBUTE_NUM, *PPS_ATTRIBUTE_NUM;
 
 enum PS_CREATE_STATE
@@ -13787,15 +14647,29 @@ typedef struct _QUEUED_CLOSE
   struct _WORK_QUEUE_ITEM WorkItem;
 } QUEUED_CLOSE, *PQUEUED_CLOSE;
 
-typedef struct _REENUMERATE_SELF_INTERFACE_STANDARD
+typedef struct _RECORDER_CONFIGURE_PARAMS
 {
-  unsigned short Size;
-  unsigned short Version;
-  void* Context;
-  void* InterfaceReference /* function */;
-  void* InterfaceDereference /* function */;
-  void* SurpriseRemoveAndReenumerateSelf /* function */;
-} REENUMERATE_SELF_INTERFACE_STANDARD, *PREENUMERATE_SELF_INTERFACE_STANDARD;
+  unsigned long Size;
+  unsigned char CreateDefaultLog;
+  char __PADDING__[3];
+} RECORDER_CONFIGURE_PARAMS, *PRECORDER_CONFIGURE_PARAMS;
+
+struct RECORDER_LOG__
+{
+  int unused;
+};
+
+typedef struct _RECORDER_LOG_CREATE_PARAMS
+{
+  unsigned long Size;
+  unsigned long LogTag;
+  unsigned long TotalBufferSize;
+  unsigned long ErrorPartitionSize;
+  unsigned __int64 LogIdentifierAppendValue;
+  unsigned char LogIdentifierAppendValueSet;
+  unsigned long LogIdentifierSize;
+  char LogIdentifier[16];
+} RECORDER_LOG_CREATE_PARAMS, *PRECORDER_LOG_CREATE_PARAMS;
 
 typedef struct _REFERENCE
 {
@@ -13888,7 +14762,9 @@ typedef enum _REG_NOTIFY_CLASS
   RegNtPostSaveKey = 44,
   RegNtPreReplaceKey = 45,
   RegNtPostReplaceKey = 46,
-  MaxRegNtNotifyClass = 47,
+  RegNtPreQueryKeyName = 47,
+  RegNtPostQueryKeyName = 48,
+  MaxRegNtNotifyClass = 49,
 } REG_NOTIFY_CLASS, *PREG_NOTIFY_CLASS;
 
 enum ReplacesCorHdrNumericDefines
@@ -13899,6 +14775,7 @@ enum ReplacesCorHdrNumericDefines
   COMIMAGE_FLAGS_STRONGNAMESIGNED = 8,
   COMIMAGE_FLAGS_NATIVE_ENTRYPOINT = 16,
   COMIMAGE_FLAGS_TRACKDEBUGDATA = 0x10000,
+  COMIMAGE_FLAGS_32BITPREFERRED = 0x20000,
   COR_VERSION_MAJOR_V2 = 2,
   COR_VERSION_MAJOR = 2,
   COR_VERSION_MINOR = 5,
@@ -14040,7 +14917,11 @@ typedef struct _RTL_DYNAMIC_HASH_TABLE_ENTRY
 
 typedef struct _RTL_DYNAMIC_HASH_TABLE_ENUMERATOR
 {
-  struct _RTL_DYNAMIC_HASH_TABLE_ENTRY HashEntry;
+  union
+  {
+    struct _RTL_DYNAMIC_HASH_TABLE_ENTRY HashEntry;
+    struct _LIST_ENTRY* CurEntry;
+  };
   struct _LIST_ENTRY* ChainHead;
   unsigned long BucketIndex;
   long __PADDING__[1];
@@ -14063,6 +14944,11 @@ typedef struct _RTL_RB_TREE
   struct _RTL_BALANCED_NODE* Root;
   struct _RTL_BALANCED_NODE* Min;
 } RTL_RB_TREE, *PRTL_RB_TREE;
+
+typedef enum _RTL_RESOURCE_POLICY_FLAGS
+{
+  RTL_RESOURCE_POLICY_FLAGS_NONE = 0,
+} RTL_RESOURCE_POLICY_FLAGS, *PRTL_RESOURCE_POLICY_FLAGS;
 
 typedef struct _RTL_SPLAY_LINKS
 {
@@ -14105,7 +14991,7 @@ typedef struct _RTL_USER_PROCESS_PARAMETERS
   unsigned __int64 EnvironmentVersion;
   void* PackageDependencyData;
   unsigned long ProcessGroupId;
-  long __PADDING__[1];
+  unsigned long LoaderThreads;
 } RTL_USER_PROCESS_PARAMETERS, *PRTL_USER_PROCESS_PARAMETERS;
 
 typedef struct _SCATTER_GATHER_ELEMENT
@@ -14155,6 +15041,7 @@ enum SE_WS_APPX_SIGNATURE_ORIGIN
   SE_WS_APPX_SIGNATURE_ORIGIN_UNKNOWN = 1,
   SE_WS_APPX_SIGNATURE_ORIGIN_APPSTORE = 2,
   SE_WS_APPX_SIGNATURE_ORIGIN_WINDOWS = 3,
+  SE_WS_APPX_SIGNATURE_ORIGIN_ENTERPRISE = 4,
 };
 
 typedef struct _SECTION_OBJECT_POINTERS
@@ -14476,13 +15363,17 @@ typedef struct _TEB
   void* WOW32Reserved;
   unsigned long CurrentLocale;
   unsigned long FpSoftwareStatusRegister;
-  void* SystemReserved1[54];
+  void* ReservedForDebuggerInstrumentation[16];
+  void* SystemReserved1[38];
   long ExceptionCode;
   unsigned char Padding0[4];
   struct _ACTIVATION_CONTEXT_STACK* ActivationContextStackPointer;
-  unsigned char SpareBytes[24];
+  unsigned __int64 InstrumentationCallbackSp;
+  unsigned __int64 InstrumentationCallbackPreviousPc;
+  unsigned __int64 InstrumentationCallbackPreviousSp;
   unsigned long TxFsContext;
-  unsigned char Padding1[4];
+  unsigned char InstrumentationCallbackDisabled;
+  unsigned char Padding1[3];
   struct _GDI_TEB_BATCH GdiTebBatch;
   struct _CLIENT_ID RealClientId;
   void* GdiCachedProcessHandle;
@@ -14578,16 +15469,20 @@ typedef struct _TEB
       unsigned short RtlExceptionAttached : 1; /* bit position: 9 */
       unsigned short InitialThread : 1; /* bit position: 10 */
       unsigned short SessionAware : 1; /* bit position: 11 */
-      unsigned short SpareSameTebBits : 4; /* bit position: 12 */
+      unsigned short LoadOwner : 1; /* bit position: 12 */
+      unsigned short LoaderWorker : 1; /* bit position: 13 */
+      unsigned short SpareSameTebBits : 2; /* bit position: 14 */
     }; /* bitfield */
   };
   void* TxnScopeEnterCallback;
   void* TxnScopeExitCallback;
   void* TxnScopeContext;
   unsigned long LockCount;
-  unsigned long SpareUlong0;
+  long WowTebOffset;
   void* ResourceRetValue;
   void* ReservedForWdf;
+  unsigned __int64 ReservedForCrt;
+  struct _GUID EffectiveContainerId;
 } TEB, *PTEB;
 
 typedef struct _TEB_ACTIVE_FRAME
@@ -14602,6 +15497,102 @@ typedef struct _TEB_ACTIVE_FRAME_CONTEXT
   unsigned long Flags;
   const char* FrameName;
 } TEB_ACTIVE_FRAME_CONTEXT, *PTEB_ACTIVE_FRAME_CONTEXT;
+
+typedef enum _TlgBlob_t
+{
+  _TlgBlobNone = 0,
+  _TlgBlobEnd = 1,
+  _TlgBlobProvider = 2,
+  _TlgBlobEvent3 = 3,
+  _TlgBlobProvider3 = 4,
+  _TlgBlobEvent2 = 5,
+  _TlgBlobMax = 6,
+} TlgBlob_t, *PTlgBlob_t;
+
+typedef enum _TlgIn_t
+{
+  _TlgInNULL = 0,
+  _TlgInUNICODESTRING = 1,
+  _TlgInANSISTRING = 2,
+  _TlgInINT8 = 3,
+  _TlgInUINT8 = 4,
+  _TlgInINT16 = 5,
+  _TlgInUINT16 = 6,
+  _TlgInINT32 = 7,
+  _TlgInUINT32 = 8,
+  _TlgInINT64 = 9,
+  _TlgInUINT64 = 10,
+  _TlgInFLOAT = 11,
+  _TlgInDOUBLE = 12,
+  _TlgInBOOL32 = 13,
+  _TlgInBINARY = 14,
+  _TlgInGUID = 15,
+  _TlgInPOINTER_unsupported = 16,
+  _TlgInFILETIME = 17,
+  _TlgInSYSTEMTIME = 18,
+  _TlgInSID = 19,
+  _TlgInHEXINT32 = 20,
+  _TlgInHEXINT64 = 21,
+  _TlgInCOUNTEDSTRING = 22,
+  _TlgInCOUNTEDANSISTRING = 23,
+  _TlgInSTRUCT = 24,
+  _TlgInMax = 25,
+  _TlgInINTPTR = 9,
+  _TlgInUINTPTR = 10,
+  _TlgInPOINTER = 21,
+  _TlgInCcount = 32,
+  _TlgInVcount = 64,
+  _TlgInChain = 128,
+  _TlgInCustom = 96,
+  _TlgInTypeMask = 31,
+  _TlgInCountMask = 96,
+  _TlgInFlagMask = 224,
+} TlgIn_t, *PTlgIn_t;
+
+typedef enum _TlgOut_t
+{
+  _TlgOutNULL = 0,
+  _TlgOutNOPRINT = 1,
+  _TlgOutSTRING = 2,
+  _TlgOutBOOLEAN = 3,
+  _TlgOutHEX = 4,
+  _TlgOutPID = 5,
+  _TlgOutTID = 6,
+  _TlgOutPORT = 7,
+  _TlgOutIPV4 = 8,
+  _TlgOutIPV6 = 9,
+  _TlgOutSOCKETADDRESS = 10,
+  _TlgOutXML = 11,
+  _TlgOutJSON = 12,
+  _TlgOutWIN32ERROR = 13,
+  _TlgOutNTSTATUS = 14,
+  _TlgOutHRESULT = 15,
+  _TlgOutFILETIME = 16,
+  _TlgOutSIGNED = 17,
+  _TlgOutUNSIGNED = 18,
+  _TlgOutMax = 19,
+  _TlgOutChain = 128,
+  _TlgOutTypeMask = 127,
+} TlgOut_t, *PTlgOut_t;
+
+typedef struct _TlgProvider_t
+{
+  unsigned int LevelPlus1;
+  const unsigned short* ProviderMetadataPtr;
+  unsigned __int64 KeywordAny;
+  unsigned __int64 KeywordAll;
+  unsigned __int64 RegHandle;
+  void* EnableCallback /* function */;
+  void* CallbackContext;
+  void* AnnotationFunc /* function */;
+} TlgProvider_t, *PTlgProvider_t;
+
+typedef struct _TlgProviderMetadata_t
+{
+  unsigned char Type;
+  struct _GUID ProviderId;
+  unsigned short RemainingSize;
+} TlgProviderMetadata_t, *PTlgProviderMetadata_t;
 
 typedef struct _TP_CALLBACK_ENVIRON_V3
 {
@@ -14670,6 +15661,15 @@ typedef enum _TRACE_INFORMATION_CLASS
   MaxTraceInformationClass = 16,
 } TRACE_INFORMATION_CLASS, *PTRACE_INFORMATION_CLASS;
 
+typedef struct _TraceLoggingMetadata_t
+{
+  unsigned int Signature;
+  unsigned short Size;
+  unsigned char Version;
+  unsigned char Flags;
+  unsigned __int64 Magic;
+} TraceLoggingMetadata_t, *PTraceLoggingMetadata_t;
+
 typedef struct _TRANSPORT_HEADER_OFFSET
 {
   unsigned short ProtocolType;
@@ -14735,6 +15735,148 @@ typedef struct _VAR_STRING
   unsigned long ulStringOffset;
 } VAR_STRING, *PVAR_STRING;
 
+typedef struct __vc_attributes::aggregatableAttribute
+{
+  enum __vc_attributes::aggregatableAttribute::type_e type;
+} _vc_attributes::aggregatableAttribute, *P_vc_attributes::aggregatableAttribute;
+
+typedef enum __vc_attributes::aggregatableAttribute::type_e
+{
+  never = 0,
+  allowed = 1,
+  always = 2,
+} _vc_attributes::aggregatableAttribute::type_e, *P_vc_attributes::aggregatableAttribute::type_e;
+
+typedef struct __vc_attributes::event_receiverAttribute
+{
+  enum __vc_attributes::event_receiverAttribute::type_e type;
+  BOOL layout_dependent;
+  char __PADDING__[3];
+} _vc_attributes::event_receiverAttribute, *P_vc_attributes::event_receiverAttribute;
+
+typedef enum __vc_attributes::event_receiverAttribute::type_e
+{
+  native = 0,
+  com = 1,
+  managed = 2,
+} _vc_attributes::event_receiverAttribute::type_e, *P_vc_attributes::event_receiverAttribute::type_e;
+
+typedef struct __vc_attributes::event_sourceAttribute
+{
+  enum __vc_attributes::event_sourceAttribute::type_e type;
+  enum __vc_attributes::event_sourceAttribute::optimize_e optimize;
+  BOOL decorate;
+  char __PADDING__[3];
+} _vc_attributes::event_sourceAttribute, *P_vc_attributes::event_sourceAttribute;
+
+typedef enum __vc_attributes::event_sourceAttribute::optimize_e
+{
+  speed = 0,
+  size = 1,
+} _vc_attributes::event_sourceAttribute::optimize_e, *P_vc_attributes::event_sourceAttribute::optimize_e;
+
+typedef enum __vc_attributes::event_sourceAttribute::type_e
+{
+  native = 0,
+  com = 1,
+  managed = 2,
+} _vc_attributes::event_sourceAttribute::type_e, *P_vc_attributes::event_sourceAttribute::type_e;
+
+typedef struct __vc_attributes::helper_attributes::usageAttribute
+{
+  unsigned int value;
+} _vc_attributes::helper_attributes::usageAttribute, *P_vc_attributes::helper_attributes::usageAttribute;
+
+typedef enum __vc_attributes::helper_attributes::usageAttribute::usage_e
+{
+  eAnyUsage = 0,
+  eCoClassUsage = 1,
+  eCOMInterfaceUsage = 2,
+  eInterfaceUsage = 6,
+  eMemberUsage = 8,
+  eMethodUsage = 16,
+  eInterfaceMethodUsage = 32,
+  eInterfaceMemberUsage = 64,
+  eCoClassMemberUsage = 128,
+  eCoClassMethodUsage = 256,
+  eGlobalMethodUsage = 768,
+  eGlobalDataUsage = 1024,
+  eClassUsage = 2048,
+  eInterfaceParameterUsage = 4096,
+  eMethodParameterUsage = 12288,
+  eIDLModuleUsage = 16384,
+  eAnonymousUsage = 0xffff8000,
+  eTypedefUsage = 0x10000,
+  eUnionUsage = 0x20000,
+  eEnumUsage = 0x40000,
+  eDefineTagUsage = 0x80000,
+  eStructUsage = 0x100000,
+  eLocalUsage = 0x200000,
+  ePropertyUsage = 0x400000,
+  eEventUsage = 0x800000,
+  eTemplateUsage = 0x1000000,
+  eModuleUsage = 0x1000000,
+  eIllegalUsage = 0x2000000,
+  eAsynchronousUsage = 0x4000000,
+  eAnyIDLUsage = 0x3f7fff,
+} _vc_attributes::helper_attributes::usageAttribute::usage_e, *P_vc_attributes::helper_attributes::usageAttribute::usage_e;
+
+typedef struct __vc_attributes::helper_attributes::v1_alttypeAttribute
+{
+  enum __vc_attributes::helper_attributes::v1_alttypeAttribute::type_e type;
+} _vc_attributes::helper_attributes::v1_alttypeAttribute, *P_vc_attributes::helper_attributes::v1_alttypeAttribute;
+
+typedef enum __vc_attributes::helper_attributes::v1_alttypeAttribute::type_e
+{
+  eBoolean = 0,
+  eInteger = 1,
+  eFloat = 2,
+  eDouble = 3,
+} _vc_attributes::helper_attributes::v1_alttypeAttribute::type_e, *P_vc_attributes::helper_attributes::v1_alttypeAttribute::type_e;
+
+typedef struct __vc_attributes::moduleAttribute
+{
+  enum __vc_attributes::moduleAttribute::type_e type;
+  const char* name;
+  const char* version;
+  const char* uuid;
+  int lcid;
+  BOOL control;
+  const char* helpstring;
+  int helpstringcontext;
+  const char* helpstringdll;
+  const char* helpfile;
+  int helpcontext;
+  BOOL hidden;
+  BOOL restricted;
+  const char* custom;
+  const char* resource_name;
+} _vc_attributes::moduleAttribute, *P_vc_attributes::moduleAttribute;
+
+typedef enum __vc_attributes::moduleAttribute::type_e
+{
+  dll = 1,
+  exe = 2,
+  service = 3,
+  unspecified = 4,
+  EXE = 2,
+  SERVICE = 3,
+} _vc_attributes::moduleAttribute::type_e, *P_vc_attributes::moduleAttribute::type_e;
+
+typedef struct __vc_attributes::threadingAttribute
+{
+  enum __vc_attributes::threadingAttribute::threading_e value;
+} _vc_attributes::threadingAttribute, *P_vc_attributes::threadingAttribute;
+
+typedef enum __vc_attributes::threadingAttribute::threading_e
+{
+  apartment = 1,
+  single = 2,
+  free = 3,
+  neutral = 4,
+  both = 5,
+} _vc_attributes::threadingAttribute::threading_e, *P_vc_attributes::threadingAttribute::threading_e;
+
 typedef struct _VF_DISPATCH_TABLE_HEADER
 {
   enum _VF_DISPATCH_TABLE_TYPE Type;
@@ -14762,6 +15904,16 @@ typedef struct _VF_NDIS_DISPATCH_TABLE
   void* NdisMiniportHaltExHandler /* function */;
   void* NdisMiniportSendNetBufferListsHandler /* function */;
   void* NdisMSendNetBufferListsComplete /* function */;
+  void* NdisFilterSendNetBufferListsHandler /* function */;
+  void* NdisFSendNetBufferListsComplete /* function */;
+  void* NdisFSendNetBufferLists /* function */;
+  void* NdisFilterSendNetBufferListsCompleteHandler /* function */;
+  void* NdisFilterReceiveNetBufferListsHandler /* function */;
+  void* NdisFReturnNetBufferLists /* function */;
+  void* NdisFIndicateReceiveNetBufferLists /* function */;
+  void* NdisFilterReturnNetBufferListsHandler /* function */;
+  void* NdisFilterPauseHandler /* function */;
+  void* NdisFPauseComplete /* function */;
 } VF_NDIS_DISPATCH_TABLE, *PVF_NDIS_DISPATCH_TABLE;
 
 typedef struct _VPB
@@ -15120,7 +16272,8 @@ typedef enum _WWAN_AUTH_PROTOCOL
   WwanAuthProtocolPap = 1,
   WwanAuthProtocolChap = 2,
   WwanAuthProtocolMsChapV2 = 3,
-  WwanAuthProtocolMax = 4,
+  WwanAuthProtocolAuto = 4,
+  WwanAuthProtocolMax = 5,
 } WWAN_AUTH_PROTOCOL, *PWWAN_AUTH_PROTOCOL;
 
 typedef struct _WWAN_AUTH_SIM_CHALLENGE
@@ -15209,6 +16362,7 @@ typedef enum _WWAN_IP_TYPE
   WwanIPTypeIPv4 = 1,
   WwanIPTypeIPv6 = 2,
   WwanIPTypeIpv4v6 = 3,
+  WwanIPTypeXlat = 4,
 } WWAN_IP_TYPE, *PWWAN_IP_TYPE;
 
 typedef struct _WWAN_LIST_HEADER
@@ -15462,7 +16616,12 @@ typedef enum _WWAN_STRUCT_TYPE
   WwanStructDeviceServiceGuid = 11,
   WwanStructDeviceServiceCommandId = 12,
   WwanStructCellularClass = 13,
-  WwanStructMax = 14,
+  WwanStructDeviceSlotMap = 14,
+  WwanStructUiccApplication = 15,
+  WwanStructRegisterAcquisitionOrder = 16,
+  WwanStructRegistrationState = 17,
+  WwanStructSignalState = 18,
+  WwanStructMax = 19,
 } WWAN_STRUCT_TYPE, *PWWAN_STRUCT_TYPE;
 
 typedef enum _WWAN_VOICE_CLASS
@@ -15526,8 +16685,17 @@ typedef struct _XSTATE_CONFIGURATION
   unsigned __int64 EnabledFeatures;
   unsigned __int64 EnabledVolatileFeatures;
   unsigned long Size;
-  unsigned long OptimizedSave : 1; /* bit position: 0 */
+  struct /* bitfield */
+  {
+    unsigned long OptimizedSave : 1; /* bit position: 0 */
+    unsigned long CompactionEnabled : 1; /* bit position: 1 */
+  }; /* bitfield */
   struct _XSTATE_FEATURE Features[64];
+  unsigned __int64 EnabledSupervisorFeatures;
+  unsigned __int64 AlignedFeatures;
+  unsigned long AllFeatureSize;
+  unsigned long AllFeatures[64];
+  long __PADDING__[1];
 } XSTATE_CONFIGURATION, *PXSTATE_CONFIGURATION;
 
 typedef struct _XSTATE_FEATURE
@@ -15540,19 +16708,19 @@ typedef struct _XSTATE_FEATURE
 
 // Functions
 
-? <lambda_03b7dc101703010b5abc3b1143cfebff>::operator();
 ? <lambda_1ce06b2b40968439b229a98218e85867>::<helper_func_cdecl>;
-? <lambda_1ce06b2b40968439b229a98218e85867>::operator();
-? <lambda_3b9e6349ea8a014be5122887ec09e5cd>::<helper_func_cdecl>;
-? <lambda_3b9e6349ea8a014be5122887ec09e5cd>::operator();
-? <lambda_41aa1ccf6eb486961f6456621da3b7cf>::<helper_func_cdecl>;
-? <lambda_41aa1ccf6eb486961f6456621da3b7cf>::operator void (__cdecl*)(NDIS_BIND_LINK_BASE * __ptr64);
-? <lambda_41aa1ccf6eb486961f6456621da3b7cf>::operator();
+? <lambda_28977e66c5b80366e0db14d788188459>::<helper_func_cdecl>;
+? <lambda_28977e66c5b80366e0db14d788188459>::operator void (__cdecl*)(NDIS_BIND_LINK_BASE * __ptr64);
+? <lambda_45acac7420f6e2785f1f49a7cce477f4>::<helper_func_cdecl>;
 ? <lambda_771a8e8e365bef8cca390f7125e613d4>::<helper_func_cdecl>;
-? <lambda_771a8e8e365bef8cca390f7125e613d4>::operator();
 ? <lambda_7db8344f8beb56adaa003951e6a1fc8c>::operator();
+? <lambda_8e30f3ed12b678c2e2902b934cc3b0c1>::<helper_func_cdecl>;
+? <lambda_8e30f3ed12b678c2e2902b934cc3b0c1>::operator void (__cdecl*)(NDIS_BIND_LINK_BASE * __ptr64);
 ? <lambda_999d7960ce7bd727c937eec9f53d3cb3>::operator();
+? <lambda_9a257e6d5af29d57c0884fc82970b8d2>::<helper_func_cdecl>;
+? <lambda_9e46fee1aa3a9bfa01fc7c62f26cea81>::<helper_func_cdecl>;
 ? <lambda_b71825de59a79cfcba83505e6bc2fe25>::<helper_func_cdecl>;
+? <lambda_ec9adc5b0c3de61ef55d8ad95ac8116c>::operator();
 ? <lambda_f15002d7dee2adb7876419c4171e5c91>::<helper_func_cdecl>;
 ? AddAces;
 void __cdecl AdjustOffloadContext(struct _NDIS_OPEN_BLOCK *,struct _NDIS_PROTOCOL_OFFLOAD_BLOCK_LIST *,int);
@@ -15568,6 +16736,7 @@ CmRegUtilWstrValueGetDword();
 CmRegUtilWstrValueSetWstrString();
 ? COMPARTMENTBLOCK_DECREMENT_REF;
 ? CreateDeviceDriverSecurityDescriptor;
+void __cdecl DereferenceWdi(void);
 DisableMagicPacketKeyword();
 ? DriverEntry;
 Duplicate802_11AttachAttributes();
@@ -15590,20 +16759,20 @@ EthQueryOpenFilterAddresses();
 unsigned long __cdecl EtwEx_tidActivityInfoTransfer(unsigned __int64,struct _EVENT_DESCRIPTOR const *,struct _GUID const *,struct _GUID const *,unsigned char,struct _GUID const *,unsigned long);
 ExAllocateFromNPagedLookasideList();
 ExFreeToNPagedLookasideList();
+struct NDIS_SETUP_DEVICE_EXTENSION * __cdecl ExtensionFromDevice(struct _DEVICE_OBJECT *);
 ? FindExportedRoutineByName;
-GetMiniportFromReqTracker();
+? GetMiniportFromReqTracker;
 struct _KDPC * __cdecl GetMsgDpc(struct _NDIS_INTERRUPT_BLOCK *,unsigned long,unsigned long);
 struct _NDIS_OPEN_BLOCK * __cdecl GroupCompletionContext(struct _NET_BUFFER_LIST *,struct _NET_BUFFER_LIST * *);
 GsDriverEntry();
 __GSHandlerCheck();
 __GSHandlerCheckCommon();
 _guard_check_icall_nop();
+_guard_dispatch_icall_nop();
 ? IFBLOCK_DECREMENT_REF;
 void __cdecl IFBLOCK_DEREFERENCE_MINIPORT_LINK(struct _NDIS_IF_BLOCK *,enum _NDIS_MPIF_REFTAG);
-IFBLOCK_INCREMENT_REF();
-void __cdecl IFBLOCK_REFERENCE_MINIPORT_LINK(struct _NDIS_IF_BLOCK *,enum _NDIS_MPIF_REFTAG);
 ? IoDevObjCreateDeviceSecure;
-? IopDevObjApplyPostCreationSettings;
+IopDevObjApplyPostCreationSettings();
 IsOidRequestDirectOid();
 int __cdecl IsReadLockAlreadyHeldByCurrentThread(struct _NDIS_RW_LOCK *);
 public: void __cdecl KLockHolder::AcquireExclusive(void);
@@ -15612,27 +16781,38 @@ public: void __cdecl KLockHolder::ReleaseExclusive(void);
 public: void __cdecl KLockHolder::ReleaseShared(void);
 ? KLockHolder::~KLockHolder;
 public: __cdecl KLockThisExclusive::KLockThisExclusive(class KPushLockBase &);
-? KPtr<NDIS_BIND_FILTER_LINK,KDeletePtr<NDIS_BIND_FILTER_LINK> >::`scalar deleting destructor';
+public: __cdecl KLockThisShared::KLockThisShared(class KPushLockBase &);
+public: class KPtr<struct Rtl::KString,struct KDeletePtr<struct Rtl::KString> > & __cdecl KPtr<struct Rtl::KString,struct KDeletePtr<struct Rtl::KString> >::operator=(class KPtr<struct Rtl::KString,struct KDeletePtr<struct Rtl::KString> > &&);
 public: void __cdecl KPtr<struct Rtl::KString,struct KDeletePtr<struct Rtl::KString> >::reset(struct Rtl::KString *);
 public: void __cdecl KPtr<unsigned char,struct KDeleteArray<unsigned char> >::reset(unsigned char *);
 public: __cdecl KPushLock::KPushLock(void);
 public: void __cdecl KPushLockManualConstruct::Initialize(void);
 public: class KRef<struct NDIS_BIND_FILTER_DRIVER> & __cdecl KRef<struct NDIS_BIND_FILTER_DRIVER>::operator=(class KRef<struct NDIS_BIND_FILTER_DRIVER> &&);
-private: void __cdecl KRef<struct NDIS_BIND_FILTER_DRIVER>::reset(class KRef<struct NDIS_BIND_FILTER_DRIVER>::KRefHolder *);
-? KRef<NDIS_BIND_PROTOCOL_DRIVER>::`scalar deleting destructor';
+? KRef<NDIS_BIND_FILTER_DRIVER>::unref;
 public: class KRef<struct NDIS_BIND_PROTOCOL_DRIVER> & __cdecl KRef<struct NDIS_BIND_PROTOCOL_DRIVER>::operator=(class KRef<struct NDIS_BIND_PROTOCOL_DRIVER> &&);
 private: void __cdecl KRef<struct NDIS_BIND_PROTOCOL_DRIVER>::reset(class KRef<struct NDIS_BIND_PROTOCOL_DRIVER>::KRefHolder *);
-public: long __cdecl KRegKey::Open(unsigned long,struct _UNICODE_STRING const *,void *);
-public: long __cdecl KRegKey::Open(unsigned long,unsigned short const *,void *);
-public: long __cdecl KRegKey::QueryValueBlob<class <lambda_999d7960ce7bd727c937eec9f53d3cb3> >(struct _UNICODE_STRING const *,class <lambda_999d7960ce7bd727c937eec9f53d3cb3>);
+? KRef<NDIS_BIND_PROTOCOL_DRIVER>::unref;
+public: long __cdecl KRegKey::DeleteValue(unsigned short const *);
+public: long __cdecl KRegKey::GetSubkeyName(unsigned long,class KPtr<struct Rtl::KString,struct KDeletePtr<struct Rtl::KString> > &);
+? KRegKey::Open;
+? KRegKey::QueryValueBlob<<lambda_3b3a57606365f01e8e109621d2f46771> >;
+? KRegKey::QueryValueBlob<<lambda_5bc2d9b33f02c20be684baa9d0d621f5> >;
+? KRegKey::QueryValueBlob<<lambda_999d7960ce7bd727c937eec9f53d3cb3> >;
+? KRegKey::QueryValueBlob<<lambda_bda0f7bc0266b7b66b074c6ffb303b8e> >;
+public: long __cdecl KRegKey::QueryValueBoolean(struct _UNICODE_STRING const *,unsigned char *,enum KRegKey::BooleanDisposition);
 public: long __cdecl KRegKey::QueryValueBoolean(unsigned short const *,unsigned char *,enum KRegKey::BooleanDisposition);
-public: long __cdecl KRegKey::QueryValueMultisz<class <lambda_7b34f67d2fe748a9991e85b83cffda76>,class <lambda_7db8344f8beb56adaa003951e6a1fc8c> >(struct _UNICODE_STRING const *,class <lambda_7b34f67d2fe748a9991e85b83cffda76>,class <lambda_7db8344f8beb56adaa003951e6a1fc8c>);
-? KRegKey::QueryValueMultisz<<lambda_fa4c34603c51c7c89984ed578d5a8406>,<lambda_03b7dc101703010b5abc3b1143cfebff> >;
+public: long __cdecl KRegKey::QueryValueGuid(unsigned short const *,struct _GUID *);
+? KRegKey::QueryValueMultisz<<lambda_7b34f67d2fe748a9991e85b83cffda76>,<lambda_7db8344f8beb56adaa003951e6a1fc8c> >;
+? KRegKey::QueryValueMultisz<<lambda_96cc44e42cdf8d0bb97f810167971fd3>,<lambda_5efab4a145f888ea93e43ede63b27154> >;
+? KRegKey::QueryValueMultisz<<lambda_fa4c34603c51c7c89984ed578d5a8406>,<lambda_ec9adc5b0c3de61ef55d8ad95ac8116c> >;
 ? KRegKey::QueryValueString;
 ? KRegKey::QueryValueUlong;
-public: __cdecl KWaitEvent::KWaitEvent(void);
-public: void __cdecl KWaitEvent::Wait(void);
+public: long __cdecl KRegKey::QueryValueUshort(unsigned short const *,unsigned short *);
+public: long __cdecl KRegKey::SetValueBlob(unsigned short const *,unsigned long,unsigned char const *);
+public: long __cdecl KRegKey::SetValueUlong(unsigned short const *,unsigned long);
+public: void __cdecl KWaitEventBase::Wait(void);
 private: static void __cdecl KWorkItemBase<struct _NDIS_PROTOCOL_BLOCK,class KCoalescingWorkItem<struct _NDIS_PROTOCOL_BLOCK> >::CallbackThunk(void *);
+private: static void __cdecl KWorkItemBase<class MINIPORT_HOOK_DRIVER,class KCoalescingWorkItem<class MINIPORT_HOOK_DRIVER> >::CallbackThunk(void *);
 private: static void __cdecl KWorkItemBase<struct Ndis::BindEngine,class KWorkItem<struct Ndis::BindEngine> >::CallbackThunk(void *);
 ? McGenControlCallbackV2;
 McGenEventRegister();
@@ -15641,17 +16821,22 @@ memcpy();
 memmove();
 memset();
 Microsoft_Windows_Networking_Correlation_EtwEnableCallback();
+public: void * __cdecl MINIPORT_HOOK_DRIVER::Deregister(void);
+private: void __cdecl MINIPORT_HOOK_DRIVER::DeregisterAsync(void);
+public: void __cdecl MINIPORT_HOOK_DRIVER::FillDefaultHandlers(void);
+public: __cdecl MINIPORT_HOOK_DRIVER::MINIPORT_HOOK_DRIVER(void);
+public: long __cdecl MINIPORT_HOOK_DRIVER::Register(void *,struct _NDIS_MINIPORT_HOOK_DRIVER_PROVIDER_CHARACTERISTICS const *);
+private: void __cdecl MINIPORT_HOOK_DRIVER::WaitForAllHookedDriversToDeregister(void);
 unsigned char __cdecl MiniportSupportsReceiveThrottle(struct _NDIS_MINIPORT_BLOCK *);
 ndis5InterruptDpc();
 ndis5QueuedMiniportDpcWorkItem();
 ndis6DummyReceiveComplete();
-public: void __cdecl Ndis::BindEngine::ApplyBindChanges(enum CallRunMode);
-private: void __cdecl Ndis::BindEngine::ApplyRules(void);
+? Ndis::BindEngine::ApplyBindChanges;
+? Ndis::BindEngine::ApplyRules;
 public: void __cdecl Ndis::BindEngine::BeginPolicyUpdates(void);
 public: __cdecl Ndis::BindEngine::BindEngine(void);
-private: void __cdecl Ndis::BindEngine::DispatchPendingWork(enum CallRunMode,class KLockThisExclusive &);
 public: static void __cdecl Ndis::BindEngine::EndBindOperation(void);
-public: void __cdecl Ndis::BindEngine::EndPolicyUpdates(void);
+? Ndis::BindEngine::EndPolicyUpdates;
 public: struct NDIS_BIND_LINK_BASE * __cdecl Ndis::BindEngine::GetCurrentLink(void)const ;
 public: void __cdecl Ndis::BindEngine::Initialize(struct _NDIS_MINIPORT_BLOCK *);
 ? Ndis::BindEngine::Iterate;
@@ -15663,12 +16848,16 @@ private: void __cdecl Ndis::BindEngine::UpdateBindingsWorkItem(void);
 public: __cdecl Ndis::BindEngine::~BindEngine(void);
 ? Ndis::BindRegistry::AddBindingToSet<NDIS_BIND_FILTER_LINK>;
 ? Ndis::BindRegistry::AddBindingToSet<NDIS_BIND_PROTOCOL_LINK>;
-void __cdecl Ndis::BindRegistry::ComputeDelta(struct _NDIS_MINIPORT_BLOCK *,struct Ndis::BindStack *,struct Ndis::BindStack *,enum Ndis::ReadBindingsOptions::Flags);
+? Ndis::BindRegistry::LoadNetworkInterfaceAddress;
+? Ndis::BindRegistry::LoadNetworkInterfaceString;
+? Ndis::BindRegistry::ReadNetworkInterfaceListV2;
+? Ndis::BindRegistry::ReadNetworkInterfaceV2;
 ? Ndis::BindRegistry::Reload;
 ? Ndis::BindRegistry::UpdateFilters;
 ? Ndis::BindRegistry::UpdateProtocols;
-void __cdecl Ndis::BindRules::Apply(struct _NDIS_MINIPORT_BLOCK *);
+? Ndis::BindRules::Apply;
 ? Ndis::BindRules::CheckForDriverLoaded;
+? Ndis::BindRules::CheckForVBusDependency;
 ? Ndis::BindRules::CheckMissingMandatoryFilter;
 ? Ndis::BindRules::CheckMissingModifyingFilter;
 ? Ndis::BindRules::CoalesceFilterAttachDuringBoot;
@@ -15678,33 +16867,37 @@ void __cdecl Ndis::BindRules::Apply(struct _NDIS_MINIPORT_BLOCK *);
 ? Ndis::BindRules::ReEnableTemporaryUnbind;
 ? Ndis::BindRules::ReStartTemporaryPause;
 ? Ndis::BindRules::RetryProtocolBindingsAfterMiniportChange;
+? Ndis::BindRules::UnbindIncompatibleDriversForMacChange;
 ? Ndis::BindRules::UnbindMiniportStack;
 ? Ndis::BindRules::UnbindOnAttach;
 ? Ndis::BindRules::UnbindOnDetach;
 public: __cdecl Ndis::BindStack::BindStack(void);
 ? Ndis::BindStack::BuildFilterLink;
-? Ndis::BindStack::BuildProtocolLink;
-? Ndis::BindStack::CreateDynamicBinding;
+private: class KPtr<struct NDIS_BIND_PROTOCOL_LINK,struct KDeletePtr<struct NDIS_BIND_PROTOCOL_LINK> > __cdecl Ndis::BindStack::BuildProtocolLink(class KRef<struct NDIS_BIND_PROTOCOL_DRIVER> &);
+public: struct NDIS_BIND_PROTOCOL_LINK * __cdecl Ndis::BindStack::CreateDynamicBinding(class KRef<struct NDIS_BIND_PROTOCOL_DRIVER> &,struct _NDIS_MINIPORT_BLOCK *,enum Ndis::BindSource::Flags);
+public: static long __cdecl Ndis::BindStack::OpenV2InterfaceKey(struct _GUID const &,unsigned long,class KRegKey &);
 private: bool __cdecl Ndis::BindStack::ParseV1FilterString(unsigned short const *,struct _NDIS_FILTERLIST_ITEM *);
 private: long __cdecl Ndis::BindStack::ReadV1FilterList(class KRegKey &);
-? Ndis::BindStack::ReadV1InterfaceBindings;
+private: bool __cdecl Ndis::BindStack::ReadV1InterfaceBindings(struct _DEVICE_OBJECT *);
 private: long __cdecl Ndis::BindStack::ReadV1OrV2ProtocolList(class KRegKey &,struct _UNICODE_STRING const *);
-? Ndis::BindStack::ReadV2InterfaceBindings;
-public: __cdecl Ndis::BindStack::~BindStack(void);
+private: bool __cdecl Ndis::BindStack::ReadV2InterfaceBindings(struct _GUID const *);
+? Ndis::BindStack::~BindStack;
 public: bool __cdecl Ndis::BindState::AddBindContext(void *);
 public: __cdecl Ndis::BindState::BindState(void);
 public: enum BINDING_ENABLED_OR_DISABLED __cdecl Ndis::BindState::GetActualBindingState(void);
-public: void * __cdecl Ndis::BindState::GetBindContext(void);
+? Ndis::BindState::GetBindContext;
 public: bool __cdecl Ndis::BindState::IsAlive(void)const ;
 ? Ndis::BindState::RemoveBindContext;
 ? Ndis::BindState::SetBinding;
 ? Ndis::BindState::SetPause;
-bool __cdecl Ndis::Initmode::CheckAllDriversRunning(struct _NDIS_MINIPORT_BLOCK *);
+? Ndis::Initmode::CheckAllDriversRunning;
 void __cdecl Ndis::Initmode::DisableIfNeeded(struct _NDIS_MINIPORT_BLOCK *,enum CallRunMode);
-public: void __cdecl NDIS_BIND_DRIVER_BASE::ForEachLink(void (__cdecl*)(struct NDIS_BIND_LINK_BASE *));
+? Ndis::sortProtocolsByPointer;
+public: __cdecl NDIS_ADDDEVICE_PARAMETERS::~NDIS_ADDDEVICE_PARAMETERS(void);
+? NDIS_BIND_DRIVER_BASE::ForEachLink;
 protected: void __cdecl NDIS_BIND_DRIVER_BASE::SetRunningDriverIsReady(bool,enum CallRunMode);
 ? NDIS_BIND_FILTER_DRIVER::SetRunningDriver;
-public: void __cdecl NDIS_BIND_LINK_BASE::LinkToDriver(struct NDIS_BIND_DRIVER_BASE *);
+? NDIS_BIND_LINK_BASE::LinkToDriver;
 public: __cdecl NDIS_BIND_LINK_BASE::NDIS_BIND_LINK_BASE(void);
 public: __cdecl NDIS_BIND_LINK_BASE::~NDIS_BIND_LINK_BASE(void);
 ? NDIS_BIND_PROTOCOL_DRIVER::SetRunningDriver;
@@ -15713,18 +16906,22 @@ void __cdecl NDIS_COUNT_POWER_TRANSITION(struct _NDIS_MINIPORT_BLOCK *,enum _NDI
 void __cdecl NDIS_FREE_XFER_DATA_PACKET(struct _NDIS_PACKET *);
 public: __cdecl _NDIS_MINIPORT_BLOCK::_NDIS_MINIPORT_BLOCK(void);
 NDIS_NDK_PCW_NUM_COUNTERS_SET_IN_MASK();
+public: void __cdecl NDIS_PD_BM_DOMAIN::Deref(void);
+public: __cdecl NDIS_PD_QUEUE_AWM_STATE::NDIS_PD_QUEUE_AWM_STATE(void);
+public: __cdecl NDIS_PD_QUEUE_TRACKER::NDIS_PD_QUEUE_TRACKER(void);
 public: void __cdecl _NDIS_PROTOCOL_BLOCK::NotifyBindComplete(void);
-public: __cdecl NDIS_RESTART_INFORMATION::~NDIS_RESTART_INFORMATION(void);
+public: __cdecl NDIS_SETUP_DEVICE_EXTENSION::NDIS_SETUP_DEVICE_EXTENSION(void);
+public: __cdecl NDIS_SETUP_DEVICE_EXTENSION::~NDIS_SETUP_DEVICE_EXTENSION(void);
 void __cdecl NDIS_STACK_RESERVED_FROM_PACKET(struct _NDIS_PACKET *,struct _NDIS_STACK_RESERVED * *);
 ? ndisAcquireMiniportPnPEventLock;
-void __cdecl ndisAcquireReadLockPerCpuRefCnt(struct _NDIS_RW_LOCK *,unsigned long *);
+? ndisAcquireReadLockPerCpuRefCnt;
 int __cdecl ndisAcquireReadLockSharedRefCnt(struct _NDIS_RW_LOCK *);
 ? NdisAcquireReadWriteLock;
 ndisAcquireReadWriteLockX();
 NdisAcquireRWLockRead();
 ? NdisAcquireRWLockWrite;
 NdisAcquireSpinLock();
-void __cdecl ndisAcquireWriteLockPerCpuRefCnt(struct _NDIS_RW_LOCK *,unsigned long *,unsigned __int64);
+? ndisAcquireWriteLockPerCpuRefCnt;
 int __cdecl ndisAcquireWriteLockSharedRefCnt(struct _NDIS_RW_LOCK *);
 NdisActiveGroupCount();
 ? ndisAddDevice;
@@ -15733,7 +16930,7 @@ ndisAddReceiveQueueToList();
 ? ndisAddWoLMagicPacket;
 NdisAdjustBufferLength();
 NdisAdjustNetBufferCurrentMdl();
-NdisAdvanceNetBufferDataStart();
+? NdisAdvanceNetBufferDataStart;
 NdisAdvanceNetBufferListDataStart();
 NdisAllocateBuffer();
 NdisAllocateBufferPool();
@@ -15748,15 +16945,15 @@ void * __cdecl ndisAllocateFromNPagedPool(enum _POOL_TYPE,unsigned __int64,unsig
 ? NdisAllocateGenericObject;
 ? NdisAllocateIoWorkItem;
 int __cdecl ndisAllocateIterativeDataPathTracker(struct _NDIS_FILTER_BLOCK *);
-? ndisAllocateMdl;
 NdisAllocateMdl();
+struct _MDL * __cdecl ndisAllocateMdl(unsigned long *);
 NdisAllocateMemory();
 NdisAllocateMemoryWithTag();
 NdisAllocateMemoryWithTagPriority();
 ? NdisAllocateNetBuffer;
 ? NdisAllocateNetBufferAndNetBufferList;
 ? NdisAllocateNetBufferList;
-? NdisAllocateNetBufferListContext;
+NdisAllocateNetBufferListContext();
 ? NdisAllocateNetBufferListPool;
 ? NdisAllocateNetBufferMdlAndData;
 ? NdisAllocateNetBufferPool;
@@ -15777,25 +16974,27 @@ NdisAllocateSpinLockExported();
 ndisAllocationExecutionRoutine();
 ? ndisAllocOrFreeIterativeDataPathTrackerIfNeeded;
 NdisAnsiStringToUnicodeString();
-ndisAoAcActiveRefIncrement();
-ndisAoAcActiveRefSubtract();
-ndisAoAcCleanup();
-ndisAoAcClearStop();
-ndisAoAcCompleteQueuedIrps();
-ndisAoAcEnableRemoteWake();
-ndisAoAcIdleRequestConfirm();
-ndisAoAcInitialize();
+long __cdecl ndisAoAcActiveRefIncrement(struct _NDIS_MINIPORT_AOAC *,enum _NDIS_PM_COMPONENT_ID);
+long __cdecl ndisAoAcActiveRefSubtract(struct _NDIS_MINIPORT_AOAC *,enum _NDIS_PM_COMPONENT_ID,unsigned long);
+void __cdecl ndisAoAcCleanup(struct _NDIS_MINIPORT_AOAC *);
+void __cdecl ndisAoAcClearStop(struct _NDIS_MINIPORT_BLOCK *,enum _NDIS_SS_STOP_REASON);
+void __cdecl ndisAoAcCompleteQueuedIrps(struct _NDIS_MINIPORT_BLOCK *,long);
+long __cdecl ndisAoAcEnableRemoteWake(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_PM_NIC_ACTIVE *,unsigned char);
+long __cdecl ndisAoAcIdleRequestConfirm(struct _NDIS_MINIPORT_BLOCK *);
+ndisAoAcInitDisconnectedStandby();
+void __cdecl ndisAoAcInitialize(struct _NDIS_MINIPORT_BLOCK *);
 unsigned char __cdecl ndisAoAcIsD0Required(struct _NDIS_MINIPORT_AOAC *);
 unsigned char __cdecl ndisAoAcIsTempRefNeededAfterDeref(struct _NDIS_MINIPORT_AOAC *);
-ndisAoAcPmInitTempRef();
+void __cdecl ndisAoAcPauseRefTimeStats(struct _NDIS_MINIPORT_AOAC *);
+void __cdecl ndisAoAcPmInitTempRef(struct _NDIS_MINIPORT_BLOCK *);
 ? ndisAoAcRefMiniportForIoctl;
-ndisAoAcScheduleWakeWorkItem();
-ndisAoAcStart();
+void __cdecl ndisAoAcScheduleWakeWorkItem(struct _NDIS_MINIPORT_BLOCK *,enum _NDIS_MINIPORT_EVENT);
+void __cdecl ndisAoAcStart(struct _NDIS_MINIPORT_BLOCK *);
 void __cdecl ndisAoAcStartRefTimeStats(struct _NDIS_MINIPORT_AOAC *);
-ndisAoAcStop();
-ndisAoAcTempRefWorkItem();
+void __cdecl ndisAoAcStop(struct _NDIS_MINIPORT_BLOCK *,enum _NDIS_SS_STOP_REASON,enum CallRunMode);
+void __cdecl ndisAoAcTempRefWorkItem(struct _NDIS_WORK_ITEM *,void *);
 void __cdecl ndisAoAcTraceRundown(struct _NDIS_MINIPORT_BLOCK *);
-ndisAoAcWakeWorkItem();
+void __cdecl ndisAoAcWakeWorkItem(struct _NDIS_WORK_ITEM *,void *);
 void __cdecl ndisAoAcWriteRefcountRundown(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_MINIPORT_AOAC *);
 ? ndisAssignSGListLookasideList;
 ? ndisAttachFilter;
@@ -15806,12 +17005,16 @@ void __cdecl ndisAoAcWriteRefcountRundown(struct _NDIS_MINIPORT_BLOCK *,struct _
 int __cdecl ndisBindLegacyProtocol(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_PROTOCOL_BLOCK *,struct NDIS_BIND_PROTOCOL_LINK *);
 ? ndisBindNdis6Protocol;
 ? ndisBindProtocol;
+bool __cdecl ndisBindReadFilterDriverConfiguration(struct NDIS_BIND_FILTER_DRIVER *);
 ? ndisBindReadFilterDriverFromV1Registry;
 ? ndisBindReadFilterDriverFromV2Registry;
 ? ndisBindReadFilterDriverSettingsFromV1Registry;
-bool __cdecl ndisBindReadFilterDriverSettingsFromV2Registry(struct NDIS_BIND_FILTER_DRIVER *,class KRegKey &);
+? ndisBindReadFilterDriverSettingsFromV2Registry;
 bool __cdecl ndisBindReadProtocolDriverConfiguration(struct NDIS_BIND_PROTOCOL_DRIVER *);
-? ndisBindUnbindPeriodicReceives;
+? ndisBindReadProtocolDriverFromV1Registry;
+? ndisBindReadProtocolDriverFromV2Registry;
+ndisBindRequest();
+ndisBindUnbindPeriodicReceives();
 ndisBootDriverReinit();
 NdisBufferLength();
 NdisBufferVirtualAddress();
@@ -15819,11 +17022,11 @@ ndisBugCheckEx();
 ndisBugcheckHandler();
 ? ndisBuildDeviceAcl;
 NdisBuildScatterGatherList();
-ndisCalculateIdealNblTrackerHistoryBufferSize();
-ndisCalculateRssProcessorCount();
-void __cdecl ndisCallReceiveCompleteHandler(void (__cdecl*)(void),void *,struct _NET_BUFFER_LIST *,unsigned long,unsigned long,unsigned long);
-void __cdecl ndisCallReceiveHandler(void (__cdecl*)(void),void *,struct _NET_BUFFER_LIST *,unsigned long,unsigned long,unsigned long);
-void __cdecl ndisCallSendCompleteHandler(void (__cdecl*)(void),void *,struct _NET_BUFFER_LIST *,unsigned long,unsigned long,unsigned long);
+void __cdecl ndisCalculateIdealNblTrackerHistoryBufferSize(void);
+? ndisCalculateRssProcessorCount;
+? ndisCallReceiveCompleteHandler;
+? ndisCallReceiveHandler;
+? ndisCallSendCompleteHandler;
 ? ndisCallSendHandler;
 ndisCancelDequeuedDirectOidRequests();
 NdisCancelDirectOidRequest();
@@ -15839,80 +17042,91 @@ ndisCancelOidRequestOnMiniport();
 NdisCancelSendNetBufferLists();
 NdisCancelSendPackets();
 NdisCancelTimer();
-? NdisCancelTimerObject;
+NdisCancelTimerObject();
 ? ndisCancelWaitWake;
 ndisCancelWakeUpDpcTimer();
 ndisCaptureStackTrace();
-ndisCheckAccess();
+? ndisCheckAccess;
 ? ndisCheckForHangSupported;
 void __cdecl ndisCheckForNdisTestBindingsOnAllMiniports(void);
 ? ndisCheckIfTypeMismatch;
 ? ndisCheckMiniportWakeUpCapable;
+? ndisCheckNetworkInterfaceDataMismatch;
 void __cdecl ndisCheckOidBufferIntegrity(struct _NDIS_OID_REQUEST *,struct _NDIS_OBJECT_HEADER *);
 unsigned char __cdecl ndisCheckWatchdogTimer(void);
 NdisClAddParty();
 NdisClCloseAddressFamily();
-? NdisClCloseCall;
+NdisClCloseCall();
 NdisClDeregisterSap();
 NdisClDropParty();
 ? ndisCleanUpForProtocol;
+void __cdecl ndisCleanupPDCounter(struct NDIS_PD_COUNTER *);
+void __cdecl ndisCleanupPDQAWM(struct NDIS_PD_QUEUE_AWM_STATE *);
+void __cdecl ndisCleanupPDQTracker(struct NDIS_PD_QUEUE_TRACKER *);
+void __cdecl ndisCleanupPDRSSObjects(struct NDIS_PD_ASSOCIATION *,struct _LIST_ENTRY *,struct _LIST_ENTRY *);
 ndisClearBusy();
 ndisClearReceiveFilter();
 ? ndisClearReceiveFiltersForProtocol;
 ? ndisClearTransientBindFailuresAboveThisFilter;
 NdisClGetProtocolVcContextFromTapiCallId();
-? NdisClIncomingCallComplete;
+NdisClIncomingCallComplete();
 NdisClMakeCall();
 NdisClModifyCallQoS();
 NdisClNotifyCloseAddressFamilyComplete();
 ndisClonePMPatternList();
 NdisClOpenAddressFamily();
-? NdisClOpenAddressFamilyEx;
+NdisClOpenAddressFamilyEx();
 ? NdisCloseAdapter;
 ? NdisCloseAdapterEx;
 ? NdisCloseConfiguration;
 NdisCloseFile();
+ndisCloseHandler();
 ? ndisCloseIrpHandler;
 NdisCloseNDKAdapter();
 ndisCloseRef();
-ndisCloseTimeInterval();
-? ndisCloseULongRef;
-? NdisClRegisterSap;
+void __cdecl ndisCloseTimeInterval(unsigned __int64 *,unsigned __int64 *);
+ndisCloseULongRef();
+NdisClRegisterSap();
 NdisCmActivateVc();
 NdisCmAddPartyComplete();
+void __cdecl ndisCmAssignCompartmentHandleToNamespace(struct _NDIS_CM_NETWORK_NAMESPACE *,void *);
 ndisCmCleanupDpcRoutine();
 void __cdecl ndisCmCleanupSessionState(void);
-void __cdecl ndisCmCleanupThreadState(void);
 ndisCmCleanupWorkRoutine();
 NdisCmCloseAddressFamilyComplete();
-? NdisCmCloseCallComplete;
+NdisCmCloseCallComplete();
+long __cdecl ndisCmCreateNetworkNamespace(struct _NDIS_CM_NETWORK_NAMESPACE * *);
 NdisCmDeactivateVc();
+void __cdecl ndisCmDeleteNetworkNamespace(void *);
+void __cdecl ndisCmDereferenceCompartment(void *);
 NdisCmDeregisterSapComplete();
 NdisCmDispatchCallConnected();
-? NdisCmDispatchIncomingCall;
+NdisCmDispatchIncomingCall();
 NdisCmDispatchIncomingCallQoSChange();
 NdisCmDispatchIncomingCloseCall();
 NdisCmDispatchIncomingDropParty();
 NdisCmDropPartyComplete();
 void * __cdecl ndisCmFindCompartment(unsigned int);
+? ndisCmGetThreadNetworkNamespace;
 unsigned long __cdecl ndisCmGetThreadSessionId(struct _ETHREAD *);
-? ndisCmInitialize;
+ndisCmInitialize();
 void __cdecl ndisCmLazyInitializeCleanup(void);
 NdisCmMakeCallComplete();
 NdisCmModifyCallQoSComplete();
 NdisCmNotifyCloseAddressFamily();
-? NdisCmOpenAddressFamilyComplete;
+NdisCmOpenAddressFamilyComplete();
 NdisCmRegisterAddressFamily();
-? NdisCmRegisterAddressFamilyEx;
+NdisCmRegisterAddressFamilyEx();
 NdisCmRegisterSapComplete();
+? ndisCmSetThreadNetworkNamespace;
 NdisCoAssignInstanceName();
 ndisCoCompleteOidRequestToRequest();
-? NdisCoCreateVc;
-? NdisCoDeleteVc;
+NdisCoCreateVc();
+NdisCoDeleteVc();
 NdisCoGetTapiCallId();
-? ndisCoIndicatePromiscNetBuffer;
+void __cdecl ndisCoIndicatePromiscNetBuffer(void *,struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OPEN_BLOCK *,struct _NET_BUFFER_LIST *,unsigned long,unsigned long,unsigned char);
 void __cdecl ndisCoIndicatePromiscPacket(void *,struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OPEN_BLOCK *,struct _NDIS_PACKET *,unsigned char,unsigned char);
-? ndisCoIndicateStatusInternal;
+ndisCoIndicateStatusInternal();
 ? ndisCompareGuid;
 ndisComparePMCapabilities();
 ? ndisComparePMProtocolOffloads;
@@ -15921,7 +17135,7 @@ ndisCompareProcNumInit();
 int __cdecl ndisCompareStatusCodes(void const *,void const *);
 ? ndisCompareWoLPatterns;
 NdisCompleteBindAdapter();
-? NdisCompleteBindAdapterEx;
+NdisCompleteBindAdapterEx();
 NdisCompleteDmaTransfer();
 ndisCompleteLegacyRequest();
 NdisCompleteNetPnPEvent();
@@ -15930,16 +17144,17 @@ NdisCompletePnPEvent();
 NdisCompleteUnbindAdapter();
 NdisCompleteUnbindAdapterEx();
 void __cdecl ndisCompleteUnsolicitedUnbind(void *);
+ndisCompleteWaitWake();
 ndisCompletionRoutine();
 ? ndisConfigurePeriodicReceives;
 NdisConvertNdisStatusToNtStatus();
 NdisConvertNtStatusToNdisStatus();
 ndisConvertOffloadValueToString();
-ndisConvertPMCapabilitiesToPnp();
-? ndisConvertPnpCapabilitiesToPM;
+void __cdecl ndisConvertPMCapabilitiesToPnp(struct _NDIS_PM_CAPABILITIES *,struct _NDIS_PNP_CAPABILITIES *);
+void __cdecl ndisConvertPnpCapabilitiesToPM(struct _NDIS_PNP_CAPABILITIES *,struct _NDIS_PM_CAPABILITIES *);
 ndisConvertWakeUpEnableToPMConfig();
-? NdisCoOidRequest;
-? NdisCoOidRequestComplete;
+NdisCoOidRequest();
+NdisCoOidRequestComplete();
 ndisCoOidRequestToRequest();
 NdisCopyBuffer();
 NdisCopyFromNetBufferToNetBuffer();
@@ -15950,12 +17165,13 @@ ndisCopyNBLInfoToPacket();
 ndisCopyPacketInfoToNBL();
 struct _NET_BUFFER_LIST * __cdecl ndisCopyPeriodicReceiveNbl(struct _NDIS_MINIPORT_BLOCK *,unsigned long,struct _NET_BUFFER_LIST *);
 NdisCopyReceiveNetBufferListInfo();
-? NdisCopySendNetBufferListInfo;
+ndisCopyReceiveQueueInfo();
+NdisCopySendNetBufferListInfo();
 NdisCoRequest();
 NdisCoRequestComplete();
 NdisCoSendNetBufferLists();
 void __cdecl ndisCoSendNetBufferListsToNdisPacket(void *,struct _NET_BUFFER_LIST *,unsigned long);
-? ndisCoSendNetBufferListsToNetBufferLists;
+void __cdecl ndisCoSendNetBufferListsToNetBufferLists(void *,struct _NET_BUFFER_LIST *,unsigned long);
 NdisCoSendPackets();
 void __cdecl ndisCoSendPacketsToNdisPackets(void *,struct _NDIS_PACKET * *,unsigned int);
 void __cdecl ndisCoSendPacketsToNetBufferLists(void *,struct _NDIS_PACKET * *,unsigned int);
@@ -15963,14 +17179,14 @@ long __cdecl ndisCounterSetProviderCallback(enum _PCW_CALLBACK_TYPE,union _PCW_C
 ndisCpuHotAddHandler();
 ? ndisCreateAcl;
 ? ndisCreateAdapterInstanceName;
-ndisCreateDWORDStreamEntry();
 ? ndisCreateFilterAdapterRegistry;
 ? ndisCreateFilterDriverRegistry;
 ndisCreateFilterInstanceRegistry();
 ? ndisCreateGenericSD;
-? ndisCreateIrpHandler;
+? ndisCreateHandler;
+ndisCreateIrpHandler();
 ? ndisCreateNdisSupportedOidList;
-? ndisCreateNotifyQueue;
+ndisCreateNotifyQueue();
 ndisCreatePMAddRemoveWorkItem();
 ndisCreatePMPacketPattern();
 ? ndisCreatePMProtocolOffloadEntry;
@@ -15978,11 +17194,12 @@ ndisCreatePMPacketPattern();
 ? ndisCreateReceiveWorkerThreadPool;
 ? ndisCreateSecurityDescriptor;
 ? ndisCreateSecurityDescriptorEx;
-? ndisCreateStringStreamEntry;
 ? ndisCreateThread;
 ndisCreateWakeUpPatternEntry();
 ? ndisCreateWoLPatternEntry;
-ndisCsStateChange();
+ndisCsResiliencyCallback();
+void __cdecl ndisCsResiliencyChange(struct _NDIS_MINIPORT_BLOCK *,unsigned char);
+void __cdecl ndisCsStateChange(struct _NDIS_MINIPORT_BLOCK *,unsigned char,unsigned char);
 NdisCurrentGroupAndProcessor();
 NdisCurrentProcessorIndexExported();
 ndisDataPathExpandStackCallback();
@@ -15994,22 +17211,22 @@ ndisDequeueDirectOidsByRequestId();
 ? ndisDeQueueMiniportOnDriver;
 ? ndisDeQueueOpenOnMiniport;
 ? ndisDeQueueOpenOnProtocol;
-? ndisDereferenceAf;
-? ndisDereferenceAfNotification;
+ndisDereferenceAf();
+ndisDereferenceAfNotification();
 ndisDereferenceDmaAdapter();
 ? ndisDereferenceDriver;
 ndisDereferenceFilter();
 ? ndisDereferenceFilterDriver;
 ? ndisDereferenceMiniport;
 ? ndisDereferenceMiniportForNsi;
-? ndisDereferenceMiniportRef;
+ndisDereferenceMiniportRef();
 ndisDereferencePackage();
 ? ndisDereferenceProtocol;
 ndisDereferenceReceiveFilter();
 ndisDereferenceReceiveQueue();
 ndisDereferenceRef();
-? ndisDereferenceSap;
-? ndisDereferenceVcPtr;
+ndisDereferenceSap();
+ndisDereferenceVcPtr();
 ? ndisDereferenceWithTag;
 NdisDeregisterDeviceEx();
 NdisDeregisterProtocol();
@@ -16017,7 +17234,9 @@ NdisDeregisterProtocolDriver();
 NdisDeregisterTdiCallBack();
 void __cdecl ndisDetachFilter(struct _NDIS_MINIPORT_BLOCK *,struct NDIS_BIND_FILTER_LINK *);
 void __cdecl ndisDetachFilterInner(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_FILTER_BLOCK *);
-? ndisDeviceControlIrpHandler;
+? ndisDeviceControlHandler;
+ndisDeviceControlIrpHandler();
+ndisDeviceInternalDispatch();
 ndisDeviceInternalIrpDispatch();
 ? ndisDevicePnPEventNotifyFiltersAndAllTransports;
 ? ndisDevicePnPEventNotifyMiniport;
@@ -16031,7 +17250,7 @@ ndisDispatchIoWorkItem();
 ndisDmaAddCpuNotify();
 ndisDmaExecutionRoutine();
 ndisDoCancelDirectOidRequest();
-? ndisDoDirectOidRequest;
+ndisDoDirectOidRequest();
 ? ndisDoesSystemSupportSriov;
 ndisDoLoopbackNetBufferList();
 ? ndisDoOidRequests;
@@ -16042,6 +17261,7 @@ NdisDprReleaseReadWriteLock();
 NdisDprReleaseSpinLock();
 ? ndisDriverReinit;
 ? ndisDriverSystemDispatch;
+ndisDummyHandler();
 ? ndisDummyIrpHandler;
 ndisEmptyPeriodicReceivesQueue();
 ndisEnablePMParamForPattern();
@@ -16056,8 +17276,6 @@ ndisEnumeratePorts();
 ? ndisEtwRegisterGuids;
 ? ndisEventEntryCount;
 struct _NDIS_EVENT_LOG * __cdecl ndisEventLogFromHandle(struct NDIS_EVENT_LOG_HANDLE__ *);
-struct NDIS_EVENT_LOG_HANDLE__ * __cdecl ndisEventLogHandleFromLog(struct _NDIS_EVENT_LOG *);
-long __cdecl ndisExpandDataPathStack(struct _NET_BUFFER_LIST *,unsigned long,unsigned long,unsigned long,void *,void (__cdecl*)(void),enum _NDIS_DATA_PATH_TYPE);
 long __cdecl ndisExpandStack(void (__cdecl*)(void *),void *);
 unsigned char __cdecl ndisExpandStackTrace(struct _NDIS_STACK_TRACE * *,struct _RTL_DYNAMIC_HASH_TABLE_CONTEXT *,unsigned __int64 *);
 ndisFailedAdapterLiveDumpCallback();
@@ -16065,6 +17283,7 @@ ndisFakeFilterReceiveHandler();
 ndisFakeFilterSendHandler();
 ndisFakeMiniportCancelSendPackets();
 ? ndisFAllocateFilterOffload;
+int __cdecl ndisFBindRequest(struct _NDIS_FILTER_BLOCK *,struct _NET_PNP_EVENT_NOTIFICATION const *);
 NdisFCancelDirectOidRequest();
 ndisFCancelDirectOidRequestInternal();
 NdisFCancelOidRequest();
@@ -16081,6 +17300,7 @@ ndisFDoLoopbackNetBufferList();
 ? ndisFDoOidRequestInternal;
 ndisFForwardNetDevicePnPEvent();
 ndisFForwardNetPnPEventToFilter();
+NdisFGetOptionalSfaHandlers();
 NdisFGetOptionalSwitchHandlers();
 ? ndisFillEventLogEntry;
 ndisFillOffloadCapsInTasks();
@@ -16093,6 +17313,7 @@ ndisFilterIndicatePMOffloadReject();
 ? ndisFilterIndicateReceiveNetBufferLists;
 ndisFilterIndicateWoLPatternReject();
 ? ndisFilterSendNetBufferLists;
+void __cdecl ndisFilterWaitForPnPComplete(struct _NDIS_FILTER_BLOCK *);
 ndisFilterXStateSetFlag();
 ? ndisFindAdjacentFilters;
 ? ndisFindFirstReceiveFilterByOpen;
@@ -16103,13 +17324,14 @@ ndisFilterXStateSetFlag();
 ndisFIndicateStatusToFilter();
 ndisFIndicateStatusWrapper();
 ? ndisFindMinimumVersionDrivers;
-? ndisFindMiniportByPdo;
+struct _NDIS_MINIPORT_BLOCK * __cdecl ndisFindMiniportByPdo(struct _DEVICE_OBJECT *);
 ndisFindMiniportOnGlobalList();
 ndisFindPatternEntry();
+struct NDIS_PD_CLIENT * __cdecl ndisFindPDClientViaClientDriverHandle(void *);
 ndisFindPortByPortNumber();
 ndisFindReceiveFilterByFilterId();
 ndisFindReceiveQueueByQueueId();
-? ndisFindRootDevice;
+ndisFindRootDevice();
 ? ndisFInvokeAttach;
 ndisFInvokeCancelOidRequest();
 ndisFInvokeDetach();
@@ -16145,7 +17367,7 @@ NdisFreeMdl();
 ? NdisFreeMemory;
 NdisFreeMemoryWithTag();
 NdisFreeMemoryWithTagPriority();
-ndisFreeNblToNPagedPool();
+? ndisFreeNblToNPagedPool;
 ? NdisFreeNetBuffer;
 ? NdisFreeNetBufferList;
 NdisFreeNetBufferListContext();
@@ -16157,6 +17379,7 @@ NdisFreePacketPool();
 ndisFreePacketPool();
 void __cdecl ndisFreePacketPoolHdr(struct _NDIS_PKT_POOL_HDR *,struct _NDIS_PKT_POOL *);
 ndisFreePaddedMdl();
+void __cdecl ndisFreePDRSSObjects(struct _LIST_ENTRY *,struct _LIST_ENTRY *);
 ndisFreePeriodicReceives();
 ndisFreePerProcessorSlot();
 NdisFreeReassembledNetBufferList();
@@ -16183,13 +17406,16 @@ NdisFRestartFilter();
 ndisGenerateCorrelationIds();
 ndisGenerateNetBufferListCorrelationIds();
 NdisGeneratePartialCancelId();
+? ndisGenericWaitWakeCallback;
 ndisGetAdapterHardwareInfo();
 ndisGetAdapterRssInfo();
 ndisGetAnyProcInsideNode();
+void __cdecl ndisGetBindLinkNameForTracing(std::nullptr_t,struct NDIS_PNPTRACE_LOCALS *);
 void __cdecl ndisGetBindLinkNameForTracing(struct _NDIS_MINIPORT_BLOCK *,struct NDIS_PNPTRACE_LOCALS *);
 void __cdecl ndisGetBindLinkNameForTracing(struct NDIS_BIND_FILTER_LINK *,struct NDIS_PNPTRACE_LOCALS *);
 void __cdecl ndisGetBindLinkNameForTracing(struct NDIS_BIND_PROTOCOL_LINK *,struct NDIS_PNPTRACE_LOCALS *);
 NdisGetBufferPhysicalArraySize();
+void * __cdecl ndisGetClientDriverHandleFromRequestSourceHandle(void *);
 ndisGetCombinedPMConfig();
 NdisGetCurrentProcessorCounts();
 NdisGetCurrentProcessorCpuUsage();
@@ -16198,22 +17424,23 @@ NdisGetCurrentSystemTime();
 NdisGetDeviceReservedExtension();
 ndisGetDpcWatchdogInfo();
 NdisGetDriverHandle();
-ndisGetFiltersCount();
 NdisGetFirstBufferFromPacket();
 NdisGetFirstBufferFromPacketSafe();
 ndisGetHardwareInfo();
 ndisGetHigherFilterWithPnpRef();
 ? NdisGetHypervisorInfo;
+NdisGetJobObjectCompartmentId();
 ndisGetListEntriesCount();
 ? ndisGetLogicalProcessorInformation;
 ndisGetLowerFilterWithPnpRef();
-ndisGetMiniportIfBlock();
+struct _NDIS_IF_BLOCK * __cdecl ndisGetMiniportIfBlock(struct _NDIS_IF_BLOCK *);
 struct _NET_BUFFER_LIST * __cdecl ndisGetMiniportIndicateList(struct _NDIS_MINIPORT_BLOCK *);
 ndisGetMiniportInfo();
 ndisGetMiniportOffloadCapability();
 struct _NDIS_NDK_BLOCK * __cdecl ndisGetNDKBlock(struct _NDIS_MINIPORT_BLOCK *);
 NdisGetNetBufferListProtocolId();
 ndisGetNewPatternEntryId();
+unsigned long __cdecl ndisGetNextPDCounterId(void);
 struct _NDIS_EVENT_LOG_ENTRY * __cdecl ndisGetNthEntry(struct _NDIS_EVENT_LOG *,unsigned long);
 ndisGetOidSourceHandle();
 ndisGetOrCreateFilterInstanceKey();
@@ -16221,6 +17448,7 @@ NdisGetPacketCancelId();
 NdisGetPacketFromNetBufferList();
 ndisGetPatternEffectivePriority();
 ? ndisGetPciDeviceCustomProperties;
+int __cdecl ndisGetPdInfo(struct _NDIS_MINIPORT_BLOCK *,struct _IRP *);
 ndisGetPerformanceCounters();
 ndisGetPMProtocolOffloadSize();
 NdisGetPoolFromNetBuffer();
@@ -16228,6 +17456,7 @@ NdisGetPoolFromNetBufferList();
 NdisGetPoolFromPacket();
 ? ndisGetPortList;
 ndisGetPowerInfo();
+? NdisGetProcessObjectCompartmentId;
 ? ndisGetProcessorInfo;
 ? NdisGetProcessorInformation;
 ? NdisGetProcessorInformationEx;
@@ -16244,8 +17473,10 @@ NdisGetSystemUpTime();
 NdisGetSystemUpTimeEx();
 ndisGetTaskBytes();
 ? NdisGetThreadObjectCompartmentId;
+? NdisGetThreadObjectCompartmentScope;
 ndisGetTimeInterval();
 NdisGetVersion();
+unsigned int __cdecl NdisGetVersion640Shim(void);
 ndisGetWakeUpPatternSize();
 ndisGetWoLPatternSize();
 ndisGrabOidCancellationList();
@@ -16262,43 +17493,47 @@ ndisHandleOrphanDevice();
 ndisHandleProtocolUnloadNotification();
 ? ndisHandleUModePnPOp;
 ndisIdleCancelWorkItem();
-ndisIdleWaitWakeComplete();
+ndisIdleWaitWakeCallback();
 ? NdisIfAddIfStackEntry;
 ? ndisIfAliasChange;
 ? ndisIfAllocateAndVerifyNetLuidIndex;
 NdisIfAllocateNetLuidIndex();
 NdisIfAllocateNetLuidIndexEx();
-ndisIfCreateCompartment();
+long __cdecl ndisIfCreateCompartment(struct _NM_REQUEST_SET_ALL_PARAMETERS *,struct _NDIS_IF_COMPARTMENT_BLOCK * *);
 ? ndisIfCreateCompartmentBlock;
 ? ndisIfCreateFilterInterface;
 ? ndisIfCreateInterface;
 ndisIfCreateInterfaceForiScsi();
 ? ndisIfCreateInterfaceFromPersistentStore;
-ndisIfCreateNetwork();
+long __cdecl ndisIfCreateNetwork(struct _GUID *,unsigned int);
 ? ndisIfCreateNetworkBlock;
+? ndisIfCreateOrUpdateInterface;
 ? ndisIfCreatePersistedInterface;
-ndisIfDeleteCompartment();
+long __cdecl ndisIfDeleteCompartment(unsigned int);
 NdisIfDeleteIfStackEntry();
 ndisIfDeletePersistedInterface();
-ndisIfDeletePersistedInterfaceIsolationInfo();
+long __cdecl ndisIfDeletePersistedInterfaceIsolationInfo(union _NET_LUID_LH);
 ndisIfDeleteStackEntries();
 ? ndisIfDereferenceCompartmentForUser;
 ? ndisIfDereferenceMiniport;
 NdisIfDeregisterInterface();
+ndisIfDeregisterInterfaceEx();
 NdisIfDeregisterProvider();
 ndisIfDetachMiniportBlock();
 ndisIfEnumerateNsiObjects();
-ndisIfFindAvailableCompartmentId();
+unsigned int __cdecl ndisIfFindAvailableCompartmentId(struct _GUID const *);
 ndisIfFindCompartmentBlock();
-ndisIfFindCompartmentBlockByGuid();
+struct _NDIS_IF_COMPARTMENT_BLOCK * __cdecl ndisIfFindCompartmentBlockByGuid(struct _GUID const *);
 ndisIfFindInterface();
+ndisIfFindInterfaceByInterfaceGuid();
 ndisIfFindInterfaceByNetLuid();
-ndisIfFindNetworkBlock();
-ndisIfFindNextInterfaceByNetLuid();
-ndisIfFindNextRcvAddress();
-ndisIfFindRcvAddress();
-ndisIfFindStackEntry();
+struct _NDIS_IF_NETWORK_BLOCK * __cdecl ndisIfFindNetworkBlock(struct _GUID const *);
+struct _NDIS_IF_BLOCK * __cdecl ndisIfFindNextInterfaceByNetLuid(union _NET_LUID_LH);
+struct _NDIS_IF_RCV_ADDRESS * __cdecl ndisIfFindNextRcvAddress(struct _NDIS_IF_BLOCK *,unsigned char *);
+struct _NDIS_IF_RCV_ADDRESS * __cdecl ndisIfFindRcvAddress(struct _NDIS_IF_BLOCK *,unsigned char *);
+? ndisIfFindStackEntry;
 NdisIfFreeNetLuidIndex();
+? ndisIfGetDefaultNetworkGuid;
 ? ndisIfGetFilterIfInfoFromRegistry;
 NdisIfGetInterfaceIndexFromNetLuid();
 ? ndisIfGetMiniportStatistics;
@@ -16308,6 +17543,7 @@ NdisIfGetNetLuidFromInterfaceIndex();
 ? ndisIfInitGetInterfaceList;
 ? ndisIfInitGetNetworkList;
 ? ndisIfInitialize;
+? ndisIfOpenInterfacePersistedStorage;
 ? NdisIfQueryBindingIfIndex;
 ? ndisIfQueryBindingMiniportIfIndex;
 ? ndisIfQueryFilterObject;
@@ -16315,25 +17551,36 @@ NdisIfGetNetLuidFromInterfaceIndex();
 ? ndisIfQueryMiniportObject;
 ? ndisIfQueryMiniportObjectNotPresent;
 ? ndisIfQueryObject;
-ndisIfQueryProvider();
-ndisIfQuerySetMiniport();
+int __cdecl ndisIfQueryProvider(struct _NDIS_IF_BLOCK *,unsigned int,unsigned long,void *);
+int __cdecl ndisIfQuerySetMiniport(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OID_REQUEST *,struct _NDIS_FILTER_BLOCK *);
+? ndisIfReadInterfaceAddDeviceParameters;
 ? ndisIfReferenceCompartmentForUser;
 ndisIfReferenceMiniport();
-? NdisIfRegisterInterface;
+NdisIfRegisterInterface();
+? ndisIfRegisterInterfaceEx;
 ? NdisIfRegisterProvider;
-ndisIfReleaseSiteId();
+void __cdecl ndisIfReleaseSiteId(unsigned long);
 ? ndisIfRemoveIfBlockMiniportAssociation;
-ndisIfSetFilterIfInfoInRegistry();
+int __cdecl ndisIfSetFilterIfInfoInRegistry(struct _NDIS_FILTER_BLOCK *,struct _GUID);
 ? ndisIfSetIfDescr;
 ? ndisIfSetInterfaceState;
-ndisIfSetLoopbackObject();
-ndisIfSetObject();
+int __cdecl ndisIfSetLoopbackObject(void *,unsigned int,unsigned long,void *);
+int __cdecl ndisIfSetObject(void *,unsigned int,unsigned long,void *);
 ? ndisIfStackTablePathExist;
+ndisIfUpdateCurrentMacAddress();
+ndisIfUpdateCurrentMacAddressAndNotify();
 ? ndisIfUpdateFilterIfStack;
+? ndisIfUpdateIfBlockFromPersistedState;
+long __cdecl ndisIfUpdateInterfaceIsolationNetworkId(struct _NDIS_IF_BLOCK *,struct _GUID const &);
+? ndisIfUpdateInterfaceIsolationNetworkIdLocked;
 ? ndisIfUpdateInterfaceOnAddDevice;
 ? ndisIfUpdateInterfaceOnInitialize;
+ndisIfUpdateL2MtuSize();
+ndisIfUpdateL2MtuSizeAndNotify();
 void __cdecl ndisIfUpdateLoopbackInterfaceOnNetwork(struct _NDIS_IF_NETWORK_BLOCK *,union _NET_LUID_LH);
-ndisIfUpdatePersistedInterfaceInfo();
+int __cdecl ndisIfUpdatePersistedInterfaceInfo(unsigned char *,unsigned long,unsigned long,unsigned char *);
+? ndisIfUpdateStringIfNeeded;
+long __cdecl ndisIfWriteBackPersistedInterface(struct _NDIS_IF_BLOCK *);
 ? ndisIfWriteRegistry;
 NdisIMAssociateMiniport();
 NdisIMCancelInitializeDeviceInstance();
@@ -16369,8 +17616,8 @@ NdisIMRevertBack();
 NdisIMSwitchToMiniport();
 NdisIMVBusDeviceAdd();
 NdisIMVBusDeviceRemove();
-NdisIMVBusDeviceUpdate();
 unsigned char __cdecl ndisIMVBusIsValidInput(void *,struct _NDIS_VBUS_DEVICE_CHARACTERISTICS *);
+ndisIndicateAllNetBufferLists();
 ? ndisIndicateInitialStateToBinding;
 ? ndisIndicateInitialStateToFilter;
 ndisIndicateOffloadChangeInternal();
@@ -16378,15 +17625,17 @@ ndisIndicatePMCapabilities();
 ? ndisIndicateStatusInternal;
 ndisIndicateToPmodeOpens();
 ndisIndicateXlatedPacketsToNdis5Protocols();
-ndisInitialBindCompleted();
+? ndisInitialBindCompleted;
 ? ndisInitializeAdapter;
 ? ndisInitializeConfiguration;
 NdisInitializeEvent();
 ? ndisInitializeMiniportRestartAttributes;
 ndisInitializeNetPnPEvent();
-? ndisInitializeNsi;
+ndisInitializeNsi();
+? ndisInitializeNsiHelper;
+unsigned long __cdecl ndisInitializeNsiInitFn(union _RTL_RUN_ONCE *,void *,void * *);
 ? ndisInitializePeriodicReceives;
-ndisInitializePerProcessorSlotAllocator();
+? ndisInitializePerProcessorSlotAllocator;
 ? NdisInitializeReadWriteLock;
 ndisInitializeRef();
 ndisInitializeStackTraces();
@@ -16399,6 +17648,7 @@ ndisInitializeZeroBasedRef();
 NdisInitiateOffload();
 ndisInitModeTimeoutDpc();
 ? ndisInitModeTimeoutWorkItem;
+void __cdecl ndisInitPDQAWM(struct NDIS_PD_QUEUE_TRACKER *);
 void __cdecl ndisInsertInWorkQueue(struct _NDIS_WORK_QUEUE *,struct _WORK_QUEUE_ITEM *,unsigned char);
 ndisInsertPatternListEntry();
 NdisInterlockedAddUlong();
@@ -16409,11 +17659,12 @@ NdisInterlockedInsertTailList();
 NdisInterlockedPopEntryList();
 NdisInterlockedPushEntryList();
 NdisInterlockedRemoveHeadList();
+? ndisInternalRegisterMiniportDriver;
 ? ndisInterruptDpc;
 NdisInvalidateOffload();
+? ndisInvokeCloseAdapterComplete;
 ndisInvokeDirectOidRequestComplete();
 ? ndisInvokeMiniportSysPowerNotify;
-? ndisInvokeNetPnPEvent;
 ? ndisInvokeNextReceiveCompleteHandler;
 ndisInvokeNextReceiveHandler();
 ndisInvokeNextSendCompleteHandler();
@@ -16429,6 +17680,9 @@ ndisIovAddVPortToVFList();
 ndisIovAllocateVF();
 ndisIovCancelIoctlInvalidate();
 ndisIovCancelIoctlNotification();
+ndisIovCopyNicSwitchInfo();
+ndisIovCopyVFInfo();
+ndisIovCopyVPortInfo();
 ? ndisIovCreateDefaultNicSwitch;
 ndisIovCreateVPort();
 ? ndisIovDeleteDefaultNicSwitch;
@@ -16437,7 +17691,7 @@ ndisIovDeleteVPort();
 ndisIovFindVFByVFId();
 ndisIovFindVPortByVPortId();
 ndisIovFreeVF();
-ndisIovGetNicSwitchList();
+? ndisIovGetNicSwitchList;
 ndisIovInitVf();
 ndisIovInvalidateBlockCompletion();
 ndisIovIoctlAttach();
@@ -16448,21 +17702,25 @@ ndisIovIoctlNotification();
 ndisIovReadSwitchConfiguration();
 ndisIovTeardownVf();
 void __cdecl ndisIPsecPktInfoToNBLInfo(struct _NDIS_IPSEC_PACKET_INFO *,enum _NDIS_XLATE_TYPE,struct _NDIS_IPSEC_OFFLOAD_V1_NET_BUFFER_LIST_INFO *);
-ndisIsCompartmentEnumerable();
+unsigned char __cdecl ndisIsCompartmentEnumerable(struct _NDIS_IF_COMPARTMENT_BLOCK *);
 unsigned char __cdecl ndisIsCurrentNblContextBlockPreallocated(struct _NET_BUFFER_LIST *);
 ? ndisIsDefaultPortStateOperational;
+bool __cdecl ndisIsInNetSetupMode(void);
 ndisIsMiniportReady();
 ? ndisIsMiniportStarted;
-unsigned char __cdecl ndisIsMiniportVerified(struct _NDIS_M_DRIVER_BLOCK *);
+bool __cdecl ndisIsNetSetupTheBindingEngineUncached(void);
+? ndisIsNetSetupV1Interface;
 ? ndisIsPMProtocolOffloadSupported;
 unsigned char __cdecl ndisIsPossibleSmuggling(union _NDIS_NBL_TRACKER_OWNER,union _NDIS_NBL_TRACKER_OWNER,void *);
-ndisIsSatisfiedByOidGenStatistics();
+? ndisIsSatisfiedByOidGenStatistics;
+bool __cdecl ndisIsSetupDevice(struct _DEVICE_OBJECT const *);
 NdisIsStatusIndicationCloneable();
 ndisIssueNetEventSetPowerEvent();
 ? ndisIsSystemBooting;
-ndisIsValidIfString();
-ndisIsValidIfStringParts();
+unsigned char __cdecl ndisIsValidIfString(struct _IF_COUNTED_STRING_LH const *);
+unsigned char __cdecl ndisIsValidIfStringParts(unsigned short const *,unsigned long);
 ? ndisIsValidMulticastFilter;
+bool __cdecl ndisIsValidNblTrackerHistoryBufferSize(unsigned __int64,unsigned long);
 ndisIsValidPMAdminConfigState();
 ndisIsValidPmCountedString();
 ndisIsValidWoLPattern();
@@ -16471,6 +17729,7 @@ ndisKillReceiveWorkerThreadPool();
 ndisLegacyProtocolPauseRestartHandler();
 ndisLegacyRequest();
 ndisLiveDumpAddSecondaryData();
+? ndisLoadNetworkInterfaceFromPersistedState;
 ? ndisLogMiniportEvent;
 ndisLWM5IndicateReceive();
 ndisLWM5PauseMiniport();
@@ -16490,23 +17749,25 @@ ndisMAllocSGList();
 ndisMAllocSGListS();
 NdisMapFile();
 ndisMapOpenByName();
+void __cdecl ndisMApplyInterfaceChange(struct _NDIS_MINIPORT_BLOCK *,unsigned long,struct _NDIS_STATUS_INDICATION *);
 ndisMarkNetBufferListCorrelationIdsAsUsed();
 NdisMatchPdoWithPacket();
 NdisMaxGroupCount();
 ? ndisMBeginNormalMode;
+int __cdecl ndisMBindRequest(struct _NDIS_MINIPORT_BLOCK *,struct _NET_PNP_EVENT_NOTIFICATION const *);
 ndisMCancelSendNetBufferListsOnMiniport();
 ? NdisMCancelTimer;
 ndisMCheckPacketAndPad();
 ? ndisMCheckReceiveFilterPacketCoalescingAttributes;
 ? ndisMCleanupMiniportBlockOnStop;
 NdisMCloseLog();
-? NdisMCmActivateVc;
-? NdisMCmCreateVc;
-? NdisMCmDeactivateVc;
+NdisMCmActivateVc();
+NdisMCmCreateVc();
+NdisMCmDeactivateVc();
 NdisMCmDeleteVc();
 NdisMCmOidRequest();
 NdisMCmRegisterAddressFamily();
-? NdisMCmRegisterAddressFamilyEx;
+NdisMCmRegisterAddressFamilyEx();
 NdisMCmRequest();
 NdisMCoActivateVcComplete();
 NdisMCoDeactivateVcComplete();
@@ -16515,14 +17776,14 @@ void __cdecl ndisMCoIndicateReceiveNdisPacketToNdisPacket(void *,struct _NDIS_PA
 void __cdecl ndisMCoIndicateReceiveNdisPacketToNetBufferLists(void *,struct _NDIS_PACKET * *,unsigned int);
 NdisMCoIndicateReceiveNetBufferLists();
 void __cdecl ndisMCoIndicateReceiveNetBufferListsToNdisPacket(void *,struct _NET_BUFFER_LIST *,unsigned long,unsigned long);
-? ndisMCoIndicateReceiveNetBufferListsToNetBufferLists;
+void __cdecl ndisMCoIndicateReceiveNetBufferListsToNetBufferLists(void *,struct _NET_BUFFER_LIST *,unsigned long,unsigned long);
 NdisMCoIndicateReceivePacket();
 NdisMCoIndicateStatus();
-? NdisMCoIndicateStatusEx;
+NdisMCoIndicateStatusEx();
 ? ndisMCommonHaltMiniport;
 NdisMCompleteBufferPhysicalMapping();
 ? NdisMConfigMSIXTableEntry;
-? NdisMCoOidRequestComplete;
+NdisMCoOidRequestComplete();
 ndisMCoOidRequestToRequest();
 ndisMCopyFromPacketToBuffer();
 NdisMCoReceiveComplete();
@@ -16532,7 +17793,7 @@ void __cdecl ndisMCoSendCompleteToNdisPacket(int,void *,struct _NDIS_PACKET *);
 void __cdecl ndisMCoSendCompleteToNetBufferLists(int,void *,struct _NDIS_PACKET *);
 NdisMCoSendNetBufferListsComplete();
 void __cdecl ndisMCoSendNetBufferListsCompleteToNdisPackets(void *,struct _NET_BUFFER_LIST *,unsigned long);
-? ndisMCoSendNetBufferListsCompleteToNetBufferLists;
+void __cdecl ndisMCoSendNetBufferListsCompleteToNetBufferLists(void *,struct _NET_BUFFER_LIST *,unsigned long);
 NdisMCreateLog();
 ndisMDeferredDpc();
 ndisMDeferredReturnPackets();
@@ -16544,7 +17805,7 @@ ndisMDeferredSendSG();
 ? ndisMDeQueueWorkItem;
 ndisMDereferenceIfBlock();
 void __cdecl ndisMDereferenceOpenLocked(struct _NDIS_OPEN_BLOCK *,enum _NDIS_OPEN_REFTAG);
-void __cdecl ndisMDereferenceOpenUnlocked(struct _NDIS_OPEN_BLOCK *,enum _NDIS_OPEN_REFTAG);
+? ndisMDereferenceOpenUnlocked;
 NdisMDeregisterAdapterShutdownHandler();
 ? ndisMDeregisterBugCheckHandler;
 NdisMDeregisterDevice();
@@ -16554,12 +17815,14 @@ NdisMDeregisterInterruptEx();
 NdisMDeregisterIoPortRange();
 ? NdisMDeregisterMiniportDriver;
 NdisMDeregisterScatterGatherDma();
-? ndisMDirectOidRequest;
+NdisMDeregisterWdiMiniportDriver();
+ndisMDirectOidRequest();
 NdisMDirectOidRequestComplete();
+? ndisMDisableOpportunisticPowerSavings;
 ndisMDispatchReceiveNetBufferLists();
 ? ndisMDispatchReceiveNetBufferListsWithLock;
-? ndisMDoDirectOidRequest;
-bool __cdecl ndisMDoesMiniportNeedCoNdisNdProxy(struct _NDIS_MINIPORT_BLOCK *);
+ndisMDoDirectOidRequest();
+? ndisMDoesMiniportNeedCoNdisNdProxy;
 ? ndisMDoMiniportOp;
 ? ndisMDoOidRequest;
 ndisMDoProtocolRequest();
@@ -16571,22 +17834,23 @@ ndisMediaDisconnectTimeout();
 ndisMediaDisconnectWorker();
 void __cdecl ndisMEmitTraceRundown(struct _NDIS_MINIPORT_BLOCK *);
 NdisMEnableVirtualization();
-ndisMergeEncapsulations();
+? ndisMergeEncapsulations;
 ? ndisMergeOffloadCapsAndRegistry;
 ndisMethodDeviceOid();
 void __cdecl ndisMExitInitMode(struct _NDIS_MINIPORT_BLOCK *,enum CallRunMode);
-? ndisMFakeDirectOidRequest;
+ndisMFakeDirectOidRequest();
 ? ndisMFakeOidRequest;
 ndisMFakeRequest();
 ndisMFakeReset();
 ndisMFakeSend();
-? ndisMFakeSendNetBufferLists;
+ndisMFakeSendNetBufferLists();
 ndisMFakeSendPackets();
 ndisMFakeWanSend();
 ? ndisMFindNumaDistances;
-ndisMFindNumaNode();
+? ndisMFindNumaNode;
 ? ndisMFinishClose;
-? ndisMFinishQueuedPendingOpen;
+ndisMFinishQueuedPendingOpen();
+void __cdecl ndisMFlushInterfaceChanges(struct _NDIS_MINIPORT_BLOCK *);
 NdisMFlushLog();
 NdisMFreeMapRegisters();
 ? NdisMFreeNetBufferSGList;
@@ -16613,6 +17877,7 @@ ndisMIndicateHDSplitChange();
 ? ndisMIndicateOffloadChange;
 ndisMIndicatePacket();
 ndisMIndicatePacketsToNetBufferLists();
+ndisMIndicatePDConfigChange();
 ndisMIndicatePMCapabilities();
 ndisMIndicatePMHardwareCapabilities();
 ndisMIndicatePMOffloadReject();
@@ -16623,13 +17888,14 @@ ndisMIndicateReceiveNblsWithThrottling();
 ndisMIndicateSplitNblChain();
 NdisMIndicateStatus();
 NdisMIndicateStatusComplete();
-? NdisMIndicateStatusEx;
+NdisMIndicateStatusEx();
 ndisMIndicateTcpConnectionOffloadChange();
 ndisMIndicateWoLPatternReject();
 ? ndisMiniportDeviceReadyNotification;
 ndisMiniportFatalError();
 ndisMiniportIsr();
 ? ndisMiniportMessageIsr;
+? ndisMiniportPMParametersUpdated;
 ndisMiniportPostAddWakeUpPattern();
 ? ndisMiniportPostAddWOLPattern;
 ndisMiniportPostRemoveWoLPattern();
@@ -16641,14 +17907,18 @@ ndisMiniportPreRemoveWOLPattern();
 ndisMInitializeInitMode();
 ndisMInitializeMiniportBlock();
 ? ndisMInitializeMiniportBlockFront;
-? NdisMInitializeScatterGatherDma;
+? ndisMInitializeScatterGatherDma;
+NdisMInitializeScatterGatherDma();
 NdisMInitializeTimer();
 NdisMInitiateOffloadComplete();
 NdisMInvalidateConfigBlock();
 NdisMInvalidateOffloadComplete();
+? ndisMInvokeAddDevice;
+ndisMInvokeBlockingOidRequest();
 ndisMInvokeCancelOidRequest();
 ? ndisMInvokeCheckForHang;
 ? ndisMInvokeDevicePnPEventNotifyHandler;
+ndisMInvokeDirectOidRequest();
 ? ndisMInvokeDriverUnload;
 ? ndisMInvokeFilterResourceRequirements;
 ? ndisMInvokeHalt;
@@ -16676,13 +17946,32 @@ ndisMOidRequestCompleteInternal();
 ndisMOidRequestToRequest();
 ? ndisMOpenAdapter;
 ndisMoveLinkedList();
-NdisMPauseComplete();
+? NdisMPauseComplete;
 ? ndisMPauseMiniportInner;
 NdisMPciAssignResources();
 unsigned char __cdecl ndisMPeriodicPendingReceives(void *,struct _NET_BUFFER_LIST *,unsigned long,unsigned long,unsigned long,struct _NET_BUFFER_LIST * *);
 unsigned char __cdecl ndisMPeriodicReceivesResources(struct _NDIS_MINIPORT_BLOCK *,struct _NET_BUFFER_LIST *,unsigned long,unsigned long,unsigned long);
+void __cdecl ndisMpHookDefaultDirectOidRequestComplete(void *,struct NDIS_MINIPORT_HOOK_ADAPTER_HANDLE__ *,struct NDIS_MINIPORT_ADAPTER_HANDLE__ *,struct _NDIS_OID_REQUEST *,int);
+void __cdecl ndisMpHookDefaultIndicateStatus(void *,struct NDIS_MINIPORT_HOOK_ADAPTER_HANDLE__ *,struct NDIS_MINIPORT_ADAPTER_HANDLE__ *,struct _NDIS_STATUS_INDICATION *);
+void __cdecl ndisMpHookDefaultOidRequestComplete(void *,struct NDIS_MINIPORT_HOOK_ADAPTER_HANDLE__ *,struct NDIS_MINIPORT_ADAPTER_HANDLE__ *,struct _NDIS_OID_REQUEST *,int);
+class KRundownPtr<struct NDIS_MINIPORT_HOOK_PROVIDER_INFO const > __cdecl ndisMpHookGetHook(enum _NDIS_MINIPORT_HOOK_DRIVER_TYPE);
+struct NDIS_MINIPORT_HOOK_ADAPTER_HANDLE__ * __cdecl ndisMpHookGetHookAdapterHandle(struct NDIS_MINIPORT_ADAPTER_CONTEXT__ *);
+struct NDIS_MINIPORT_HOOK_DRIVER_HANDLE__ * __cdecl ndisMpHookGetHookDriverHandle(struct NDIS_MINIPORT_DRIVER_CONTEXT__ *);
+struct NDIS_MINIPORT_HOOK_PROVIDER_INFO const * __cdecl ndisMpHookGetHookUnsafe(enum _NDIS_MINIPORT_HOOK_DRIVER_TYPE);
+void __cdecl ndisMpHookInvokeCancelDirectOidRequestHandler(struct NDIS_MINIPORT_ADAPTER_HANDLE__ *,void *);
+void __cdecl ndisMpHookInvokeCancelOidRequestHandler(struct NDIS_MINIPORT_ADAPTER_HANDLE__ *,void *);
+int __cdecl ndisMpHookInvokeDirectOidRequestHandler(struct NDIS_MINIPORT_ADAPTER_HANDLE__ *,struct _NDIS_OID_REQUEST *);
+int __cdecl ndisMpHookInvokeOidRequestHandler(struct NDIS_MINIPORT_ADAPTER_HANDLE__ *,struct _NDIS_OID_REQUEST *);
+? ndisMpHookNmrClientAttachProvider;
+long __cdecl ndisMpHookNmrClientDetachProvider(void *);
+? ndisMpHookNmrInitializeClient;
+void __cdecl ndisMpHookRawDirectOidRequestComplete(struct NDIS_MINIPORT_ADAPTER_HANDLE__ *,struct _NDIS_OID_REQUEST *,int);
+void __cdecl ndisMpHookRawIndicateStatus(struct NDIS_MINIPORT_ADAPTER_HANDLE__ *,struct _NDIS_STATUS_INDICATION *);
+void __cdecl ndisMpHookRawOidRequestComplete(struct NDIS_MINIPORT_ADAPTER_HANDLE__ *,struct _NDIS_OID_REQUEST *,int);
+void __cdecl ndisMpHookSetAdapterContext(struct NDIS_MINIPORT_ADAPTER_HANDLE__ *,struct NDIS_MINIPORT_HOOK_ADAPTER_HANDLE__ *);
+void __cdecl ndisMpHookSetDriverContext(struct NDIS_MINIPORT_DRIVER_HANDLE__ *,struct NDIS_MINIPORT_HOOK_DRIVER_HANDLE__ *);
 ? ndisMPowerPolicy;
-? ndisMProcessDeferred;
+ndisMProcessDeferred();
 ndisMProcessResetRequested();
 ndisMProcessSGList();
 ndisMProcessSGListS();
@@ -16699,13 +17988,17 @@ NdisMQueueDpc();
 NdisMQueueDpcEx();
 void __cdecl ndisMQueuedPromoteMiniport(void *);
 ndisMQueueNewWorkItem();
-ndisMQueueOidRequest();
+? ndisMQueueOidRequest;
 ndisMQueueReceiveNetBufferLists();
 ndisMQueueWorkItem();
+void __cdecl ndisMRawDirectOidRequestComplete(struct NDIS_MINIPORT_ADAPTER_HANDLE__ *,struct _NDIS_OID_REQUEST *,int);
+? ndisMRawIndicateStatusEx;
+int __cdecl ndisMRawInvokeDirectOidRequest(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OID_REQUEST *);
+int __cdecl ndisMRawInvokeOidRequest(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OID_REQUEST *);
+void __cdecl ndisMRawOidRequestComplete(struct NDIS_MINIPORT_ADAPTER_HANDLE__ *,struct _NDIS_OID_REQUEST *,int);
 NdisMReadConfigBlock();
 NdisMReadDmaCounter();
 ? ndisMReadPciPropertiesFromConfigSpace;
-void __cdecl ndisMRecalculateMiniportStackAfterBinding(struct _NDIS_MINIPORT_BLOCK *);
 NdisMReenumerateFailedAdapter();
 ndisMReenumerateFailedAdapterInternal();
 ndisMReferenceIfBlock();
@@ -16718,9 +18011,10 @@ NdisMRegisterInterrupt();
 ? NdisMRegisterInterruptEx;
 NdisMRegisterIoPortRange();
 NdisMRegisterMiniport();
-? NdisMRegisterMiniportDriver;
+NdisMRegisterMiniportDriver();
 ? NdisMRegisterScatterGatherDma;
 NdisMRegisterUnloadHandler();
+NdisMRegisterWdiMiniportDriver();
 ndisMRejectSend();
 ndisMRejectSendPackets();
 void __cdecl ndisMReleaseStInLockAndSpinLock(struct _NDIS_MINIPORT_BLOCK *,unsigned char);
@@ -16733,7 +18027,7 @@ ndisMResetCompleteStage1();
 ndisMResetCompleteStage2();
 NdisMResetMiniport();
 ndisMResetMiniportInternal();
-NdisMRestartComplete();
+? NdisMRestartComplete;
 ? ndisMRestartMiniport;
 ? ndisMRestartMiniportInner;
 ndisMRestoreFilterSettings();
@@ -16764,6 +18058,7 @@ NdisMSetAttributes();
 ? ndisMSetHDSplitAttributes;
 ? ndisMSetIndicatePacketHandler;
 NdisMSetInformationComplete();
+NdisMSetInterfaceCompartment();
 ? NdisMSetMiniportAttributes;
 ? ndisMSetMiniportReadyForBinding;
 NdisMSetMiniportSecondary();
@@ -16771,15 +18066,16 @@ ndisMSetNative802_11Attributes();
 ndisMSetNDKAttributes();
 ? ndisMSetNicSwitchAttributes;
 ? ndisMSetOffloadAttributes;
+int __cdecl ndisMSetPacketDirectAttributes(void *,union _NDIS_MINIPORT_ADAPTER_ATTRIBUTES const *);
 ? NdisMSetPeriodicTimer;
 ndisMSetQosAttributes();
 ? ndisMSetReceiveFilterAttributes;
 ndisMSetRssCapabilities();
-ndisMSetSriovAttributes();
+? ndisMSetSriovAttributes;
 ? NdisMSetTimer;
 NdisMSetVirtualFunctionBusData();
 ndisMShutdownMiniport();
-? NdisMSleep;
+NdisMSleep();
 NdisMStartBufferPhysicalMapping();
 ndisMStartInitMode();
 ndisMStartWanSends();
@@ -16793,15 +18089,17 @@ void __cdecl NdisMTcpOffloadReceiveComplete(void *,struct _NET_BUFFER_LIST *);
 int __cdecl NdisMTcpOffloadReceiveIndicate(void *,struct _NET_BUFFER_LIST *,int,unsigned long *);
 void __cdecl NdisMTcpOffloadSendComplete(void *,struct _NET_BUFFER_LIST *);
 NdisMTerminateOffloadComplete();
-? ndisMTimerDpc;
+ndisMTimerDpc();
 ? ndisMTimerDpcX;
 ? ndisMTimerObjectDpc;
 ? ndisMTopReceiveNetBufferLists;
 ndisMTransferData();
 NdisMTransferDataComplete();
+NdisMTriggerPDDrainNotification();
 ndisMUnload();
 ? ndisMUnloadEx;
 NdisMUnmapIoSpace();
+void __cdecl ndisMUpdateInterfaceWorker(void *);
 ndisMUpdateNameOnPMWakePacket();
 NdisMUpdateOffloadComplete();
 ndisMValidatePMWakePacket();
@@ -16821,15 +18119,16 @@ NdisNblTrackerDeregisterComponent();
 struct NDIS_NBL_TRACKER_HANDLE__ * __cdecl ndisNblTrackerHandleFromNdisObjectHandle(struct NDIS_NBL_TRACKER_HANDLE__ *);
 ? ndisNblTrackerInitialize;
 void __cdecl ndisNblTrackerPrintComponentNameToDebugger(struct _NDIS_NBL_TRACKER *);
+NdisNblTrackerQueryNblCurrentOwner();
 ? ndisNblTrackerReadConfiguration;
 NdisNblTrackerRecordEvent();
-ndisNblTrackerRecordEvent();
-NdisNblTrackerRegisterComponent();
+void __cdecl ndisNblTrackerRecordEvent(struct _NET_BUFFER_LIST *,struct NDIS_NBL_TRACKER_HANDLE__ *,unsigned long,void *,unsigned long);
+? NdisNblTrackerRegisterComponent;
 void __cdecl ndisNblTrackerSetSqmFlag(struct _NDIS_NBL_TRACKER *);
-? ndisNblTrackerTransferOneNbl;
+void __cdecl ndisNblTrackerTransferOneNbl(struct _NET_BUFFER_LIST *,union _NDIS_NBL_TRACKER_OWNER,struct NDIS_NBL_TRACKER_HANDLE__ *,union _NDIS_NBL_TRACKER_OWNER,void *,__int64 *,__int64 *);
 NdisNblTrackerTransferOwnership();
 ? ndisNblTrackerTransferOwnershipInternal;
-ndisNblTrackerTransferOwnershipSingleNbl();
+void __cdecl ndisNblTrackerTransferOwnershipSingleNbl(struct _NET_BUFFER_LIST *,struct NDIS_NBL_TRACKER_HANDLE__ *,struct NDIS_NBL_TRACKER_HANDLE__ *,unsigned char);
 void __cdecl ndisNblTrackerUpdateOwnershipCount(union _NDIS_NBL_TRACKER_OWNER,__int64,unsigned char *,unsigned char *);
 ? ndisNblTrackerWatchdogTimer;
 ndisNDKCleanup();
@@ -16844,76 +18143,80 @@ ndisNdkPcwProviderCallback();
 ndisNdkPcwRemoveCounter();
 ndisNDKWmiGetAdapterCapabilities();
 ndisNetBufferToPacket();
-ndisNicActiveAcquire();
+long __cdecl ndisNicActiveAcquire(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_DEVICE_OBJECT_OPEN_CONTEXT *,struct _NDIS_PM_NIC_ACTIVE *,struct _IRP *);
 ? ndisNicActiveHandleCleanup;
-ndisNicActiveRelease();
-ndisNicActiveRequestComplete();
-ndisNicQuietCheckRef();
-ndisNicQuietRequestComplete();
-ndisNicQuietWaitWakeComplete();
-? ndisNotifyAfRegistration;
+long __cdecl ndisNicActiveRelease(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_DEVICE_OBJECT_OPEN_CONTEXT *,struct _NDIS_PM_NIC_ACTIVE *);
+void __cdecl ndisNicActiveRequestComplete(struct _NDIS_MINIPORT_BLOCK *,long);
+long __cdecl ndisNicQuietCheckRef(struct _NDIS_MINIPORT_BLOCK *);
+void __cdecl ndisNicQuietRequestComplete(struct _DEVICE_OBJECT *,unsigned char,union _POWER_STATE,void *,struct _IO_STATUS_BLOCK *);
+void __cdecl ndisNicQuietWaitWakeCallback(struct _DEVICE_OBJECT *,unsigned char,union _POWER_STATE,void *,struct _IO_STATUS_BLOCK *);
+ndisNotifyAfRegistration();
 ? ndisNotifyBindFailure;
 ? ndisNotifyBindFailureOnUnboundProtocols;
 ? ndisNotifyDevicePowerStateChange;
 ? ndisNotifyMiniports;
 ? ndisNotifyWmiBindUnbind;
 ? ndisNsiChangeInterfaceInfo;
-ndisNsiChangeNetworkInfo();
+long __cdecl ndisNsiChangeNetworkInfo(struct _NDIS_IF_NETWORK_BLOCK *,struct _NDIS_NSI_NETWORK_RW *,unsigned long,unsigned long,unsigned long *);
 ? ndisNsiClientParameterChangeHandler;
-ndisNsiDeregisterChangeNotification();
-ndisNsiEnumerateAllCompartments();
-ndisNsiEnumerateAllIfRcvAddresses();
-ndisNsiEnumerateAllIfRcvAddressesInOneInterface();
-ndisNsiEnumerateAllIfStackEntries();
+void __cdecl ndisNsiDeregisterChangeNotification(struct _NM_REQUEST_DEREGISTER_CHANGE_NOTIFICATION *);
+long __cdecl ndisNsiEnumerateAllCompartments(struct _NM_REQUEST_ENUMERATE_OBJECTS_ALL_PARAMETERS *);
+long __cdecl ndisNsiEnumerateAllIfRcvAddresses(struct _NM_REQUEST_ENUMERATE_OBJECTS_ALL_PARAMETERS *);
+long __cdecl ndisNsiEnumerateAllIfRcvAddressesInOneInterface(struct _NDIS_IF_BLOCK *,struct _NM_REQUEST_ENUMERATE_OBJECTS_ALL_PARAMETERS *);
+long __cdecl ndisNsiEnumerateAllIfStackEntries(struct _NM_REQUEST_ENUMERATE_OBJECTS_ALL_PARAMETERS *);
 ? ndisNsiEnumerateAllIfStackEntriesFull;
 ? ndisNsiEnumerateAllInterfaceInformation;
-ndisNsiEnumerateAllInvertedIfStackEntries();
+long __cdecl ndisNsiEnumerateAllInvertedIfStackEntries(struct _NM_REQUEST_ENUMERATE_OBJECTS_ALL_PARAMETERS *);
 ? ndisNsiEnumerateAllNetworks;
 ndisNsiEnumerateAllSessionInformation();
-ndisNsiGetAllIfRcvAddress();
+long __cdecl ndisNsiGetAllIfRcvAddress(struct _NM_REQUEST_GET_ALL_PARAMETERS *);
 ? ndisNsiGetAllInterfaceInformation;
+ndisNsiGetAllJobInformation();
 ? ndisNsiGetAllSessionInformation;
 ? ndisNsiGetAllThreadInformation;
-ndisNsiGetCompartmentIdForGuid();
+long __cdecl ndisNsiGetCompartmentIdForGuid(struct _NM_REQUEST_GET_PARAMETER *);
 ? ndisNsiGetCompartmentInfo;
 ? ndisNsiGetIfNameForIfIndex;
-ndisNsiGetIfRcvAddress();
-ndisNsiGetIfRcvAddressRodInformation();
+long __cdecl ndisNsiGetIfRcvAddress(struct _NM_REQUEST_GET_PARAMETER *);
+long __cdecl ndisNsiGetIfRcvAddressRodInformation(struct _NDIS_IF_BLOCK *,struct _NDIS_IF_RCV_ADDRESS *,struct _NM_REQUEST_GET_PARAMETER *);
 ? ndisNsiGetInterfaceInformation;
 ? ndisNsiGetInterfaceRodEnumObject;
 ? ndisNsiGetInterfaceRodInformation;
 ? ndisNsiGetInterfaceRosEnumObject;
 ? ndisNsiGetInterfaceRosInformation;
 ? ndisNsiGetInterfaceRwInformation;
-ndisNsiGetNetworkInfo();
-? ndisNsiGetTopIfBlockFromMiniport;
+long __cdecl ndisNsiGetNetworkInfo(struct _NM_REQUEST_GET_PARAMETER *);
 ? ndisNsiNotifyClientCompartmentChange;
 ? ndisNsiNotifyClientInterfaceChange;
-ndisNsiNotifyClientNetworkChange();
+void __cdecl ndisNsiNotifyClientNetworkChange(struct _NDIS_IF_NETWORK_BLOCK *,enum _NSI_NOTIFICATION,struct _NSI_SINGLE_PARAM_DESC *);
+void __cdecl ndisNsiPostGetInterfaceRodInformation(struct _NDIS_IF_BLOCK *,unsigned int,unsigned long,void *);
 ? ndisNsiProviderAttachNsiClient;
-ndisNsiProviderCleanupNsiClientContext();
-ndisNsiProviderDetachNsiClient();
+void __cdecl ndisNsiProviderCleanupNsiClientContext(void *);
+long __cdecl ndisNsiProviderDetachNsiClient(void *);
 ? ndisNsiQueuedIfBlockRodChangeNotification;
 ? ndisNsiRegisterChangeNotification;
-? ndisNsiScheduleIfBlockRodChangeNotification;
-ndisNsiSetAllCompartment();
-ndisNsiSetAllNetworkInfo();
+ndisNsiScheduleIfBlockRodChangeNotification();
+long __cdecl ndisNsiSetAllCompartment(struct _NM_REQUEST_SET_ALL_PARAMETERS *);
+ndisNsiSetAllJobInformation();
+long __cdecl ndisNsiSetAllNetworkInfo(struct _NM_REQUEST_SET_ALL_PARAMETERS *);
 ndisNsiSetAllSessionInformation();
 ndisNsiSetAllThreadInformation();
 ? ndisNsiSetInterfaceInformation;
-ndisNsiSetNetworkInfo();
+long __cdecl ndisNsiSetNetworkInfo(struct _NM_REQUEST_SET_PARAMETER *);
+ndisNsiSetThreadInformation();
 ndisNsiSyncMiniportMediaConnectStateNotification();
 ndisNsiSyncMiniportOperStatusNotification();
 unsigned __int64 __cdecl ndisNumDataBytesInNblChain(struct _NET_BUFFER_LIST *);
-unsigned long __cdecl ndisNumNblsInNblChain(struct _NET_BUFFER_LIST *);
 NdisOffloadTcpDisconnect();
 NdisOffloadTcpForward();
 NdisOffloadTcpReceive();
 NdisOffloadTcpReceiveReturn();
 NdisOffloadTcpSend();
+? ndisOidCloneForCompatibility;
+? ndisOidFreeInternalCloneRequest;
 ndisOidGetStatisticAllProcessors();
 ? ndisOidPMAddRemove;
-ndisOidPMRemove();
+? ndisOidPMRemove;
 ? ndisOidPostAddPMProtocolOffload;
 ? ndisOidPostCurrentLookahead;
 ndisOidPostEnableWakeUp();
@@ -16925,14 +18228,15 @@ ndisOidPostIovDeleteVPort();
 ndisOidPostIovFreeVF();
 ndisOidPostIovNicSwitchParameters();
 ndisOidPostIovVPortParameters();
-? ndisOidPostLinkSpeed;
+ndisOidPostLinkSpeed();
 ndisOidPostMaxLookahead();
-? ndisOidPostMediaState;
+ndisOidPostMediaState();
 ? ndisOidPostMiniportSetEncapsulation;
 ndisOidPostMiniportStats();
 ? ndisOidPostOffloadEncapsulation;
 ? ndisOidPostOpenSetEncapsulation;
 ? ndisOidPostPacketFilter;
+ndisOidPostPDOpenProvider();
 ? ndisOidPostPMAddWOLPattern;
 ? ndisOidPostPMParameters;
 ndisOidPostPMRemoveWOLPattern();
@@ -16942,7 +18246,7 @@ ndisOidPostRcvFilterFreeQueue();
 ndisOidPostRcvFilterMoveFilter();
 ndisOidPostRcvFilterQueueParameters();
 ndisOidPostRcvFilterSetFilter();
-ndisOidPostRemovePMProtocolOffload();
+? ndisOidPostRemovePMProtocolOffload;
 ? ndisOidPostRSSParameters;
 ndisOidPostStatistics();
 ndisOidPostTaskOffload();
@@ -16952,10 +18256,10 @@ ndisOidPostWolPatternList();
 ? ndisOidPreAddPMProtocolOffload;
 ndisOidPreAddWakeUpPattern();
 ? ndisOidPreCurrentLookahead;
-ndisOidPreDriverVersion();
+? ndisOidPreDriverVersion;
 ndisOidPreEnableWakeUp();
 ndisOidPreEnumeratePorts();
-ndisOidPreEthAddress();
+? ndisOidPreEthAddress;
 ? ndisOidPreEthMulticastList;
 ? ndisOidPreEthMulticastOid;
 ndisOidPreFriendlyName();
@@ -16988,7 +18292,7 @@ ndisOidPreIovVfSerialNumber();
 ndisOidPreIovVPortParameters();
 ndisOidPreIovWriteVFConfigBlock();
 ndisOidPreIovWriteVFConfigSpace();
-? ndisOidPreLinkSpeedAndMediaState;
+ndisOidPreLinkSpeedAndMediaState();
 ? ndisOidPreLinkState;
 ndisOidPreMacAddress();
 ndisOidPreMacOptions();
@@ -17006,7 +18310,10 @@ ndisOidPreOffloadCaps();
 ? ndisOidPreOffloadHwCaps;
 ? ndisOidPreOpenSetEncapsulation;
 ? ndisOidPrePacketFilter;
-ndisOidPrePhysicalMedium();
+ndisOidPrePDCloseProvider();
+ndisOidPrePDOpenProvider();
+ndisOidPrePDQueryConfig();
+? ndisOidPrePhysicalMedium;
 ? ndisOidPrePMAddWOLPattern;
 ndisOidPrePMCapabilities();
 ndisOidPrePMCurrentCapabilities();
@@ -17036,7 +18343,7 @@ ndisOidPreRcvFilterParameters();
 ndisOidPreRcvFilterQueueParameters();
 ndisOidPreRcvFilterSetFilter();
 ndisOidPreReceiveFilterCaps();
-ndisOidPreRemovePMProtocolOffload();
+? ndisOidPreRemovePMProtocolOffload;
 ndisOidPreRemoveWakeUpPattern();
 ? ndisOidPreRSSCaps;
 ? ndisOidPreRSSParameters;
@@ -17056,7 +18363,7 @@ NdisOpenAdapter();
 ? NdisOpenAdapterEx;
 ndisOpenAdapterLegacyProtocol();
 ndisOpenCancelSendNetBufferLists();
-? NdisOpenConfiguration;
+NdisOpenConfiguration();
 ? NdisOpenConfigurationEx;
 ? NdisOpenConfigurationKeyByIndex;
 ? NdisOpenConfigurationKeyByName;
@@ -17083,11 +18390,11 @@ void __cdecl ndisPcwAddEvent(struct NDIS_PCW_CONTEXT *,unsigned __int64,unsigned
 long __cdecl ndisPcwAddSinglePhysicalInstance(struct _PCW_BUFFER *,struct _NDIS_MINIPORT_BLOCK *);
 long __cdecl ndisPcwCollectData(struct _PCW_BUFFER *);
 long __cdecl ndisPcwCollectPhysicalData(struct _PCW_BUFFER *);
-long __cdecl ndisPcwCollectSingleInstance(struct _PCW_BUFFER *,unsigned long,struct _UNICODE_STRING const *,unsigned __int64 *);
 void __cdecl ndisPcwEndCycleCounter(struct NDIS_PCW_CONTEXT *,unsigned long,unsigned __int64);
 long __cdecl ndisPcwEnumerateInstances(struct _PCW_BUFFER *);
 long __cdecl ndisPcwEnumerateSingleInstance(struct _PCW_BUFFER *,struct _NDIS_MINIPORT_BLOCK *,unsigned long);
 unsigned long __cdecl ndisPcwGetCpu(struct NDIS_PCW_CONTEXT *);
+long __cdecl ndisPcwGetECInstanceName(void *,unsigned long,struct _UNICODE_STRING *);
 long __cdecl ndisPcwGetInstanceName(struct _NDIS_MINIPORT_BLOCK *,unsigned long,struct _UNICODE_STRING *);
 struct _NDIS_PCW_DATA_BLOCK * __cdecl ndisPcwGetMiniportDataBlock(struct _NDIS_MINIPORT_BLOCK *);
 struct _NDIS_PCW_DATA_BLOCK * __cdecl ndisPcwGetMiniportDataBlockInternal(struct _NDIS_MINIPORT_BLOCK *);
@@ -17095,6 +18402,7 @@ unsigned long __cdecl ndisPcwGetMiniportInstanceId(struct _NDIS_MINIPORT_BLOCK *
 struct _UNICODE_STRING const * __cdecl ndisPcwGetMiniportName(struct _NDIS_MINIPORT_BLOCK *);
 struct _NDIS_PCW_PER_CPU_DATA_BLOCK * __cdecl ndisPcwGetPerCpuDataForProcessor(struct _NDIS_PCW_DATA_BLOCK *,unsigned long);
 long __cdecl ndisPcwGetReferencesForConsumer(enum _NDIS_COUNTER_SET_ID,struct _PCW_COUNTER_INFORMATION *,struct _NDIS_PCW_CONSUMER_BLOCK *);
+long __cdecl ndisPcwGetRssInstanceName(struct _NDIS_MINIPORT_BLOCK *,unsigned long,struct _UNICODE_STRING *);
 unsigned char __cdecl ndisPcwMatchInstance(struct _NDIS_MINIPORT_BLOCK *,unsigned long,struct _UNICODE_STRING const *);
 void __cdecl ndisPcwMaybeDeleteDataBlock(struct _NDIS_PCW_DATA_BLOCK *);
 void __cdecl ndisPcwNotifyIfBlockRemoval(struct _NDIS_IF_BLOCK *);
@@ -17105,6 +18413,67 @@ long __cdecl ndisPcwRemoveCounter(enum _NDIS_COUNTER_SET_ID,struct _PCW_COUNTER_
 void __cdecl ndisPcwStartCycleCounter(struct NDIS_PCW_CONTEXT *,unsigned long);
 void __cdecl ndisPcwUpdateMiniportDataBlock(struct _NDIS_PCW_DATA_BLOCK *,enum _NDIS_COUNTER_SET_ID,unsigned __int64,long);
 void __cdecl ndisPcwUpdatePhysicalMiniportCounters(struct _NDIS_MINIPORT_BLOCK *,unsigned __int64);
+long __cdecl NdisPDAddProviderToBMGroup(struct PD_BUFFER_MANAGEMENT_GROUP_HANDLE__ *,struct NDIS_PD_PROVIDER_HANDLE__ *);
+long __cdecl NdisPDAllocateBufferSet(struct PD_BUFFER_MANAGEMENT_GROUP_HANDLE__ *,unsigned long,unsigned short,unsigned long *,unsigned long,struct PD_BUFFER_SET_HANDLE__ * *);
+long __cdecl NdisPDAllocateMemory(struct PD_BUFFER_MANAGEMENT_GROUP_HANDLE__ *,unsigned long,unsigned long *,union _LARGE_INTEGER *,void * *,struct PD_MEMORY_HANDLE__ * *);
+unsigned char __cdecl ndisPdAreBMsCompatible(struct _NDIS_PD_BLOCK const *,struct NDIS_PD_BM_DOMAIN const *);
+void __cdecl NdisPDAssociateNotificationEvent(struct _NDIS_PD_QUEUE *,struct _KEVENT *);
+void __cdecl ndisPdAwmDpcRoutine(struct _KDPC *,void *,void *,void *);
+long __cdecl NdisPDBMAddMemberToDomain(struct NDIS_PD_BM_DOMAIN_HANDLE__ *,struct _NDIS_PD_BM_DOMAIN_MEMBER_PARAMETERS const *,struct NDIS_PD_BM_DOMAIN_MEMBER_HANDLE__ * *);
+long __cdecl NdisPDBMAllocateCommonBuffer(struct NDIS_PD_BM_DOMAIN_HANDLE__ *,unsigned long,unsigned long,unsigned long,union _LARGE_INTEGER *,void * *);
+long __cdecl NdisPDBMCreateDomain(struct _NDIS_PD_BM_DOMAIN_PARAMETERS const *,struct NDIS_PD_BM_DOMAIN_HANDLE__ * *);
+void __cdecl NdisPDBMDeleteDomain(struct NDIS_PD_BM_DOMAIN_HANDLE__ *);
+void __cdecl NdisPDBMFreeCommonBuffer(struct NDIS_PD_BM_DOMAIN_HANDLE__ *,unsigned long,union _LARGE_INTEGER,void *);
+void __cdecl NdisPDBMRemoveMemberFromDomain(struct NDIS_PD_BM_DOMAIN_MEMBER_HANDLE__ *);
+void __cdecl NdisPDCleanup(struct PD_CLIENT_HANDLE__ *);
+void __cdecl ndisPDCleanupPDBlock(struct _NDIS_PD_BLOCK *);
+void __cdecl NdisPDCloseQueue(struct PD_QUEUE_HANDLE__ *);
+void __cdecl NdisPDCompleteFetchedItems(struct PD_QUEUE_HANDLE__ *,unsigned long);
+long __cdecl NdisPDCreateBMGroup(struct PD_CLIENT_HANDLE__ *,struct PD_BUFFER_MANAGEMENT_GROUP_HANDLE__ * *);
+long __cdecl NdisPDCreateQueue(struct PD_CLIENT_HANDLE__ *,unsigned long,unsigned char,struct _KEVENT *,struct _KEVENT *,struct PD_QUEUE_HANDLE__ * *);
+void __cdecl NdisPDDeleteBMGroup(struct PD_BUFFER_MANAGEMENT_GROUP_HANDLE__ *);
+void __cdecl ndisPDDereferenceClientDriver(void *);
+void __cdecl NdisPDDrainCompletedItems(struct PD_QUEUE_HANDLE__ *,struct _SINGLE_LIST_ENTRY * * *,unsigned long);
+void __cdecl NdisPDFetchPostedItems(struct PD_QUEUE_HANDLE__ *,struct _SINGLE_LIST_ENTRY * * *,unsigned long,unsigned char *);
+struct NDIS_PD_BM_DOMAIN * __cdecl ndisPDFindAndReferenceBMDomainUnderLock(unsigned long);
+void __cdecl NdisPDFlushQueue(struct PD_QUEUE_HANDLE__ *);
+void __cdecl NdisPDFreeBufferSet(struct PD_BUFFER_SET_HANDLE__ *);
+void __cdecl NdisPDFreeMemory(struct PD_MEMORY_HANDLE__ *);
+void __cdecl NdisPDGetBuffersFromBufferSet(struct PD_BUFFER_SET_HANDLE__ *,unsigned long *,struct _PD_BUFFER * *);
+long __cdecl ndisPDInitializeMiniportBufferManagement(struct _NDIS_PD_BLOCK *);
+void __cdecl ndisPDInitializePDBuffers(struct _PD_BUFFER * *,unsigned long,union _LARGE_INTEGER,unsigned char *,unsigned long,unsigned long,unsigned short);
+long __cdecl ndisPDPcwCallback(enum _PCW_CALLBACK_TYPE,union _PCW_CALLBACK_INFORMATION *,void *);
+long __cdecl ndisPDPcwUtilizationCallback(enum _PCW_CALLBACK_TYPE,union _PCW_CALLBACK_INFORMATION *,void *);
+long __cdecl NdisPDPIAllocateCounter(struct NDIS_PD_PROVIDER_HANDLE__ *,struct _NDIS_PD_COUNTER_PARAMETERS const *,struct NDIS_PD_COUNTER_HANDLE__ * *);
+long __cdecl NdisPDPIAllocateQueue(struct NDIS_PD_PROVIDER_HANDLE__ *,struct _NDIS_PD_QUEUE_PARAMETERS const *,struct _NDIS_PD_QUEUE * *);
+void __cdecl NdisPDPIClearReceiveFilter(struct NDIS_PD_FILTER_HANDLE__ *);
+void __cdecl NdisPDPIFlushQueue(struct _NDIS_PD_QUEUE *);
+void __cdecl NdisPDPIFreeCounter(struct NDIS_PD_COUNTER_HANDLE__ *);
+void __cdecl NdisPDPIFreeQueue(struct _NDIS_PD_QUEUE *);
+void __cdecl NdisPDPIOffRssReceiveQueues(struct NDIS_PD_PROVIDER_HANDLE__ *);
+long __cdecl NdisPDPIOnRssReceiveQueues(struct NDIS_PD_PROVIDER_HANDLE__ *,struct _NDIS_PD_ON_RSS_QUEUE_PARAMETERS const *,struct _NDIS_PD_QUEUE * *,unsigned long *,struct _NDIS_PD_QUEUE_PARAMETERS *,unsigned long *,unsigned long *);
+void __cdecl NdisPDPIPostAndDrainBufferList(struct _NDIS_PD_QUEUE *,struct _PD_BUFFER * *,struct _PD_BUFFER * * *,unsigned long);
+void __cdecl NdisPDPIPostAndDrainBufferListEx(struct _NDIS_PD_QUEUE *,struct _NDIS_PD_POST_AND_DRAIN_ARG *);
+long __cdecl NdisPDPIProviderControl(struct NDIS_PD_PROVIDER_HANDLE__ *,enum NDIS_PD_CONTROL_TYPE,enum NDIS_PD_PROVIDER_CONTROL_CODE,void *,unsigned long,void *,unsigned long,unsigned long *);
+void __cdecl NdisPDPIQueryCounter(struct NDIS_PD_COUNTER_HANDLE__ *,union _NDIS_PD_COUNTER_VALUE *);
+void __cdecl NdisPDPIQueryQueueDepth(struct _NDIS_PD_QUEUE const *,unsigned __int64 *);
+long __cdecl NdisPDPIQueueControl(struct _NDIS_PD_QUEUE *,enum NDIS_PD_CONTROL_TYPE,enum NDIS_PD_QUEUE_CONTROL_CODE,void *,unsigned long,void *,unsigned long,unsigned long *);
+void __cdecl NdisPDPIRequestDrainNotification(struct _NDIS_PD_QUEUE *);
+long __cdecl NdisPDPISetReceiveFilter(struct NDIS_PD_PROVIDER_HANDLE__ *,struct _NDIS_PD_FILTER_PARAMETERS const *,struct NDIS_PD_FILTER_HANDLE__ * *);
+void __cdecl NdisPDPostAndDrainItems(struct PD_QUEUE_HANDLE__ *,struct _SINGLE_LIST_ENTRY * *,struct _SINGLE_LIST_ENTRY * * *,unsigned long);
+void __cdecl NdisPDPostItems(struct PD_QUEUE_HANDLE__ *,struct _SINGLE_LIST_ENTRY * *);
+void __cdecl NdisPDQueryQueueDepth(struct PD_QUEUE_HANDLE__ *,unsigned __int64 *);
+? ndisPDReadKeywords;
+void __cdecl NdisPDRemoveProviderFromBMGroup(struct NDIS_PD_PROVIDER_HANDLE__ *);
+void __cdecl NdisPDReportECIteration(struct PD_EC_HANDLE__ *,unsigned char);
+void __cdecl NdisPDRequestDrainNotification(struct PD_QUEUE_HANDLE__ *);
+void __cdecl NdisPDRequestFetchNotification(struct PD_QUEUE_HANDLE__ *);
+int __cdecl ndisPDSetBufferManagerHandlers(void *,struct _NDIS_DRIVER_OPTIONAL_HANDLERS const *);
+void __cdecl NdisPDSetupBufferFromMemoryHandle(struct _PD_BUFFER *,struct PD_MEMORY_HANDLE__ *,unsigned long,unsigned long);
+void __cdecl NdisPDSetupBufferFromPdBuffer(struct _PD_BUFFER *,struct _PD_BUFFER const *,unsigned long,unsigned long);
+long __cdecl NdisPDStartEC(struct PD_CLIENT_HANDLE__ *,struct PD_EC_HANDLE__ * *);
+NdisPDStartup();
+void __cdecl NdisPDStopEC(struct PD_EC_HANDLE__ *);
 ndisPeriodicReceivesAddCpu();
 ndisPeriodicReceivesGetMaxNblCount();
 ? ndisPeriodicReceivesTimer;
@@ -17168,10 +18537,12 @@ ndisPowerIrpWorker();
 ? ndisPowerStateCallback;
 ndisPowerSuspendRequestComplete();
 ndisPplCreatePool();
-ndisPplDestroyPool();
+? ndisPplDestroyPool;
 void __cdecl ndisPplLazyInitializeLookaside(struct _NDIS_NPAGED_LOOKASIDE_LIST *,struct _NDIS_NPAGED_LOOKASIDE_LIST *);
+? NdispRegisterShim;
 ndisPreOffloadAdminSettings();
 ? ndisPrepForLowPower;
+? ndisPreProcessOid;
 ndisPreQueryPMParameters();
 ndisPreRemoveMiniportWakeUpPattern();
 ndisPreRemoveOpenWakeUpPattern();
@@ -17230,6 +18601,7 @@ ndisQueryWakeUpPatternList();
 ndisQueryWolPatternList();
 ? ndisQueuedCheckForHang;
 ? ndisQueuedMiniportDpcWorkItem;
+void __cdecl ndisQueueDpcWorkItem(struct _KDPC *,void *,void *,void *,unsigned char);
 ndisQueuedPnPIrpSurpriseRemoval();
 ndisQueuedReenumerateFailedAdapter();
 ndisQueuedResetMiniport();
@@ -17252,6 +18624,7 @@ ndisQueueSendNblsOnMiniport();
 void __cdecl ndisQueueStackExpansionFallbackNbls(struct _NDIS_FILTER_BLOCK *,struct _NET_BUFFER_LIST *,unsigned char);
 ndisQueueStackExpansionFallbackWorkItem();
 ndisQueueWorkItem();
+? ndisReadAddDeviceParametersV1;
 ? ndisReadBindPaths;
 ? NdisReadConfiguration;
 NdisReadEisaSlotInformation();
@@ -17263,7 +18636,7 @@ NdisReadMcaPosInformation();
 ndisReadNDKGlobalFlags();
 ? NdisReadNetworkAddress;
 ? ndisReadOffloadRegistry;
-? ndisReadParameter;
+ndisReadParameter();
 NdisReadPciSlotInformation();
 NdisReadPcmciaAttributeMemory();
 ndisReadPMAdminConfigState();
@@ -17287,10 +18660,10 @@ ndisReferenceFilterByHandle();
 ndisReferenceFilterDriver();
 ? ndisReferenceMiniport;
 ndisReferenceMiniportByGuid();
-ndisReferenceMiniportByHandle();
+? ndisReferenceMiniportByHandle;
 ? ndisReferenceMiniportByHandleForNsi;
 ? ndisReferenceMiniportByName;
-ndisReferenceMiniportByNetLuid();
+struct _NDIS_MINIPORT_BLOCK * __cdecl ndisReferenceMiniportByNetLuid(union _NET_LUID_LH,enum _NDIS_MP_REFTAG);
 ? ndisReferenceMiniportNoCheck;
 ndisReferenceNextUnprocessedMiniport();
 ? ndisReferenceNextUnprocessedOpenEx;
@@ -17301,15 +18674,16 @@ ndisReferenceNextUnprocessedMiniport();
 ndisReferenceRef();
 ndisReferenceRefNoCheck();
 ? ndisReferenceTopMiniportByNameForNsi;
-? ndisReferenceVcPtr;
+ndisReferenceVcPtr();
 ? ndisReferenceWithTag;
 void __cdecl ndisReferenceWithTagStackTrace(struct _NDIS_REFCOUNT_WITH_STACK *,unsigned char);
 ndisRefNextFilterForOidCancellation();
 ? NdisRegisterDeviceEx;
 ndisRegisterMiniportDriver();
-? NdisRegisterProtocol;
+void __cdecl ndisRegisterPDCounterSets(void);
+NdisRegisterProtocol();
 ? NdisRegisterProtocolDriver;
-void __cdecl ndisRegisterProtocolDriverCommon(struct _NDIS_PROTOCOL_BLOCK *);
+? ndisRegisterProtocolDriverCommon;
 ? NdisRegisterTdiCallBack;
 ndisReinitializeMiniportBlock();
 ndisRejectUnsupportedPMOffloads();
@@ -17328,25 +18702,23 @@ ndisRemoveOpenWakeUpPattern();
 ndisRemovePMLowestPriorityEntry();
 ndisReplayRecvNbls();
 ndisReplaySendNbls();
-void __cdecl ndisReportRefcountImbalance(struct _NDIS_REFCOUNT_BLOCK *,unsigned char);
 NdisRequest();
 ? ndisRequestDeviceLowPower;
 ? ndisRequestDevicePowerD0;
 ? ndisRequestedDevicePowerIrpComplete;
-ndisRequestNicActive();
-ndisRequestNicQuiet();
+long __cdecl ndisRequestNicActive(struct _NDIS_MINIPORT_BLOCK *,enum CallRunMode);
+long __cdecl ndisRequestNicQuiet(struct _NDIS_MINIPORT_BLOCK *,unsigned char);
 ndisRequestPowerResume();
 ? ndisRequestWaitWake;
 NdisReset();
 NdisResetEvent();
 ndisResetPMCapabilities();
-? ndisResizeRefCountBlockTagged;
 ? ndisRestartFilter;
 ? ndisRestartFilterInner;
 ? ndisRestartProtocol;
 ? ndisRestoreFilterHandlersForMediaDisconnect;
-? NdisRetreatNetBufferDataStart;
-? NdisRetreatNetBufferListDataStart;
+NdisRetreatNetBufferDataStart();
+NdisRetreatNetBufferListDataStart();
 ? ndisReturnNblWithPowerQueue;
 ? NdisReturnNetBufferLists;
 ndisReturnNetBufferListsInternal();
@@ -17360,7 +18732,7 @@ ndisRollbackPortActivation();
 ndisRollbackPortDeactivation();
 ? ndisSaveParameters;
 ndisScheduleD0CompleteSignalWorkItem();
-? ndisScheduleStartDeviceWorkItem;
+ndisScheduleStartDeviceWorkItem();
 NdisScheduleWorkItem();
 ndisScheduleWorkItemInternal();
 ndisSelectiveSuspendClearStop();
@@ -17390,6 +18762,7 @@ ndisSetEnableWakeUp();
 NdisSetEvent();
 ndisSetFilterDefaultParameter();
 ndisSetIdleTimer();
+NdisSetJobObjectCompartmentId();
 ? ndisSetMediaDisconnectTimer;
 ndisSetMiniportEnableWakeUp();
 ? ndisSetMiniportEthMulticastList;
@@ -17426,20 +18799,38 @@ ndisSetSSHandlers();
 ndisSetSystemPowerNotificationHandlers();
 ? ndisSetSystemPowerOnComplete;
 ndisSetTaskOffloadValidate();
-ndisSetTempRefTimer();
-? NdisSetThreadObjectCompartmentId;
+void __cdecl ndisSetTempRefTimer(struct _NDIS_MINIPORT_BLOCK *,unsigned long);
+NdisSetThreadObjectCompartmentId();
+NdisSetThreadObjectCompartmentScope();
 NdisSetTimer();
 NdisSetTimerEx();
 ? NdisSetTimerObject;
+long __cdecl ndisSetupDeviceAdd(struct _DRIVER_OBJECT *,struct _DEVICE_OBJECT *);
+long __cdecl ndisSetupDeviceCloseIrp(struct _DEVICE_OBJECT *,struct _IRP *);
+long __cdecl ndisSetupDeviceCreateIrp(struct _DEVICE_OBJECT *,struct _IRP *);
+void __cdecl ndisSetupDeviceIdle(struct _KDPC *,void *,void *,void *);
+void __cdecl ndisSetupDeviceInitialize(void);
+long __cdecl ndisSetupDeviceInternalIoControl(struct _DEVICE_OBJECT *,struct _IRP *);
+long __cdecl ndisSetupDevicePnp(struct _DEVICE_OBJECT *,struct _IRP *);
+long __cdecl ndisSetupDevicePower(struct _DEVICE_OBJECT *,struct _IRP *);
+? ndisSetupDeviceQueryCapabilities;
+long __cdecl ndisSetupDeviceRemove(struct NDIS_SETUP_DEVICE_EXTENSION *,struct _IRP *);
+long __cdecl ndisSetupDeviceStart(struct NDIS_SETUP_DEVICE_EXTENSION *,struct _IRP *);
+long __cdecl ndisSetupDeviceStartComplete(struct _DEVICE_OBJECT *,struct _IRP *,void *);
+long __cdecl ndisSetupDeviceSurpriseRemoval(struct NDIS_SETUP_DEVICE_EXTENSION *,struct _IRP *);
 NdisSetupDmaTransfer();
 ? ndisSetupDownwardHandlers;
+void __cdecl ndisSetupDxComplete(struct _DEVICE_OBJECT *,unsigned char,union _POWER_STATE,void *,struct _IO_STATUS_BLOCK *);
 ? ndisSetupLwfMiniportHandlers;
 ? ndisSetupMiniportProtocolHandlers;
 ? ndisSetupNdis6OpenHandlers;
 ? ndisSetupNoFilterHandlers;
+void __cdecl ndisSetupPDCounter(struct NDIS_PD_COUNTER *,struct NDIS_PD_COUNTER_HANDLE__ *,enum NDIS_PD_COUNTER_TYPE,struct NDIS_PD_ASSOCIATION *,unsigned char);
+void __cdecl ndisSetupPDQTracker(struct NDIS_PD_QUEUE_TRACKER *,struct _NDIS_PD_QUEUE *,struct _NDIS_PD_QUEUE_PARAMETERS const *,struct NDIS_PD_ASSOCIATION *,struct NDIS_PD_COUNTER *,unsigned char,unsigned char);
 ? ndisSetupUpwardHandlers;
 ? ndisSetupWmiNode;
 ndisSetWakeUpTimer();
+? ndisShallowCopyNetPnPEvent;
 ? ndisShouldSuppressReceiveFilterCapabilities;
 ndisSignalD0CompleteWorkItem();
 ? ndisSignalD0RequestComplete;
@@ -17448,18 +18839,6 @@ void * __cdecl ndisSourceHandleFromOwner(union _NDIS_NBL_TRACKER_OWNER);
 ? ndisSourcePreAddProtocolOffload;
 ? ndisSourcePreAddWoLPattern;
 ? ndisSplitStatisticsOids;
-? ndisSqmAddToStream;
-ndisSqmCallback();
-ndisSqmGetMiniportName();
-? ndisSqmGetNicInfo;
-? ndisSqmGetPhysicalMiniportInfo;
-ndisSqmLogDriverVersion();
-? ndisSqmReadKeywords;
-? ndisSqmSetDWord;
-void __cdecl ndisSqmSetRareFeatureFlag(enum NDIS_SQM_RARE_FEATURE_FLAG);
-ndisSqmTimerDPCRoutine();
-ndisSqmTimerInitialize();
-ndisSqmTimerWorkerRoutine();
 ndisSriovGetResourceForBar();
 ndisSriovInterfaceDereference();
 ndisSriovInterfaceGetDeviceLocation();
@@ -17487,6 +18866,7 @@ ndisStartMapping();
 ? ndisStartNsiClient;
 ? ndisStartNsiProvider;
 ndisStopNsiProvider();
+public: __int64 __cdecl NdisStopwatch::GetElapsedTimeInMilliseconds(void)const ;
 ndisSubmitIdleRequest();
 void __cdecl ndisSumDataBlock(unsigned __int64 *,unsigned __int64 *);
 ? ndisSwapFilterHandlersForMediaDisconnect;
@@ -17494,7 +18874,7 @@ void __cdecl ndisSumDataBlock(unsigned __int64 *,unsigned __int64 *);
 ndisSynchReturnPacketsForTranslation();
 NdisSystemActiveProcessorCount();
 NdisSystemProcessorCount();
-ndisTempRefTimerDpc();
+void __cdecl ndisTempRefTimerDpc(void *,void *,void *,void *);
 NdisTerminateOffload();
 NdisTerminateWrapper();
 ? ndisThreadPoolTimerHandler;
@@ -17502,30 +18882,74 @@ ndisTopTcpConnectionOffloadStatus();
 ? ndisTraceDelayStopRoutine;
 ndisTraceDpcEnd();
 ndisTraceDpcStart();
+void __cdecl NdisTraceLoggingCancelIdleNotification(struct _NDIS_MINIPORT_BLOCK *);
+void __cdecl NdisTraceLoggingChecksumConfigOffloads(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OFFLOAD *);
+void __cdecl NdisTraceLoggingChecksumHardwareOffloads(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OFFLOAD *);
+void __cdecl NdisTraceLoggingComfirmIdleNotification(struct _NDIS_MINIPORT_BLOCK *,enum _NDIS_DEVICE_POWER_STATE,long);
+void __cdecl NdisTraceLoggingCompletedD0State(struct _NDIS_MINIPORT_BLOCK *,long);
+void __cdecl NdisTraceLoggingCompletedDxState(struct _NDIS_MINIPORT_BLOCK *,long);
+void __cdecl NdisTraceLoggingCompleteIdleNotification(struct _NDIS_MINIPORT_BLOCK *,long);
+void __cdecl NdisTraceLoggingDeprecationCandidate(enum NdisTLDeprecationCandidate);
+void __cdecl NdisTraceLoggingDeprecationCandidate(enum NdisTLDeprecationCandidate,int);
+void __cdecl NdisTraceLoggingDeprecationCandidate(enum NdisTLDeprecationCandidate,struct _NDIS_MINIPORT_BLOCK *,int);
+? NdisTraceLoggingDeviceAdded;
+? NdisTraceLoggingDeviceInitialized;
+void __cdecl NdisTraceLoggingDeviceRemoved(struct _NDIS_MINIPORT_BLOCK *,enum _NDIS_TRACEFORMAT_REMOVAL_REASON);
+? NdisTraceLoggingDeviceStarted;
+void __cdecl NdisTraceLoggingDeviceStatusChange(struct _NDIS_MINIPORT_BLOCK *);
+? NdisTraceLoggingDiscoverOperationalStatus;
+void __cdecl NdisTraceLoggingGreTaskeConfigOffloads(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OFFLOAD *);
+void __cdecl NdisTraceLoggingGreTaskHardwareOffloads(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OFFLOAD *);
+void __cdecl NdisTraceLoggingIdleNotification(struct _NDIS_MINIPORT_BLOCK *,long,unsigned char);
+void __cdecl NdisTraceLoggingLsoV2ConfigOffloads(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OFFLOAD *);
+void __cdecl NdisTraceLoggingLsoV2HardwareOffloads(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OFFLOAD *);
+void __cdecl NdisTraceLoggingMiniportWakeBufferTooLarge(struct _NDIS_MINIPORT_BLOCK *,unsigned long);
+void __cdecl NdisTraceLoggingMiniportWakeReason(struct _NDIS_MINIPORT_BLOCK *,enum _NDIS_PM_WAKE_REASON_TYPE);
+void __cdecl NdisTraceLoggingNDKCapabilities(struct _NDIS_MINIPORT_BLOCK *,union _NDIS_MINIPORT_ADAPTER_ATTRIBUTES *);
+void __cdecl NdisTraceLoggingOffloadConfigRead(struct _NDIS_MINIPORT_BLOCK *);
+? NdisTraceLoggingOffloads;
+void __cdecl NdisTraceLoggingPacketDirectConfigChanged(struct _NDIS_MINIPORT_BLOCK *,unsigned char,unsigned char);
+void __cdecl NdisTraceLoggingQosConfigOffloads(struct _NDIS_MINIPORT_BLOCK *,union _NDIS_MINIPORT_ADAPTER_ATTRIBUTES *);
+void __cdecl NdisTraceLoggingQosHardwareOffloads(struct _NDIS_MINIPORT_BLOCK *,union _NDIS_MINIPORT_ADAPTER_ATTRIBUTES *);
+void __cdecl NdisTraceLoggingQosOperationalStatus(struct _NDIS_MINIPORT_BLOCK *);
+void __cdecl NdisTraceLoggingRareFeaturePath(enum NdisTLRareFeature);
+void __cdecl NdisTraceLoggingRareFeaturePath(enum NdisTLRareFeature,struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_PROTOCOL_BLOCK *);
+void __cdecl NdisTraceLoggingRareFilterPath(struct _NDIS_FILTER_DRIVER_BLOCK *,enum NdisTLFilterEvent,int);
+void __cdecl NdisTraceLoggingRareMiniportPath(struct _NDIS_MINIPORT_BLOCK *,enum NdisTLMiniportEvent,int);
+void __cdecl NdisTraceLoggingRequestD0State(struct _NDIS_MINIPORT_BLOCK *,enum _NDIS_MINIPORT_EVENT,long);
+void __cdecl NdisTraceLoggingRequestDxState(struct _NDIS_MINIPORT_BLOCK *,enum _DEVICE_POWER_STATE,enum _NDIS_MINIPORT_EVENT,long);
+void __cdecl NdisTraceLoggingRscConfigOffloads(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OFFLOAD *);
+void __cdecl NdisTraceLoggingRscHardwareOffloads(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OFFLOAD *);
+void __cdecl NdisTraceLoggingRssConfiguration(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_CONFIGURATION_PARAMETER *,int);
+void __cdecl NdisTraceLoggingStuckNbl(struct _NDIS_NBL_TRACKER *);
+void __cdecl NdisTraceLoggingTemporarilyScribbleNetLuidIndex(union _NET_LUID_LH &);
+void __cdecl NdisTraceLoggingUnexpectedAoAcError(struct _NDIS_MINIPORT_BLOCK *,unsigned short);
+void __cdecl NdisTraceLoggingUnexpectedSelectiveSuspendError(struct _NDIS_MINIPORT_BLOCK *,unsigned short);
+void __cdecl NdisTraceLoggingVxLanConfigOffloads(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OFFLOAD *);
+void __cdecl NdisTraceLoggingVxLanHardwareOffloads(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OFFLOAD *);
 ndisTracePeriodicRcvOnOff();
 ndisTracePeriodicReceivesEnd();
 ndisTracePeriodicReceivesStart();
-ndisTraceQueueWorkItem();
 ndisTraceRcv();
 ? ndisTraceRundownConfirmInitialReference;
-? ndisTraceRundownDereference;
 ? ndisTraceRundownDeviceControl;
 ? ndisTraceRundownReference;
 ? ndisTraceRundownSafeInterlockedIncrement;
 ? ndisTraceRundownStopTraceWorkItem;
-ndisTraceWorkItemExecEnd();
-ndisTraceWorkItemExecStart();
 NdisTransferData();
 ndisTranslateOffloadSetsToTasks();
 ? ndisTranslateResources;
+void __cdecl ndisTriggerPDDrainNotification(struct NDIS_PD_QUEUE_TRACKER *);
 ? NdisTryAcquireNicActive;
 NdisUnbindAdapter();
+void __cdecl ndisUnbindAdapterInner(struct _NDIS_OPEN_BLOCK *);
+void __cdecl ndisUnbindAdapterWorkItem(void *);
 ? ndisUnbindEachProtocolOpenOnMiniport;
 ? ndisUnbindProtocolOpen;
 NdisUnchainBufferAtBack();
 NdisUnchainBufferAtFront();
-ndisUnexpectedAoAcError();
-ndisUnexpectedSsError();
+void __cdecl NdisUnexpectedAoAcError(struct _NDIS_MINIPORT_BLOCK *,unsigned short);
+NdisUnexpectedSsError();
 NdisUnicodeStringToAnsiString();
 ndisUnicodeStringToPointer();
 ndisUnloadPeriodicReceives();
@@ -17555,20 +18979,30 @@ ndisUpdateWmiPMParamsForPatterns();
 ndisUpdateWmiPMParamsForProtocolOffloads();
 ? ndisValidate60Protocol;
 ndisValidateConnectionOffload();
+unsigned char __cdecl ndisValidateGFPExactMatchProfileBuffer(unsigned long,struct _NDIS_GFP_EXACT_MATCH_PROFILE const *);
+unsigned char __cdecl ndisValidateGFPWildcardMatchHGProfileBuffer(unsigned long,struct _NDIS_GFP_HEADER_GROUP_WILDCARD_MATCH_PROFILE const *);
+unsigned char __cdecl ndisValidateGFPWildcardMatchProfileBuffer(unsigned long,struct _NDIS_GFP_WILDCARD_MATCH_PROFILE const *);
+ndisValidateLegacyProtocols();
+bool __cdecl ndisValidateMacAddressChange(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_STATUS_INDICATION const *);
 ndisValidateOffloadCapability();
 bool __cdecl ndisValidateOffsetAndLength(struct _IRP *,struct _NDIS_OFFSET_AND_LENGTH const *,void * *);
+unsigned char __cdecl ndisValidatePDCapsBuffer(unsigned long,struct _NDIS_PD_CAPABILITIES const *);
+unsigned char __cdecl ndisValidatePDConfigBuffer(unsigned long,struct _NDIS_PD_CONFIG const *);
 ndisValidateQosParameters();
+unsigned char __cdecl ndisValidateTrailingElementSpace(unsigned long,struct _NDIS_OBJECT_HEADER const *,unsigned long,unsigned long,unsigned long);
 bool __cdecl ndisValidateUnicodeStringFromOffsetAndLength(struct _IRP *,struct _NDIS_OFFSET_AND_LENGTH const *,struct _UNICODE_STRING *);
 unsigned char __cdecl ndisValidComponentId(enum _NDIS_PM_COMPONENT_ID);
 ? ndisValidOid;
-ndisVBusNmrClientAttachProvider();
-ndisVBusNmrClientCleanupBindingContext();
-ndisVBusNmrClientDetachProvider();
+void __cdecl ndisVBusDetachComplete(void *);
+long __cdecl ndisVBusNmrClientAttachProvider(void *,void *,struct _NPI_REGISTRATION_INSTANCE const *);
+void __cdecl ndisVBusNmrClientCleanupBindingContext(void *);
+long __cdecl ndisVBusNmrClientDetachProvider(void *);
 ndisVBusNmrInitializeClient();
 ndisVBusVirtMiniAdd();
 ndisVBusVirtMiniRemove();
 ndisVerifierAllocateMemory();
 ndisVerifierAllocateMemoryWithTag();
+void * __cdecl ndisVerifierAllocateMemoryWithTagPriority(void *,unsigned int,unsigned long,enum _EX_POOL_PRIORITY);
 ndisVerifierAllocatePacketPool();
 ndisVerifierAllocatePacketPoolEx();
 ndisVerifierFreeMemory();
@@ -17576,6 +19010,11 @@ ndisVerifierFreePacketPool();
 ndisVerifierGetRoutineAddress();
 ? ndisVerifierInitialization;
 ndisVerifierInjectResourceFailure();
+ndisVerifierNdisFIndicateReceiveNetBufferLists();
+ndisVerifierNdisFPauseComplete();
+ndisVerifierNdisFReturnNetBufferLists();
+ndisVerifierNdisFSendNetBufferLists();
+ndisVerifierNdisFSendNetBufferListsComplete();
 ndisVerifierNdisMIndicateStatusEx();
 ndisVerifierNdisMOidRequestComplete();
 ndisVerifierNdisMSendNetBufferListsComplete();
@@ -17583,17 +19022,34 @@ ndisVerifierQueryMapRegisterCount();
 ? NdisWaitEvent;
 void __cdecl ndisWaitForDpcCompletion(long volatile *,unsigned char volatile *,struct _KEVENT *);
 ? ndisWaitForResetCompletion;
-? ndisWaitWakeComplete;
+ndisWaitWakeIoCompletion();
 ndisWakeUpDevice();
+NdisWdfCloseIrpHandler();
+NdisWdfCreateIrpHandler();
+NdisWdfDeregisterCx();
+NdisWdfDeviceControlIrpHandler();
+NdisWdfDeviceInternalControlIrpHandler();
+NdisWdfDeviceWmiHandler();
+NdisWdfGenerateFdoNameIndex();
+NdisWdfGetAdapterContextFromAdapterHandle();
+NdisWdfMiniportDataPathPause();
+NdisWdfMiniportDataPathStart();
+NdisWdfPnPAddDevice();
+NdisWdfPnpPowerEventHandler();
+NdisWdfReadConfiguration();
+NdisWdfRegisterCx();
+NdisWdfRegisterMiniportDriver();
+ndisWdmPnPAddDevice();
 unsigned char __cdecl ndisWildCardStringMatch(struct _UNICODE_STRING const *,struct _UNICODE_STRING const *,unsigned char);
 ndisWmiChangeSingleInstance();
 ? ndisWmiDisableEvents;
 ? ndisWMIDispatch;
 ? ndisWmiEnableEvents;
 ndisWmiExecuteMethod();
-? ndisWmiFindInstanceName;
-ndisWmiGetGuid();
+ndisWmiFindInstanceName();
+? ndisWmiGetGuid;
 ndisWmiGuidIsAdapterSpecific();
+ndisWMIIrpDispatch();
 ndisWmiMapOids();
 ndisWmiQueryAllData();
 ndisWmiQueryPMActiveCapabilities();
@@ -17601,6 +19057,8 @@ ndisWmiQueryPMActiveCapabilities();
 ? ndisWmiRegister;
 ndisWmiSetPMAdminConfig();
 ndisWmiXlateEnumNdisRecvQueuesToWmiRecvQueues();
+ndisWmiXlateNdisOffloadToWmiOffload();
+ndisWmiXlateNdisRecvQueueParamsToWmiRecvQueueParams();
 ndisWnfPdcCallback();
 ? ndisWorkerThread;
 ndisWorkItemHandler();
@@ -17608,9 +19066,9 @@ ndisWorkItemHandler();
 void __cdecl ndisWppFastTraceMessage(struct _GUID const *,unsigned short,...);
 NdisWriteConfiguration();
 ndisWriteConfigurationIfPresent();
-ndisWriteDriverNDISVersionToServiceKey();
+? ndisWriteDriverNDISVersionToServiceKey;
 ? NdisWriteErrorLogEntry;
-? NdisWriteEventLogEntry;
+NdisWriteEventLogEntry();
 NdisWritePciSlotInformation();
 NdisWritePcmciaAttributeMemory();
 ndisWritePMAdminConfigState();
@@ -17642,13 +19100,14 @@ void __cdecl NetDmaPnPEventNotify(void *,struct _NET_DMA_PNP_NOTIFICATION *);
 void __cdecl NetDmaProviderStart(void *,struct _NET_DMA_PROVIDER_ATTRIBUTES *);
 void __cdecl NetDmaProviderStop(void *);
 long __cdecl NetDmaRegisterProvider(void *,void * *,struct _NET_DMA_PROVIDER_CHARACTERISTICS *);
+NetioCopyOpaqueNetBufferListInformation();
 unsigned char __cdecl NetTrcIsNetBufferListCorrelationIdValid(struct _NET_BUFFER_LIST *);
 NETWORKBLOCK_DECREMENT_REF();
 ? nullCreateFilter;
 nullDeleteFilter();
 nullDeleteFilterOpenAdapter();
+void __cdecl operator delete(void *);
 void * __cdecl operator new(unsigned __int64,void *);
-void * __cdecl operator new[](unsigned __int64,unsigned long);
 PiRegStateOpenClassKey();
 PiRegStateReadStackCreationSettingsFromKey();
 ? PplCreateLookasideList;
@@ -17663,43 +19122,45 @@ PplpLazyInitializeLookasideList();
 PpRegStateReadCreateClassCreationSettings();
 PpRegStateUpdateStackCreationSettings();
 PrivateULongMult();
+bool __cdecl ReferenceWdi(void);
 __report_gsfailure();
 __report_rangecheckfailure();
 public: bool __cdecl Rtl::KArray<class KPtr<struct NDIS_BIND_FILTER_LINK,struct KDeletePtr<struct NDIS_BIND_FILTER_LINK> > >::append(class KPtr<struct NDIS_BIND_FILTER_LINK,struct KDeletePtr<struct NDIS_BIND_FILTER_LINK> > &&);
 private: bool __cdecl Rtl::KArray<class KPtr<struct NDIS_BIND_FILTER_LINK,struct KDeletePtr<struct NDIS_BIND_FILTER_LINK> > >::grow(unsigned __int64);
 private: void __cdecl Rtl::KArray<class KPtr<struct NDIS_BIND_FILTER_LINK,struct KDeletePtr<struct NDIS_BIND_FILTER_LINK> > >::moveElements(unsigned long,unsigned long,unsigned long);
 ? Rtl::KArray<KPtr<NDIS_BIND_FILTER_LINK,KDeletePtr<NDIS_BIND_FILTER_LINK> > >::reserve;
-public: bool __cdecl Rtl::KArray<class KPtr<struct NDIS_BIND_PROTOCOL_LINK,struct KDeletePtr<struct NDIS_BIND_PROTOCOL_LINK> > >::append(class KPtr<struct NDIS_BIND_PROTOCOL_LINK,struct KDeletePtr<struct NDIS_BIND_PROTOCOL_LINK> > &&);
-private: bool __cdecl Rtl::KArray<class KPtr<struct NDIS_BIND_PROTOCOL_LINK,struct KDeletePtr<struct NDIS_BIND_PROTOCOL_LINK> > >::grow(unsigned __int64);
-? Rtl::KArray<KPtr<NDIS_BIND_PROTOCOL_LINK,KDeletePtr<NDIS_BIND_PROTOCOL_LINK> > >::insertAt;
-public: bool __cdecl Rtl::KArray<class KPtr<struct NDIS_BIND_PROTOCOL_LINK,struct KDeletePtr<struct NDIS_BIND_PROTOCOL_LINK> > >::insertSortedUnique(class KPtr<struct NDIS_BIND_PROTOCOL_LINK,struct KDeletePtr<struct NDIS_BIND_PROTOCOL_LINK> > &&,bool (__cdecl*)(class KPtr<struct NDIS_BIND_PROTOCOL_LINK,struct KDeletePtr<struct NDIS_BIND_PROTOCOL_LINK> > const &,class KPtr<struct NDIS_BIND_PROTOCOL_LINK,struct KDeletePtr<struct NDIS_BIND_PROTOCOL_LINK> > const &));
+? Rtl::KArray<KPtr<NDIS_BIND_PROTOCOL_LINK,KDeletePtr<NDIS_BIND_PROTOCOL_LINK> > >::append;
+public: bool __cdecl Rtl::KArray<class KPtr<struct NDIS_BIND_PROTOCOL_LINK,struct KDeletePtr<struct NDIS_BIND_PROTOCOL_LINK> > >::insertAt(unsigned __int64,class KPtr<struct NDIS_BIND_PROTOCOL_LINK,struct KDeletePtr<struct NDIS_BIND_PROTOCOL_LINK> > &&);
 ? Rtl::KArray<KPtr<NDIS_BIND_PROTOCOL_LINK,KDeletePtr<NDIS_BIND_PROTOCOL_LINK> > >::moveElements;
 ? Rtl::KArray<KPtr<NDIS_BIND_PROTOCOL_LINK,KDeletePtr<NDIS_BIND_PROTOCOL_LINK> > >::reserve;
 private: bool __cdecl Rtl::KArray<class KRef<struct NDIS_BIND_FILTER_DRIVER> >::grow(unsigned __int64);
-? Rtl::KArray<KRef<NDIS_BIND_FILTER_DRIVER> >::reserve;
+public: bool __cdecl Rtl::KArray<class KRef<struct NDIS_BIND_FILTER_DRIVER> >::reserve(unsigned __int64);
 private: bool __cdecl Rtl::KArray<class KRef<struct NDIS_BIND_PROTOCOL_DRIVER> >::grow(unsigned __int64);
 ? Rtl::KArray<KRef<NDIS_BIND_PROTOCOL_DRIVER> >::reserve;
 ? Rtl::KArray<unsigned char>::reserve;
 private: bool __cdecl Rtl::KArray<void *>::grow(unsigned __int64);
 ? Rtl::KArray<void * __ptr64>::reserve;
 public: bool __cdecl Rtl::KArray<void *>::resize(unsigned __int64);
-public: void __cdecl Rtl::KNeutralLock<enum NDIS_MINIPORT_POLICY_OWNER>::Acquire(enum NDIS_MINIPORT_POLICY_OWNER);
+? Rtl::KNeutralLock<enum NDIS_MINIPORT_POLICY_OWNER>::Acquire;
 public: void __cdecl Rtl::KNeutralLock<enum NDIS_MINIPORT_POLICY_OWNER>::Release(enum NDIS_MINIPORT_POLICY_OWNER);
 public: bool __cdecl Rtl::KNeutralLock<enum NDIS_MINIPORT_POLICY_OWNER>::TryAcquire(enum NDIS_MINIPORT_POLICY_OWNER);
 public: static struct Rtl::KString * __cdecl Rtl::KString::Initialize(struct _UNICODE_STRING const *);
 public: static struct Rtl::KString * __cdecl Rtl::KString::Initialize(unsigned short const *);
 long __cdecl RtlCopyBufferToMdl(void *,struct _MDL *,unsigned __int64,unsigned __int64,unsigned __int64 *);
+? RtlCopyMdlToBuffer;
 long __cdecl RtlCopyMdlToMdl(struct _MDL *,unsigned __int64,struct _MDL *,unsigned __int64,unsigned __int64,unsigned __int64 *);
 ? RtlStringCbPrintfW;
 ? RtlStringCchPrintfW;
-long __cdecl RtlULongLongMult(unsigned __int64,unsigned __int64,unsigned __int64 *);
 long __cdecl RtlUnicodeStringCat(struct _UNICODE_STRING *,struct _UNICODE_STRING const *);
 long __cdecl RtlUnicodeStringCopy(struct _UNICODE_STRING *,struct _UNICODE_STRING const *);
 long __cdecl RtlUnicodeStringCopyString(struct _UNICODE_STRING *,unsigned short const *);
 long __cdecl RtlUnicodeStringPrintf(struct _UNICODE_STRING *,unsigned short const *,...);
 ? RtlUnicodeStringValidateDestWorker;
+? RtlUnicodeStringValidateSrcWorker;
 ? RtlUnicodeStringValidateWorker;
+long __cdecl RtlUShortAdd(unsigned short,unsigned short,unsigned short *);
 ? RtlWideCharArrayCopyStringWorker;
+? RtlWideCharArrayCopyWorker;
 __security_check_cookie();
 __security_init_cookie();
 ? SepSddlAddAceToAcl;
@@ -17718,7 +19179,7 @@ Template_jcqjzzz();
 Template_jqx();
 Template_jqxb();
 Template_jqxjqxqq();
-Template_jqxptq();
+Template_jqxptqq();
 Template_jqxq();
 Template_jqxqq();
 Template_jqxqqq();
@@ -17748,16 +19209,28 @@ Template_xqx();
 Template_z();
 Template_zq();
 TemplateEventDescriptor();
+_TlgCreateWsz();
+? _TlgDefineProvider_annotation__Tlgg_ndisTraceLogProviderProv;
+? _TlgEnableCallback;
+_TlgKeywordOn();
+_TlgWrite();
+TraceLoggingProviderEnabled();
+TraceLoggingRegisterEx();
 WdmlibInit();
 WdmlibIoCreateDeviceSecure();
 WdmlibRtlInitUnicodeStringEx();
 WPP_SF_();
+WPP_SF__guid_();
+WPP_SF__guid__guid_();
+WPP_SF__guid__guid__guid_();
 WPP_SF__guid_D();
+WPP_SF__guid_d();
 WPP_SF__guid_Dq();
 WPP_SF__guid_DqD();
 WPP_SF_D();
 WPP_SF_d();
 WPP_SF_DD();
+WPP_SF_Dd();
 WPP_SF_dD();
 WPP_SF_dd();
 WPP_SF_DDD();
@@ -17775,6 +19248,7 @@ WPP_SF_dl();
 WPP_SF_dlL();
 WPP_SF_dllL();
 WPP_SF_dq();
+WPP_SF_dqd();
 WPP_SF_DqL();
 WPP_SF_Dql();
 WPP_SF_DqlD();
@@ -17800,20 +19274,31 @@ WPP_SF_LqqZZ();
 WPP_SF_LqZ();
 WPP_SF_LZq();
 WPP_SF_q();
+WPP_SF_qccL();
+WPP_SF_qcL();
 WPP_SF_qD();
 WPP_SF_qd();
 WPP_SF_qDD();
 WPP_SF_qdD();
+WPP_SF_qdd();
 WPP_SF_qdDd();
+WPP_SF_qddd();
+WPP_SF_qdddD();
 WPP_SF_qDDDDDD();
 WPP_SF_qDDLq();
+WPP_SF_qddqq();
+WPP_SF_qddqqS();
+WPP_SF_qddS();
 WPP_SF_qDdZ();
 WPP_SF_qDL();
 WPP_SF_qdL();
 WPP_SF_qDLLq();
 WPP_SF_qDq();
 WPP_SF_qDqD();
+WPP_SF_qdqd();
 WPP_SF_qDqL();
+WPP_SF_qdqxqd();
+WPP_SF_qdSS();
 WPP_SF_qL();
 WPP_SF_ql();
 WPP_SF_qLd();
@@ -17822,6 +19307,7 @@ WPP_SF_qLDDDDDDDDDDD();
 WPP_SF_qLL();
 WPP_SF_qLl();
 WPP_SF_qlL();
+WPP_SF_qLLd();
 WPP_SF_qLLDDDDDDDDDD();
 WPP_SF_qLLL();
 WPP_SF_qLLLL();
@@ -17829,6 +19315,7 @@ WPP_SF_qLLq();
 WPP_SF_qllq();
 WPP_SF_qLLqD();
 WPP_SF_qLLqL();
+WPP_SF_qLLS();
 WPP_SF_qLq();
 WPP_SF_qLqL();
 WPP_SF_qq();
@@ -17839,11 +19326,14 @@ WPP_SF_qqDd();
 WPP_SF_qqDDD();
 WPP_SF_qqDL();
 WPP_SF_qqDq();
+WPP_SF_qqdqq();
+WPP_SF_qqdqqS();
 WPP_SF_qqil();
 WPP_SF_qqill();
 WPP_SF_qqL();
 WPP_SF_qql();
 WPP_SF_qqLD();
+WPP_SF_qqLd();
 WPP_SF_qqq();
 WPP_SF_qqqD();
 WPP_SF_qqqd();
@@ -17851,6 +19341,8 @@ WPP_SF_qqqDD();
 WPP_SF_qqqL();
 WPP_SF_qqqq();
 WPP_SF_qqqqD();
+WPP_SF_qqqqd();
+WPP_SF_qqqqDd();
 WPP_SF_qqqqDL();
 WPP_SF_qqqqq();
 WPP_SF_qqqqqL();
@@ -17858,6 +19350,7 @@ WPP_SF_qqZ();
 WPP_SF_qqZddZ();
 WPP_SF_qqZddZD();
 WPP_SF_qqZZ();
+WPP_SF_qS();
 WPP_SF_qs();
 WPP_SF_qSD();
 WPP_SF_qsD();
@@ -17874,6 +19367,7 @@ WPP_SF_Sd();
 WPP_SF_sL();
 WPP_SF_SqZ();
 WPP_SF_Sx();
+WPP_SF_SZ();
 WPP_SF_sZZ();
 WPP_SF_Z();
 WPP_SF_Zd();
@@ -17893,8 +19387,6 @@ XlateReceivePacketStats();
 ? XNoteFilterOpenAdapter;
 ? XRemoveBindingFromLists;
 ? XSetupFrameTypeInFilter;
-zzz_AsmCodeRange_Begin();
-zzz_AsmCodeRange_End();
 
 // Globals
 
@@ -17939,6 +19431,8 @@ DevicePowerOnRequested;
 DevicePowerStateChange;
 struct _UNICODE_STRING DeviceSleepOnDisconnectStr;
 DeviceWaitWakeComplete;
+DEVPKEY_Device_InstanceId;
+DEVPKEY_Device_PostInstallInProgress;
 DEVPKEY_PciDevice_CurrentLinkSpeed;
 DEVPKEY_PciDevice_CurrentLinkWidth;
 DEVPKEY_PciDevice_CurrentPayloadSize;
@@ -17959,7 +19453,9 @@ DpcEnd;
 DpcStart;
 unsigned long * DpcTimeCount;
 unsigned long * DpcWatchdogCount;
+struct _UNICODE_STRING EncapsulatedPacketTaskOffloadNvgreStr;
 struct _UNICODE_STRING EncapsulatedPacketTaskOffloadStr;
+struct _UNICODE_STRING EncapsulatedPacketTaskOffloadVxlanStr;
 EnteringConnectedStandby;
 struct _GUID EtwGuidNdisReceive;
 ExecuteMethodFailed;
@@ -17970,7 +19466,15 @@ FilterRegistrationFailed;
 FilterRemovalIndicationFailed;
 FilterStateChangeEx;
 struct _UNICODE_STRING FlowControlStr;
+class MINIPORT_HOOK_DRIVER * g_MiniportHookDrivers;
+class KPushLockManualConstruct g_MiniportHookDriversLock;
+bool g_WdiLoadedByNdis;
+class KWaitEventManualConstruct g_WdiLoadInProgress;
+class KPushLockManualConstruct g_WdiLoadLock;
+enum WdiLoadState g_WdiLoadState;
+unsigned long g_WdiRefCount;
 __guard_check_icall_fptr;
+__guard_dispatch_icall_fptr;
 __guard_fids_count;
 __guard_fids_table;
 __guard_flags;
@@ -17988,7 +19492,9 @@ GUID_BUS_TYPE_PCMCIA;
 GUID_BUS_TYPE_USB;
 GUID_CS_BLOCKER_GEN;
 GUID_DEVICE_INTERFACE_ARRIVAL;
+GUID_DEVICE_RESET_INTERFACE_STANDARD;
 GUID_DEVINTERFACE_NET;
+GUID_DEVINTERFACE_NETSETUPNEEDED;
 GUID_DEVINTERFACE_VIRTUALIZABLE_DEVICE;
 GUID_MSIX_TABLE_CONFIG_INTERFACE;
 GUID_NDIS_ENUMERATE_ADAPTER;
@@ -18014,9 +19520,9 @@ GUID_NDIS_PM_ADMIN_CONFIG;
 GUID_NDIS_RSS_ENABLED;
 GUID_NDIS_WAKE_ON_MAGIC_PACKET_ONLY;
 GUID_PCI_VIRTUALIZATION_INTERFACE;
+GUID_PDC_IDLE_RESILIENCY_ENGAGED;
 GUID_POWER_DEVICE_ENABLE;
 GUID_POWER_DEVICE_WAKE_ENABLE;
-GUID_REENUMERATE_SELF_INTERFACE_STANDARD;
 GUID_SLEEPSTUDY_BLOCKER_PARENT_NETWORKING;
 GUID_SPM_LOW_POWER_CS;
 GUID_SRIOV_DEVICE_INTERFACE_STANDARD;
@@ -18028,11 +19534,10 @@ unsigned long IfUsedIfIndicesLength;
 __IMPORT_DESCRIPTOR_HAL;
 __IMPORT_DESCRIPTOR_NETIO;
 __IMPORT_DESCRIPTOR_ntoskrnl;
+__IMPORT_DESCRIPTOR_WppRecorder;
 IndicateAdapterRemovalFailed;
 InitializeAdapterFailed;
 InitializeAdapterInfo;
-unsigned long * InterfaceRodOidArray;
-struct _UNICODE_STRING InterruptModerationStr;
 InvalidSystemPowerState;
 IoDeviceObjectType;
 IoFileObjectType;
@@ -18042,7 +19547,6 @@ struct _UNICODE_STRING IPsecV2IPv4Str;
 struct _UNICODE_STRING IPsecV2Str;
 struct _UNICODE_STRING IPXsumIPv4Str;
 IrpSetPowerFailed;
-struct _UNICODE_STRING JumboPacketStr;
 KdDebuggerEnabled;
 union _LARGE_INTEGER KeBootTime;
 KeptFilterFakeHandlers;
@@ -18077,6 +19581,7 @@ MiniportPowerDeviceState;
 MiniportPoweringUp;
 MiniportPowerStates;
 MiniportPowerSystemState;
+MiniportReset;
 MiniportStatusIndicationConnect;
 MiniportStatusIndicationDisconnect;
 MiniportStatusIndicationNetworkChange;
@@ -18109,22 +19614,19 @@ struct _KDPC ndisCmCleanupDpc;
 long volatile ndisCmCleanupScheduled;
 struct _KTIMER ndisCmCleanupTimer;
 struct _WORK_QUEUE_ITEM ndisCmCleanupWorkItem;
+struct _OBJECT_TYPE * ndisCmNetworkNamespaceObjectType;
 struct _NDIS_CM_SESSION_STATE * ndisCmSession;
 unsigned long ndisCmSessionCount;
 unsigned __int64 ndisCmSessionLock;
-struct _LIST_ENTRY ndisCmThread;
-unsigned long ndisCmThreadCount;
-unsigned __int64 ndisCmThreadLock;
 long volatile ndisCmWorkItemQueued;
 unsigned char ndisConnectedStandby;
 struct _GUID ndisControlGuid;
 unsigned long ndisCorrelationCounter;
 struct _NDIS_GUID * ndisCoSupportedGuids;
 struct _NDIS_PROCESSOR_INFO_EX * ndisCpuInfo;
-struct _NDIS_CS_BLOCKER_NAME * ndisCsBlockerNames;
+unsigned char ndisCsResiliency;
 unsigned long ndisDebugLoggingMode;
-struct _GUID ndisDefaultCompartmentGuid;
-struct _GUID ndisDefaultNetworkGuid;
+struct _GUID const ndisDefaultNetworkGuid;
 unsigned long ndisDefaultPnPCapabilities;
 struct _DEVICE_OBJECT * ndisDeviceObject;
 struct _UNICODE_STRING ndisDeviceStr;
@@ -18140,6 +19642,7 @@ enum _POOL_TYPE ndisDriverPoolType;
 struct _NDIS_M_DRIVER_BLOCK * ndisDriverTrackAlloc;
 struct _LIST_ENTRY ndisDriverTrackAllocList;
 struct _NDIS_OBJECT_HEADER ndisDummyObject;
+unsigned char ndisEnforceDisconnectedStandby;
 NdisErrorLogEntry;
 struct _UNICODE_STRING ndisFdoDeviceStr;
 unsigned long ndisFdoIndex;
@@ -18150,6 +19653,8 @@ unsigned __int64 ndisFilterDriverListLock;
 struct _UNICODE_STRING ndisFilterDriverParamsStr;
 struct _UNICODE_STRING ndisFilterInstanceParamsStr;
 long ndisFlags;
+struct _KSE_HOOK * NdisGetVersion640ShimHooks;
+struct _KSE_HOOK_COLLECTION * NdisGetVersionShimHookCollections;
 struct _NDIS_FILTER_BLOCK * ndisGlobalFilterList;
 unsigned __int64 ndisGlobalFilterListLock;
 unsigned __int64 ndisGlobalLock;
@@ -18176,7 +19681,6 @@ unsigned short * ndisHexLookUp;
 unsigned __int64 ndisIfBlockMiniportLinkLock;
 unsigned long ndisIfCompartmentCount;
 struct _LIST_ENTRY ndisIfCompartmentList;
-struct _LIST_ENTRY ndisIfIsolationList;
 struct _LIST_ENTRY ndisIfList;
 unsigned __int64 ndisIfListLock;
 struct _IF_COUNTED_STRING_LH ndisIfLoopbackAlias;
@@ -18194,7 +19698,6 @@ unsigned __int64 ndisIfStackEntryLock;
 struct _LIST_ENTRY ndisIfTypesList;
 long volatile ndisInstanceNumber;
 unsigned long ndisInterfaceCount;
-unsigned int ndisInterfaceIndex;
 struct _NDIS_INTERNAL_REQUEST_OBJECT ndisIntReqGeneric;
 struct _NDIS_INTERNAL_REQUEST_OBJECT ndisIntReqIoctl;
 struct _NDIS_INTERNAL_REQUEST_OBJECT ndisIntReqNsi;
@@ -18212,6 +19715,7 @@ unsigned long ndisMaxCacheLineSize;
 unsigned long ndisMaxNumberFilterPerAdapter;
 unsigned long ndisMaxNumberOfProcessors;
 unsigned long ndisMaxNumRssCpus;
+unsigned long ndisMdlMappingNxFlag;
 struct _NDIS_GUID * ndisMediaSupportedGuids;
 unsigned char * ndisMediaTypeCl;
 enum _NDIS_MEDIUM * ndisMediumArray;
@@ -18224,6 +19728,7 @@ struct _NDIS_MINIPORT_BLOCK * ndisMiniportList;
 unsigned __int64 ndisMiniportListLock;
 struct _NDIS_MINIPORT_BLOCK * ndisMiniportTrackAlloc;
 struct _LIST_ENTRY ndisMiniportTrackAllocList;
+void * ndisMpHookNmrClientHandle;
 struct _KDPC ndisNblTrackerDpc;
 unsigned long ndisNblTrackerEpoch;
 unsigned __int64 * ndisNblTrackerHistoryBuffer;
@@ -18251,8 +19756,8 @@ void * ndisNsiClientInterfaceChangeNotificationHandle;
 void * ndisNsiClientInterfaceEnumChangeNotificationHandle;
 void * ndisNsiClientNetworkChangeNotificationHandle;
 unsigned char ndisNsiInitialized;
+union _RTL_RUN_ONCE ndisNsiInitOnceBlock;
 void * ndisNsiInterfaceProviderHandle;
-struct _NPI_PROVIDER_CHARACTERISTICS ndisNsiInterfaceProviderNotify;
 struct _NM_CLIENT_NPI ndisNsiSavedClientNpi;
 struct _NDIS_NSI_CHANGE_NOTIFICATION ndisNsiSavedCompartmentChangeNotification;
 struct _NDIS_NSI_CHANGE_NOTIFICATION ndisNsiSavedInterfaceChangeNotification;
@@ -18270,6 +19775,10 @@ class KPushLockManualConstruct ndisPcwMutex;
 unsigned long ndisPcwOffsetToPerCpuData;
 unsigned long ndisPcwPerCpuDataStride;
 struct _UNICODE_STRING ndisPcwSystemTotalInstanceName;
+ndisPDECUtilizationCounterSet;
+ndisPDRxFilterCounterSet;
+ndisPDRxQueueCounterSet;
+ndisPDTxQueueCounterSet;
 struct _WORK_QUEUE_ITEM * ndisPerCpuPoisonPills;
 struct _NDIS_PERIODIC_RECEIVES ndisPeriodicReceives;
 struct _KMUTANT ndisPeriodicReceivesMutex;
@@ -18296,25 +19805,19 @@ struct _NDIS_LEGACY_RWLOCK_TRACKER * ndisRWLocksOwnedByThread;
 void * ndisSecurityDescriptor;
 struct _NDIS_PKT_POOL * ndisSendPacketPool;
 union _EPOCH_AND_ZERO NdisSessionToCompartmentMappingEpochAndZero;
-unsigned char ndisSqmEnabled;
-unsigned __int64 ndisSqmEtwHandle;
-unsigned long ndisSqmRareFeatureFlags;
-unsigned char ndisSqmTimerInitialized;
-struct _KTIMER ndisSqmTmer;
-struct _KDPC ndisSqmTmerDpc;
-struct _WORK_QUEUE_ITEM ndisSqmWorkItem;
-long volatile ndisSqmWorkItemQueued;
+struct NDIS_SETUP_DEVICE_EXTENSION * ndisSetupDeviceList;
+class KPushLockManualConstruct ndisSetupDeviceListLock;
+struct _KSE_SHIM NdisShim;
+unsigned char ndisSriovSupportTestOverride;
 unsigned long ndisStackExpansionFaultInjectionLevel;
 unsigned long ndisStackExpansionFaultInjectionRatio;
 struct _NDIS_STACK_TRACE_TABLE ndisStackTraces;
 unsigned long ndisStartDeviceSync;
-struct _NDIS_OID_CACHE_ENTRY * NdisStatsOids;
 struct _NDIS_GUID * ndisStatusSupportedGuids;
 struct _NDIS_GUID * ndisSupportedGuids;
 void * ndisSystemProcess;
 struct _NDIS_SYSTEM_PROCESSOR_INFO_EX * ndisSystemProcessorInfo;
 unsigned char ndisSystemSupportsSriov;
-struct _NDIS_TCP_OFFLOAD_EVENT_HANDLERS NdisTcpChimneyOffloadHandlers;
 long (__cdecl* ndisTdiPnPHandler)(struct _UNICODE_STRING *,struct _UNICODE_STRING *,struct _UNICODE_STRING *,void *,unsigned int,unsigned int);
 long (__cdecl* ndisTdiRegisterCallback)(struct _UNICODE_STRING *,void * *);
 long ndisThreadPoolIdleThreadCount;
@@ -18344,7 +19847,6 @@ unsigned char ndisWrapperInitialized;
 unsigned char NdkGlobalDisabled;
 unsigned long NdkGlobalFlags;
 struct _NDIS_NDK_BLOCK * NdkPcwNdkBlockList;
-struct _UNICODE_STRING NetAddrStr;
 NicActiveAcquired;
 NicActiveRefRundownBegin;
 NicActiveRefRundownEnd;
@@ -18360,12 +19862,13 @@ NicWakeReason;
 NotifyMiniportAction;
 NPI_MS_NDIS_MODULEID;
 NPI_MS_NDIS_VBUS_MODULEID;
+NPI_NDIS_MINIPORT_HOOK_ID;
 NPI_NDIS_VBUS_INTERFACE_ID;
 NPI_NSI_MODULE_ID;
 __NULL_IMPORT_DESCRIPTOR;
 struct _UNICODE_STRING NumaNodeIdStr;
+long volatile NumNdisDllInitialize;
 OidQueryFailed;
-struct _NDIS_OID_INFO * OidTable;
 OpenFailedMiniportNotStarted;
 pfnEtwRegisterClassicProvider;
 pfnEtwUnregister;
@@ -18400,6 +19903,7 @@ PowerWakeUpDevice;
 ProtocolBind;
 ProtocolBindStatus;
 ProtocolUnbind;
+PsJobType;
 PsThreadType;
 QueryPnPDeviceStateFailed;
 QueryPowerComplete;
@@ -18419,6 +19923,7 @@ struct _UNICODE_STRING RssBaseProcNumStr;
 struct _UNICODE_STRING RssMaxProcGroupStr;
 struct _UNICODE_STRING RssMaxProcNumStr;
 struct _UNICODE_STRING RssProfileStr;
+struct _UNICODE_STRING RssStr;
 RstLimitChange;
 __security_cookie;
 __security_cookie_complement;
@@ -18434,8 +19939,6 @@ SLEEPSTUDY_ETW_PROVIDER;
 SLEEPSTUDY_ETW_PROVIDER_Context;
 SLEEPSTUDY_EVT_SCENARIO_BLOCKER;
 SLEEPSTUDY_EVT_SCENARIO_BLOCKER_DATA;
-SQM_ADD_STREAMROW;
-SQM_SET_DWORD;
 SSIdleDeclined;
 SSIdleDetected;
 struct _UNICODE_STRING SSIdleTimeoutMsStr;
@@ -18448,6 +19951,9 @@ struct _UNICODE_STRING TCPUDPChecksumOffloadIPv4Str;
 struct _UNICODE_STRING TCPUDPChecksumOffloadIPv6Str;
 struct _UNICODE_STRING TCPXsumIPv4Str;
 struct _UNICODE_STRING TCPXsumIPv6Str;
+unsigned long traceInited;
+_TraceLoggingMetadata;
+_TraceLoggingMetadataEnd;
 TransportFailedPnPEvent;
 struct _UNICODE_STRING UDPXsumIPv4Str;
 struct _UNICODE_STRING UDPXsumIPv6Str;
@@ -18463,54 +19969,58 @@ struct _UNICODE_STRING WakeOnPatternStr;
 WdmlibInitialized;
 WNF_NDIS_ADAPTER_ARRIVAL;
 WNF_PO_SCENARIO_CHANGE;
-WPP_0d17f2ad92f491b80f36cfc1db4e9693_Traceguids;
-WPP_1825a31aec97f3739a8a5657ee4c068d_Traceguids;
-WPP_2313c658c604fd903c48636a42eb7fbc_Traceguids;
-WPP_23fc73ad2a0a1229e03286f669da3bed_Traceguids;
+WPP_0009299248ba37495192320194ebfcad_Traceguids;
+WPP_0f031f2086e21aadff9092658e664f02_Traceguids;
+WPP_10e48bb64bbb401b7e1b3e1f08acf4e0_Traceguids;
+WPP_11d423e8e1961e492b47e90eefd811d6_Traceguids;
+WPP_1419b0d2dfaf9db90a53e9a71e6be7d3_Traceguids;
+WPP_16c498e586029ff04e68784cec121b68_Traceguids;
+WPP_19165d00fb3b32ae989335dc29d87a5c_Traceguids;
+WPP_1cc5f871cedf10552d05c49613c81edf_Traceguids;
 WPP_28e0ced77d8c435d2081eccb5146e802_Traceguids;
-WPP_325a31014953221e4f5601bf6f970eeb_Traceguids;
-WPP_36423fff8a2918b0880a5888e4c6c47f_Traceguids;
-WPP_39bc663a5823b4dedc91e2e73a8f6f51_Traceguids;
+WPP_304415265f2144ff9c00725e97f01d60_Traceguids;
+WPP_34eaeff8600c26a691447e424419d251_Traceguids;
+WPP_3938e34cfd3e87c199f25aea88577591_Traceguids;
 WPP_3b3cf53caa2a3bc57e3e25119abf216e_Traceguids;
-WPP_4a16abc960106484ce5b8654878c6239_Traceguids;
+WPP_3f68a8bf550acb3a0126cdaceca70c67_Traceguids;
+WPP_53645ffc4554d120dec6fc6e0dcf42a1_Traceguids;
+WPP_56ef47bcd2b9f0689e12eeceae5d2bd7_Traceguids;
 WPP_5b8c069e2f8125229af88e505e9ace44_Traceguids;
 WPP_5fa83df1bdfe88950d38f0d0c6f81eb5_Traceguids;
-WPP_61561a89f58fadd93157440a6de27839_Traceguids;
-WPP_6253a5116d8cd242e7d3b2eb13e0e8f1_Traceguids;
-WPP_66fb683362fa1dea73c6972abb248afe_Traceguids;
+WPP_63298f27d84d406e2a9901f9d2228ddf_Traceguids;
+WPP_67b83ca0c3bb11ebff428113d40c1d7a_Traceguids;
+WPP_6a692414356915a11899ae4f03d1c3ae_Traceguids;
+WPP_6c8db4fe7eb94b473a3ef095da1bfaf8_Traceguids;
 WPP_6d008e340352ce512a7732a5bb09c858_Traceguids;
+WPP_6e2fc96078008429fd92c28490874609_Traceguids;
 WPP_6e95c490e51e9748073b6395c0120650_Traceguids;
-WPP_714a66f961a58b1ca54409c9c1d4411f_Traceguids;
+WPP_75e1efd28296d0eb44f544918be720c4_Traceguids;
+WPP_7ca741a9eb81f7000b5d6f1ade868ed0_Traceguids;
+WPP_816ff7a89d638f3657e368d6b001fcf6_Traceguids;
+WPP_8578613493474478f9fbc41c93fda03c_Traceguids;
 WPP_8f35a3663126a6381ade30b0d8399dbd_Traceguids;
-WPP_915798c8ea406cb1deeb69c44647a52c_Traceguids;
+WPP_8f6d621b9670942a7823ab6ddc5f2e50_Traceguids;
+WPP_907f2c296662aafae9742c49c7fcbed7_Traceguids;
 WPP_950a21ee35671e8e318a63209c7fb87a_Traceguids;
+WPP_950fd02a41f71370bf2a5f0ab74416c8_Traceguids;
 WPP_98be5e8eac0fef6790683cac5c76438b_Traceguids;
-WPP_a7a91fc89303eda1b4fec6211be8f41f_Traceguids;
+WPP_a612080d527c97bcc88e648492c760b7_Traceguids;
 WPP_aa112ccb62b641732c8489d63791523f_Traceguids;
 WPP_abea78df5d3bc502c1918c83347dcce9_Traceguids;
 WPP_ae5fc3bcf975bfa51711a086aa3de00d_Traceguids;
 WPP_b6b6d353eef4cd4f96098e1e69b92016_Traceguids;
 WPP_b7e8219cdeacda1a8a9aa4db7b390a12_Traceguids;
-WPP_b833637322ae01f45d380620f2fa2394_Traceguids;
-WPP_b945568d0e5f051fe114cfd0c0ff13a2_Traceguids;
-WPP_c05321da3d49bee71f8ab600f2e945da_Traceguids;
-WPP_c0c90f6745c1238e5c3f7b353a1589d0_Traceguids;
-WPP_c19c2ff5afa168ecddf3d0f4545c990f_Traceguids;
-WPP_c55207db937bd267ab64ad27321067ee_Traceguids;
-WPP_c78a5ef3bc8bcad217d83b76e8ce37d6_Traceguids;
-WPP_c9d300421c8cbd04d1ccf88f4aa13174_Traceguids;
-WPP_cfecda9865672d10624598261ffc4cbd_Traceguids;
-WPP_d22be8085bda8d30ce76abc44bb26a7a_Traceguids;
-WPP_d60a9b159fb83f7088d91acd3befab74_Traceguids;
+WPP_b8a967438bdde46f34f27b2375f98c29_Traceguids;
+WPP_b8cc328dacc3f9994262abf2eefa0e30_Traceguids;
+WPP_c4e795ca9bdbbe3c2f2c5e0647b399a0_Traceguids;
+WPP_cd76ffd012ea25d52ded3a3c48a898ed_Traceguids;
+WPP_d29b05a9accab437aa613ff999d87cb7_Traceguids;
 WPP_d846d484cf1120be40243b5ff6d3deb2_Traceguids;
-WPP_d9879b7db73d05134682fb4dceff7dac_Traceguids;
-WPP_daf62838a2b6fa0de2e5776097311bb6_Traceguids;
-WPP_dfd77c1d4dfd4886aa87635072bcb4c4_Traceguids;
-WPP_e648ff9dda8a7070fdef2147c34b817e_Traceguids;
-WPP_e946c8f3444aa4612dfd214b8c4f08bb_Traceguids;
+WPP_d937986e7c9cfac467ff151df8b76bd8_Traceguids;
+WPP_df3618ada41cd72bb8b0447b4c1fb5c5_Traceguids;
+WPP_e661d27027f753e153c509da19b80f2a_Traceguids;
 WPP_eaee9154efd950f31d396ed7715513d8_Traceguids;
-WPP_f718e60248b76928496c08ab899a8251_Traceguids;
-WPP_fde7bc7e13c016fc7110777869a13a07_Traceguids;
+WPP_f895400b377d408c29ede7c9eddd0dec_Traceguids;
 WPP_GLOBAL_Control;
 WPP_MAIN_CB;
 WPP_ThisDir_CTLGUID_NDISTraceGuid;
