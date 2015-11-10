@@ -2845,6 +2845,8 @@ vCleanupWnd();
 vFreeHandle();
 vFreeLRC();
 vUnlockHandle();
+wglCbCheckFullscreenSupport();
+wglCbGetAdapterLuid();
 wglCbGetCurrentValue();
 wglCbGetDdHandle();
 wglCbGetDhglrc();
@@ -2921,11 +2923,11 @@ __ZippyFSTZ();
 
 // Globals
 
-__@@_PchSym_@00@UgsOlyqOznwGEuivUdrmwldhUlkvmtoUhvieviUdtoUlyquivUznwGEUkivxlnkOlyq@glwgl;
-__@@_PchSym_@00@UgsOlyqOznwGEuivUdrmwldhUlkvmtoUhvieviUhlugUlyquivUznwGEUkivxlnkOlyq@glsoft;
-__@@_PchSym_@00@UgsOlyqOznwGEuivUdrmwldhUlkvmtoUhvieviUkrcvoUlyquivUznwGEUkivxlnkOlyq@glpixel;
-__@@_PchSym_@00@UgsOlyqOznwGEuivUdrmwldhUlkvmtoUhvieviUtvmvirxUlyquivUznwGEUkivxlnkOlyq@glgen;
-__@@_PchSym_@00@UgsOlyqOznwGEuivUdrmwldhUlkvmtoUworhgUlyquivUznwGEUkivxlnkOlyq@gldlist;
+__@@_PchSym_@00@drmwldhUlkvmtoUhvieviUdtoUlyquivUznwGEUkivxlnkOlyq@glwgl;
+__@@_PchSym_@00@drmwldhUlkvmtoUhvieviUhlugUlyquivUznwGEUkivxlnkOlyq@glsoft;
+__@@_PchSym_@00@drmwldhUlkvmtoUhvieviUkrcvoUlyquivUznwGEUkivxlnkOlyq@glpixel;
+__@@_PchSym_@00@drmwldhUlkvmtoUhvieviUtvmvirxUlyquivUznwGEUkivxlnkOlyq@glgen;
+__@@_PchSym_@00@drmwldhUlkvmtoUworhgUlyquivUznwGEUkivxlnkOlyq@gldlist;
 afnColor_InCI;
 afnColor_InRGBA;
 afnColorCompile;

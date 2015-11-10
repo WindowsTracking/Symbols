@@ -1,5 +1,5 @@
 /*
- * PDB file: csrss.pdb\EC6DF9A3E33246C3B6CB456CF5FC16951\csrss.pdb
+ * PDB file: csrss.pdb\4F97508158EB4CA38F072377D8E148721\csrss.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -47,6 +47,7 @@ struct _DRIVER_OBJECT;
 struct _ECP_LIST;
 struct _EPROCESS;
 struct _ERESOURCE;
+struct _ESILO;
 struct _ETHREAD;
 struct _EVENT_DATA_DESCRIPTOR;
 struct _EVENT_DESCRIPTOR;
@@ -1001,6 +1002,8 @@ typedef struct _ERESOURCE
   unsigned __int64 SpinLock;
 } ERESOURCE, *PERESOURCE;
 
+struct _ESILO;
+
 struct _ETHREAD;
 
 typedef struct _EVENT_DATA_DESCRIPTOR
@@ -1551,6 +1554,7 @@ typedef struct _IO_DRIVER_CREATE_CONTEXT
   struct _ECP_LIST* ExtraCreateParameter;
   void* DeviceObjectHint;
   struct _TXN_PARAMETER_BLOCK* TxnParameters;
+  struct _ESILO* SiloContext;
 } IO_DRIVER_CREATE_CONTEXT, *PIO_DRIVER_CREATE_CONTEXT;
 
 typedef enum _IO_PRIORITY_HINT
@@ -2098,7 +2102,7 @@ typedef enum _JOBOBJECTINFOCLASS
   JobObjectServerSiloBasicInformation = 38,
   JobObjectServerSiloServiceSessionId = 39,
   JobObjectServerSiloInitialize = 40,
-  JobObjectServerSiloDefaultCompartmentId = 41,
+  JobObjectServerSiloRunningState = 41,
   MaxJobObjectInfoClass = 42,
 } JOBOBJECTINFOCLASS, *PJOBOBJECTINFOCLASS;
 
@@ -2516,7 +2520,9 @@ typedef struct _KUSER_SHARED_DATA
   unsigned long DataFlagsPad[1];
   unsigned __int64 TestRetInstruction;
   __int64 QpcFrequency;
-  unsigned __int64 SystemCallPad[3];
+  unsigned long SystemCall;
+  unsigned long SystemCallPad0;
+  unsigned __int64 SystemCallPad[2];
   union
   {
     volatile struct _KSYSTEM_TIME TickCount;
@@ -2535,7 +2541,8 @@ typedef struct _KUSER_SHARED_DATA
   unsigned char QpcSystemTimeIncrementShift;
   unsigned char QpcInterruptTimeIncrementShift;
   unsigned short UnparkedProcessorCount;
-  unsigned char Reserved8[20];
+  unsigned long EnclaveFeatureMask[4];
+  unsigned long Reserved8;
   unsigned short UserModeGlobalLogger[16];
   unsigned long ImageFileExecutionOptions;
   unsigned long LangGenerationCount;
@@ -2938,6 +2945,9 @@ typedef struct _PEB
   };
   unsigned char Padding6[4];
   unsigned __int64 CsrServerReadOnlySharedMemoryBase;
+  unsigned __int64 TppWorkerpListLock;
+  struct _LIST_ENTRY TppWorkerpList;
+  void* WaitOnAddressHashTable[128];
 } PEB, *PPEB;
 
 typedef struct _PEB_LDR_DATA
@@ -3051,7 +3061,8 @@ typedef enum _PS_ATTRIBUTE_NUM
   PsAttributeProtectionLevel = 17,
   PsAttributeSecureProcess = 18,
   PsAttributeJobList = 19,
-  PsAttributeMax = 20,
+  PsAttributeChildProcessPolicy = 20,
+  PsAttributeMax = 21,
 } PS_ATTRIBUTE_NUM, *PPS_ATTRIBUTE_NUM;
 
 enum PS_CREATE_STATE

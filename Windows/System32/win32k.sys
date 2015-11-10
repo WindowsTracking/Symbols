@@ -1,5 +1,5 @@
 /*
- * PDB file: win32k.pdb\96664153F5E84013A0CCFB2AFE23F0491\win32k.pdb
+ * PDB file: win32k.pdb\770C6601DF3E461C95D324075C65528F1\win32k.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -124,6 +124,7 @@ union _EINFO;
 struct _ENTRY;
 struct _EPROCESS;
 struct _ERESOURCE;
+struct _ESILO;
 struct _ETHREAD;
 struct _EVENT_DATA_DESCRIPTOR;
 struct _EVENT_DESCRIPTOR;
@@ -282,6 +283,7 @@ struct _STRING;
 enum _SYSTEM_POWER_STATE;
 struct _SYSTEM_POWER_STATE_CONTEXT;
 enum _TAG_UNNAMED_1;
+enum _TAG_UNNAMED_2;
 enum tagAR_STATE;
 struct tagVERIFIERTRACKHDR;
 struct tagVSTATE;
@@ -1959,7 +1961,8 @@ typedef enum _DXGK_DIAG_CODE_POINT_TYPE
   DXGK_DIAG_CODE_POINT_TYPE_QDC_PROCESS_STAT = 77,
   DXGK_DIAG_CODE_POINT_TYPE_DPI_LEGACY_SETTINGS = 78,
   DXGK_DIAG_CODE_POINT_TYPE_DPI_SETTINGS_UPDATE = 79,
-  DXGK_DIAG_CODE_POINT_TYPE_MAX = 79,
+  DXGK_DIAG_CODE_POINT_TYPE_DDICOMMITVIDPN = 80,
+  DXGK_DIAG_CODE_POINT_TYPE_MAX = 80,
   DXGK_DIAG_CODE_POINT_TYPE_FORCE_UINT32 = -1,
 } DXGK_DIAG_CODE_POINT_TYPE, *PDXGK_DIAG_CODE_POINT_TYPE;
 
@@ -2018,6 +2021,7 @@ typedef enum _DXGK_DIAG_MIRACAST_START_STAGE
   DXGK_DIAG_MIRACAST_START_UM_ASYNC_FAIL_START_WATCHDOG = 277,
   DXGK_DIAG_MIRACAST_START_UM_ASYNC_FAIL_OPEN_DXGK_ADAPTER = 278,
   DXGK_DIAG_MIRACAST_START_UM_ASYNC_FAIL_CREATE_DXGK_DEVICE = 279,
+  DXGK_DIAG_MIRACAST_START_UM_ASYNC_FAIL_CANCELLED = 280,
   DXGK_DIAG_MIRACAST_START_KM_SYNC_UNINITALIZED = -1,
 } DXGK_DIAG_MIRACAST_START_STAGE, *PDXGK_DIAG_MIRACAST_START_STAGE;
 
@@ -2143,6 +2147,8 @@ typedef struct _ERESOURCE
   };
   unsigned __int64 SpinLock;
 } ERESOURCE, *PERESOURCE;
+
+struct _ESILO;
 
 struct _ETHREAD;
 
@@ -2772,6 +2778,7 @@ typedef struct _IO_DRIVER_CREATE_CONTEXT
   struct _ECP_LIST* ExtraCreateParameter;
   void* DeviceObjectHint;
   struct _TXN_PARAMETER_BLOCK* TxnParameters;
+  struct _ESILO* SiloContext;
 } IO_DRIVER_CREATE_CONTEXT, *PIO_DRIVER_CREATE_CONTEXT;
 
 typedef enum _IO_PRIORITY_HINT
@@ -3319,7 +3326,7 @@ typedef enum _JOBOBJECTINFOCLASS
   JobObjectServerSiloBasicInformation = 38,
   JobObjectServerSiloServiceSessionId = 39,
   JobObjectServerSiloInitialize = 40,
-  JobObjectServerSiloDefaultCompartmentId = 41,
+  JobObjectServerSiloRunningState = 41,
   MaxJobObjectInfoClass = 42,
 } JOBOBJECTINFOCLASS, *PJOBOBJECTINFOCLASS;
 
@@ -3737,7 +3744,9 @@ typedef struct _KUSER_SHARED_DATA
   unsigned long DataFlagsPad[1];
   unsigned __int64 TestRetInstruction;
   __int64 QpcFrequency;
-  unsigned __int64 SystemCallPad[3];
+  unsigned long SystemCall;
+  unsigned long SystemCallPad0;
+  unsigned __int64 SystemCallPad[2];
   union
   {
     volatile struct _KSYSTEM_TIME TickCount;
@@ -3756,7 +3765,8 @@ typedef struct _KUSER_SHARED_DATA
   unsigned char QpcSystemTimeIncrementShift;
   unsigned char QpcInterruptTimeIncrementShift;
   unsigned short UnparkedProcessorCount;
-  unsigned char Reserved8[20];
+  unsigned long EnclaveFeatureMask[4];
+  unsigned long Reserved8;
   unsigned short UserModeGlobalLogger[16];
   unsigned long ImageFileExecutionOptions;
   unsigned long LangGenerationCount;
@@ -4221,6 +4231,9 @@ typedef struct _PEB
   };
   unsigned char Padding6[4];
   unsigned __int64 CsrServerReadOnlySharedMemoryBase;
+  unsigned __int64 TppWorkerpListLock;
+  struct _LIST_ENTRY TppWorkerpList;
+  void* WaitOnAddressHashTable[128];
 } PEB, *PPEB;
 
 typedef struct _PEB_LDR_DATA
@@ -4341,7 +4354,8 @@ typedef enum _PS_ATTRIBUTE_NUM
   PsAttributeProtectionLevel = 17,
   PsAttributeSecureProcess = 18,
   PsAttributeJobList = 19,
-  PsAttributeMax = 20,
+  PsAttributeChildProcessPolicy = 20,
+  PsAttributeMax = 21,
 } PS_ATTRIBUTE_NUM, *PPS_ATTRIBUTE_NUM;
 
 enum PS_CREATE_STATE
@@ -4782,6 +4796,11 @@ typedef enum _TAG_UNNAMED_1
   DMM_DIAG_INFO_BLUE_MP_VERSION = 20480,
   DMM_DIAG_INFO_VERSION = 20480,
 } TAG_UNNAMED_1, *PTAG_UNNAMED_1;
+
+typedef enum _TAG_UNNAMED_2
+{
+  GDEV_DEVNAMELEN = 32,
+} TAG_UNNAMED_2, *PTAG_UNNAMED_2;
 
 enum tagAR_STATE
 {
@@ -5339,7 +5358,8 @@ typedef enum _WD_DIAG_NOTIFY_USER_MESSAGE
   WD_DIAG_NOTIFY_FORCE_REINSTALL_DRIVER = 5,
   WD_DIAG_NOTIFY_USER_MESSAGE_DOD_TDR_RECOVERY = 6,
   WD_DIAG_NOTIFY_USER_MESSAGE_DWMINIT_TIMEOUT = 7,
-  WD_DIAG_NOTIFY_USER_MESSAGE_ALL = 8,
+  WD_DIAG_NOTIFY_USER_MESSAGE_OOBE_COMPLETE_NO_DRIVER = 8,
+  WD_DIAG_NOTIFY_USER_MESSAGE_ALL = 9,
   WD_DIAG_NOTIFY_USER_MESSAGE_FIRST = 0,
 } WD_DIAG_NOTIFY_USER_MESSAGE, *PWD_DIAG_NOTIFY_USER_MESSAGE;
 
@@ -5886,11 +5906,13 @@ memmove();
 memset();
 NtBindCompositionSurface();
 NtCompositionInputThread();
+NtCompositionSetDropTarget();
 NtCreateCompositionInputSink();
 NtCreateCompositionSurfaceHandle();
 NtCreateImplicitCompositionInputSink();
 NtDCompositionAddCrossDeviceVisualChild();
 NtDCompositionAddVisualChild();
+NtDCompositionAttachMouseWheelToHwnd();
 NtDCompositionBeginFrame();
 NtDCompositionCapturePointer();
 NtDCompositionCommitChannel();
@@ -5940,7 +5962,6 @@ NtDCompositionSetResourceIntegerProperty();
 NtDCompositionSetResourceReferenceArrayProperty();
 NtDCompositionSetResourceReferenceProperty();
 NtDCompositionSetVisualInputSink();
-NtDCompositionSignalGpuFence();
 NtDCompositionSubmitDWMBatch();
 NtDCompositionSynchronize();
 NtDCompositionTelemetryAnimationScenarioBegin();
@@ -6081,6 +6102,7 @@ NtGdiDdDDIEnumAdapters2();
 NtGdiDdDDIEscape();
 NtGdiDdDDIEvict();
 NtGdiDdDDIFlipOverlay();
+NtGdiDdDDIFlushHeapTransitions();
 NtGdiDdDDIFreeGpuVirtualAddress();
 NtGdiDdDDIGetCachedHybridQueryValue();
 NtGdiDdDDIGetContextInProcessSchedulingPriority();
@@ -6110,7 +6132,6 @@ NtGdiDdDDINetDispGetNextChunkInfo();
 NtGdiDdDDINetDispQueryMiracastDisplayDeviceStatus();
 NtGdiDdDDINetDispQueryMiracastDisplayDeviceSupport();
 NtGdiDdDDINetDispStartMiracastDisplayDevice();
-NtGdiDdDDINetDispStartMiracastDisplayDeviceEx();
 NtGdiDdDDINetDispStopMiracastDisplayDevice();
 NtGdiDdDDINetDispStopSessions();
 NtGdiDdDDIOfferAllocations();
@@ -6161,6 +6182,7 @@ NtGdiDdDDISetDisplayMode();
 NtGdiDdDDISetDisplayPrivateDriverFormat();
 NtGdiDdDDISetDodIndirectSwapchain();
 NtGdiDdDDISetGammaRamp();
+NtGdiDdDDISetHwProtectionTeardownRecovery();
 NtGdiDdDDISetProcessSchedulingPriorityClass();
 NtGdiDdDDISetQueuedLimit();
 NtGdiDdDDISetStablePowerState();
@@ -6328,7 +6350,9 @@ NtGdiGetBitmapBits();
 NtGdiGetBitmapDimension();
 NtGdiGetBoundsRect();
 NtGdiGetCertificate();
+NtGdiGetCertificateByHandle();
 NtGdiGetCertificateSize();
+NtGdiGetCertificateSizeByHandle();
 NtGdiGetCharABCWidthsW();
 NtGdiGetCharacterPlacementW();
 NtGdiGetCharSet();
@@ -6528,7 +6552,7 @@ NtRIMObserveNextInput();
 NtRIMRemoveInputObserver();
 NtRIMUpdateInputObserverRegistration();
 NtSetCompositionSurfaceAnalogExclusive();
-NtSetCompositionSurfaceBufferCompositionMode();
+NtSetCompositionSurfaceBufferCompositionModeAndOrientation();
 NtSetCompositionSurfaceIndependentFlipInfo();
 NtSetCompositionSurfaceOutOfFrameDirectFlipNotification();
 NtSetCompositionSurfaceStatistics();
@@ -6871,6 +6895,7 @@ NtUserRemoteRedrawRectangle();
 NtUserRemoteRedrawScreen();
 NtUserRemoteStopScreenUpdates();
 NtUserRemoveClipboardFormatListener();
+NtUserRemoveInjectionDevice();
 NtUserRemoveMenu();
 NtUserRemoveProp();
 NtUserReportInertia();
@@ -6910,7 +6935,6 @@ NtUserSetGestureConfig();
 NtUserSetImeHotKey();
 NtUserSetImeInfoEx();
 NtUserSetImeOwnerWindow();
-NtUserSetImmersiveBackgroundWindow();
 NtUserSetInformationThread();
 NtUserSetInternalWindowPos();
 NtUserSetKeyboardState();
@@ -6998,6 +7022,7 @@ NtUserUpdateInstance();
 NtUserUpdateLayeredWindow();
 NtUserUpdatePerUserSystemParameters();
 NtUserUpdateWindowInputSinkHints();
+NtUserUpdateWindowTrackingInfo();
 NtUserUpdateWindowTransform();
 NtUserUserHandleGrantAccess();
 NtUserValidateHandleSecure();
