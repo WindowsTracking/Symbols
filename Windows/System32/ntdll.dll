@@ -1,5 +1,5 @@
 /*
- * PDB file: ntdll.pdb\4E4F50879F8345499DAE85935D2391CE1\ntdll.pdb
+ * PDB file: ntdll.pdb\14038280D5874084A519E4D4C4D6EC411\ntdll.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -30,6 +30,7 @@ struct _CONTEXT;
 struct _COUNTER_READING;
 struct _CURDIR;
 struct _DEVICE_CAPABILITIES;
+struct _DEVICE_MAP;
 struct _DEVICE_OBJECT;
 struct _DEVICE_OBJECT_POWER_EXTENSION;
 enum _DEVICE_POWER_STATE;
@@ -53,8 +54,10 @@ struct _EPROCESS;
 struct _EPROCESS_QUOTA_BLOCK;
 struct _EPROCESS_VALUES;
 struct _ERESOURCE;
+struct _ESERVERSILO_GLOBALS;
 struct _ETHREAD;
 struct _ETW_BUFFER_CONTEXT;
+struct _ETW_SILODRIVERSTATE;
 struct _EVENT_DATA_DESCRIPTOR;
 struct _EVENT_DESCRIPTOR;
 struct _EVENT_HEADER;
@@ -179,6 +182,7 @@ struct _IO_DRIVER_CREATE_CONTEXT;
 struct _IO_MINI_COMPLETION_PACKET_USER;
 enum _IO_PRIORITY_HINT;
 struct _IO_PRIORITY_INFO;
+enum _IO_RATE_CONTROL_TYPE;
 struct _IO_RESOURCE_DESCRIPTOR;
 struct _IO_RESOURCE_LIST;
 struct _IO_RESOURCE_REQUIREMENTS_LIST;
@@ -191,7 +195,6 @@ struct _IRP;
 enum _IRQ_PRIORITY;
 struct _JOB_ACCESS_STATE;
 struct _JOB_CPU_RATE_CONTROL;
-struct _JOB_IO_RATE_CONTROL;
 struct _JOB_NET_RATE_CONTROL;
 struct _JOB_NOTIFICATION_INFORMATION;
 enum JOB_OBJECT_IO_RATE_CONTROL_FLAGS;
@@ -289,9 +292,12 @@ struct _MM_PAGE_ACCESS_INFO;
 union _MM_PAGE_ACCESS_INFO_FLAGS;
 struct _MM_PAGE_ACCESS_INFO_HEADER;
 enum _MM_PAGE_ACCESS_TYPE;
-struct _MMSUPPORT;
+struct _MM_SESSION_SPACE;
 struct _MMSUPPORT_FLAGS;
-struct _MMWSL;
+struct _MMSUPPORT_FULL;
+struct _MMSUPPORT_INSTANCE;
+struct _MMSUPPORT_SHARED;
+struct _MMWSL_INSTANCE;
 enum _MODE;
 struct _NAMED_PIPE_CREATE_PARAMETERS;
 struct _NPAGED_LOOKASIDE_LIST;
@@ -299,12 +305,18 @@ enum _NT_PRODUCT_TYPE;
 struct _NT_TIB32;
 struct _NT_TIB64;
 struct _NT_TIB;
+struct _OB_EXTENDED_PARSE_PARAMETERS;
 enum _OB_OPEN_REASON;
+struct _OBJECT_DIRECTORY;
+struct _OBJECT_DIRECTORY_ENTRY;
 struct _OBJECT_DUMP_CONTROL;
 struct _OBJECT_HANDLE_INFORMATION;
 struct _OBJECT_NAME_INFORMATION;
+struct _OBJECT_NAMESPACE_LOOKUPTABLE;
 struct _OBJECT_TYPE;
 struct _OBJECT_TYPE_INITIALIZER;
+struct _OBP_SILODRIVERSTATE;
+struct _OBP_SYSTEM_DOS_DEVICE_STATE;
 struct _OWNER_ENTRY;
 struct _PAGED_LOOKASIDE_LIST;
 struct _PAGEFAULT_HISTORY;
@@ -369,6 +381,7 @@ struct _PROCESSOR_PROFILE_CONTROL_AREA;
 enum _PS_ATTRIBUTE_NUM;
 union _PS_CLIENT_SECURITY_CONTEXT;
 enum PS_CREATE_STATE;
+struct _PS_IO_CONTROL_ENTRY;
 struct _PS_PROPERTY_SET;
 enum _PS_PROTECTED_SIGNER;
 enum _PS_PROTECTED_TYPE;
@@ -383,6 +396,7 @@ struct _PS_TRUSTLET_CREATE_ATTRIBUTES;
 struct _PS_TRUSTLET_TKSESSION_ID;
 struct _PS_WAKE_INFORMATION;
 enum _PS_WAKE_REASON;
+struct _PSP_STORAGE;
 struct _QUAD;
 enum _REG_NOTIFY_CLASS;
 enum ReplacesCorHdrNumericDefines;
@@ -394,6 +408,8 @@ struct _RTL_BALANCED_LINKS;
 struct _RTL_BALANCED_NODE;
 struct _RTL_BITMAP;
 struct _RTL_BITMAP_EX;
+struct _RTL_CHASH_ENTRY;
+struct _RTL_CHASH_TABLE;
 struct _RTL_CRITICAL_SECTION;
 struct _RTL_CRITICAL_SECTION_DEBUG;
 struct _RTL_DRIVE_LETTER_CURDIR;
@@ -402,14 +418,19 @@ struct _RTL_DYNAMIC_HASH_TABLE_CONTEXT;
 struct _RTL_DYNAMIC_HASH_TABLE_ENTRY;
 struct _RTL_DYNAMIC_HASH_TABLE_ENUMERATOR;
 enum _RTL_GENERIC_COMPARE_RESULTS;
+struct _RTL_HASH_ENTRY;
+struct _RTL_HASH_TABLE;
+struct _RTL_HASH_TABLE_ITERATOR;
 struct _RTL_HEAP_WALK_ENTRY;
 struct _RTL_RB_TREE;
+union _RTL_RUN_ONCE;
 struct _RTL_SPARSE_BITMAP_CTX;
 struct _RTL_SPARSE_BITMAP_RANGE;
 struct _RTL_SPLAY_LINKS;
 struct _RTL_SRWLOCK;
 struct _RTL_STACK_DATABASE_LOCK;
 struct _RTL_STACK_TRACE_ENTRY;
+struct _RTL_STACKDB_CONTEXT;
 struct _RTL_STD_LIST_ENTRY;
 struct _RTL_STD_LIST_HEAD;
 struct _RTL_TRACE_BLOCK;
@@ -417,6 +438,7 @@ struct _RTL_TRACE_DATABASE;
 struct _RTL_TRACE_SEGMENT;
 struct _RTL_UMS_CONTEXT;
 struct _RTL_USER_PROCESS_PARAMETERS;
+struct _RTLP_HEAP_FEATURES;
 struct _SCSI_REQUEST_BLOCK;
 struct _SE_AUDIT_PROCESS_CREATION_INFO;
 enum SE_WS_APPX_SIGNATURE_ORIGIN;
@@ -428,9 +450,13 @@ struct _SECURITY_QUALITY_OF_SERVICE;
 struct _SECURITY_SUBJECT_CONTEXT;
 struct _SEGMENT_HEAP;
 struct _SEGMENT_HEAP_EXTRA;
+struct _SEP_LOGON_SESSION_REFERENCES;
+struct _SEP_RM_LSA_CONNECTION_STATE;
+struct _SEP_SILOSTATE;
+enum _SERVERSILO_STATE;
 struct _SID;
 struct _SID_IDENTIFIER_AUTHORITY;
-struct _SILO_CONTEXT;
+struct _SILO_USER_SHARED_DATA;
 struct _SINGLE_LIST_ENTRY32;
 struct _SINGLE_LIST_ENTRY;
 struct _SLIST_ENTRY;
@@ -483,6 +509,9 @@ enum _WHEA_ERROR_TYPE;
 union _WHEA_PERSISTENCE_INFO;
 union _WHEA_REVISION;
 union _WHEA_TIMESTAMP;
+struct _WNF_LOCK;
+struct _WNF_SCOPE_MAP;
+struct _WNF_SILODRIVERSTATE;
 struct _WNF_STATE_NAME;
 struct _WORK_QUEUE_ITEM;
 enum _WORKING_SET_TYPE;
@@ -896,6 +925,17 @@ typedef struct _DEVICE_CAPABILITIES
   unsigned long D3Latency;
 } DEVICE_CAPABILITIES, *PDEVICE_CAPABILITIES;
 
+typedef struct _DEVICE_MAP
+{
+  struct _OBJECT_DIRECTORY* DosDevicesDirectory;
+  struct _OBJECT_DIRECTORY* GlobalDosDevicesDirectory;
+  void* DosDevicesDirectoryHandle;
+  volatile long ReferenceCount;
+  unsigned long DriveMap;
+  unsigned char DriveType[32];
+  struct _EJOB* ServerSilo;
+} DEVICE_MAP, *PDEVICE_MAP;
+
 typedef struct _DEVICE_OBJECT
 {
   short Type;
@@ -1259,9 +1299,10 @@ typedef struct _DYNAMIC_FUNCTION_TABLE
   unsigned __int64 BaseAddress;
   void* Callback /* function */;
   void* Context;
-  unsigned short* OutOfProcessCallbackDll;
+  wchar_t* OutOfProcessCallbackDll;
   enum _FUNCTION_TABLE_TYPE Type;
   unsigned long EntryCount;
+  struct _RTL_BALANCED_NODE TreeNode;
 } DYNAMIC_FUNCTION_TABLE, *PDYNAMIC_FUNCTION_TABLE;
 
 struct _ECP_LIST;
@@ -1317,7 +1358,6 @@ typedef struct _EJOB
   unsigned __int64 EffectiveProcessMemoryLimit;
   struct _EJOB* EffectiveProcessMemoryLimitJob;
   struct _EJOB* EffectivePerProcessUserTimeLimitJob;
-  struct _EJOB* EffectiveDiskIoRateLimitJob;
   struct _EJOB* EffectiveNetIoRateLimitJob;
   struct _EJOB* EffectiveHeapAttributionJob;
   unsigned long EffectiveLimitFlags;
@@ -1351,6 +1391,7 @@ typedef struct _EJOB
   struct _LIST_ENTRY SiblingJobLinks;
   struct _LIST_ENTRY ChildJobListHead;
   struct _EJOB* ParentJob;
+  struct _EJOB* ParentSilo;
   struct _EJOB* volatile RootJob;
   struct _LIST_ENTRY IteratorListHead;
   unsigned __int64 AncestorCount;
@@ -1359,17 +1400,18 @@ typedef struct _EJOB
     struct _EJOB** Ancestors;
     void* SessionObject;
   };
+  unsigned __int64 TimerListLock;
+  struct _LIST_ENTRY TimerListHead;
   struct _EPROCESS_VALUES Accounting;
   unsigned long ShadowActiveProcessCount;
   unsigned long ActiveAuxiliaryProcessCount;
   unsigned long SequenceNumber;
-  unsigned __int64 TimerListLock;
-  struct _LIST_ENTRY TimerListHead;
+  unsigned long JobId;
   struct _GUID ContainerId;
-  struct _SILO_CONTEXT* Container;
+  struct _ESERVERSILO_GLOBALS* ServerSiloGlobals;
   struct _PS_PROPERTY_SET PropertySet;
+  struct _PSP_STORAGE* Storage;
   struct _JOB_NET_RATE_CONTROL* NetRateControl;
-  struct _JOB_IO_RATE_CONTROL* IoRateControl;
   union
   {
     unsigned long JobFlags;
@@ -1405,12 +1447,27 @@ typedef struct _EJOB
       unsigned long IoRateControlActive : 1; /* bit position: 27 */
       unsigned long OwnIoRateControl : 1; /* bit position: 28 */
       unsigned long DisallowNewProcesses : 1; /* bit position: 29 */
-      unsigned long SpareJobFlags : 2; /* bit position: 30 */
+      unsigned long Silo : 1; /* bit position: 30 */
+      unsigned long Spare : 1; /* bit position: 31 */
     }; /* bitfield */
   };
   unsigned long EffectiveHighEdgeFilters;
   struct _PROCESS_ENERGY_VALUES* EnergyValues;
   volatile unsigned __int64 SharedCommitCharge;
+  struct _EJOB* volatile WakeRoot;
+  unsigned long DiskIoAttributionUserRefCount;
+  unsigned long DiskIoAttributionRefCount;
+  union
+  {
+    void* DiskIoAttributionContext;
+    struct _EJOB* DiskIoAttributionOwnerJob;
+  };
+  struct _PS_IO_CONTROL_ENTRY GlobalIoControl;
+  volatile long VolumeIoControlLock;
+  struct _RTL_RB_TREE VolumeIoControlTree;
+  struct _EX_PUSH_LOCK IoControlLock;
+  unsigned __int64 SiloHardReferenceCount;
+  struct _WORK_QUEUE_ITEM RundownWorkItem;
 } EJOB, *PEJOB;
 
 typedef struct _ENODE
@@ -1418,6 +1475,7 @@ typedef struct _ENODE
   struct _KNODE Ncb;
   struct _EX_WORK_QUEUE* volatile ExWorkQueues[8];
   struct _EX_WORK_QUEUE ExWorkQueue;
+  struct _EX_WORK_QUEUE IoWorkQueue;
   struct _KEVENT ExpThreadSetManagerEvent;
   struct _KTIMER ExpDeadlockTimer;
   struct _KEVENT ExpThreadReaperEvent;
@@ -1433,7 +1491,7 @@ typedef struct _ENODE
     }; /* bitfield */
     volatile unsigned long ExWorkerFlags;
   };
-  long __PADDING__[8];
+  long __PADDING__[4];
 } ENODE, *PENODE;
 
 typedef struct _EPROCESS
@@ -1547,7 +1605,7 @@ typedef struct _EPROCESS
   void* LdtInformation;
   volatile unsigned __int64 OwnerProcessId;
   struct _PEB* Peb;
-  void* Session;
+  struct _MM_SESSION_SPACE* Session;
   void* AweInfo;
   struct _EPROCESS_QUOTA_BLOCK* QuotaBlock;
   struct _HANDLE_TABLE* ObjectTable;
@@ -1579,7 +1637,7 @@ typedef struct _EPROCESS
   unsigned __int64 CommitChargeLimit;
   volatile unsigned __int64 CommitCharge;
   volatile unsigned __int64 CommitChargePeak;
-  struct _MMSUPPORT Vm;
+  struct _MMSUPPORT_FULL Vm;
   struct _LIST_ENTRY MmProcessLinks;
   unsigned long ModifiedPageCount;
   long ExitStatus;
@@ -1624,6 +1682,15 @@ typedef struct _EPROCESS
       unsigned long ProhibitRemoteImageMap : 1; /* bit position: 11 */
       unsigned long ProhibitLowILImageMap : 1; /* bit position: 12 */
       unsigned long SignatureMitigationOptIn : 1; /* bit position: 13 */
+      unsigned long DisableDynamicCodeAllowOptOut : 1; /* bit position: 14 */
+      unsigned long EnableFilteredWin32kAPIs : 1; /* bit position: 15 */
+      unsigned long AuditFilteredWin32kAPIs : 1; /* bit position: 16 */
+      unsigned long PreferSystem32Images : 1; /* bit position: 17 */
+      unsigned long RelinquishedCommit : 1; /* bit position: 18 */
+      unsigned long AutomaticallyOverrideChildProcessPolicy : 1; /* bit position: 19 */
+      unsigned long HighGraphicsPriority : 1; /* bit position: 20 */
+      unsigned long CommitFailLogged : 1; /* bit position: 21 */
+      unsigned long ReserveFailLogged : 1; /* bit position: 22 */
     }; /* bitfield */
   };
   long DeviceAsid;
@@ -1666,6 +1733,9 @@ typedef struct _EPROCESS
       unsigned __int64* DefaultCpuSetsIndirect;
     };
   };
+  void* DiskIoAttribution;
+  unsigned long ReadyTime;
+  void* DxgProcess;
 } EPROCESS, *PEPROCESS;
 
 struct _EPROCESS_QUOTA_BLOCK;
@@ -1674,6 +1744,7 @@ typedef struct _EPROCESS_VALUES
 {
   unsigned __int64 KernelTime;
   unsigned __int64 UserTime;
+  unsigned __int64 ReadyTime;
   unsigned __int64 CycleTime;
   unsigned __int64 ContextSwitches;
   __int64 ReadOperationCount;
@@ -1713,6 +1784,29 @@ typedef struct _ERESOURCE
   };
   unsigned __int64 SpinLock;
 } ERESOURCE, *PERESOURCE;
+
+typedef struct _ESERVERSILO_GLOBALS
+{
+  struct _OBP_SILODRIVERSTATE ObSiloState;
+  struct _SEP_SILOSTATE SeSiloState;
+  struct _SEP_RM_LSA_CONNECTION_STATE SeRmSiloState;
+  struct _ETW_SILODRIVERSTATE* EtwSiloState;
+  struct _EPROCESS* MiSessionLeaderProcess;
+  struct _EPROCESS* ExpDefaultErrorPortProcess;
+  void* ExpDefaultErrorPort;
+  unsigned long HardErrorState;
+  struct _WNF_SILODRIVERSTATE WnfSiloState;
+  void* ApiSetSection;
+  void* ApiSetSchema;
+  unsigned char OneCoreForwardersEnabled;
+  struct _UNICODE_STRING SiloRootDirectoryName;
+  struct _PSP_STORAGE* Storage;
+  enum _SERVERSILO_STATE State;
+  long ExitStatus;
+  struct _KEVENT* DeleteEvent;
+  struct _SILO_USER_SHARED_DATA UserSharedData;
+  struct _WORK_QUEUE_ITEM TerminateWorkItem;
+} ESERVERSILO_GLOBALS, *PESERVERSILO_GLOBALS;
 
 typedef struct _ETHREAD
 {
@@ -1758,7 +1852,6 @@ typedef struct _ETHREAD
   struct _EX_PUSH_LOCK ThreadLock;
   unsigned long ReadClusterSize;
   volatile long MmLockOrdering;
-  volatile long CmLockOrdering;
   union
   {
     unsigned long CrossThreadFlags;
@@ -1778,7 +1871,9 @@ typedef struct _ETHREAD
       unsigned long RundownFail : 1; /* bit position: 15 */
       unsigned long UmsForceQueueTermination : 1; /* bit position: 16 */
       unsigned long IndirectCpuSets : 1; /* bit position: 17 */
-      unsigned long ReservedCrossThreadFlags : 14; /* bit position: 18 */
+      unsigned long DisableDynamicCodeOptOut : 1; /* bit position: 18 */
+      unsigned long ExplicitCaseSensitivity : 1; /* bit position: 19 */
+      unsigned long ReservedCrossThreadFlags : 12; /* bit position: 20 */
     }; /* bitfield */
   };
   union
@@ -1788,12 +1883,13 @@ typedef struct _ETHREAD
     {
       unsigned long ActiveExWorker : 1; /* bit position: 0 */
       unsigned long MemoryMaker : 1; /* bit position: 1 */
-      unsigned long StoreLockThread : 1; /* bit position: 2 */
-      unsigned long ClonedThread : 1; /* bit position: 3 */
-      unsigned long KeyedEventInUse : 1; /* bit position: 4 */
-      unsigned long SelfTerminate : 1; /* bit position: 5 */
-      unsigned long RespectIoPriority : 1; /* bit position: 6 */
-      unsigned long ReservedSameThreadPassiveFlags : 25; /* bit position: 7 */
+      unsigned long StoreLockThread : 2; /* bit position: 2 */
+      unsigned long ClonedThread : 1; /* bit position: 4 */
+      unsigned long KeyedEventInUse : 1; /* bit position: 5 */
+      unsigned long SelfTerminate : 1; /* bit position: 6 */
+      unsigned long RespectIoPriority : 1; /* bit position: 7 */
+      unsigned long ActivePageLists : 1; /* bit position: 8 */
+      unsigned long ReservedSameThreadPassiveFlags : 23; /* bit position: 9 */
     }; /* bitfield */
   };
   union
@@ -1829,10 +1925,12 @@ typedef struct _ETHREAD
     void* AlpcMessage;
     unsigned long AlpcReceiveAttributeSet;
   };
-  long ExitStatus;
   struct _LIST_ENTRY AlpcWaitListEntry;
+  long ExitStatus;
   unsigned long CacheManagerCount;
   unsigned long IoBoostCount;
+  unsigned long IoQoSBoostCount;
+  unsigned long IoQoSThrottleCount;
   struct _LIST_ENTRY BoostList;
   struct _LIST_ENTRY DeboostList;
   unsigned __int64 BoostListLock;
@@ -1844,19 +1942,23 @@ typedef struct _ETHREAD
   void* VerifierContext;
   unsigned long KernelStackReference;
   void* AdjustedClientToken;
-  void* WorkingOnBehalfClient;
+  void* WorkOnBehalfThread;
   struct _PS_PROPERTY_SET PropertySet;
   void* PicoContext;
-  unsigned long UserFsBase;
+  unsigned __int64 UserFsBase;
   unsigned __int64 UserGsBase;
   struct _THREAD_ENERGY_VALUES* EnergyValues;
-  volatile unsigned long CmCellReferences;
+  void* CmDbgInfo;
   union
   {
     unsigned __int64 SelectedCpuSets;
     unsigned __int64* SelectedCpuSetsIndirect;
   };
   struct _EJOB* Silo;
+  struct _UNICODE_STRING* ThreadName;
+  struct _CONTEXT* SetContextState;
+  unsigned long ReadyTime;
+  long __PADDING__[1];
 } ETHREAD, *PETHREAD;
 
 typedef struct _ETW_BUFFER_CONTEXT
@@ -1872,6 +1974,8 @@ typedef struct _ETW_BUFFER_CONTEXT
   };
   unsigned short LoggerId;
 } ETW_BUFFER_CONTEXT, *PETW_BUFFER_CONTEXT;
+
+struct _ETW_SILODRIVERSTATE;
 
 typedef struct _EVENT_DATA_DESCRIPTOR
 {
@@ -2075,7 +2179,8 @@ typedef struct _EXHANDLE
 typedef enum _EXQUEUEINDEX
 {
   ExPoolUntrusted = 0,
-  ExPoolTrusted = 1,
+  IoPoolUntrusted = 1,
+  ExPoolTrusted = 2,
   ExPoolMax = 8,
 } EXQUEUEINDEX, *PEXQUEUEINDEX;
 
@@ -2218,7 +2323,10 @@ typedef enum _FILE_INFORMATION_CLASS
   FileReplaceCompletionInformation = 61,
   FileHardLinkFullIdInformation = 62,
   FileIdExtdBothDirectoryInformation = 63,
-  FileMaximumInformation = 64,
+  FileDispositionInformationEx = 64,
+  FileRenameInformationEx = 65,
+  FileRenameInformationExBypassAccessCheck = 66,
+  FileMaximumInformation = 67,
 } FILE_INFORMATION_CLASS, *PFILE_INFORMATION_CLASS;
 
 typedef struct _FILE_NETWORK_OPEN_INFORMATION
@@ -2626,6 +2734,7 @@ typedef union _HANDLE_TABLE_ENTRY
 typedef struct _HANDLE_TABLE_ENTRY_INFO
 {
   unsigned long AuditMask;
+  unsigned long MaxRelativeAccessMask;
 } HANDLE_TABLE_ENTRY_INFO, *PHANDLE_TABLE_ENTRY_INFO;
 
 typedef struct _HANDLE_TABLE_FREE_LIST
@@ -2635,7 +2744,7 @@ typedef struct _HANDLE_TABLE_FREE_LIST
   union _HANDLE_TABLE_ENTRY* LastFreeHandleEntry;
   long HandleCount;
   unsigned long HighWaterMark;
-  unsigned long Reserved[8];
+  long __PADDING__[8];
 } HANDLE_TABLE_FREE_LIST, *PHANDLE_TABLE_FREE_LIST;
 
 typedef struct _HANDLE_TRACE_DB_ENTRY
@@ -2718,6 +2827,7 @@ typedef struct _HEAP
   struct _LIST_ENTRY FreeLists;
   struct _HEAP_LOCK* LockVariable;
   void* CommitRoutine /* function */;
+  union _RTL_RUN_ONCE StackTraceInitVar;
   void* FrontEndHeap;
   unsigned short FrontHeapLockCount;
   unsigned char FrontEndHeapType;
@@ -3812,6 +3922,26 @@ typedef struct _IO_PRIORITY_INFO
   enum _IO_PRIORITY_HINT IoPriority;
 } IO_PRIORITY_INFO, *PIO_PRIORITY_INFO;
 
+typedef enum _IO_RATE_CONTROL_TYPE
+{
+  IoRateControlTypeCapMin = 0,
+  IoRateControlTypeIopsCap = 0,
+  IoRateControlTypeBandwidthCap = 1,
+  IoRateControlTypeTimePercentCap = 2,
+  IoRateControlTypeCapMax = 2,
+  IoRateControlTypeReservationMin = 3,
+  IoRateControlTypeIopsReservation = 3,
+  IoRateControlTypeBandwidthReservation = 4,
+  IoRateControlTypeTimePercentReservation = 5,
+  IoRateControlTypeReservationMax = 5,
+  IoRateControlTypeCriticalReservationMin = 6,
+  IoRateControlTypeIopsCriticalReservation = 6,
+  IoRateControlTypeBandwidthCriticalReservation = 7,
+  IoRateControlTypeTimePercentCriticalReservation = 8,
+  IoRateControlTypeCriticalReservationMax = 8,
+  IoRateControlTypeMax = 9,
+} IO_RATE_CONTROL_TYPE, *PIO_RATE_CONTROL_TYPE;
+
 typedef struct _IO_RESOURCE_DESCRIPTOR
 {
   unsigned char Option;
@@ -4317,8 +4447,6 @@ struct _JOB_ACCESS_STATE;
 
 struct _JOB_CPU_RATE_CONTROL;
 
-struct _JOB_IO_RATE_CONTROL;
-
 struct _JOB_NET_RATE_CONTROL;
 
 struct _JOB_NOTIFICATION_INFORMATION;
@@ -4326,7 +4454,8 @@ struct _JOB_NOTIFICATION_INFORMATION;
 enum JOB_OBJECT_IO_RATE_CONTROL_FLAGS
 {
   JOB_OBJECT_IO_RATE_CONTROL_ENABLE = 1,
-  JOB_OBJECT_IO_RATE_CONTROL_VALID_FLAGS = 1,
+  JOB_OBJECT_IO_RATE_CONTROL_STANDALONE_VOLUME = 2,
+  JOB_OBJECT_IO_RATE_CONTROL_VALID_FLAGS = 3,
 };
 
 enum JOB_OBJECT_NET_RATE_CONTROL_FLAGS
@@ -4376,6 +4505,12 @@ typedef enum _JOBOBJECTINFOCLASS
   JobObjectSharedCommit = 29,
   JobObjectContainerId = 30,
   JobObjectIoRateControlInformation = 31,
+  JobObjectSiloRootDirectory = 37,
+  JobObjectServerSiloBasicInformation = 38,
+  JobObjectServerSiloUserSharedData = 39,
+  JobObjectServerSiloInitialize = 40,
+  JobObjectServerSiloRunningState = 41,
+  JobObjectIoAttribution = 42,
   JobObjectReserved1Information = 18,
   JobObjectReserved2Information = 19,
   JobObjectReserved3Information = 20,
@@ -4395,12 +4530,13 @@ typedef enum _JOBOBJECTINFOCLASS
   JobObjectLimitViolationInformation2 = 34,
   JobObjectCreateSilo = 35,
   JobObjectSiloBasicInformation = 36,
-  JobObjectSiloRootDirectory = 37,
-  JobObjectServerSiloBasicInformation = 38,
-  JobObjectServerSiloServiceSessionId = 39,
-  JobObjectServerSiloInitialize = 40,
-  JobObjectServerSiloRunningState = 41,
-  MaxJobObjectInfoClass = 42,
+  JobObjectReserved15Information = 37,
+  JobObjectReserved16Information = 38,
+  JobObjectReserved17Information = 39,
+  JobObjectReserved18Information = 40,
+  JobObjectReserved19Information = 41,
+  JobObjectReserved20Information = 42,
+  MaxJobObjectInfoClass = 43,
 } JOBOBJECTINFOCLASS, *PJOBOBJECTINFOCLASS;
 
 typedef struct _KAFFINITY_EX
@@ -4676,6 +4812,7 @@ typedef enum _KHETERO_CPU_POLICY
 
 typedef struct _KHETERO_PROCESSOR_SET
 {
+  unsigned __int64 IdealMask;
   unsigned __int64 PreferredMask;
   unsigned __int64 AvailableMask;
 } KHETERO_PROCESSOR_SET, *PKHETERO_PROCESSOR_SET;
@@ -4752,7 +4889,8 @@ typedef struct _KLOCK_ENTRY
                 {
                   unsigned char HeadNodeBit : 1; /* bit position: 0 */
                   unsigned char IoPriorityBit : 1; /* bit position: 1 */
-                  unsigned char Spare1 : 6; /* bit position: 2 */
+                  unsigned char IoQoSWaiter : 1; /* bit position: 2 */
+                  unsigned char Spare1 : 5; /* bit position: 3 */
                 }; /* bitfield */
               };
             };
@@ -4799,16 +4937,23 @@ typedef struct _KLOCK_ENTRY
   unsigned __int64 EntryLock;
   union
   {
-    unsigned short AllBoosts;
-    struct /* bitfield */
+    unsigned long AllBoosts : 17; /* bit position: 0 */
+    struct
     {
-      unsigned short IoBoost : 1; /* bit position: 0 */
-      unsigned short CpuBoostsBitmap : 15; /* bit position: 1 */
-    }; /* bitfield */
+      struct /* bitfield */
+      {
+        unsigned short CpuBoostsBitmap : 15; /* bit position: 0 */
+        unsigned short IoBoost : 1; /* bit position: 15 */
+      }; /* bitfield */
+      struct /* bitfield */
+      {
+        unsigned short IoQoSBoost : 1; /* bit position: 0 */
+        unsigned short IoNormalPriorityWaiterCount : 8; /* bit position: 1 */
+        unsigned short IoQoSWaiterCount : 7; /* bit position: 9 */
+      }; /* bitfield */
+    };
   };
-  unsigned short IoNormalPriorityWaiterCount;
-  unsigned short SparePad;
-  char __PADDING__[2];
+  unsigned long SparePad;
 } KLOCK_ENTRY, *PKLOCK_ENTRY;
 
 typedef struct _KLOCK_ENTRY_LOCK_STATE
@@ -4866,6 +5011,7 @@ typedef struct _KNODE
   struct _flags Flags;
   unsigned char Spare10;
   struct _KHETERO_PROCESSOR_SET HeteroSets[5];
+  long __PADDING__[6];
 } KNODE, *PKNODE;
 
 typedef enum _KOBJECTS
@@ -5035,7 +5181,8 @@ typedef struct _KPRCB
   long LookasideIrpFloat;
   unsigned long InterruptLastCount;
   unsigned long InterruptRate;
-  unsigned long PrcbPad41[22];
+  unsigned __int64 LastNonHrTimerExpiration;
+  unsigned long PrcbPad41[20];
   struct _KDPC_DATA DpcData[2];
   void* DpcStack;
   long MaximumDpcQueueDepth;
@@ -5329,11 +5476,14 @@ typedef struct _KSCB
     unsigned char MinOverQuota : 1; /* bit position: 2 */
     unsigned char RankBias : 1; /* bit position: 3 */
     unsigned char SoftCap : 1; /* bit position: 4 */
-    unsigned char Spare1 : 3; /* bit position: 5 */
+    unsigned char ShareRankOwner : 1; /* bit position: 5 */
+    unsigned char Spare1 : 2; /* bit position: 6 */
   }; /* bitfield */
   unsigned char Depth;
   unsigned short ReadySummary;
   unsigned long Rank;
+  volatile unsigned long* ShareRank;
+  volatile unsigned long OwnerShareRank;
   struct _LIST_ENTRY ReadyListHead[16];
   struct _RTL_RB_TREE ChildScbQueue;
   struct _KSCB* Parent;
@@ -5349,6 +5499,8 @@ typedef struct _KSCHEDULING_GROUP
   unsigned long ChildTotalWeight;
   unsigned __int64 QueryHistoryTimeStamp;
   __int64 NotificationCycles;
+  __int64 MaxQuotaLimitCycles;
+  volatile __int64 MaxQuotaCyclesRemaining;
   union
   {
     struct _LIST_ENTRY SchedulingGroupList;
@@ -5358,7 +5510,7 @@ typedef struct _KSCHEDULING_GROUP
   struct _LIST_ENTRY ChildList;
   struct _KSCHEDULING_GROUP* Parent;
   struct _KSCB PerProcessor[1];
-  long __PADDING__[10];
+  long __PADDING__[6];
 } KSCHEDULING_GROUP, *PKSCHEDULING_GROUP;
 
 typedef struct _KSCHEDULING_GROUP_POLICY
@@ -5545,7 +5697,8 @@ typedef struct _KTHREAD
       unsigned long KernelStackResident : 1; /* bit position: 16 */
       unsigned long CommitFailTerminateRequest : 1; /* bit position: 17 */
       unsigned long ProcessStackCountDecremented : 1; /* bit position: 18 */
-      unsigned long ThreadFlagsSpare : 5; /* bit position: 19 */
+      unsigned long RestrictedGuiThread : 1; /* bit position: 19 */
+      unsigned long ThreadFlagsSpare : 4; /* bit position: 20 */
       unsigned long EtwStackTraceApcInserted : 8; /* bit position: 24 */
     }; /* bitfield */
     volatile long ThreadFlags;
@@ -5747,6 +5900,7 @@ typedef struct _KTHREAD
   unsigned char PriorityFloorCounts[16];
   unsigned long PriorityFloorSummary;
   volatile long AbCompletedIoBoostCount;
+  volatile long AbCompletedIoQoSBoostCount;
   volatile short KeReferenceCount;
   unsigned char AbOrphanedEntrySummary;
   unsigned char AbOwnedEntryCount;
@@ -5982,7 +6136,8 @@ typedef struct _KUSER_SHARED_DATA
   unsigned long LastSystemRITEventTickCount;
   unsigned long NumberOfPhysicalPages;
   unsigned char SafeBootMode;
-  unsigned char Reserved12[3];
+  unsigned char VirtualizationFlags;
+  unsigned char Reserved12[2];
   union
   {
     unsigned long SharedDataFlags;
@@ -5997,7 +6152,8 @@ typedef struct _KUSER_SHARED_DATA
       unsigned long DbgConsoleBrokerEnabled : 1; /* bit position: 6 */
       unsigned long DbgSecureBootEnabled : 1; /* bit position: 7 */
       unsigned long DbgMultiSessionSku : 1; /* bit position: 8 */
-      unsigned long SpareBits : 23; /* bit position: 9 */
+      unsigned long DbgMultiUsersInSessionSku : 1; /* bit position: 9 */
+      unsigned long SpareBits : 22; /* bit position: 10 */
     }; /* bitfield */
   };
   unsigned long DataFlagsPad[1];
@@ -6195,6 +6351,8 @@ typedef struct _LDR_DATA_TABLE_ENTRY
   enum _LDR_DLL_LOAD_REASON LoadReason;
   unsigned long ImplicitPathOptions;
   unsigned long ReferenceCount;
+  unsigned long DependentLoadFlags;
+  long __PADDING__[1];
 } LDR_DATA_TABLE_ENTRY, *PLDR_DATA_TABLE_ENTRY;
 
 typedef struct _LDR_DDAG_NODE
@@ -6496,6 +6654,8 @@ typedef struct _MM_DRIVER_VERIFIER_DATA
   volatile unsigned long ExecutePageMappings;
   volatile unsigned long ExecuteWriteSections;
   volatile unsigned long SectionAlignmentFailures;
+  volatile unsigned long UnsupportedRelocs;
+  volatile unsigned long IATInExecutableSection;
   long __PADDING__[1];
 } MM_DRIVER_VERIFIER_DATA, *PMM_DRIVER_VERIFIER_DATA;
 
@@ -6578,68 +6738,97 @@ typedef enum _MM_PAGE_ACCESS_TYPE
   MmMaximumPageAccessType = 3,
 } MM_PAGE_ACCESS_TYPE, *PMM_PAGE_ACCESS_TYPE;
 
-typedef struct _MMSUPPORT
+struct _MM_SESSION_SPACE;
+
+typedef struct _MMSUPPORT_FLAGS
 {
-  volatile long WorkingSetLock;
-  struct _KGATE* ExitOutswapGate;
-  void* AccessLog;
+  union
+  {
+    struct
+    {
+      struct /* bitfield */
+      {
+        unsigned char WorkingSetType : 3; /* bit position: 0 */
+        unsigned char Reserved0 : 3; /* bit position: 3 */
+        unsigned char MaximumWorkingSetHard : 1; /* bit position: 6 */
+        unsigned char MinimumWorkingSetHard : 1; /* bit position: 7 */
+      }; /* bitfield */
+      struct /* bitfield */
+      {
+        unsigned char SessionMaster : 1; /* bit position: 0 */
+        unsigned char TrimmerState : 2; /* bit position: 1 */
+        unsigned char Reserved : 1; /* bit position: 3 */
+        unsigned char PageStealers : 4; /* bit position: 4 */
+      }; /* bitfield */
+    };
+    unsigned short u1;
+  };
+  unsigned char MemoryPriority;
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned char WsleDeleted : 1; /* bit position: 0 */
+      unsigned char VmExiting : 1; /* bit position: 1 */
+      unsigned char ExpansionFailed : 1; /* bit position: 2 */
+      unsigned char SvmEnabled : 1; /* bit position: 3 */
+      unsigned char ForceAge : 1; /* bit position: 4 */
+      unsigned char NewMaximum : 1; /* bit position: 5 */
+      unsigned char CommitReleaseState : 2; /* bit position: 6 */
+    }; /* bitfield */
+    unsigned char u2;
+  };
+} MMSUPPORT_FLAGS, *PMMSUPPORT_FLAGS;
+
+typedef struct _MMSUPPORT_FULL
+{
+  struct _MMSUPPORT_INSTANCE Instance;
+  struct _MMSUPPORT_SHARED Shared;
+} MMSUPPORT_FULL, *PMMSUPPORT_FULL;
+
+typedef struct _MMSUPPORT_INSTANCE
+{
+  unsigned short NextPageColor;
+  unsigned short LastTrimStamp;
+  unsigned long PageFaultCount;
+  unsigned __int64 TrimmedPageCount;
+  struct _MMWSL_INSTANCE* VmWorkingSetList;
   struct _LIST_ENTRY WorkingSetExpansionLinks;
   unsigned __int64 AgeDistribution[7];
+  struct _KGATE* ExitOutswapGate;
   unsigned __int64 MinimumWorkingSetSize;
   unsigned __int64 WorkingSetLeafSize;
   unsigned __int64 WorkingSetLeafPrivateSize;
   unsigned __int64 WorkingSetSize;
   unsigned __int64 WorkingSetPrivateSize;
   unsigned __int64 MaximumWorkingSetSize;
-  unsigned __int64 ChargedWslePages;
-  unsigned __int64 ActualWslePages;
-  unsigned __int64 WorkingSetSizeOverhead;
   unsigned __int64 PeakWorkingSetSize;
   unsigned long HardFaultCount;
   unsigned short PartitionId;
   unsigned short Pad0;
-  struct _MMWSL* VmWorkingSetList;
-  unsigned short NextPageColor;
-  unsigned short LastTrimStamp;
-  unsigned long PageFaultCount;
-  unsigned __int64 TrimmedPageCount;
+  union
+  {
+    void* InstancedWorkingSet;
+  } u1;
   unsigned __int64 Reserved0;
   struct _MMSUPPORT_FLAGS Flags;
-  unsigned __int64 ReleasedCommitDebt;
-  void* WsSwapSupport;
-  void* CommitReAcquireFailSupport;
-} MMSUPPORT, *PMMSUPPORT;
+  long __PADDING__[1];
+} MMSUPPORT_INSTANCE, *PMMSUPPORT_INSTANCE;
 
-typedef struct _MMSUPPORT_FLAGS
+typedef struct _MMSUPPORT_SHARED
 {
-  struct /* bitfield */
-  {
-    unsigned char WorkingSetType : 3; /* bit position: 0 */
-    unsigned char Reserved0 : 3; /* bit position: 3 */
-    unsigned char MaximumWorkingSetHard : 1; /* bit position: 6 */
-    unsigned char MinimumWorkingSetHard : 1; /* bit position: 7 */
-  }; /* bitfield */
-  struct /* bitfield */
-  {
-    unsigned char SessionMaster : 1; /* bit position: 0 */
-    unsigned char TrimmerState : 2; /* bit position: 1 */
-    unsigned char Reserved : 1; /* bit position: 3 */
-    unsigned char PageStealers : 4; /* bit position: 4 */
-  }; /* bitfield */
-  unsigned char MemoryPriority;
-  struct /* bitfield */
-  {
-    unsigned char WsleDeleted : 1; /* bit position: 0 */
-    unsigned char VmExiting : 1; /* bit position: 1 */
-    unsigned char ExpansionFailed : 1; /* bit position: 2 */
-    unsigned char SvmEnabled : 1; /* bit position: 3 */
-    unsigned char ForceAge : 1; /* bit position: 4 */
-    unsigned char NewMaximum : 1; /* bit position: 5 */
-    unsigned char CommitReleaseState : 2; /* bit position: 6 */
-  }; /* bitfield */
-} MMSUPPORT_FLAGS, *PMMSUPPORT_FLAGS;
+  volatile long WorkingSetLock;
+  unsigned __int64 ReleasedCommitDebt;
+  unsigned __int64 ResetPagesRepurposedCount;
+  void* WsSwapSupport;
+  void* CommitReleaseContext;
+  void* AccessLog;
+  unsigned __int64 ChargedWslePages;
+  unsigned __int64 ActualWslePages;
+  unsigned __int64 WorkingSetSizeOverhead;
+} MMSUPPORT_SHARED, *PMMSUPPORT_SHARED;
 
-struct _MMWSL;
+struct _MMWSL_INSTANCE;
 
 typedef enum _MODE
 {
@@ -6718,6 +6907,13 @@ typedef struct _NT_TIB64
   unsigned __int64 Self;
 } NT_TIB64, *PNT_TIB64;
 
+typedef struct _OB_EXTENDED_PARSE_PARAMETERS
+{
+  unsigned short Length;
+  unsigned long RestrictedAccessMask;
+  struct _EJOB* Silo;
+} OB_EXTENDED_PARSE_PARAMETERS, *POB_EXTENDED_PARSE_PARAMETERS;
+
 typedef enum _OB_OPEN_REASON
 {
   ObCreateHandle = 0,
@@ -6726,6 +6922,26 @@ typedef enum _OB_OPEN_REASON
   ObInheritHandle = 3,
   ObMaxOpenReason = 4,
 } OB_OPEN_REASON, *POB_OPEN_REASON;
+
+typedef struct _OBJECT_DIRECTORY
+{
+  struct _OBJECT_DIRECTORY_ENTRY* HashBuckets[37];
+  struct _EX_PUSH_LOCK Lock;
+  struct _DEVICE_MAP* DeviceMap;
+  struct _OBJECT_DIRECTORY* ShadowDirectory;
+  unsigned long SessionId;
+  void* NamespaceEntry;
+  unsigned long Flags;
+  long __PADDING__[1];
+} OBJECT_DIRECTORY, *POBJECT_DIRECTORY;
+
+typedef struct _OBJECT_DIRECTORY_ENTRY
+{
+  struct _OBJECT_DIRECTORY_ENTRY* ChainLink;
+  void* Object;
+  unsigned long HashValue;
+  long __PADDING__[1];
+} OBJECT_DIRECTORY_ENTRY, *POBJECT_DIRECTORY_ENTRY;
 
 typedef struct _OBJECT_DUMP_CONTROL
 {
@@ -6744,6 +6960,14 @@ typedef struct _OBJECT_NAME_INFORMATION
 {
   struct _UNICODE_STRING Name;
 } OBJECT_NAME_INFORMATION, *POBJECT_NAME_INFORMATION;
+
+typedef struct _OBJECT_NAMESPACE_LOOKUPTABLE
+{
+  struct _LIST_ENTRY HashBuckets[37];
+  struct _EX_PUSH_LOCK Lock;
+  unsigned long NumberOfPrivateSpaces;
+  long __PADDING__[1];
+} OBJECT_NAMESPACE_LOOKUPTABLE, *POBJECT_NAMESPACE_LOOKUPTABLE;
 
 typedef struct _OBJECT_TYPE
 {
@@ -6779,6 +7003,15 @@ typedef struct _OBJECT_TYPE_INITIALIZER
       unsigned char CacheAligned : 1; /* bit position: 7 */
     }; /* bitfield */
   };
+  union
+  {
+    unsigned char ObjectTypeFlags2;
+    struct /* bitfield */
+    {
+      unsigned char UseExtendedParameters : 1; /* bit position: 0 */
+      unsigned char Reserved : 7; /* bit position: 1 */
+    }; /* bitfield */
+  };
   unsigned long ObjectTypeCode;
   unsigned long InvalidAttributes;
   struct _GENERIC_MAPPING GenericMapping;
@@ -6791,7 +7024,11 @@ typedef struct _OBJECT_TYPE_INITIALIZER
   void* OpenProcedure /* function */;
   void* CloseProcedure /* function */;
   void* DeleteProcedure /* function */;
-  void* ParseProcedure /* function */;
+  union
+  {
+    void* ParseProcedure /* function */;
+    void* ParseProcedureEx /* function */;
+  };
   void* SecurityProcedure /* function */;
   void* QueryNameProcedure /* function */;
   void* OkayToCloseProcedure /* function */;
@@ -6799,6 +7036,20 @@ typedef struct _OBJECT_TYPE_INITIALIZER
   unsigned short WaitObjectFlagOffset;
   unsigned short WaitObjectPointerOffset;
 } OBJECT_TYPE_INITIALIZER, *POBJECT_TYPE_INITIALIZER;
+
+typedef struct _OBP_SILODRIVERSTATE
+{
+  struct _DEVICE_MAP* SystemDeviceMap;
+  struct _OBP_SYSTEM_DOS_DEVICE_STATE SystemDosDeviceState;
+  struct _EX_PUSH_LOCK DeviceMapLock;
+  struct _OBJECT_NAMESPACE_LOOKUPTABLE PrivateNamespaceLookupTable;
+} OBP_SILODRIVERSTATE, *POBP_SILODRIVERSTATE;
+
+typedef struct _OBP_SYSTEM_DOS_DEVICE_STATE
+{
+  unsigned long GlobalDeviceMap;
+  unsigned long LocalDeviceCount[26];
+} OBP_SYSTEM_DOS_DEVICE_STATE, *POBP_SYSTEM_DOS_DEVICE_STATE;
 
 typedef struct _OWNER_ENTRY
 {
@@ -6809,7 +7060,8 @@ typedef struct _OWNER_ENTRY
     {
       unsigned long IoPriorityBoosted : 1; /* bit position: 0 */
       unsigned long OwnerReferenced : 1; /* bit position: 1 */
-      unsigned long OwnerCount : 30; /* bit position: 2 */
+      unsigned long IoQoSPriorityBoosted : 1; /* bit position: 2 */
+      unsigned long OwnerCount : 29; /* bit position: 3 */
     }; /* bitfield */
     unsigned long TableSize;
   };
@@ -6840,7 +7092,7 @@ typedef struct _PEB
       unsigned char IsPackagedProcess : 1; /* bit position: 4 */
       unsigned char IsAppContainer : 1; /* bit position: 5 */
       unsigned char IsProtectedProcessLight : 1; /* bit position: 6 */
-      unsigned char SpareBits : 1; /* bit position: 7 */
+      unsigned char IsLongPathAwareProcess : 1; /* bit position: 7 */
     }; /* bitfield */
   };
   unsigned char Padding0[4];
@@ -6851,7 +7103,7 @@ typedef struct _PEB
   void* SubSystemData;
   void* ProcessHeap;
   struct _RTL_CRITICAL_SECTION* FastPebLock;
-  void* AtlThunkSListPtr;
+  union _SLIST_HEADER* volatile AtlThunkSListPtr;
   void* IFEOKey;
   union
   {
@@ -6970,7 +7222,7 @@ typedef struct _PEB32
       unsigned char IsPackagedProcess : 1; /* bit position: 4 */
       unsigned char IsAppContainer : 1; /* bit position: 5 */
       unsigned char IsProtectedProcessLight : 1; /* bit position: 6 */
-      unsigned char SpareBits : 1; /* bit position: 7 */
+      unsigned char IsLongPathAwareProcess : 1; /* bit position: 7 */
     }; /* bitfield */
   };
   unsigned long Mutant;
@@ -7302,6 +7554,7 @@ typedef struct _PPM_IDLE_STATES
   unsigned char NonInterruptibleTransition;
   unsigned char UnaccountedTransition;
   unsigned char IdleDurationLimited;
+  unsigned char IdleCheckLimited;
   unsigned long ExitLatencyCountdown;
   unsigned long TargetState;
   unsigned long ActualState;
@@ -7565,8 +7818,10 @@ typedef struct _PROC_PERF_DOMAIN
   struct _KPRCB* Master;
   struct _KAFFINITY_EX Members;
   unsigned long ProcessorCount;
-  unsigned char Class;
-  unsigned char Spare[3];
+  unsigned char EfficiencyClass;
+  unsigned char NominalPerformanceClass;
+  unsigned char HighestPerformanceClass;
+  unsigned char Spare;
   struct _PROC_PERF_CONSTRAINT* Processors;
   void* GetFFHThrottleState /* function */;
   void* TimeWindowHandler /* function */;
@@ -7652,12 +7907,18 @@ typedef struct _PROCESS_ENERGY_VALUES
   unsigned __int64 MBBTxRxBytes;
   union
   {
-    unsigned long Foreground : 1; /* bit position: 0 */
-    unsigned long WindowInformation;
+    struct /* bitfield */
+    {
+      unsigned short Foreground : 1; /* bit position: 0 */
+      unsigned short DesktopVisible : 1; /* bit position: 1 */
+    }; /* bitfield */
+    unsigned short WindowInformation;
   };
-  unsigned long PixelArea;
-  __int64 PixelReportTimestamp;
-  unsigned __int64 PixelTime;
+  unsigned short CompositorRendered;
+  unsigned short DirtyGenerated;
+  unsigned short DirtyPropagated;
+  __int64 DesktopVisibilityReportTimestamp;
+  unsigned __int64 DesktopVisibleTime;
   __int64 ForegroundReportTimestamp;
   unsigned __int64 ForegroundTime;
 } PROCESS_ENERGY_VALUES, *PPROCESS_ENERGY_VALUES;
@@ -7743,7 +8004,8 @@ typedef struct _PROCESSOR_POWER_STATE
   unsigned __int64 IdleTimeExpiration;
   unsigned char NonInterruptibleTransition;
   unsigned char PepWokenTransition;
-  unsigned char Class;
+  unsigned char EfficiencyClass;
+  unsigned char SchedulingClass;
   unsigned long TargetIdleState;
   struct _PROC_IDLE_POLICY IdlePolicy;
   volatile union _PPM_IDLE_SYNCHRONIZATION_STATE Synchronization;
@@ -7808,7 +8070,10 @@ typedef enum _PS_ATTRIBUTE_NUM
   PsAttributeSecureProcess = 18,
   PsAttributeJobList = 19,
   PsAttributeChildProcessPolicy = 20,
-  PsAttributeMax = 21,
+  PsAttributeAllApplicationPackagesPolicy = 21,
+  PsAttributeWin32kFilter = 22,
+  PsAttributeSafeOpenPromptOriginClaim = 23,
+  PsAttributeMax = 24,
 } PS_ATTRIBUTE_NUM, *PPS_ATTRIBUTE_NUM;
 
 typedef union _PS_CLIENT_SECURITY_CONTEXT
@@ -7837,6 +8102,23 @@ enum PS_CREATE_STATE
   PsCreateMaximumStates = 7,
 };
 
+typedef struct _PS_IO_CONTROL_ENTRY
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE VolumeTreeNode;
+    struct
+    {
+      struct _LIST_ENTRY FreeListEntry;
+      unsigned __int64 ReservedForParentValue;
+    };
+  };
+  unsigned __int64 VolumeKey;
+  struct _EX_RUNDOWN_REF Rundown;
+  void* IoControl;
+  void* VolumeIoAttribution;
+} PS_IO_CONTROL_ENTRY, *PPS_IO_CONTROL_ENTRY;
+
 typedef struct _PS_PROPERTY_SET
 {
   struct _LIST_ENTRY ListHead;
@@ -7852,7 +8134,8 @@ typedef enum _PS_PROTECTED_SIGNER
   PsProtectedSignerLsa = 4,
   PsProtectedSignerWindows = 5,
   PsProtectedSignerWinTcb = 6,
-  PsProtectedSignerMax = 7,
+  PsProtectedSignerWinSystem = 7,
+  PsProtectedSignerMax = 8,
 } PS_PROTECTED_SIGNER, *PPS_PROTECTED_SIGNER;
 
 typedef enum _PS_PROTECTED_TYPE
@@ -7968,6 +8251,8 @@ typedef enum _PS_WAKE_REASON
   PsWakeReasonPreserveProcess = 4,
   PsMaxWakeReasons = 5,
 } PS_WAKE_REASON, *PPS_WAKE_REASON;
+
+struct _PSP_STORAGE;
 
 typedef struct _QUAD
 {
@@ -8151,6 +8436,20 @@ typedef struct _RTL_BITMAP_EX
   unsigned __int64* Buffer;
 } RTL_BITMAP_EX, *PRTL_BITMAP_EX;
 
+typedef struct _RTL_CHASH_ENTRY
+{
+  unsigned __int64 Key;
+} RTL_CHASH_ENTRY, *PRTL_CHASH_ENTRY;
+
+typedef struct _RTL_CHASH_TABLE
+{
+  struct _RTL_CHASH_ENTRY* Table;
+  unsigned long EntrySizeShift;
+  unsigned long EntryMax;
+  unsigned long EntryCount;
+  long __PADDING__[1];
+} RTL_CHASH_TABLE, *PRTL_CHASH_TABLE;
+
 typedef struct _RTL_CRITICAL_SECTION
 {
   struct _RTL_CRITICAL_SECTION_DEBUG* DebugInfo;
@@ -8227,6 +8526,30 @@ typedef enum _RTL_GENERIC_COMPARE_RESULTS
   GenericEqual = 2,
 } RTL_GENERIC_COMPARE_RESULTS, *PRTL_GENERIC_COMPARE_RESULTS;
 
+typedef struct _RTL_HASH_ENTRY
+{
+  struct _SINGLE_LIST_ENTRY BucketLink;
+  unsigned __int64 Key;
+} RTL_HASH_ENTRY, *PRTL_HASH_ENTRY;
+
+typedef struct _RTL_HASH_TABLE
+{
+  unsigned long EntryCount;
+  struct /* bitfield */
+  {
+    unsigned long MaskBitCount : 5; /* bit position: 0 */
+    unsigned long BucketCount : 27; /* bit position: 5 */
+  }; /* bitfield */
+  struct _SINGLE_LIST_ENTRY* Buckets;
+} RTL_HASH_TABLE, *PRTL_HASH_TABLE;
+
+typedef struct _RTL_HASH_TABLE_ITERATOR
+{
+  struct _RTL_HASH_TABLE* Hash;
+  struct _RTL_HASH_ENTRY* HashEntry;
+  struct _SINGLE_LIST_ENTRY* Bucket;
+} RTL_HASH_TABLE_ITERATOR, *PRTL_HASH_TABLE_ITERATOR;
+
 typedef struct _RTL_HEAP_WALK_ENTRY
 {
   void* DataAddress;
@@ -8259,6 +8582,16 @@ typedef struct _RTL_RB_TREE
   struct _RTL_BALANCED_NODE* Root;
   struct _RTL_BALANCED_NODE* Min;
 } RTL_RB_TREE, *PRTL_RB_TREE;
+
+typedef union _RTL_RUN_ONCE
+{
+  union
+  {
+    void* Ptr;
+    unsigned __int64 Value;
+    unsigned __int64 State : 2; /* bit position: 0 */
+  };
+} RTL_RUN_ONCE, *PRTL_RUN_ONCE;
 
 typedef struct _RTL_SPARSE_BITMAP_CTX
 {
@@ -8350,6 +8683,17 @@ typedef struct _RTL_STACK_TRACE_ENTRY
     };
   };
 } RTL_STACK_TRACE_ENTRY, *PRTL_STACK_TRACE_ENTRY;
+
+typedef struct _RTL_STACKDB_CONTEXT
+{
+  struct _RTL_HASH_TABLE StackSegmentTable;
+  struct _RTL_HASH_TABLE StackEntryTable;
+  struct _RTL_SRWLOCK StackEntryTableLock;
+  struct _RTL_SRWLOCK SegmentTableLock;
+  void* Allocate /* function */;
+  void* Free /* function */;
+  void* AllocatorContext;
+} RTL_STACKDB_CONTEXT, *PRTL_STACKDB_CONTEXT;
 
 typedef struct _RTL_STD_LIST_ENTRY
 {
@@ -8477,6 +8821,17 @@ typedef struct _RTL_USER_PROCESS_PARAMETERS
   unsigned long LoaderThreads;
 } RTL_USER_PROCESS_PARAMETERS, *PRTL_USER_PROCESS_PARAMETERS;
 
+typedef struct _RTLP_HEAP_FEATURES
+{
+  struct /* bitfield */
+  {
+    unsigned char UseSegmentHeap : 1; /* bit position: 0 */
+    unsigned char EnableTagging : 1; /* bit position: 1 */
+    unsigned char EnableStackTracking : 1; /* bit position: 2 */
+    unsigned char DisableDbgBreakOnCorruption : 1; /* bit position: 3 */
+  }; /* bitfield */
+} RTLP_HEAP_FEATURES, *PRTLP_HEAP_FEATURES;
+
 struct _SCSI_REQUEST_BLOCK;
 
 typedef struct _SE_AUDIT_PROCESS_CREATION_INFO
@@ -8563,6 +8918,7 @@ typedef struct _SEGMENT_HEAP
   struct _LIST_ENTRY SegmentListHead;
   unsigned __int64 SegmentCount;
   struct _RTL_RB_TREE FreePageRanges;
+  union _RTL_RUN_ONCE StackTraceInitVar;
   struct _RTL_SRWLOCK ContextExtendLock;
   unsigned char* AllocatedBase;
   unsigned char* UncommittedBase;
@@ -8583,6 +8939,41 @@ typedef struct _SEGMENT_HEAP_EXTRA
   void* Settable;
 } SEGMENT_HEAP_EXTRA, *PSEGMENT_HEAP_EXTRA;
 
+struct _SEP_LOGON_SESSION_REFERENCES;
+
+typedef struct _SEP_RM_LSA_CONNECTION_STATE
+{
+  void* LsaProcessHandle;
+  void* LsaCommandPortHandle;
+  void* SepRmThreadHandle;
+  void* RmCommandPortHandle;
+  void* RmCommandServerPortHandle;
+  void* LsaCommandPortSectionHandle;
+  union _LARGE_INTEGER LsaCommandPortSectionSize;
+  void* LsaViewPortMemory;
+  void* RmViewPortMemory;
+  long LsaCommandPortMemoryDelta;
+  unsigned char LsaCommandPortActive;
+  char __PADDING__[3];
+} SEP_RM_LSA_CONNECTION_STATE, *PSEP_RM_LSA_CONNECTION_STATE;
+
+typedef struct _SEP_SILOSTATE
+{
+  struct _SEP_LOGON_SESSION_REFERENCES* SystemLogonSession;
+  struct _SEP_LOGON_SESSION_REFERENCES* AnonymousLogonSession;
+  void* AnonymousLogonToken;
+  void* AnonymousLogonTokenNoEveryone;
+} SEP_SILOSTATE, *PSEP_SILOSTATE;
+
+typedef enum _SERVERSILO_STATE
+{
+  SERVERSILO_INITING = 0,
+  SERVERSILO_STARTED = 1,
+  SERVERSILO_SHUTTING_DOWN = 2,
+  SERVERSILO_TERMINATING = 3,
+  SERVERSILO_TERMINATED = 4,
+} SERVERSILO_STATE, *PSERVERSILO_STATE;
+
 typedef struct _SID
 {
   unsigned char Revision;
@@ -8596,7 +8987,16 @@ typedef struct _SID_IDENTIFIER_AUTHORITY
   unsigned char Value[6];
 } SID_IDENTIFIER_AUTHORITY, *PSID_IDENTIFIER_AUTHORITY;
 
-struct _SILO_CONTEXT;
+typedef struct _SILO_USER_SHARED_DATA
+{
+  unsigned long ServiceSessionId;
+  unsigned long ActiveConsoleId;
+  __int64 ConsoleSessionForegroundProcessId;
+  enum _NT_PRODUCT_TYPE NtProductType;
+  unsigned long SuiteMask;
+  unsigned char IsMultiSessionSku;
+  char __PADDING__[7];
+} SILO_USER_SHARED_DATA, *PSILO_USER_SHARED_DATA;
 
 typedef struct _SINGLE_LIST_ENTRY
 {
@@ -8824,7 +9224,8 @@ typedef struct _TEB
   unsigned long CurrentLocale;
   unsigned long FpSoftwareStatusRegister;
   void* ReservedForDebuggerInstrumentation[16];
-  void* SystemReserved1[38];
+  void* SystemReserved1[37];
+  unsigned char WorkingOnBehalfTicket[8];
   long ExceptionCode;
   unsigned char Padding0[4];
   struct _ACTIVATION_CONTEXT_STACK* ActivationContextStackPointer;
@@ -8963,7 +9364,8 @@ typedef struct _TEB32
   unsigned long CurrentLocale;
   unsigned long FpSoftwareStatusRegister;
   unsigned long ReservedForDebuggerInstrumentation[16];
-  unsigned long SystemReserved1[38];
+  unsigned long SystemReserved1[36];
+  unsigned char WorkingOnBehalfTicket[8];
   long ExceptionCode;
   unsigned long ActivationContextStackPointer;
   unsigned long InstrumentationCallbackSp;
@@ -9093,7 +9495,8 @@ typedef struct _TEB64
   unsigned long CurrentLocale;
   unsigned long FpSoftwareStatusRegister;
   unsigned __int64 ReservedForDebuggerInstrumentation[16];
-  unsigned __int64 SystemReserved1[38];
+  unsigned __int64 SystemReserved1[37];
+  unsigned char WorkingOnBehalfTicket[8];
   long ExceptionCode;
   unsigned char Padding0[4];
   unsigned __int64 ActivationContextStackPointer;
@@ -9396,7 +9799,7 @@ typedef struct _UNICODE_STRING
 {
   unsigned short Length;
   unsigned short MaximumLength;
-  unsigned short* Buffer;
+  wchar_t* Buffer;
 } UNICODE_STRING, *PUNICODE_STRING;
 
 typedef enum _USER_ACTIVITY_PRESENCE
@@ -9446,7 +9849,8 @@ typedef struct _WAIT_CONTEXT_BLOCK
       {
         unsigned long SyncCallback : 1; /* bit position: 0 */
         unsigned long DmaContext : 1; /* bit position: 1 */
-        unsigned long Reserved : 30; /* bit position: 2 */
+        unsigned long ZeroMapRegisters : 1; /* bit position: 2 */
+        unsigned long Reserved : 29; /* bit position: 3 */
       }; /* bitfield */
     };
   };
@@ -9591,7 +9995,8 @@ typedef union _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR_FLAGS
       unsigned long ThresholdExceeded : 1; /* bit position: 3 */
       unsigned long ResourceNotAvailable : 1; /* bit position: 4 */
       unsigned long LatentError : 1; /* bit position: 5 */
-      unsigned long Reserved : 26; /* bit position: 6 */
+      unsigned long Propagated : 1; /* bit position: 6 */
+      unsigned long Reserved : 25; /* bit position: 7 */
     }; /* bitfield */
     unsigned long AsULONG;
   };
@@ -9633,7 +10038,9 @@ typedef enum _WHEA_ERROR_SOURCE_TYPE
   WheaErrSrcTypeIPFMCA = 9,
   WheaErrSrcTypeIPFCMC = 10,
   WheaErrSrcTypeIPFCPE = 11,
-  WheaErrSrcTypeMax = 12,
+  WheaErrSrcTypeGenericV2 = 12,
+  WheaErrSrcTypeSCIGenericV2 = 13,
+  WheaErrSrcTypeMax = 14,
 } WHEA_ERROR_SOURCE_TYPE, *PWHEA_ERROR_SOURCE_TYPE;
 
 typedef enum _WHEA_ERROR_TYPE
@@ -9696,6 +10103,24 @@ typedef union _WHEA_TIMESTAMP
     union _LARGE_INTEGER AsLARGE_INTEGER;
   };
 } WHEA_TIMESTAMP, *PWHEA_TIMESTAMP;
+
+typedef struct _WNF_LOCK
+{
+  struct _EX_PUSH_LOCK PushLock;
+} WNF_LOCK, *PWNF_LOCK;
+
+struct _WNF_SCOPE_MAP;
+
+typedef struct _WNF_SILODRIVERSTATE
+{
+  struct _WNF_SCOPE_MAP* ScopeMap;
+  void* volatile PermanentNameStoreRootKey;
+  void* volatile PersistentNameStoreRootKey;
+  volatile __int64 PermanentNameSequenceNumber;
+  struct _WNF_LOCK PermanentNameSequenceNumberLock;
+  volatile __int64 PermanentNameSequenceNumberPool;
+  volatile __int64 RuntimeNameSequenceNumber;
+} WNF_SILODRIVERSTATE, *PWNF_SILODRIVERSTATE;
 
 typedef struct _WNF_STATE_NAME
 {
@@ -9771,11 +10196,15 @@ typedef struct _XSTATE_CONFIGURATION
   unsigned __int64 EnabledFeatures;
   unsigned __int64 EnabledVolatileFeatures;
   unsigned long Size;
-  struct /* bitfield */
+  union
   {
-    unsigned long OptimizedSave : 1; /* bit position: 0 */
-    unsigned long CompactionEnabled : 1; /* bit position: 1 */
-  }; /* bitfield */
+    unsigned long ControlFlags;
+    struct /* bitfield */
+    {
+      unsigned long OptimizedSave : 1; /* bit position: 0 */
+      unsigned long CompactionEnabled : 1; /* bit position: 1 */
+    }; /* bitfield */
+  };
   struct _XSTATE_FEATURE Features[64];
   unsigned __int64 EnabledSupervisorFeatures;
   unsigned __int64 AlignedFeatures;
@@ -9837,6 +10266,7 @@ ApiSetpSearchForApiSet();
 ApiSetpSearchForApiSetHost();
 ? ApiSetQueryApiSetPresence;
 ApiSetResolveToHost();
+? AppModelPolicy_GetPolicy;
 ARRAY_FITS();
 __ascii_memicmp();
 __ascii_stricmp();
@@ -9881,6 +10311,7 @@ __C_specific_handler();
 CanComposeHangul();
 CcSaveNVContext();
 ceil();
+CentennialIssueTracker_EnsureRegistration();
 CheckOneBitValidFlag();
 __chkstk();
 ChkSum();
@@ -9955,9 +10386,9 @@ EtwEnumerateProcessRegGuids();
 ? EtwEnumerateProcessRegGuids$fin$0;
 ? EtwEventActivityIdControl;
 ? EtwEventEnabled;
-EtwEventProviderEnabled();
+? EtwEventProviderEnabled;
 EtwEventRegister();
-EtwEventSetInformation();
+? EtwEventSetInformation;
 EtwEventUnregister();
 EtwEventWrite();
 ? EtwEventWriteEndScenario;
@@ -9970,16 +10401,16 @@ EtwEventWriteTransfer();
 ? EtwGetTraceEnableFlags;
 ? EtwGetTraceEnableLevel;
 ? EtwGetTraceLoggerHandle;
-EtwLogTraceEvent();
+? EtwLogTraceEvent;
 ? EtwNotificationRegister;
 ? EtwNotificationUnregister;
-? EtwpAddBinaryInfoEvents;
+EtwpAddBinaryInfoEvents();
 EtwpAddDebugInfoEvents();
 EtwpAddEventToBuffer();
 ? EtwpAddInstanceIdToLogFileName;
 ? EtwpAddLogHeaderToLogFile;
-EtwpAddProviderToSession();
-EtwpAddProviderTrackingInfo();
+? EtwpAddProviderToSession;
+? EtwpAddProviderTrackingInfo;
 ? EtwpAddWinRtProviderToSession;
 ? EtwpAllocateFreeBuffers;
 ? EtwpAllocateRegistration;
@@ -9994,18 +10425,18 @@ EtwpCreateRegGuidsContext();
 ? EtwpDisableTraceProviders;
 ? EtwpEventApiCallback;
 ? EtwpEventWriteFull;
-EtwpFillProcessorStreamIndexMap();
-EtwpFinalizeLogFileHeader();
-EtwpFinalizeRelogFileHeaderStats();
+? EtwpFillProcessorStreamIndexMap;
+? EtwpFinalizeLogFileHeader;
+? EtwpFinalizeRelogFileHeaderStats;
 EtwpFindAndLockBufferForFlushing();
-EtwpFindDebugId();
+? EtwpFindDebugId;
 ? EtwpFindRegistration;
 ? EtwpFlushActiveBuffers;
 ? EtwpFlushBuffer;
-? EtwpFlushUmLogger;
+EtwpFlushUmLogger();
 ? EtwpFreeLoggerContext;
 EtwpFreeRegistration();
-? EtwpFreeStreamIndexMap;
+EtwpFreeStreamIndexMap();
 EtwpGenerateFileName();
 EtwpGetCpuSpeed();
 EtwpGetCpuSpeedFromRegistry();
@@ -10026,7 +10457,7 @@ EtwpInsertRegistration();
 ? EtwpNotificationThread;
 ? EtwpProcessNotification;
 ? EtwpProviderArrivalCallback;
-EtwpQueryRegString();
+? EtwpQueryRegString;
 ? EtwpQueryUmLogger;
 ? EtwpReceiveReplyDataBlock;
 ? EtwpRegisterGuidsApiCallback;
@@ -10034,7 +10465,7 @@ EtwpQueryRegString();
 ? EtwpRegisterTpNotificationOnce;
 EtwpRegistrationCompare();
 ? EtwpReleasePrivateBuffers;
-EtwpRelogEvent();
+? EtwpRelogEvent;
 ? EtwpRelogEvent$fin$0;
 EtwpRemoveRegistrationFromTable();
 ? EtwpReserveTraceBuffer;
@@ -10042,12 +10473,13 @@ EtwpRemoveRegistrationFromTable();
 EtwpSendSessionNotification();
 ? EtwpSetProviderTraits;
 EtwpShutdownCompression();
-EtwpStartUmLogger();
+? EtwpShutdownPrivateLoggers;
+? EtwpStartUmLogger;
 EtwpStopLoggerInstance();
 ? EtwpStopUmLogger;
 ? EtwpSwitchBuffer;
 EtwpSynchronizeWithLogger();
-EtwpTraceUmEvent();
+? EtwpTraceUmEvent;
 ? EtwpTraceUmEvent$fin$0;
 ? EtwpTraceUmEvent$fin$1;
 ? EtwpTraceUmMessage;
@@ -10058,11 +10490,11 @@ EtwpTraceUmEvent();
 EtwpUpdateEnableInfoAndCallback();
 EtwpUpdatePrivateEnableInfo();
 EtwpUpdateUmLogger();
-? EtwpUseDescriptorType;
+EtwpUseDescriptorType();
 EtwpValidateLoggerInfo();
 ? EtwpWaitForBufferReferenceCount;
-EtwpWriteBufferCompressed();
-EtwpWriteRemainingCompressedData();
+? EtwpWriteBufferCompressed;
+? EtwpWriteRemainingCompressedData;
 ? EtwpWriteToPrivateBuffers;
 ? EtwpWriteToPrivateBuffers$filt$0;
 ? EtwRegisterSecurityProvider;
@@ -10113,11 +10545,11 @@ _getbuf();
 int __cdecl GetEntryIndex<struct _RESCDIRECTORY *,struct _RESCDENTRY *,0>(struct _RESCDIRECTORY *,struct _RESCACHEID,unsigned int);
 int __cdecl GetFirstEntryIndex<struct _RESCDIRECTORY *,struct _RESCDENTRY *,0>(struct _RESCDIRECTORY *,struct _RESCACHEID);
 ? GetLCIDFromLangListNode;
-GetLCIDFromLangListNodeWithLICCheck();
+? GetLCIDFromLangListNodeWithLICCheck;
 ? GetNameFromLangListNode;
 GetNextWchar();
 GetResourceDirectoryEntry();
-? GetShipAssertBuffer;
+GetShipAssertBuffer();
 GetUCBytes();
 GetUTF32();
 __GSHandlerCheck();
@@ -10142,7 +10574,7 @@ ImportTablepInsertModuleSorted();
 ? InitializeSListHead;
 ? InitializeTEBUserLangList;
 ? InitializeUserOrMachineLangList;
-InitSecurityCookie();
+? InitSecurityCookie;
 int __cdecl InitStack<int>(void * *,unsigned int);
 int __cdecl InitStack<unsigned int>(void * *,unsigned int);
 _input_l();
@@ -10158,7 +10590,6 @@ __isascii();
 iscntrl();
 __iscsym();
 __iscsymf();
-IsDebugPortPresent();
 isdigit();
 isgraph();
 IsHangulLV();
@@ -10204,7 +10635,7 @@ LdrAccessResource();
 LdrAddRefDll();
 LdrAppxHandleIntegrityFailure();
 LdrDisableThreadCalloutsForDll();
-LdrEnsureMrdataHeapExists();
+? LdrEnsureMrdataHeapExists;
 ? LdrEnumerateLoadedModules;
 ? LdrEnumerateLoadedModules$fin$0;
 LdrEnumResources();
@@ -10223,7 +10654,7 @@ LdrGetDllHandleByMapping();
 ? LdrGetDllHandleByMapping$filt$0;
 LdrGetDllHandleByName();
 ? LdrGetDllHandleByName$filt$0;
-LdrGetDllHandleEx();
+? LdrGetDllHandleEx;
 LdrGetDllPath();
 LdrGetFailureData();
 LdrGetFileNameFromLoadAsDataTable();
@@ -10237,13 +10668,13 @@ LdrInitializeThunk();
 LdrInitShimEngineDynamic();
 LdrIsResItemExist();
 ? LdrLoadAlternateResourceModule;
-LdrLoadAlternateResourceModuleEx();
+? LdrLoadAlternateResourceModuleEx;
 ? LdrLoadAlternateResourceModuleEx$fin$0;
-LdrLoadDll();
+? LdrLoadDll;
 ? LdrLockLoaderLock;
 ? LdrLockLoaderLock$filt$0;
 ? LdrLogNewDataDllLoad;
-LdrpAccessResourceData();
+? LdrpAccessResourceData;
 LdrpAccessResourceDataNoMultipleLanguage();
 ? LdrpAcquireLoaderLock;
 ? LdrpAcquireTlsIndex;
@@ -10266,11 +10697,12 @@ LdrpAppxGetBinaryNameKeyInformation();
 LdrpAppxGetRemediationRegistryKey();
 LdrpArmProcessRelocation();
 LdrpBuildForwarderLink();
+LdrpBuildSystem32FileName();
 ? LdrpCallInitRoutine;
 ? LdrpCallInitRoutine$fin$0;
 LdrpCallTlsInitializers();
 ? LdrpCallTlsInitializers$filt$0;
-LdrpCaptureCriticalThunks();
+? LdrpCaptureCriticalThunks;
 ? LdrpCfgProcessLoadConfig;
 ? LdrpChangeMrdataProtection;
 LdrpCheckAppDirType();
@@ -10278,7 +10710,7 @@ LdrpCheckComponentOnDemandEtwEvent();
 LdrpCheckKnownDllFullPath();
 LdrpCleanupThreadTlsData();
 LdrpCMFAddToStanbyQueue();
-LdrpCMFRemoveFromStandbyQueue();
+? LdrpCMFRemoveFromStandbyQueue;
 LdrpCnvrtShortToLongFileName();
 ? LdrpCodeAuthzInitialize;
 LdrpCompareModuleBaseAddresses();
@@ -10299,6 +10731,7 @@ LdrpConstructModernAppKeyName();
 LdrpCorProcessImports();
 LdrpCorValidateImage();
 ? LdrpCreateLangFallbackList;
+LdrpCreateLoaderEvents();
 ? LdrpDecrementModuleLoadCountEx;
 LdrpDependencyExist();
 ? LdrpDereferenceModule;
@@ -10311,6 +10744,7 @@ LdrpDoDebuggerBreak();
 LdrpDropLastInProgressCount();
 ? LdrpDynamicShimModule;
 ? LdrpEnableParallelLoading;
+LdrpEventAddAnsiString();
 LdrpEventAddUnicodeString();
 ? LdrpFastpthReloadedDll;
 LdrpFatalExceptionFilter();
@@ -10323,7 +10757,7 @@ LdrpFindLoadedDllByHandle();
 ? LdrpFindLoadedDllByMapping;
 LdrpFindLoadedDllByMappingFile();
 ? LdrpFindLoadedDllByMappingLockHeld;
-LdrpFindLoadedDllByName();
+? LdrpFindLoadedDllByName;
 ? LdrpFindLoadedDllByNameLockHeld;
 ? LdrpFindLoadedDllInternal;
 ? LdrpFindMessageInAlternateModule;
@@ -10339,7 +10773,7 @@ LdrpGenericExceptionFilter();
 LdrpGenSecurityCookie();
 LdrpGetAlternateResourceModuleHandleEx();
 ? LdrpGetAlternateResourceModuleHandleEx$fin$0;
-LdrpGetDataModulePath();
+? LdrpGetDataModulePath;
 ? LdrpGetDelayloadAPIInfo;
 LdrpGetDelayloadDescriptor();
 LdrpGetDelayloadExportDll();
@@ -10356,11 +10790,11 @@ LdrpGetMappingFromCacheEntry();
 ? LdrpGetModuleInfoFromVirtualMemory;
 ? LdrpGetModuleName;
 ? LdrpGetMUIFromCMFSegment;
-LdrpGetMUILangConfigNode();
+? LdrpGetMUILangConfigNode;
 LdrpGetNewTlsVector();
 ? LdrpGetParentLangId;
 LdrpGetProcApphelpCheckModule();
-LdrpGetProcedureAddress();
+? LdrpGetProcedureAddress;
 LdrpGetRcConfig();
 ? LdrpGetShimEngineInterface;
 LdrpHandleInvalidUserCallTarget();
@@ -10380,14 +10814,16 @@ LdrpInitialize();
 ? _LdrpInitialize$filt$0;
 LdrpInitializeApplicationVerifierPackage();
 ? LdrpInitializeDllPath;
-LdrpInitializeExecutionOptions();
+LdrpInitializeExceptionTable();
+? LdrpInitializeExecutionOptions;
 ? LdrpInitializeGraphRecurse;
 LdrpInitializeNlsInfo();
 ? LdrpInitializeNode;
 ? LdrpInitializeNode$filt$1;
 ? LdrpInitializeNode$fin$0;
 ? LdrpInitializePerUserWindowsDirectory;
-LdrpInitializeProcess();
+? LdrpInitializePolicy;
+? LdrpInitializeProcess;
 ? LdrpInitializeProcess$fin$0;
 LdrpInitializeProcessWrapperFilter();
 ? LdrpInitializeShimDllDependencies;
@@ -10397,20 +10833,20 @@ LdrpInitializeProcessWrapperFilter();
 ? LdrpInitializeThread$fin$2;
 ? LdrpInitializeTls;
 ? LdrpInitMuiCrits;
-LdrpInitParallelLoadingSupport();
 ? LdrpInitShimEngine;
 ? LdrpInsertDataTableEntry;
 LdrpInsertModuleToIndex();
 LdrpInsertModuleToIndexLockHeld();
 LdrpIsCODServiceEnabled();
-LdrpIsReparsePoint();
+? LdrpIsModuleUnderSystem32;
+? LdrpIsReparsePoint;
 ? LdrpIsSecurityEtwLoggingEnabled;
 LdrpIsSubstringFound();
 LdrpIsVerifierActivationFilterMatched();
 ? LdrpLangFallbackListAppendNode;
 ? LdrpLangFallbackListFindNode;
 ? LdrpLoadContextReplaceModule;
-LdrpLoadDependentModule();
+? LdrpLoadDependentModule;
 ? LdrpLoadDependentModule$fin$0;
 ? LdrpLoadDll;
 ? LdrpLoadDllInternal;
@@ -10418,11 +10854,12 @@ LdrpLoadDependentModule();
 LdrpLoadForwardedDll();
 ? LdrpLoadForwardedDll$fin$0;
 LdrpLoadKnownDll();
-LdrpLoadResourceFromAlternativeModule();
+? LdrpLoadResourceFromAlternativeModule;
 ? LdrpLoadShimEngine;
 ? LdrpLoadWow64;
 LdrpLocateMrdata();
 LdrpLogDbgPrint();
+? LdrpLogDelayLoadTrigger;
 ? LdrpLogDeprecatedDllEtwEvent;
 ? LdrpLogDllRelocationEtwEvent;
 ? LdrpLogDllState;
@@ -10430,24 +10867,24 @@ LdrpLogDbgPrint();
 ? LdrpLogError;
 LdrpLogEtwDllSearchResults();
 LdrpLogEtwEvent();
-LdrpLogEtwEventEx();
 LdrpLogFatalLdrEtwEvent();
 LdrpLogFatalUserCallbackException();
 ? LdrpLogLoadFailureEtwEvent;
 LdrpLogNewDllLoadInternal();
+? LdrpLogRelativePathWithAlteredSearchError;
 LdrpMakePermanentImageCommit();
 LdrpMakeUnicodeStringFromPathElement();
 ? LdrpMapAndSnapDependency;
 LdrpMapDllFullPath();
-LdrpMapDllNtFileName();
-LdrpMapDllSearchPath();
-LdrpMapDllWithSectionHandle();
+? LdrpMapDllNtFileName;
+? LdrpMapDllSearchPath;
+? LdrpMapDllWithSectionHandle;
 ? LdrpMapImage;
-LdrpMapResourceFile();
+? LdrpMapResourceFile;
 ? LdrpMapViewOfSection;
 ? LdrpMergeLangFallbackLists;
 ? LdrpMergeNodes;
-LdrpMergeParentBaseLanguagesToList();
+? LdrpMergeParentBaseLanguagesToList;
 LdrpMUIEtwOutput();
 ? LdrpMultiSZCchLength;
 ? LdrpNotifyLoadOfGraph;
@@ -10461,14 +10898,15 @@ LdrpPinNodeRecurse();
 ? LdrpProcessDetachNode$filt$0;
 ? LdrpProcessDetachNode$fin$1;
 ? LdrpProcessInitializationComplete;
-LdrpProcessMappedModule();
+? LdrpProcessMappedModule;
 LdrpProcessWork();
 ? LdrpProcessWork$fin$0;
 ? LdrpProtectAndRelocateImage;
 ? LdrpProtectAndRelocateImage$filt$0;
 ? LdrpProtectedCopyMemory;
 ? LdrpProtectedCopyMemory$filt$0;
-LdrpQueryIllegalCWDDevices();
+LdrpQueryAndUpdateVerifierLaunchCounter();
+? LdrpQueryIllegalCWDDevices;
 ? LdrpQueryInformationCurrentProcess;
 ? LdrpQuerySxSMUIFile;
 ? LdrpQuerySxSMUIFile$fin$0;
@@ -10494,6 +10932,7 @@ LdrpResMapFile();
 ? LdrpResolveDelayloadAddress;
 LdrpResolveDelayLoadDescriptor();
 ? LdrpResolveDllName;
+? LdrpResolveProcedureAddress;
 LdrpResReadFile();
 ? LdrpResReportResourceAccessInternal;
 LdrpResReportResourceAccessInternalInitOnce();
@@ -10507,7 +10946,6 @@ LdrProcessRelocationBlock();
 LdrProcessRelocationBlockEx();
 LdrProcessRelocationBlockLongLong();
 ? LdrProtectMrdata;
-LdrpSaveLocationsSearched();
 ? LdrpSearchPath;
 LdrpSearchResourceSection_U();
 LdrpSectionTableFromVirtualAddress();
@@ -10520,7 +10958,7 @@ LdrpSetProtection();
 ? LdrpSetThreadPreferredLangList;
 LdrpSignalModuleMapped();
 ? LdrpSnapKernelBaseExtensions;
-LdrpSnapModule();
+? LdrpSnapModule;
 ? LdrpSnapModule$filt$0;
 LdrpSpecialCacheTypeHandle();
 LdrpThumbProcessRelocation();
@@ -10528,7 +10966,7 @@ LdrpTouchThreadStack();
 ? LdrpTouchThreadStack$filt$0;
 LdrpTraceLoadMUIDll();
 ? LdrpTryAcquireLoaderLock;
-LdrpUnloadNode();
+? LdrpUnloadNode;
 LdrpUnlockTlsDelayedReclaimTable();
 LdrpUnmapCMFSegment();
 LdrpUnmapCMFSegmentIfUnreferenced();
@@ -10610,7 +11048,7 @@ _ltow();
 _ltow_s();
 ? LZNT1CompressChunk;
 LZNT1DecompressChunk();
-LZNT1FindMatchMaximum();
+? LZNT1FindMatchMaximum;
 LZNT1FindMatchStandard();
 _makepath_s();
 MatchAll();
@@ -10639,7 +11077,7 @@ __misaligned_access();
 __NLG_Dispatch2();
 _NLG_Notify();
 __NLG_Return2();
-? Normalization__AppendDecomposedChar;
+Normalization__AppendDecomposedChar();
 Normalization__CanCombinableCharactersCombine();
 Normalization__CanCombineWithStartBase();
 Normalization__CanCombineWithStartFirstPair();
@@ -10652,7 +11090,7 @@ Normalization__GuessCharCountBySize();
 Normalization__LoadClassMapExceptions();
 ? Normalization__LoadTables;
 Normalization__Normalize();
-Normalization__NormalizeCharacter();
+? Normalization__NormalizeCharacter;
 NormalizationList__Lookup();
 NormBuffer__Append();
 NormBuffer__AppendAndSortDecomposed();
@@ -10731,6 +11169,7 @@ NtClose();
 NtCloseObjectAuditAlarm();
 NtCommitComplete();
 NtCommitEnlistment();
+NtCommitRegistryTransaction();
 NtCommitTransaction();
 NtCompactKeys();
 NtCompareObjects();
@@ -10766,6 +11205,7 @@ NtCreateProcess();
 NtCreateProcessEx();
 NtCreateProfile();
 NtCreateProfileEx();
+NtCreateRegistryTransaction();
 NtCreateResourceManager();
 NtCreateSection();
 NtCreateSemaphore();
@@ -10951,6 +11391,7 @@ NtOpenPrivateNamespace();
 NtOpenProcess();
 NtOpenProcessToken();
 NtOpenProcessTokenEx();
+NtOpenRegistryTransaction();
 NtOpenResourceManager();
 NtOpenSection();
 NtOpenSemaphore();
@@ -11015,6 +11456,7 @@ NtQueryQuotaInformationFile();
 NtQuerySection();
 NtQuerySecurityAttributesToken();
 NtQuerySecurityObject();
+NtQuerySecurityPolicy();
 NtQuerySemaphore();
 NtQuerySymbolicLinkObject();
 NtQuerySystemEnvironmentValue();
@@ -11068,6 +11510,7 @@ NtResumeThread();
 NtRevertContainerImpersonation();
 NtRollbackComplete();
 NtRollbackEnlistment();
+NtRollbackRegistryTransaction();
 NtRollbackTransaction();
 NtRollforwardTransactionManager();
 NtSaveKey();
@@ -11078,6 +11521,7 @@ NtSerializeBoot();
 NtSetBootEntryOrder();
 NtSetBootOptions();
 NtSetCachedSigningLevel();
+NtSetCachedSigningLevel2();
 NtSetContextThread();
 NtSetDebugFilterState();
 NtSetDefaultHardErrorPort();
@@ -11187,14 +11631,14 @@ pow();
 _pow_special();
 PromoteNode();
 ? PssNtCaptureSnapshot;
-? PssNtDuplicateSnapshot;
+PssNtDuplicateSnapshot();
 PssNtFreeRemoteSnapshot();
 ? PssNtFreeSnapshot;
 PssNtFreeWalkMarker();
 ? PssNtQuerySnapshot;
 ? PssNtValidateDescriptor;
 ? PssNtValidateDescriptor$filt$0;
-PssNtWalkSnapshot();
+? PssNtWalkSnapshot;
 ? PsspCaptureAuxiliaryPages;
 ? PsspCaptureHandleInformation;
 ? PsspCaptureHandleTrace;
@@ -11210,17 +11654,16 @@ PsspCaptureProcessInformation();
 ? PsspDumpObject_Thread;
 ? PsspDumpThread;
 ? PsspDuplicateSnapshotLocalToRemote;
-PsspDuplicateSnapshotRemoteToRemote();
+? PsspDuplicateSnapshotRemoteToRemote;
 ? PsspFreeLinkedHandleList;
 ? PsspHandleDumper;
 ? PsspHandleStreamSizeCalculator;
 PsspQueryInfoClass_PSS_QUERY_PROCESS_INFORMATION();
 ? PsspSampleCounters;
 ? PsspWalkHandleTable;
-PsspWalkInfoClass_PSS_WALK_AUXILIARY_PAGES();
-PsspWalkInfoClass_PSS_WALK_HANDLES();
-PsspWalkInfoClass_PSS_WALK_THREADS();
-PsspWalkInfoClass_PSS_WALK_VA_SPACE();
+? PsspWalkInfoClass_PSS_WALK_AUXILIARY_PAGES;
+? PsspWalkInfoClass_PSS_WALK_HANDLES;
+? PsspWalkInfoClass_PSS_WALK_THREADS;
 ? punycode_decode;
 ? punycode_encode;
 qsort();
@@ -11252,21 +11695,21 @@ ResCCultureMapCreateAndPopulate();
 ResCCultureMapPopulate();
 ResCDirectoryCreateAndPopulate();
 ResCDirectoryFree();
-ResCDirectoryGetEntryCopyAndIndex();
+? ResCDirectoryGetEntryCopyAndIndex;
 ResCDirectoryGetEntryIndexEx();
 ResCDirectoryGetSegmentName();
 ResCDirectoryGetSize();
 ResCDirectoryPopulate();
 ResCDirectoryValidate();
 ResCDirectoryValidateEntries();
-ResCDirectoryValidateHeader();
+? ResCDirectoryValidateHeader;
 _ResCDupString();
 _ResCFlushMappedView();
 ResCFreeCultureMap();
 ResCGetCultureID();
 ResCGetHighestCacheIndex();
 ResCGetHighestConsecutiveCacheIndex();
-ResCGetIndexedName();
+? ResCGetIndexedName;
 ResCGetName();
 _ResCGetRegistryFlags();
 ResCGetRegistryLatestIndex();
@@ -11297,7 +11740,7 @@ ResCReleaseInitMutex();
 ResCReloadCultureMap();
 ResCRequestInitMutex();
 ResCRuntimeGetCultureID();
-ResCRuntimeGetResourceDataEx();
+? ResCRuntimeGetResourceDataEx;
 ResCRuntimeGetSegmentDataEx();
 ResCRuntimeUnmapSegment();
 ResCRuntimeViewLoadCultureMap();
@@ -11385,8 +11828,9 @@ RtlApplyRXactNoFlush();
 RtlAppxIsFileOwnedByTrustedInstaller();
 RtlAreAllAccessesGranted();
 RtlAreAnyAccessesGranted();
-RtlAreBitsClear();
+? RtlAreBitsClear;
 RtlAreBitsSet();
+? RtlAreLongPathsEnabled;
 RtlAssert();
 ? RtlAvlInsertNodeEx;
 ? RtlAvlRemoveNode;
@@ -11400,12 +11844,13 @@ RtlCancelTimer();
 RtlCaptureContext();
 RtlCaptureStackBackTrace();
 ? RtlCharToInteger;
+? RtlCheckBootStatusIntegrity;
 RtlCheckForOrphanedCriticalSections();
 ? RtlCheckHeldCriticalSections;
 ? RtlCheckHeldCriticalSections$fin$0;
 ? RtlCheckPortableOperatingSystem;
 RtlCheckRegistryKey();
-? RtlCheckSandboxedToken;
+RtlCheckSandboxedToken();
 ? RtlCheckTokenCapability;
 RtlCheckTokenMembership();
 ? RtlCheckTokenMembershipEx;
@@ -11413,6 +11858,7 @@ RtlCleanUpTEBLangLists();
 RtlClearAllBits();
 RtlClearBit();
 RtlClearBits();
+RtlClearThreadWorkOnBehalfTicket();
 RtlCloneMemoryStream();
 RtlCloneUserProcess();
 RtlCmDecodeMemIoResource();
@@ -11432,9 +11878,9 @@ RtlCompleteProcessCloning();
 RtlCompressBuffer();
 ? RtlCompressBufferLZNT1;
 ? RtlCompressBufferXpressHuff;
-RtlCompressBufferXpressHuffMax();
+? RtlCompressBufferXpressHuffMax;
 ? RtlCompressBufferXpressHuffStandard;
-RtlCompressBufferXpressLz();
+? RtlCompressBufferXpressLz;
 RtlCompressBufferXpressLzMax();
 RtlCompressBufferXpressLzStandard();
 ? RtlCompressWorkSpaceSizeLZNT1;
@@ -11443,20 +11889,20 @@ RtlCompressWorkSpaceSizeXpressHuff();
 RtlComputeCrc32();
 RtlComputeImportTableHash();
 RtlComputeLfnChecksum();
-RtlComputePrivatizedDllName_U();
+? RtlComputePrivatizedDllName_U;
 RtlConnectToSm();
-? RtlConsoleMultiByteToUnicodeN;
+RtlConsoleMultiByteToUnicodeN();
 ? RtlContractHashTable;
 RtlControlStackTraceDataBase();
 RtlConvertDeviceFamilyInfoToString();
-RtlConvertExclusiveToShared();
+? RtlConvertExclusiveToShared;
 RtlConvertLCIDToString();
 RtlConvertSharedToExclusive();
 ? RtlConvertSidToUnicodeString;
 RtlConvertSRWLockExclusiveToShared();
 RtlConvertToAutoInheritSecurityObject();
 RtlCopyBitMap();
-RtlCopyContext();
+? RtlCopyContext;
 RtlCopyExtendedContext();
 RtlCopyLuid();
 RtlCopyLuidAndAttributesArray();
@@ -11484,12 +11930,11 @@ RtlCreateHashTable();
 RtlCreateHashTableEx();
 ? RtlCreateHeap;
 ? RtlCreateHeap$filt$0;
-RtlCreateInvertedFunctionTableCacheEntry();
 ? RtlCreateMemoryBlockLookaside;
 ? RtlCreateMemoryZone;
 RtlCreateProcessParameters();
 ? RtlCreateProcessParametersEx;
-? RtlCreateProcessReflection;
+RtlCreateProcessReflection();
 ? RtlCreateQueryDebugBuffer;
 RtlCreateRegistryKey();
 RtlCreateSecurityDescriptor();
@@ -11521,7 +11966,7 @@ RtlCustomCPToUnicodeN();
 ? RtlCutoverTimeToSystemTime;
 ? RtlDeactivateActivationContext;
 ? RtlDeactivateActivationContextUnsafeFast;
-RtlDebugAllocateHeap();
+? RtlDebugAllocateHeap;
 ? RtlDebugAllocateHeap$filt$0;
 ? RtlDebugAllocateHeap$fin$1;
 RtlDebugCompactHeap();
@@ -11532,7 +11977,7 @@ RtlDebugCreateTagHeap();
 ? RtlDebugCreateTagHeap$filt$0;
 ? RtlDebugCreateTagHeap$fin$1;
 RtlDebugDestroyHeap();
-RtlDebugFreeHeap();
+? RtlDebugFreeHeap;
 ? RtlDebugFreeHeap$filt$0;
 ? RtlDebugFreeHeap$fin$1;
 RtlDebugGetUserInfoHeap();
@@ -11571,7 +12016,7 @@ RtlDecompressBufferEx();
 RtlDecompressFragment();
 RtlDecompressFragmentLZNT1();
 RtlDecompressFragmentNS();
-RtlDefaultNpAcl();
+? RtlDefaultNpAcl;
 RtlDelete();
 RtlDeleteAce();
 ? RtlDeleteAtomFromAtomTable;
@@ -11584,7 +12029,7 @@ RtlDeleteElementGenericTableAvl();
 RtlDeleteElementGenericTableAvlEx();
 ? RtlDeleteFunctionTable;
 ? RtlDeleteGrowableFunctionTable;
-RtlDeleteHashTable();
+? RtlDeleteHashTable;
 RtlDeleteNoSplay();
 RtlDeleteRegistryValue();
 RtlDeleteResource();
@@ -11627,16 +12072,16 @@ RtlDllShutdownInProgress();
 RtlDnsHostNameToComputerName();
 RtlDoesFileExists_U();
 RtlDoesFileExists_UEx();
-RtlDoesFileExists_UstrEx();
+? RtlDoesFileExists_UstrEx;
 RtlDoesNameContainWildCards();
-RtlDosApplyFileIsolationRedirection_Ustr();
+? RtlDosApplyFileIsolationRedirection_Ustr;
 RtlDosPathNameToNtPathName_U();
 RtlDosPathNameToNtPathName_U_WithStatus();
-RtlDosPathNameToRelativeNtPathName();
+? RtlDosPathNameToRelativeNtPathName;
 RtlDosPathNameToRelativeNtPathName_U();
 RtlDosPathNameToRelativeNtPathName_U_WithStatus();
 RtlDosSearchPath_U();
-RtlDosSearchPath_Ustr();
+? RtlDosSearchPath_Ustr;
 RtlDowncaseUnicodeChar();
 ? RtlDowncaseUnicodeString;
 ? RtlDowncaseUnicodeString$fin$0;
@@ -11692,12 +12137,13 @@ RtlFinalReleaseOutOfProcessMemoryStream();
 RtlFindAceBySid();
 RtlFindAceByType();
 ? RtlFindActivationContextSectionGuid;
-RtlFindActivationContextSectionString();
+? RtlFindActivationContextSectionString;
 ? RtlFindCharInUnicodeString;
-? RtlFindClearBits;
+RtlFindClearBits();
 ? RtlFindClearBitsAndSet;
 RtlFindClearRuns();
 RtlFindClosestEncodableLength();
+RtlFindExportedRoutineByName();
 ? RtlFindLastBackwardRunClear;
 RtlFindLeastSignificantBit();
 RtlFindLongestRunClear();
@@ -11705,7 +12151,7 @@ RtlFindMessage();
 RtlFindMessageInTable();
 RtlFindMostSignificantBit();
 RtlFindNextForwardRunClear();
-? RtlFindNextForwardRunClearCapped;
+RtlFindNextForwardRunClearCapped();
 ? RtlFindSetBits;
 RtlFindSetBitsAndClear();
 RtlFindUnicodeSubstring();
@@ -11720,7 +12166,7 @@ RtlFormatMessage();
 RtlFreeActivationContextStack();
 RtlFreeAnsiString();
 RtlFreeHandle();
-RtlFreeHeap();
+? RtlFreeHeap;
 RtlFreeMemoryBlockLookaside();
 RtlFreeOemString();
 RtlFreeSid();
@@ -11729,22 +12175,24 @@ RtlFreeUnicodeString();
 RtlFreeUserStack();
 RtlGenerate8dot3Name();
 RtlGetAce();
-RtlGetActiveActivationContext();
+? RtlGetActiveActivationContext;
+? RtlGetActiveConsoleId;
 ? RtlGetAppContainerNamedObjectPath;
 ? RtlGetAppContainerParent;
-RtlGetAppContainerSidType();
+? RtlGetAppContainerSidType;
 ? RtlGetAssemblyStorageRoot;
 RtlGetCallersAddress();
 RtlGetCompressionWorkSpaceSize();
+RtlGetConsoleSessionForegroundProcessId();
 RtlGetControlSecurityDescriptor();
 RtlGetCriticalSectionRecursionCount();
 ? RtlGetCurrentDirectory_U;
 RtlGetCurrentPeb();
 RtlGetCurrentProcessorNumber();
 RtlGetCurrentProcessorNumberEx();
-RtlGetCurrentServiceSessionId();
+? RtlGetCurrentServiceSessionId;
 RtlGetCurrentTransaction();
-? RtlGetCurrentUmsThread;
+RtlGetCurrentUmsThread();
 RtlGetDaclSecurityDescriptor();
 RtlGetDeviceFamilyInfoEnum();
 ? RtlGetElementGenericTable;
@@ -11753,7 +12201,7 @@ RtlGetEnabledExtendedFeatures();
 ? RtlGetExePath;
 RtlGetExtendedContextLength();
 RtlGetExtendedFeaturesMask();
-RtlGetFileMUIPath();
+? RtlGetFileMUIPath;
 RtlGetFrame();
 RtlGetFullPathName_U();
 RtlGetFullPathName_UEx();
@@ -11776,7 +12224,7 @@ RtlGetNextUmsListItem();
 ? RtlGetNextUmsListItem$fin$0;
 RtlGetNtGlobalFlags();
 ? RtlGetNtProductType;
-RtlGetNtVersionNumbers();
+? RtlGetNtVersionNumbers;
 RtlGetOwnerSecurityDescriptor();
 ? RtlGetParentLocaleName;
 ? RtlGetProcessHeaps;
@@ -11787,11 +12235,13 @@ RtlGetSaclSecurityDescriptor();
 ? RtlGetSearchPath;
 RtlGetSecurityDescriptorRMControl();
 ? RtlGetSetBootStatusData;
+? RtlGetSuiteMask;
 ? RtlGetSystemPreferredUILanguages;
 RtlGetSystemTimePrecise();
 ? RtlGetThreadErrorMode;
 RtlGetThreadLangIdByIndex();
 ? RtlGetThreadPreferredUILanguages;
+? RtlGetThreadWorkOnBehalfTicket;
 RtlGetTickCount();
 RtlGetUILanguageInfo();
 RtlGetUmsCompletionListEvent();
@@ -11804,20 +12254,21 @@ RtlGetUnloadEventTraceEx();
 ? RtlGetVersion;
 RtlGrowFunctionTable();
 ? RtlGuardCheckImageBase;
+? RtlGuardCheckLongJumpTarget;
 RtlGuardGrantSuppressedCallAccess();
 RtlGuardIsValidStackPointer();
 ? RtlGuardRestoreContext;
 RtlGUIDFromString();
 ? RtlHashUnicodeString;
-RtlHeapTrkInitialize();
+? RtlHeapTrkInitialize;
 RtlHpQuerySegmentHeapRoutine();
 RtlIdentifierAuthoritySid();
 RtlIdnToAscii();
 RtlIdnToNameprepUnicode();
 ? RtlIdnToUnicode;
-RtlImageDirectoryEntryToData();
+? RtlImageDirectoryEntryToData;
 RtlImageNtHeader();
-RtlImageNtHeaderEx();
+? RtlImageNtHeaderEx;
 ? RtlImageNtHeaderEx$filt$0;
 RtlImageNtHeaderEx_ExceptionFilter();
 RtlImageRvaToSection();
@@ -11833,15 +12284,14 @@ RtlInitializeAtomPackage();
 RtlInitializeBitMap();
 RtlInitializeConditionVariable();
 RtlInitializeContext();
-RtlInitializeCriticalSection();
-RtlInitializeCriticalSectionAndSpinCount();
-RtlInitializeCriticalSectionEx();
-RtlInitializeExceptionLog();
-RtlInitializeExtendedContext();
+? RtlInitializeCriticalSection;
+? RtlInitializeCriticalSectionAndSpinCount;
+? RtlInitializeCriticalSectionEx;
+? RtlInitializeExtendedContext;
 RtlInitializeGenericTable();
 RtlInitializeGenericTableAvl();
 RtlInitializeHandleTable();
-RtlInitializeHeapManager();
+? RtlInitializeHeapManager;
 RtlInitializeHistoryTable();
 RtlInitializeNtUserPfn();
 ? RtlInitializeResource;
@@ -11870,7 +12320,7 @@ RtlInt64ToUnicodeString();
 ? RtlIntegerToChar;
 ? RtlIntegerToUnicode;
 RtlIntegerToUnicodeString();
-RtlInterlockedClearBitRun();
+? RtlInterlockedClearBitRun;
 RtlInterlockedFlushSList();
 RtlInterlockedPopEntrySList();
 RtlInterlockedPushEntrySList();
@@ -11903,7 +12353,9 @@ RtlIsCurrentThreadAttachExempt();
 RtlIsDosDeviceName_U();
 RtlIsGenericTableEmpty();
 RtlIsGenericTableEmptyAvl();
-RtlIsMultiSessionSku();
+RtlIsLongPathAwareProcessByManifest();
+? RtlIsMultiSessionSku;
+RtlIsMultiUsersInSessionSku();
 RtlIsNameInExpression();
 ? RtlIsNameInExpression$fin$0;
 RtlIsNameLegalDOS8Dot3();
@@ -11918,7 +12370,7 @@ RtlIsValidHandle();
 RtlIsValidIndexHandle();
 RtlIsValidLocaleName();
 RtlIsValidOemCharacter();
-RtlIsValidProcessTrustLabelSid();
+? RtlIsValidProcessTrustLabelSid;
 RtlKnownExceptionFilter();
 ? RtlLargeIntegerToChar;
 RtlLargeIntegerToUnicode();
@@ -11929,10 +12381,11 @@ RtlLengthRequiredSid();
 RtlLengthSecurityDescriptor();
 RtlLengthSid();
 RtlLengthSidAsUnicodeString();
-RtlLoadString();
+? RtlLoadString;
 ? RtlLocaleNameToLcid;
 RtlLocalTimeToSystemTime();
 RtlLocateExtendedFeature();
+RtlLocateExtendedFeature2();
 RtlLocateLegacyContext();
 RtlLockBootStatusData();
 ? RtlLockCurrentThread;
@@ -11967,7 +12420,7 @@ RtlNewSecurityGrantedAccess();
 RtlNewSecurityObject();
 RtlNewSecurityObjectEx();
 RtlNewSecurityObjectWithMultipleInheritance();
-RtlNormalizeProcessParams();
+? RtlNormalizeProcessParams;
 RtlNormalizeString();
 RtlNtPathNameToDosPathName();
 ? RtlNtStatusToDosError;
@@ -11976,7 +12429,7 @@ RtlNumberGenericTableElements();
 RtlNumberGenericTableElementsAvl();
 RtlNumberOfClearBits();
 RtlNumberOfClearBitsInRange();
-? RtlNumberOfSetBits;
+RtlNumberOfSetBits();
 RtlNumberOfSetBitsInRange();
 RtlNumberOfSetBitsUlongPtr();
 ? RtlOemStringToUnicodeString;
@@ -11991,9 +12444,10 @@ RtlOwnerAcesPresent();
 ? RtlpActivateLowFragmentationHeap;
 ? RtlpActivateLowFragmentationHeap$fin$0;
 ? RtlpAddDebugInfoToCriticalSection;
+? RtlpAddForwarderPath;
 ? RtlpAddHeapToProtectedList;
 ? RtlpAddHeapToUnprotectedList;
-RtlpAddKnownAce();
+? RtlpAddKnownAce;
 ? RtlpAddKnownObjectAce;
 RtlpAddLanguagesToMultiSZ();
 ? RtlpAddNeutralsToMergedList;
@@ -12004,10 +12458,11 @@ RtlpAddWaitBlockToWaitList();
 ? RtlpAllocateActivationContextStackFrame;
 RtlpAllocateAtomTableEntry();
 RtlpAllocateDebugInfo();
+RtlpAllocateDirPrefixBlock();
 RtlpAllocateEnvBlock();
-RtlpAllocateHeap();
+? RtlpAllocateHeap;
 ? RtlpAllocateHeap$fin$0;
-RtlpAllocateHeapInternal();
+? RtlpAllocateHeapInternal;
 RtlpAllocateHeapRaiseException();
 RtlpAllocateSecondLevelDir();
 RtlpAllocateTags();
@@ -12029,7 +12484,7 @@ RtlpCallSecureMemoryCallbacks();
 ? RtlpCallVectoredHandlers;
 RtlpCaptureContext();
 ? RtlpChangeQueryDebugBufferTarget;
-RtlpCheckBusyBlockTail();
+? RtlpCheckBusyBlockTail;
 RtlpCheckDeviceName();
 RtlpCheckDynamicTimeZoneInformation();
 ? RtlpCheckForSameCurdir;
@@ -12037,7 +12492,7 @@ RtlpCheckDynamicTimeZoneInformation();
 RtlpCheckMuiMultiStringSafe();
 RtlpCheckRelativeDrive();
 RtlpCleanupRegistryKeys();
-RtlpCoalesceFreeBlocks();
+? RtlpCoalesceFreeBlocks;
 ? RtlpCoalesceHeap;
 ? RtlpCollectFreeBlocks;
 ? RtlpCombineAcls;
@@ -12094,10 +12549,10 @@ RtlpCreateHeapEncoding();
 RtlpCreateProcessRegistryInfo();
 ? RtlpCreateSerializationGroup;
 RtlpCreateServerAcl();
-RtlpCreateSplitBlock();
+? RtlpCreateSplitBlock;
 RtlpCreateTraverseNodes();
 ? RtlpCreateUCREntry;
-RtlpCreateUserProcess();
+? RtlpCreateUserProcess;
 ? RtlpCreateUserThreadEx;
 ? RtlpCreateWnfNameSubscription;
 ? RtlpCreateWnfUserSubscription;
@@ -12106,7 +12561,7 @@ RtlpDbgPrintCriticalSectionTimeout();
 RtlpDebugPageHeapCreate();
 RtlpDebugPageHeapDestroy();
 ? RtlpDecommitBlock;
-RtlpDeCommitFreeBlock();
+? RtlpDeCommitFreeBlock;
 RtlpDeCommitQueryDebugInfo();
 ? RtlpDecRefWnfNameSubscription;
 ? RtlpDecRefWnfUserSubscription;
@@ -12120,10 +12575,12 @@ RtlpDetachThreadFromUmsCompletionList();
 ? RtlpDidUnicodeToOemWork;
 RtlpDiskSpeedInitialize();
 RtlpDosPathNameToRelativeNtPathName_U();
+RtlpDynamicFunctionTableTreeFindRoutine();
 ? RtlpEnsureBufferSize;
 RtlpEnsureLiveDeadListsInitialized();
 ? RtlpEnsureLiveDeadListsInitialized$fin$0;
-? RtlpEnterCriticalSectionContended;
+RtlpEnsureTailingSlashAndAddToList();
+RtlpEnterCriticalSectionContended();
 RtlpEnumProcessHeaps();
 ? RtlpEnumProcessHeaps$fin$0;
 RtlpEstimateAllocatedSize();
@@ -12131,7 +12588,6 @@ RtlpExceptionHandler();
 RtlpExecuteHandlerForException();
 RtlpExecuteHandlerForUnwind();
 RtlpExecuteUmsThread();
-RtlpExitThread();
 RtlpExtendedHeapInformationGenerator();
 RtlpExtendedHeapInformationWorkerCallback();
 RtlpExtendedHeapInformationWorkerThread();
@@ -12148,10 +12604,10 @@ RtlpFilterSacl();
 RtlpFindEntry();
 RtlpFindFirstActivationContextSection();
 ? RtlpFindGuidInSection;
-RtlpFindNextActivationContextSection();
+? RtlpFindNextActivationContextSection;
 ? RtlpFindRegTziForCurrentYear;
 ? RtlpFindUCREntry;
-RtlpFindUnicodeStringInSection();
+? RtlpFindUnicodeStringInSection;
 RtlpFlushHeap();
 RtlpFlushHeapsCallback();
 RtlpFreeActivationContext();
@@ -12160,25 +12616,25 @@ RtlpFreeAllAtom();
 RtlpFreeDebugInfo();
 RtlpFreeEnvBlock();
 RtlpFreeHandleForAtom();
-RtlpFreeHeap();
+? RtlpFreeHeap;
 ? RtlpFreeHeap$fin$0;
-RtlpFreeHeapInternal();
+? RtlpFreeHeapInternal;
 RtlpFreeTraverseNodes();
-RtlpFreeUserBlock();
+? RtlpFreeUserBlock;
 RtlpFreeUserBlockToHeap();
 RtlpFunctionAddressTableEntry();
 RtlpGenerateInheritAcl();
-RtlpGenerateInheritedAce();
+? RtlpGenerateInheritedAce;
 ? RtlpGetActivationContextData;
 ? RtlpGetActivationContextDataStorageMapAndRosterHeader;
 RtlpGetAlternateCodePage();
 RtlpGetAssemblyStorageMapRootLocation();
 RtlpGetBlockInfo();
 RtlpGetBlockSizeEx();
-RtlpGetCachedPath();
+? RtlpGetCachedPath;
 RtlpGetChainHead();
 RtlpGetCompleteLanguageFallback();
-RtlpGetContainingRange();
+? RtlpGetContainingRange;
 ? RtlpGetContextFlagsLocation;
 RtlpGetCustomCultureData();
 RtlpGetCustomCultureDataFromFile();
@@ -12191,7 +12647,7 @@ RtlpGetDefaultLanguageBaseOrParent();
 RtlpGetExtraStuffPointer();
 RtlpGetExtraStuffPointerUnsafe();
 RtlpGetFileSize();
-RtlpGetFirstBlockAddress();
+? RtlpGetFirstBlockAddress;
 RtlpGetFreeBlockInsidePageBoundaries();
 RtlpGetHeapBlock();
 RtlpGetHeapInterceptorIndex();
@@ -12209,9 +12665,11 @@ RtlpGetModifiedProcessCookie();
 RtlpGetMUIRedirectedFilePath();
 RtlpGetMultiStringLength();
 ? RtlpGetNameFromLangInfoNode;
-RtlpGetNormalization();
+? RtlpGetNormalization;
+RtlpGetNtProductTypeFromRegistry();
 ? RtlpGetRegistryHandle;
 ? RtlpGetReservedBlockSize;
+? RtlpGetSetBootStatusData;
 RtlpGetStackLimits();
 RtlpGetStackTraceAddress();
 ? RtlpGetStackTraceAddressEx;
@@ -12222,7 +12680,7 @@ RtlpGetUserLocaleName();
 RtlpGetUserOrMachineUILanguage4NLS();
 RtlpGetVolumeHandle();
 RtlpGetWindowsPolicy();
-RtlpGrowBlockInPlace();
+? RtlpGrowBlockInPlace;
 RtlpGuardGrantSuppressedCallAccess();
 RtlpGuardIsSuppressedAddress();
 RtlpGuardIsSuppressedImageRva();
@@ -12231,18 +12689,19 @@ RtlpHandleInvalidUserCallTarget();
 RtlpHasMachineUILock();
 RtlpHeapAddListEntry();
 RtlpHeapExceptionFilter();
-RtlpHeapFindListLookupEntry();
-RtlpHeapGenerateRandomValue32();
+RtlpHeapFatalExceptionFilter();
+? RtlpHeapFindListLookupEntry;
+? RtlpHeapGenerateRandomValue32;
 RtlpHeapGenerateRandomValue64();
 RtlpHeapHandleError();
-RtlpHeapListCompare();
+? RtlpHeapListCompare;
 RtlpHeapLogRangeCreate();
 RtlpHeapLogRangeDestroy();
 RtlpHeapLogRangeRelease();
 RtlpHeapLogRangeReserve();
 RtlpHeapPerformCrossProcessQuery();
 ? RtlpHeapQueryTotalReserveSize;
-RtlpHeapRemoveListEntry();
+? RtlpHeapRemoveListEntry;
 ? RtlpHeapTrkAllocCacheAligned;
 ? RtlpHeapTrkDereferenceStack;
 ? RtlpHeapTrkDumpOutstandingAllocs;
@@ -12250,7 +12709,7 @@ RtlpHeapRemoveListEntry();
 ? RtlpHeapTrkFindStack;
 ? RtlpHeapTrkGenerateHashRandoms;
 ? RtlpHeapTrkHash;
-RtlpHeapTrkInterceptor();
+? RtlpHeapTrkInterceptor;
 RtlpHeapTrkLeakCallback();
 ? RtlpHeapTrkReportResult;
 ? RtlpHeapTrkSyncWithDiagnoser;
@@ -12258,7 +12717,7 @@ RtlpHeapTrkLeakCallback();
 ? RtlpHeapTrkTrackRemove;
 ? RtlpHeapTrkTrackRemoveHeap;
 ? RtlpHeapTrkTrackStack;
-RtlpHpAllocateHeap();
+? RtlpHpAllocateHeap;
 RtlpHpAllocateHeapInternal();
 RtlpHpAllocWithExceptionProtection();
 ? RtlpHpAllocWithExceptionProtection$filt$0;
@@ -12270,12 +12729,11 @@ RtlpHpCalculateAllocSize();
 RtlpHpConvertCreationFlags();
 RtlpHpConvertFlagsToSegmentFlags();
 RtlpHpConvertSegmentFlagsToFlags();
-RtlpHpExtrasAppend();
 RtlpHpExtrasGet();
 RtlpHpExtrasMove();
 RtlpHpExtrasReportBusyBlock();
 RtlpHpExtrasSetPresent();
-RtlpHpFreeHeap();
+? RtlpHpFreeHeap;
 RtlpHpFreeWithExceptionProtection();
 ? RtlpHpFreeWithExceptionProtection$filt$0;
 RtlpHpGetUserInfo();
@@ -12299,12 +12757,13 @@ RtlpHpLargeSparseBmpAlloc();
 RtlpHpLargeSparseBmpFree();
 RtlpHpLargeSparseBmpInitialize();
 RtlpHpLfhBucketActivate();
-RtlpHpLfhBucketAddSubsegment();
+? RtlpHpLfhBucketAddSubsegment;
 RtlpHpLfhBucketInitialize();
 ? RtlpHpLfhBucketUpdateAffinityMapping;
-? RtlpHpLfhBucketUpdateStats;
-RtlpHpLfhCacheAddSubsegment();
+RtlpHpLfhBucketUpdateStats();
+? RtlpHpLfhCacheAddSubsegment;
 RtlpHpLfhCacheEmpty();
+? RtlpHpLfhContextAllocate;
 RtlpHpLfhContextCleanup();
 RtlpHpLfhContextInitialize();
 RtlpHpLfhContextLockUnlock();
@@ -12314,32 +12773,40 @@ RtlpHpLfhOwnerInitialize();
 RtlpHpLfhOwnerListLockUnlock();
 RtlpHpLfhOwnerLockUnlock();
 ? RtlpHpLfhOwnerMoveSubsegment;
-RtlpHpLfhSubsegmentCreate();
+? RtlpHpLfhSlotAllocate;
+RtlpHpLfhSubsegmentAllocateBlock();
+? RtlpHpLfhSubsegmentCommitBlock;
+? RtlpHpLfhSubsegmentCreate;
 RtlpHpLfhSubsegmentDecBlockCounts();
-RtlpHpLfhSubsegmentDecommitPages();
+? RtlpHpLfhSubsegmentDecommitPages;
 RtlpHpLfhSubsegmentFree();
-RtlpHpLfhSubsegmentFreeBlock();
+? RtlpHpLfhSubsegmentFreeBlock;
 RtlpHpLfhSubsegmentIncBlockCounts();
-RtlpHpLfhSubsegmentInitialize();
-RtlpHpLfhSubsegmentLockOwner();
+? RtlpHpLfhSubsegmentInitialize;
+? RtlpHpLfhSubsegmentLockOwner;
 ? RtlpHpLfhSubsegmentSetOwner;
+RtlpHpLfhSubsegmentSetUnusedBytes();
 RtlpHpLfhSubsegmentSizeBlockInternal();
 ? RtlpHpLfhSubsegmentWalk;
 RtlpHpMetadataAlloc();
 RtlpHpMetadataFree();
 RtlpHpMetadataHeapInit();
 RtlpHpOptIntoSegmentHeap();
+? RtlpHpPerHeapStackTraceCleanup;
+RtlpHpPerHeapStackTraceInitialize();
 RtlpHpProtectHeap();
-RtlpHpReAllocateHeap();
-RtlpHpReallocComputeSizes();
-RtlpHpReallocMove();
+? RtlpHpReAllocateHeap;
+? RtlpHpReallocComputeSizes;
+? RtlpHpReallocMove;
 RtlpHpReAllocWithExceptionProtection();
 ? RtlpHpReAllocWithExceptionProtection$filt$0;
-RtlpHpSegAlloc();
+RtlpHpRemoteStackSerializeWriter();
+? RtlpHpSegAlloc;
 RtlpHpSegAllocSize();
 RtlpHpSegAllocSizeInternal();
-RtlpHpSegDescriptorValidate();
+? RtlpHpSegDescriptorValidate;
 RtlpHpSegFree();
+RtlpHpSegFreeRangeCompare();
 RtlpHpSegGetDescriptorValidateSafe();
 ? RtlpHpSegGetDescriptorValidateSafe$filt$0;
 ? RtlpHpSegHeapAddSegment;
@@ -12356,12 +12823,12 @@ RtlpHpSegLockRelease();
 RtlpHpSegPageRangeAllocate();
 RtlpHpSegPageRangeCalcCommitRegion();
 RtlpHpSegPageRangeCoalesce();
-RtlpHpSegPageRangeCommit();
+? RtlpHpSegPageRangeCommit;
 RtlpHpSegPageRangeCountCommittedPages();
 RtlpHpSegPageRangeDecommit();
 RtlpHpSegPageRangeShrink();
 RtlpHpSegPageRangeSplit();
-RtlpHpSegReAlloc();
+? RtlpHpSegReAlloc;
 RtlpHpSegReportBusyBlock();
 RtlpHpSegReportCounters();
 RtlpHpSegReportPageRange();
@@ -12372,36 +12839,45 @@ RtlpHpSegSetExtraPresent();
 RtlpHpSegUpdateCommit();
 RtlpHpSegVsAllocate();
 ? RtlpHpSegWalkHeap;
-RtlpHpSizeHeap();
-RtlpHpSizeHeapInternal();
+? RtlpHpSizeHeap;
+? RtlpHpSizeHeapInternal;
+RtlpHpStackDbAllocRoutine();
+RtlpHpStackDbFreeRoutine();
+RtlpHpStackDbInitialize();
+RtlpHpStackTraceAddStack();
+RtlpHpStackTraceAllocAdd();
+RtlpHpStackTraceAllocRemove();
+RtlpHpStackTraceHeapSerialize();
+RtlpHpStackTraceRemoveStack();
+RtlpHpStackTraceSerialize();
+RtlpHpStackTraceSerializeRemote();
 ? RtlpHpTagAllocateHeap;
 ? RtlpHpTagContextAllocateTag;
 ? RtlpHpTagContextFindMapping;
 RtlpHpTagContextGetTag();
 RtlpHpTagContextUpdate();
-? RtlpHpTagFree;
 RtlpHpTaggableHeap();
 RtlpHpTagMappingComparison();
 RtlpHpTagQueryHeapsRemote();
 ? RtlpHpTagQueryTags;
 RtlpHpTagReAllocateHeap();
-RtlpHpTagRunOnceInit();
+? RtlpHpTagRunOnceInit;
 RtlpHpVsChunkCoalesce();
+RtlpHpVsChunkCompare();
 RtlpHpVsChunkComputeCost();
-RtlpHpVsChunkDecommit();
-RtlpHpVsChunkFree();
 RtlpHpVsChunkSize();
-RtlpHpVsChunkSplit();
-RtlpHpVsContextAllocate();
-RtlpHpVsContextFree();
+? RtlpHpVsChunkSplit;
+? RtlpHpVsContextAllocate;
+? RtlpHpVsContextFree;
 ? RtlpHpVsContextInitialize;
-? RtlpHpVsFreeChunkInsert;
+RtlpHpVsFreeChunkInsert();
 RtlpHpVsFreeChunkRemove();
 RtlpHpVsSubsegmentCleanup();
-RtlpHpVsSubsegmentCommitPages();
+? RtlpHpVsSubsegmentCommitPages;
 ? RtlpHpVsSubsegmentCreate;
 RtlpHpVsSubsegmentWalk();
-RtlpImageDirectoryEntryToData32();
+? RtlpImageDirectoryEntryToData32;
+RtlpImageDirectoryEntryToData64();
 RtlpImageDirectoryEntryToDataEx();
 RtlPinAtomInAtomTable();
 ? RtlpInheritAcl;
@@ -12417,7 +12893,7 @@ RtlpInitializeLeakDetection();
 RtlpInitializeLfhBitmapData();
 RtlpInitializeLfhRandomDataArray();
 RtlpInitializeLowFragHeap();
-RtlpInitializeLowFragHeapManager();
+? RtlpInitializeLowFragHeapManager;
 RtlpInitializeMap();
 RtlpInitializeSecondLevelDir();
 RtlpInitializeSegmentInfoForBucket();
@@ -12432,7 +12908,7 @@ RtlpInitializeUCRIndex();
 RtlpInitRandomExVector();
 ? RtlpInitUnicodeStringUsingBuffer;
 ? RtlpInsertAssemblyStorageMapEntry;
-RtlpInsertFreeBlock();
+? RtlpInsertFreeBlock;
 ? RtlpInsertStringAtom;
 ? RtlpInsertUCRBlock;
 RtlpInterlockedFlushSList();
@@ -12443,7 +12919,7 @@ RtlpInvalidatePathCache();
 ? RtlpIsALicensedRegularLanguage;
 RtlpIsAttributeAceInSacl();
 RtlpIsCustomLocale();
-RtlpIsDosDeviceName_Ustr();
+? RtlpIsDosDeviceName_Ustr;
 ? RtlpIsDuplicateAce;
 RtlpIsLFHZoneAllocation();
 RtlpIsNameInExpressionPrivate();
@@ -12466,7 +12942,7 @@ RtlpLoadPrimaryDbgRegWrap();
 RtlpLoadUmsDebugRegisterState();
 ? RtlpLoadUserUIByPolicy;
 ? RtlpLocalInfoAllocFromCache;
-RtlpLocateActivationContextSection();
+? RtlpLocateActivationContextSection;
 RtlpLocateActivationContextSectionForQuery();
 RtlpLocateModuleSectionInLockedSectionList();
 RtlpLocateRelatedBlocks();
@@ -12499,11 +12975,12 @@ RtlpLogHeapSubSegmentInitialize();
 ? RtlpLookupDynamicFunctionEntry;
 RtlpLookupFunctionEntryForStackWalks();
 ? RtlpLookupFunctionEntryForStackWalks$filt$0;
-RtlpLookupPrimaryFunctionEntry();
+? RtlpLookupPrimaryFunctionEntry;
+RtlpLookupSafeCurDirList();
 ? RtlpLowFragHeapAllocateFromZone;
-RtlpLowFragHeapAllocFromContext();
+? RtlpLowFragHeapAllocFromContext;
 ? RtlpLowFragHeapFlushCaches;
-RtlpLowFragHeapFree();
+? RtlpLowFragHeapFree;
 RtlpMakeXpressCallback();
 RtlpMatchUILanguage();
 RtlpMatchUserLanguage();
@@ -12558,7 +13035,7 @@ RtlpMuiRegGrowStringPool();
 _RtlpMuiRegInitAnyLanguage();
 _RtlpMuiRegInitLIPLanguage();
 _RtlpMuiRegInitPartialLanguage();
-RtlpMuiRegLangInfoMatchesSpec();
+? RtlpMuiRegLangInfoMatchesSpec;
 _RtlpMuiRegLoadInstalled();
 RtlpMuiRegLoadLicInformation();
 ? RtlpMuiRegLoadMachinePreferredUILanguages;
@@ -12574,16 +13051,16 @@ RtlpMuiRegResizeStringPool();
 ? RtlpMuiRegTryToAppendLanguageName;
 ? RtlpMuiRegTryToAppendLanguageToMuiszFromLangList;
 _RtlpMuiRegValidateAndGetInstallFallbackBase();
-RtlpMuiRegValidateConfigNode();
+? RtlpMuiRegValidateConfigNode;
 _RtlpMuiRegValidateInstalled();
 _RtlpMuiRegValidateLIPLanguage();
 _RtlpMuiRegValidatePartialLanguage();
 ? RtlpNameprepAsciiWorker;
-RtlpNewSecurityObject();
+? RtlpNewSecurityObject;
 RtlpNlsGetLcidIndex();
 ? RtlpNlsGetNameIndex;
 RtlpNonNegativeDecrement();
-RtlpNormalizeStringWorker();
+? RtlpNormalizeStringWorker;
 RtlpNotOwnerCriticalSection();
 ? RtlpNotOwnerCriticalSection$filt$0;
 RtlpNtCreateKey();
@@ -12600,6 +13077,7 @@ RtlPopFrame();
 RtlpOptimizeConditionVariableWaitList();
 RtlpOptimizeSRWLockList();
 RtlpOptimizeWaitOnAddressWaitList();
+RtlPosixBarrier();
 RtlpOwnerAcesPresent();
 RtlpPageHeapStop();
 RtlpPerformHeapMaintenance();
@@ -12627,18 +13105,18 @@ RtlpQueryDiskSpeedPolicy();
 RtlpQueryEnvironmentCache();
 RtlpQueryExtendedHeapInformation();
 RtlpQueryExtendedInformationAllHeaps();
-RtlpQueryExtendedInformationHeap();
+? RtlpQueryExtendedInformationHeap;
 RtlpQueryFilesInAssemblyInformationActivationContextDetailedInformation();
 ? RtlpQueryInformationActivationContextBasicInformation;
 RtlpQueryInformationActivationContextCompatibilityInformation();
 ? RtlpQueryInformationActivationContextDetailedInformation;
 RtlpQueryInformationActivationContextManifestResourceName();
-RtlpQueryMemoryUsageHeap();
-RtlpQueryPackageIdentityAttributes();
+? RtlpQueryMemoryUsageHeap;
+? RtlpQueryPackageIdentityAttributes;
 RtlpQueryPhysicalMemoryPolicy();
 RtlpQueryProcessDebugInformationFromWow64();
 RtlpQueryProcessDebugInformationRemote();
-RtlpQueryProcessEnumHeapsRoutine();
+? RtlpQueryProcessEnumHeapsRoutine;
 ? RtlpQueryPseudoEnvironmentVariable;
 ? RtlpQueryPseudoEnvironmentVariable$fin$0;
 ? RtlpQueryReadVirtualMemory;
@@ -12667,7 +13145,7 @@ RtlpRefreshCachedUILanguage();
 ? RtlpRegisterLockedMemoryZone;
 RtlpRegisterStackTrace();
 RtlpRegTziFormatToTzi();
-RtlpRemoveHeapFromProtectedList();
+? RtlpRemoveHeapFromProtectedList;
 RtlpRemoveHeapFromUnprotectedList();
 _RtlpRemovePendingDeleteLanguages();
 ? RtlpRemoveUCRBlock;
@@ -12690,7 +13168,7 @@ RtlpScanProcessVirtualMemory();
 RtlpSearchProtectedPolicyEntry();
 ? RtlpSecMemFreeVirtualMemory;
 RtlpSetBlockInfo();
-RtlpSetHeapDebuggingInformation();
+? RtlpSetHeapDebuggingInformation;
 RtlpSetHeapWalkEntryOverheadBytes();
 RtlpSetInstallLanguage();
 RtlpSetMachineUILanguagesImmediate();
@@ -12706,20 +13184,34 @@ RtlpSetRequestedFrontEndHeap();
 RtlpSetTimeZoneInformationWorker();
 ? RtlpSetupExtendedBlock;
 RtlpSignalSystemDirsModification();
+RtlpSiloGetNtProductType();
 RtlpSparseBitmapCheckRangeArrayPage();
 ? RtlpSparseBitmapCommitRangeArrayPage;
+RtlpSparseBitmapCtxAppendNextRangeToRun();
 RtlpSparseBitmapCtxCheckRangeArray();
 RtlpSparseBitmapCtxCountRangeBits();
+RtlpSparseBitmapCtxFindNextBitInternal();
+RtlpSparseBitmapCtxFindRunsFromNullRange();
+RtlpSparseBitmapCtxFindRunsFromRange();
+RtlpSparseBitmapCtxFindRunsInternal();
 ? RtlpSparseBitmapCtxLockExclusive;
 ? RtlpSparseBitmapCtxLockShared;
-? RtlpSparseBitmapCtxPrepareRanges;
+RtlpSparseBitmapCtxPrepareRanges();
 RtlpSparseBitmapCtxUnlockExclusive();
 RtlpSparseBitmapCtxUnlockShared();
-RtlpSparseBitmapCtxUpdateBitRanges();
+? RtlpSparseBitmapCtxUpdateBitRanges;
 ? RtlpSparseBitmapCtxUpdateBits;
+RtlpSparseBitmapRangeArrayCleanup();
+RtlpStackDbEntryCleanup();
+RtlpStackDbEntryCreate();
+RtlpStackDbEntryIsEqual();
+RtlpStackDbRefCountIncrement();
+RtlpStackDbSegmentComparitor();
+RtlpStackDbSegmentFindOrCreate();
+RtlpStackDbSegmentRemoveRef();
+RtlpStackDbStackComparitor();
 RtlpStackTraceDatabaseHeapEnum();
 RtlpStackTraceDatabaseLogPrefix();
-RtlpStartThread();
 RtlpStdExtendLowerWatermark();
 RtlpStdExtendUpperWatermark();
 RtlpStdGetRecordedStackTraceIndex();
@@ -12728,7 +13220,7 @@ RtlpStdLockAcquire();
 RtlpStdLockRelease();
 RtlpStdLogCapturedStackTrace();
 RtlpSubSegmentDebugInitialize();
-RtlpSubSegmentInitialize();
+? RtlpSubSegmentInitialize;
 ? RtlpSysVolCheckOwnerAndSecurity;
 ? RtlpSysVolCreateSecurityDescriptor;
 ? RtlpSysVolTakeOwnership;
@@ -12801,13 +13293,13 @@ RtlpUpdateUCRIndexRemove();
 RtlPushFrame();
 ? RtlpValidateActivationContextData;
 ? RtlpValidateAsciiStd3AndLength;
-RtlpValidateContextFlags();
-RtlpValidateHeap();
+? RtlpValidateContextFlags;
+? RtlpValidateHeap;
 ? RtlpValidateHeapEntry;
 RtlpValidateHeapHeaders();
 RtlpValidateHeapSegment();
 ? RtlpValidateKeyTrust;
-? RtlpValidateLFHBlock;
+RtlpValidateLFHBlock();
 ? RtlpValidateLFHBlock$filt$0;
 RtlpValidateRange();
 RtlpValidateRemoteDebugInformation();
@@ -12830,17 +13322,17 @@ RtlpWaitForCriticalSection();
 RtlpWaitOnAddressRemoveWaitBlock();
 RtlpWaitOnAddressWakeEntireList();
 ? RtlpWaitOnAddressWithTimeout;
-RtlpWaitOnCriticalSection();
-? RtlpWakeByAddress;
+? RtlpWaitOnCriticalSection;
+RtlpWakeByAddress();
 RtlpWakeConditionVariable();
 RtlpWakeSingle();
 ? RtlpWakeSRWLock;
-RtlpWalkCallbackRoutine();
+? RtlpWalkCallbackRoutine;
 RtlpWalkFrameChain();
 ? RtlpWalkFrameChain$filt$0;
-RtlpWalkHeap();
-RtlpWalkHeapInternal();
-RtlpWalkLFHBlock();
+? RtlpWalkHeap;
+? RtlpWalkHeapInternal;
+? RtlpWalkLFHBlock;
 RtlpWalkLowFragHeapSegment();
 ? RtlpWin32NtNameToNtPathName;
 RtlpWnfCalculateAndSetNextTimer();
@@ -12851,8 +13343,8 @@ RtlpWnfETWEventSubscribe();
 RtlpWnfETWEventUnsubscribe();
 RtlpWnfMarkFailure();
 RtlpWnfMetaCallbackProc();
-RtlpWnfNotificationThread();
-RtlpWnfProcessCurrentDescriptor();
+? RtlpWnfNotificationThread;
+? RtlpWnfProcessCurrentDescriptor;
 ? RtlpWnfRegisterTpNotification;
 RtlpWnfRetryTimerCallback();
 RtlpWnfSetRetryTimer();
@@ -12860,10 +13352,11 @@ RtlpWnfSetRetryTimer();
 ? RtlpWnfWalkUserSubscriptionList$fin$0;
 RtlpWow64CheckRunningSoftwareCpu();
 RtlpWow64OpenThreadProcess();
+? RtlpWow64SelectSystem32PathInternal;
 RtlpWow64SuspendWorker();
 RtlpWow64ThunkEnvironment32To64();
 ? RtlpxLookupFunctionTable;
-RtlpZeroBlockFromOffset();
+? RtlpZeroBlockFromOffset;
 ? RtlQueryActivationContextApplicationSettings;
 ? RtlQueryApplicationKeyOption;
 ? RtlQueryAtomInAtomTable;
@@ -12911,7 +13404,7 @@ RtlQueryTimeZoneInformation();
 RtlQueryUmsThreadInformation();
 ? RtlQueryUnbiasedInterruptTime;
 RtlQueryValidationRunlevel();
-RtlQueryVolumeDiskSpeedPolicy();
+? RtlQueryVolumeDiskSpeedPolicy;
 RtlQueryWnfMetaNotification();
 RtlQueryWnfStateData();
 ? RtlQueryWnfStateData$filt$0;
@@ -12941,7 +13434,7 @@ RtlRegisterSecureMemoryCacheCallback();
 RtlReleaseMemoryStream();
 RtlReleasePath();
 RtlReleasePebLock();
-RtlReleasePrivilege();
+? RtlReleasePrivilege;
 ? RtlReleaseRelativeName;
 RtlReleaseResource();
 RtlReleaseSRWLockExclusive();
@@ -12954,11 +13447,14 @@ RtlRemoveInvertedFunctionTable();
 RtlRemoveVectoredContinueHandler();
 RtlRemoveVectoredExceptionHandler();
 RtlReplaceSidInSd();
+RtlReplaceSystemDirectoryInPath();
 RtlReportCriticalFailure();
 ? RtlReportCriticalFailure$filt$0;
-RtlReportException();
+? RtlReportException;
 RtlReportExceptionEx();
 ? RtlReportExceptionEx$fin$0;
+RtlReportExceptionHelper();
+? RtlReportExceptionHelper$fin$0;
 ? RtlReportSilentProcessExit;
 RtlReportSqmEscalation();
 RtlResetMemoryBlockLookaside();
@@ -12966,6 +13462,7 @@ RtlResetMemoryZone();
 RtlResetNtUserPfn();
 ? RtlResetRtlTranslations;
 RtlResetStackOverflow();
+RtlRestoreBootStatusDefaults();
 RtlRestoreContext();
 RtlRetrieveNtUserPfn();
 RtlRevertMemoryStream();
@@ -13001,22 +13498,23 @@ RtlSetDynamicTimeZoneInformation();
 RtlSetEnvironmentVariable();
 RtlSetExtendedFeaturesMask();
 RtlSetGroupSecurityDescriptor();
-RtlSetHeapDebuggingInformation();
+? RtlSetHeapDebuggingInformation;
 ? RtlSetHeapInformation;
 RtlSetInformationAcl();
 ? RtlSetIoCompletionCallback;
 ? RtlSetIoCompletionCallback$fin$0;
 ? RtlSetIoCompletionCallback$fin$1;
-RtlSetLastWin32Error();
+? RtlSetLastWin32Error;
 RtlSetLastWin32ErrorAndNtStatusFromNtStatus();
 RtlSetLFHDebuggingInformation();
+? RtlSetLowFragHeapGlobalFlags;
 RtlSetMemoryStreamSize();
 RtlSetOwnerSecurityDescriptor();
 RtlSetPortableOperatingSystem();
 RtlSetProcessDebugInformation();
 ? RtlSetProcessIsCritical;
-RtlSetProcessPreferredUILanguages();
-RtlSetProtectedPolicy();
+? RtlSetProcessPreferredUILanguages;
+? RtlSetProtectedPolicy;
 RtlSetSaclSecurityDescriptor();
 ? RtlSetSearchPathMode;
 ? RtlSetSecurityDescriptorRMControl;
@@ -13025,8 +13523,9 @@ RtlSetSecurityObjectEx();
 RtlSetThreadErrorMode();
 ? RtlSetThreadIsCritical;
 RtlSetThreadPoolStartFunc();
-RtlSetThreadPreferredUILanguages();
+? RtlSetThreadPreferredUILanguages;
 ? RtlSetThreadSubProcessTag;
+RtlSetThreadWorkOnBehalfTicket();
 RtlSetTimer();
 RtlSetTimeZoneInformation();
 RtlSetUmsThreadInformation();
@@ -13042,15 +13541,35 @@ RtlSidEqualLevel();
 ? RtlSidHashInitialize;
 ? RtlSidHashLookup;
 RtlSidIsHigherLevel();
-RtlSizeHeap();
+? RtlSizeHeap;
 RtlSleepConditionVariableCS();
 ? RtlSleepConditionVariableSRW;
 ? RtlSparseBitmapCtxAllocateArray;
 ? RtlSparseBitmapCtxAllocateRange;
+RtlSparseBitmapCtxAreAllClear();
+RtlSparseBitmapCtxAreAllSet();
+RtlSparseBitmapCtxCheckBit();
 ? RtlSparseBitmapCtxCheckBitsInternal;
+RtlSparseBitmapCtxCleanup();
+RtlSparseBitmapCtxClearBits();
+RtlSparseBitmapCtxClearBitsEx();
+RtlSparseBitmapCtxCountBitsSet();
+RtlSparseBitmapCtxFindNextBitSet();
+RtlSparseBitmapCtxFindSetRuns();
+RtlSparseBitmapCtxInitialize();
 ? RtlSparseBitmapCtxInitializeRange;
-RtlSparseBitmapCtxStart();
+RtlSparseBitmapCtxMetadataForBit();
+RtlSparseBitmapCtxOrBitmap();
+RtlSparseBitmapCtxPrepareBits();
+RtlSparseBitmapCtxSetBits();
+RtlSparseBitmapCtxSetBitsEx();
+? RtlSparseBitmapCtxStart;
+RtlSparseBitmapCtxSubtractBitmap();
+RtlSparseBitmapEnumerateBitmap();
 RtlSplay();
+RtlStackDbContextSerialize();
+RtlStackDbStackAdd();
+RtlStackDbStackRemove();
 RtlStackTraceHashFunction();
 RtlStartRXact();
 RtlStatMemoryStream();
@@ -13114,6 +13633,7 @@ RtlUmsThreadYield();
 RtlUnhandledExceptionFilter();
 RtlUnhandledExceptionFilter2();
 RtlUnicodeStringCat();
+RtlUnicodeStringCatString();
 RtlUnicodeStringCbCatStringN();
 RtlUnicodeStringCbCopyStringN();
 RtlUnicodeStringCopy();
@@ -13137,7 +13657,7 @@ RtlUnicodeToCustomCPN();
 RtlUniform();
 RtlUnlockBootStatusData();
 RtlUnlockCurrentThread();
-RtlUnlockHeap();
+? RtlUnlockHeap;
 RtlUnlockHeapManagerForCloning();
 RtlUnlockMemoryBlockLookaside();
 RtlUnlockMemoryStreamRegion();
@@ -13169,7 +13689,7 @@ RtlUpdateClonedSRWLock();
 ? RtlUpdateTimer$fin$1;
 ? RtlUpperChar;
 RtlUpperString();
-? RtlUserThreadStart;
+RtlUserThreadStart();
 ? RtlUserThreadStart$filt$0;
 ? RtlUTF8ToUnicodeN;
 RtlValidAcl();
@@ -13190,7 +13710,7 @@ RtlWakeAddressAll();
 RtlWakeAddressAllNoFence();
 RtlWakeAddressSingle();
 RtlWakeAddressSingleNoFence();
-RtlWakeAllConditionVariable();
+? RtlWakeAllConditionVariable;
 ? RtlWakeConditionVariable;
 RtlWalkFrameChain();
 RtlWalkHeap();
@@ -13206,8 +13726,10 @@ RtlWow64EnableFsRedirectionEx();
 ? RtlWow64GetCpuAreaInfo;
 ? RtlWow64GetCurrentCpuArea;
 RtlWow64GetCurrentMachine();
+RtlWow64GetProcessMachines();
 RtlWow64GetThreadContext();
 RtlWow64GetThreadSelectorEntry();
+? RtlWow64IsWowGuestMachineSupported;
 RtlWow64LogMessageInEventLogger();
 RtlWow64SetThreadContext();
 RtlWow64SuspendThread();
@@ -13230,25 +13752,24 @@ _safecrt_mbtowc();
 _safecrt_wctomb_s();
 ? _SafeReallocBlob;
 SbAtomicCaptureContextGuid();
-SbCleanupTrace();
+? SbCleanupTrace;
 SbExecuteProcedure();
 void * __cdecl SbFilterProcedure_RTL(void *);
 SbGetContextDetailsByGuid();
 SbGetContextDetailsById();
 SbGetContextDetailsByVersion();
-SbObtainTraceHandle();
+? SbObtainTraceHandle;
 ? SbpDetermineDllContext;
 SbpFindMatchingContext();
 SbpLookup();
 SbpParseFuncName();
-SbpRecalculateDynamicContext();
 SbpResolveBasedOnName();
 ? SbpRetrieveCompatibilityManifest;
 SbpTraceContextUpdate();
 ? SbpUpdateCache;
 ? SbpUpdateCacheWithCurrentImpl;
-SbSelectProcedure();
-SbUpdateSwitchContextBasedOnDll();
+? SbSelectProcedure;
+? SbUpdateSwitchContextBasedOnDll;
 ? ScanHexFormat;
 __security_check_cookie();
 ? SendMessageToWERService;
@@ -13347,7 +13868,6 @@ swprintf_s();
 swscanf_s();
 ? sxsisol_CanonicalizeFullPathFileName;
 ? sxsisol_ExpandEnvironmentStrings_UEx;
-? sxsisol_FreeUnicodeStringBufferAroundUnicodeStrings_Failure;
 ? sxsisol_FreeUnicodeStringBufferAroundUnicodeStrings_Success;
 ? sxsisol_RespectDotLocal;
 ? sxsisol_SearchActCtxForDllName;
@@ -13355,6 +13875,7 @@ tan();
 ? tan_piby4;
 ? TimeToDaysAndFraction;
 _TlgCreateWsz();
+? _TlgDefineProvider_annotation__TlgCentennialIssueTracker_TraceLoggingProviderProv;
 ? _TlgDefineProvider_annotation__TlgLdrpMuiResourceLoaderTraceLoggingProviderProv;
 ? _TlgEnableCallback;
 _TlgKeywordOn();
@@ -13386,7 +13907,7 @@ TpAlpcRegisterCompletionList();
 TpAlpcUnregisterCompletionList();
 TpBindFileToDirect();
 TpCallbackDetectedUnrecoverableError();
-TpCallbackIndependent();
+? TpCallbackIndependent;
 TpCallbackLeaveCriticalSectionOnCompletion();
 ? TpCallbackMayRunLong;
 TpCallbackReleaseMutexOnCompletion();
@@ -13410,21 +13931,21 @@ TppAdjustRunningThreadGoal();
 ? TppAllocAlpcCompletion;
 ? TppAllocAlpcCompletion$fin$0;
 ? TppAllocAlpcCompletion$fin$1;
-TppAllocThreadData();
+? TppAllocThreadData;
 ? TppAlpcpCallbackEpilog;
-TppAlpcpExecuteCallback();
+? TppAlpcpExecuteCallback;
 TppAlpcpFree();
 ? TppAlpcpFree$fin$0;
 ? TppAlpcpValidateAlpc;
 TppAreNodeWorkersSteadyState();
 ? TppBarrierAdjust;
-TppCallbackCheckThreadAfterCallback();
+? TppCallbackCheckThreadAfterCallback;
 ? TppCallbackCheckThreadBeforeCallback;
 ? TppCallbackEpilog;
 ? TppCallbackMayRunLongProlog;
 ? TppCallbackPerformDeferredWork;
 TppCallbackSendAndDestroyAlpcMessage();
-TppCancelTimer();
+? TppCancelTimer;
 ? TppCancelWait;
 TppCheckForTransactions();
 TppCleanupGroupAddMember();
@@ -13442,7 +13963,7 @@ TppCleanupGroupMemberRelease();
 TppCleanupGroupRemoveMember();
 ? TppCleanupGroupRemoveMember$fin$0;
 TppCompleteThreadData();
-? TppCritResetThread;
+TppCritResetThread();
 ? TppCritSetThread;
 ? TppCritSetThread$fin$0;
 ? TppCritSetThread$fin$1;
@@ -13467,13 +13988,12 @@ TppETWTimerCancelled();
 TppETWTimerCancelNtTimer();
 TppETWTimerExpiration();
 TppETWTimerExpirationBegin();
-TppETWTimerExpirationEnd();
 TppETWTimerSet();
 TppETWTimerSetNtTimer();
 TppETWWorkerNodeSwitch();
-TppExceptionFilter();
+? TppExceptionFilter;
 ? TppExecuteWaitCallback;
-? TppExecuteWaitTimerCallback;
+TppExecuteWaitTimerCallback();
 TppFastAlpcAdjustConcurrencyCount();
 ? TppFreeDirectParams;
 TppFreeDirectParamsCache();
@@ -13485,7 +14005,7 @@ TppInitializeTimer();
 ? TppInitializeTimerSubQueue;
 TppIopCallbackEpilog();
 TppIopCancelPendingCallbacks();
-TppIopExecuteCallback();
+? TppIopExecuteCallback;
 ? TppIopExecuteCallback$fin$0;
 TppIopFree();
 ? TppIopFree$fin$0;
@@ -13536,34 +14056,33 @@ TppTerminateProcess();
 TppTimerpExecuteCallback();
 TppTimerpFree();
 ? TppTimerpStopCallbackGeneration;
-? TppTimerpValidateTimer;
+TppTimerpValidateTimer();
 ? TppTimerQueueExpiration;
 TppUpdatePoolNodeStatus();
 TppUpdateSubQueueTimer();
 ? TppValidateCleanupGroupMember;
 ? TppWaitCompletion;
 ? TppWaitpValidateWait;
-? TppWaitTimerExpiration;
 TppWorkCallbackEpilog();
 ? TppWorkCallbackPrologRelease;
 ? TppWorkCancelPendingCallbacks;
-TppWorkerpInnerExceptionFilter();
+? TppWorkerpInnerExceptionFilter;
 ? TppWorkerThread;
+? TppWorkerThread$filt$0;
+? TppWorkerThread$filt$1;
 ? TppWorkerThread$filt$11;
-? TppWorkerThread$filt$2;
-? TppWorkerThread$filt$3;
 ? TppWorkerThread$filt$4;
 ? TppWorkerThread$filt$5;
 ? TppWorkerThread$filt$6;
-? TppWorkerThread$fin$0;
-? TppWorkerThread$fin$1;
 ? TppWorkerThread$fin$10;
+? TppWorkerThread$fin$2;
+? TppWorkerThread$fin$3;
 ? TppWorkerThread$fin$7;
 ? TppWorkerThread$fin$8;
 ? TppWorkerThread$fin$9;
 ? TppWorkInitialize;
 ? TppWorkInitialize$fin$0;
-TppWorkpExecuteCallback();
+? TppWorkpExecuteCallback;
 TppWorkpFree();
 ? TppWorkpFree$fin$0;
 TppWorkPost();
@@ -13581,7 +14100,7 @@ TpReleaseIoCompletion();
 TpReleaseJobNotification();
 ? TpReleasePool;
 ? TpReleasePool$fin$0;
-? TpReleaseTimer;
+TpReleaseTimer();
 TpReleaseWait();
 TpReleaseWork();
 TpReserveTaskPost();
@@ -13626,6 +14145,7 @@ _umatherr();
 _ungetc_nolock();
 _ungetwc_nolock();
 UninitUser32Proc();
+UserDiagnosticProviderCallback();
 int __cdecl Validate<struct _RESCDIRECTORY *,struct _RESCDENTRY *>(struct _RESCDIRECTORY *);
 ? ValidateOptionalString;
 ValidatePointer();
@@ -13690,19 +14210,27 @@ _wcsupr();
 _wcsupr_s();
 wctomb_s();
 _wctomb_s_l();
-? WerEscalationLazyInit;
+WerEscalationLazyInit();
 ? WerEscalationReadImageVersionInfoForModuleBase;
 WerEscalationReadImageVersionInfoForModuleBaseSafe();
 ? WerEscalationReadImageVersionInfoForModuleBaseSafe$filt$0;
 ? WerpAllocateAndInitializeSid;
-? WerpEscalationIsDisabled;
-? WerpEscalationIsWMRSendStringSet;
+? WerpBreakIntoDebuggerIfPresent;
+WerpCreateCompletionEvent();
+? WerpCreateCrashDataSection;
+WerpEscalationIsDisabled();
+WerpEscalationIsWMRSendStringSet();
 WerpEscalationReadUlongFromKey();
 WerpFreeSid();
+WerpGetProcessSnapshot();
 ? WerpGlobalFlagsForProcess;
+WerpIsDebugPortPresent();
 WerpPathTail();
 WerpProcessId();
-? WerReportSQMEvent;
+WerpSetProcessFaultInformation();
+WerpThreadId();
+? WerpWaitForCrashReporting;
+WerReportSQMEvent();
 ? _whiteout;
 _winput_s();
 WinSqmAddToAverageDWORD();
@@ -13821,6 +14349,7 @@ ZwClose();
 ZwCloseObjectAuditAlarm();
 ZwCommitComplete();
 ZwCommitEnlistment();
+ZwCommitRegistryTransaction();
 ZwCommitTransaction();
 ZwCompactKeys();
 ZwCompareObjects();
@@ -13856,6 +14385,7 @@ ZwCreateProcess();
 ZwCreateProcessEx();
 ZwCreateProfile();
 ZwCreateProfileEx();
+ZwCreateRegistryTransaction();
 ZwCreateResourceManager();
 ZwCreateSection();
 ZwCreateSemaphore();
@@ -13981,6 +14511,7 @@ ZwOpenPrivateNamespace();
 ZwOpenProcess();
 ZwOpenProcessToken();
 ZwOpenProcessTokenEx();
+ZwOpenRegistryTransaction();
 ZwOpenResourceManager();
 ZwOpenSection();
 ZwOpenSemaphore();
@@ -14045,6 +14576,7 @@ ZwQueryQuotaInformationFile();
 ZwQuerySection();
 ZwQuerySecurityAttributesToken();
 ZwQuerySecurityObject();
+ZwQuerySecurityPolicy();
 ZwQuerySemaphore();
 ZwQuerySymbolicLinkObject();
 ZwQuerySystemEnvironmentValue();
@@ -14098,6 +14630,7 @@ ZwResumeThread();
 ZwRevertContainerImpersonation();
 ZwRollbackComplete();
 ZwRollbackEnlistment();
+ZwRollbackRegistryTransaction();
 ZwRollbackTransaction();
 ZwRollforwardTransactionManager();
 ZwSaveKey();
@@ -14108,6 +14641,7 @@ ZwSerializeBoot();
 ZwSetBootEntryOrder();
 ZwSetBootOptions();
 ZwSetCachedSigningLevel();
+ZwSetCachedSigningLevel2();
 ZwSetContextThread();
 ZwSetDebugFilterState();
 ZwSetDefaultHardErrorPort();
@@ -14226,7 +14760,6 @@ AppModelLibraryLoadFailureApplicationBinary;
 AppModelLibraryLoadFailureNgenBinary;
 AppModelLibraryLoadFailureSystemBinary;
 AppModelRuntimeProviderId;
-AVrfpAllowResourceConversion;
 AvrfpAPILookupCallbackName;
 AvrfpAPILookupCallbackRoutine;
 AvrfpAPILookupCallbacksEnabled;
@@ -14244,6 +14777,7 @@ AVrfpVerifierLock;
 AVrfpVerifierProvidersList;
 AVrfpVerifierStopMessageFunction;
 BaseDllTag;
+CentennialIssueTracker_InitializedState;
 CheckHeapFillPattern;
 __clocalestr;
 CMFQueueRear;
@@ -14269,17 +14803,19 @@ CsrPortName;
 CsrProcessId;
 CsrReadOnlySharedMemorySize;
 CsrServerApiRoutine;
+CurDirDllLoadFailureError;
+CurDirDllLoadFailureWarning;
 _d_inf;
 _d_max;
 DataLoadLockCount;
 DeprecatedDll;
+__dynamic_value_reloc_table;
 EtwpFreeRegistrationList;
 EtwpGlobalSequence;
 EtwpLoggerArray;
 EtwpOneSecond;
 EtwpPrivSessionLock;
 EtwpProvLock;
-EtwpProvLockOwner;
 EtwpRegisterTpInitOnce;
 EtwpRegistrationCount;
 EtwpRegistrationSequence;
@@ -14287,10 +14823,13 @@ EtwpRegistrationTable;
 EtwpReplySend;
 FastPebLock;
 FatalUserCallbackException;
+FileSystemRegKeyName;
 FlsBitMap;
 _fltused;
 g_disableEscalation;
 g_dwLastErrorToBreakOn;
+g_hUserDiagnosticProvider;
+g_isErrorOriginProviderEnabled;
 g_LdrBreakOnLdrpInitializeProcessFailure;
 g_pfnApphelpCheckModuleProc;
 g_pfnSE_DllLoaded;
@@ -14333,6 +14872,10 @@ __guard_dispatch_icall_fptr;
 __guard_fids_count;
 __guard_fids_table;
 __guard_flags;
+__guard_iat_count;
+__guard_iat_table;
+__guard_longjmp_count;
+__guard_longjmp_table;
 GuidFormat;
 __initiallocalestructinfo;
 __initiallocinfo;
@@ -14355,7 +14898,6 @@ LdrpCODScenarioLock;
 LdrpCODScenarioTriggered;
 LdrpComPlusInstallRootName;
 LdrpComPlusVersionName;
-LdrpCorExeMainName;
 LdrpCorExeMainRoutine;
 LdrpCreateActCtxLanguageW;
 LdrpCritialLoaderFunctions;
@@ -14409,6 +14951,7 @@ LdrpMscoreeDllName;
 LdrpNtDllDataTableEntry;
 LdrpPageSize;
 LdrpPathLock;
+LdrpPolicyBits;
 LdrpPotentialTlsLeaks;
 LdrpProcessInitContextRecord;
 LdrpProcessInitialized;
@@ -14417,6 +14960,7 @@ LdrpSaferIsDllAllowedRoutine;
 LdrpShouldCreateStackTraceDb;
 LdrpStaticTlsBitmapVector;
 LdrpStatistics;
+LdrpSystem32;
 LdrpSystemDllBase;
 LdrpThreadPool;
 LdrpThunkSignature;
@@ -14446,6 +14990,7 @@ LoaderFatalErrorThread;
 LoadFailure;
 LoadFailureOperational;
 LoadMUIDllGuid;
+LongPathRegKeyValue;
 __lookuptable;
 __lookuptable_s;
 LZNT1Formats;
@@ -14472,7 +15017,6 @@ NlsMbAnsiCodePageTables;
 NlsMbCodePageTag;
 NlsMbOemCodePageTables;
 NlsMbOemCodePageTag;
-NlsOemCodePage;
 NlsOemLeadByteInfoTable;
 NlsOemToUnicodeData;
 NlsUnicodeToAnsiData;
@@ -14507,7 +15051,6 @@ RtlDosPathSeperatorsString;
 RtlFailedCriticalDebugAllocations;
 RtlFatIllegalTable;
 RtlGuardAllowSuppressedCalls;
-RtlHeapProcessFlags;
 RtlIsSystemAceType;
 RtlNtdllName;
 RtlpAffinityState;
@@ -14548,14 +15091,12 @@ RtlpDosPRNDevice;
 RtlpDphInitFailureFlags;
 RtlpDynamicFunctionTable;
 RtlpDynamicFunctionTableLock;
+RtlpDynamicFunctionTableTree;
 RtlpEmptyString;
 RtlpEnvironLookupTable;
-RtlpExceptionLog;
 RtlpExceptionLog2;
 RtlpExceptionLogCount;
-RtlpExceptionLogSize;
 RtlpExeSearchPath;
-RtlpExitThreadFunc;
 RtlpFlsLock;
 RtlpForceCSDebugInfoCreation;
 RtlpForceCSToUseEvents;
@@ -14564,7 +15105,6 @@ RtlpGlobalTagHeap;
 RtlpHeapErrorHandlerThreshold;
 RtlpHeapFailureInfo;
 RtlpHeapHeaderFieldOffsets;
-RtlpHeapInvalidBadAddress;
 RtlpHeapInvalidBreakPoint;
 RtlpHeapKey;
 RtlpHeapStackTraceLog;
@@ -14577,6 +15117,8 @@ RtlpHpLfhContentionLimit;
 RtlpHpMetadataHeap;
 RtlpHpMetadataHeapInitVar;
 RtlpHpNullGUID;
+RtlpHpStackDbContext;
+RtlpHpStackDbInitVar;
 RtlpHpTagContext;
 RtlpHpTagInitVar;
 RtlpIntegerChars;
@@ -14634,9 +15176,9 @@ RtlpShutdownProcessFlags;
 RtlpSlashSlashDot;
 RtlpSmMessageInfo;
 RtlpStackTraceDatabase;
-RtlpStartThreadFunc;
 RtlpStaticDebugInfo;
 RtlpStatusTable;
+RtlpSystem32Dirs;
 RtlpSystemDirs;
 RtlpTempBlocks;
 RtlpTestHookInit;
@@ -14678,6 +15220,7 @@ SecurityCookieInitCount;
 SecurityCookieInitialized;
 SessionNotificationGuid;
 _setjmpexused;
+SetLastWin32ErrorEvent;
 SHA256Magic;
 ShowSnaps;
 SidHashByteToIndexLookupTable;
@@ -14727,8 +15270,8 @@ _TraceLoggingMetadata;
 _TraceLoggingMetadataEnd;
 TrkContext;
 ulInvalidTypes;
-UnicodeDefaultChar;
 UseCOR;
+UserDiagnosticGuid;
 UserLoaderGuid;
 UseWOW64;
 VerifierDllString;
