@@ -1,5 +1,5 @@
 /*
- * PDB file: fltMgr.pdb\5ED9B0440F254A29975A7EC0954875F71\fltMgr.pdb
+ * PDB file: fltMgr.pdb\48747304BDFF27A3560106C0807BD3F51\fltMgr.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -189,7 +189,6 @@ struct _KTHREAD;
 struct _KTIMER;
 struct _KTRANSACTION;
 struct _KTSS64;
-struct _KWAIT_CHAIN;
 union _LARGE_INTEGER;
 struct LIST_ENTRY32;
 struct LIST_ENTRY64;
@@ -761,7 +760,8 @@ typedef struct _DEVICE_CAPABILITIES
     unsigned long NoDisplayInUI : 1; /* bit position: 17 */
     unsigned long Reserved1 : 1; /* bit position: 18 */
     unsigned long WakeFromInterrupt : 1; /* bit position: 19 */
-    unsigned long Reserved : 12; /* bit position: 20 */
+    unsigned long SecureDevice : 1; /* bit position: 20 */
+    unsigned long Reserved : 11; /* bit position: 21 */
   }; /* bitfield */
   unsigned long Address;
   unsigned long UINumber;
@@ -945,8 +945,8 @@ typedef struct _DISPATCHER_HEADER
             unsigned char Timer2Disabled : 1; /* bit position: 5 */
             unsigned char Timer2ReservedFlags : 2; /* bit position: 6 */
           }; /* bitfield */
-          unsigned char Timer2Reserved1;
-          unsigned char Timer2Reserved2;
+          unsigned char Timer2ComponentId;
+          unsigned char Timer2RelativeId;
         };
       };
     };
@@ -1149,8 +1149,8 @@ typedef struct _ERESOURCE
       unsigned char WaiterPriority;
     };
   };
-  struct _KWAIT_CHAIN SharedWaiters;
-  struct _KEVENT* ExclusiveWaiters;
+  void* SharedWaiters;
+  void* ExclusiveWaiters;
   struct _OWNER_ENTRY OwnerEntry;
   unsigned long ActiveEntries;
   unsigned long ContentionCount;
@@ -1167,7 +1167,7 @@ typedef struct _ERESOURCE
 
 typedef struct _ETW_KERNEL_TRACE_TIMESTAMP
 {
-  union _LARGE_INTEGER KernelTraceTimeStamp[2];
+  union _LARGE_INTEGER KernelTraceTimeStamp[3];
 } ETW_KERNEL_TRACE_TIMESTAMP, *PETW_KERNEL_TRACE_TIMESTAMP;
 
 typedef struct _EVENT_DATA_DESCRIPTOR
@@ -1418,7 +1418,9 @@ typedef enum _FILE_INFORMATION_CLASS
   FileDispositionInformationEx = 64,
   FileRenameInformationEx = 65,
   FileRenameInformationExBypassAccessCheck = 66,
-  FileMaximumInformation = 67,
+  FileDesiredStorageClassInformation = 67,
+  FileStatInformation = 68,
+  FileMaximumInformation = 69,
 } FILE_INFORMATION_CLASS, *PFILE_INFORMATION_CLASS;
 
 typedef struct _FILE_LIST_CTRL
@@ -2138,6 +2140,14 @@ typedef union _FLT_PARAMETERS
     } ReleaseForModifiedPageWriter;
     struct
     {
+      struct _IRP* Irp;
+      void* FileInformation;
+      unsigned long* Length;
+      enum _FILE_INFORMATION_CLASS FileInformationClass;
+      long __PADDING__[1];
+    } QueryOpen;
+    struct
+    {
       union _LARGE_INTEGER FileOffset;
       unsigned long Length;
       unsigned long LockKey;
@@ -2224,6 +2234,7 @@ typedef enum _FLT_PREOP_CALLBACK_STATUS
   FLT_PREOP_DISALLOW_FASTIO = 3,
   FLT_PREOP_COMPLETE = 4,
   FLT_PREOP_SYNCHRONIZE = 5,
+  FLT_PREOP_DISALLOW_FSFILTER_IO = 6,
   FLT_PREOP_USE_DATA_NODE = 10000,
 } FLT_PREOP_CALLBACK_STATUS, *PFLT_PREOP_CALLBACK_STATUS;
 
@@ -2542,6 +2553,14 @@ typedef union _FS_FILTER_PARAMETERS
       unsigned char SafeToRecurse;
       char __PADDING__[7];
     } NotifyStreamFileObject;
+    struct
+    {
+      struct _IRP* Irp;
+      void* FileInformation;
+      unsigned long* Length;
+      enum _FILE_INFORMATION_CLASS FileInformationClass;
+      long __PADDING__[1];
+    } QueryOpen;
     struct
     {
       void* Argument1;
@@ -2948,7 +2967,17 @@ typedef enum _IO_RATE_CONTROL_TYPE
   IoRateControlTypeBandwidthCriticalReservation = 7,
   IoRateControlTypeTimePercentCriticalReservation = 8,
   IoRateControlTypeCriticalReservationMax = 8,
-  IoRateControlTypeMax = 9,
+  IoRateControlTypeSoftCapMin = 9,
+  IoRateControlTypeIopsSoftCap = 9,
+  IoRateControlTypeBandwidthSoftCap = 10,
+  IoRateControlTypeTimePercentSoftCap = 11,
+  IoRateControlTypeSoftCapMax = 11,
+  IoRateControlTypeLimitExcessNotifyMin = 12,
+  IoRateControlTypeIopsLimitExcessNotify = 12,
+  IoRateControlTypeBandwidthLimitExcessNotify = 13,
+  IoRateControlTypeTimePercentLimitExcessNotify = 14,
+  IoRateControlTypeLimitExcessNotifyMax = 14,
+  IoRateControlTypeMax = 15,
 } IO_RATE_CONTROL_TYPE, *PIO_RATE_CONTROL_TYPE;
 
 typedef struct _IO_RESOURCE_DESCRIPTOR
@@ -3701,11 +3730,6 @@ typedef struct _KTIMER
 struct _KTRANSACTION;
 
 struct _KTSS64;
-
-typedef struct _KWAIT_CHAIN
-{
-  struct _SINGLE_LIST_ENTRY Head;
-} KWAIT_CHAIN, *PKWAIT_CHAIN;
 
 typedef union _LARGE_INTEGER
 {
@@ -5031,14 +5055,14 @@ FltAllocateCallbackData();
 ? FltAllocateCallbackDataEx;
 ? FltAllocateContext;
 FltAllocateDeferredIoWorkItem();
-FltAllocateExtraCreateParameter();
+? FltAllocateExtraCreateParameter;
 ? FltAllocateExtraCreateParameter$fin$0;
 ? FltAllocateExtraCreateParameterFromLookasideList;
 ? FltAllocateExtraCreateParameterFromLookasideList$fin$0;
 FltAllocateExtraCreateParameterList();
 FltAllocateFileLock();
 FltAllocateGenericWorkItem();
-FltAllocatePoolAlignedWithTag();
+? FltAllocatePoolAlignedWithTag;
 FltApplyPriorityInfoThread();
 FltAttachVolume();
 FltAttachVolumeAtAltitude();
@@ -5065,8 +5089,8 @@ FltClose();
 FltCloseClientPort();
 FltCloseCommunicationPort();
 FltCloseSectionForDataScan();
-FltCommitComplete();
-FltCommitFinalizeComplete();
+? FltCommitComplete;
+? FltCommitFinalizeComplete;
 FltCompareInstanceAltitudes();
 FltCompletePendedPostOperation();
 ? FltCompletePendedPreOperation;
@@ -5101,7 +5125,7 @@ FltDeleteVolumeContext();
 FltDetachVolume();
 FltDeviceIoControlFile();
 FltDoCompletionProcessingWhenSafe();
-FltEnlistInTransaction();
+? FltEnlistInTransaction;
 ? FltEnlistInTransaction$fin$0;
 FltEnumerateFilterInformation();
 FltEnumerateFilters();
@@ -5137,7 +5161,7 @@ FltGetContextsEx();
 FltGetDestinationFileNameInformation();
 FltGetDeviceObject();
 FltGetDiskDeviceObject();
-? FltGetEcpListFromCallbackData;
+FltGetEcpListFromCallbackData();
 FltGetFileContext();
 ? FltGetFileNameInformation;
 ? FltGetFileNameInformationUnsafe;
@@ -5243,7 +5267,7 @@ FltpAllocateNameCacheCreateCtrl();
 FltpAllocateStaticIrpCtrl();
 ? FltpAllocateStreamListCtrl;
 FltpAllocateTelemetryStringRoutine();
-FltpAllocateTxVolContext();
+? FltpAllocateTxVolContext;
 ? FltParseFileName;
 ? FltParseFileNameInformation;
 FltpAsyncIoCompletionCallback();
@@ -5251,7 +5275,7 @@ FltpAsyncIoCompletionCallback();
 ? FltpAttachDeviceObject$fin$0;
 ? FltpAttachFrame;
 ? FltpAttachFrame$fin$0;
-FltpAttachStreamListCtrlToTxVolCtx();
+? FltpAttachStreamListCtrlToTxVolCtx;
 ? FltpAttachToFileSystemDevice;
 ? FltpAttachToFileSystemDevice$fin$0;
 FltpAttachVolume();
@@ -5284,7 +5308,7 @@ FltpCleanupFileObjectContextsForLastFilterRemoval();
 FltpCleanupFilterVerifier();
 FltpCleanupFrame();
 ? FltpCleanupLoadedLegacyFiltersList;
-FltpCleanupNameControl();
+? FltpCleanupNameControl;
 FltpCleanupStreamListCtrlForFileObjectClose();
 FltpCleanupStreamListCtrlForFileObjectCloseWithStreamListCtrl();
 FltpCleanupStreamListCtrlForInstanceRemoval();
@@ -5294,8 +5318,8 @@ FltpClearPurgeFailureModeWorker();
 FltpClientPortClose();
 FltpClientPortDelete();
 FltpCloseControlDevice();
-FltpCommonAttachVolume();
-FltpCommonDetachVolume();
+? FltpCommonAttachVolume;
+? FltpCommonDetachVolume;
 FltpCommonDetachVolumeWorker();
 ? FltpCommonDeviceControl;
 FltpCommonOplockCheckBreak();
@@ -5303,8 +5327,8 @@ FltpCompleteCanceledIrp();
 ? FltpCompleteCompletionNode;
 FltpCompleteLockIrpRoutine();
 FltpCompletePhase2Init();
-? FltpCompleteRequest;
-FltpCompletionWorkerThread();
+FltpCompleteRequest();
+? FltpCompletionWorkerThread;
 FltpComputeWaitInterval();
 ? FltpControlDispatch;
 ? FltpCopyOffloadCapable;
@@ -5334,14 +5358,14 @@ FltpDataScanCsqRemoveIrp();
 ? FltpDeleteAllFileListCtrls;
 ? FltpDeleteAllStreamListCtrls;
 ? FltpDeleteContextList;
-FltpDeleteTxVolContext();
+? FltpDeleteTxVolContext;
 ? FltpDequeueThrottledWorkItem;
-FltpDetachFromFileSystemDevice();
+? FltpDetachFromFileSystemDevice;
 FltpDetachVolume();
 ? FltpDetachVolume$fin$0;
 FltpDetermineStaticOperationType();
 FltpDetranslateIoctlDataBuffers();
-FltpDisableNameCachePurgeForTxRename();
+? FltpDisableNameCachePurgeForTxRename;
 ? FltpDisableNameCachePurgeForTxRename$fin$0;
 FltpDisableNameCachingForStream();
 FltpDisableNameCachingForVolume();
@@ -5363,7 +5387,7 @@ FltpEnableNameCachePurgeForTxRename();
 FltpEnableNameCachingForStream();
 FltpEnableNameCachingForVolume();
 ? FltpEnableStreamListForSectionContexts;
-FltpEnlistTxVolContextInTransaction();
+? FltpEnlistTxVolContextInTransaction;
 ? FltpEnlistTxVolContextInTransaction$fin$0;
 FltpEnumerateAggregateFilterInformation();
 ? FltpEnumerateAggregateFilterInformation$fin$0;
@@ -5425,13 +5449,13 @@ FltpFreeNameCacheCreateCtrl();
 ? FltpFreeNameGenerationContext;
 FltpFreeStaticIrpCtrl();
 FltpFreeTelemetryStringRoutine();
-FltpFreeTxVolStreamListCtrlEntries();
+? FltpFreeTxVolStreamListCtrlEntries;
 FltpFreeUnicodeString();
 ? FltpFreeVolume;
 ? FltpFsControl;
 FltpFsControlCompletion();
 FltpFsControlLoadFileSystem();
-? FltpFsControlMountVolume;
+FltpFsControlMountVolume();
 ? FltpFsControlMountVolume$fin$0;
 FltpFsNotification();
 ? FltpFsNotificationActual;
@@ -5439,11 +5463,12 @@ FltpFsRtlCompletionRoutine();
 ? FltpGenerateDeviceHintEcp;
 FltpGenerateUniqueIdentifierForObject();
 ? FltpGenerateUniqueIdentifierForObject$fin$0;
+FltpGetAutoOptInFeatures();
 FltpGetBaseDeviceObjectName();
 FltpGetBoundTransaction();
 FltpGetCallbackNodeForInstance();
 FltpGetContexts();
-FltpGetDeviceObjectFromName();
+? FltpGetDeviceObjectFromName;
 FltpGetDriverVersion();
 ? FltpGetFileListCtrl;
 ? FltpGetFileListCtrl$fin$0;
@@ -5453,7 +5478,7 @@ FltpGetDriverVersion();
 FltpGetFileNameOpenById();
 FltpGetFileNameOpenByIdCallout();
 FltpGetFileNameOpenByIdWorker();
-FltpGetFltVolumeFromAttachmentList();
+? FltpGetFltVolumeFromAttachmentList;
 FltpGetFrameZeroVolume();
 ? FltpGetFrameZeroVolume$fin$0;
 FltpGetFsDeviceObjectAfterMount();
@@ -5486,7 +5511,7 @@ FltpGetShortFileName();
 FltpGetSupportedFeaturesValue();
 ? FltpGetSupportedFeaturesValue$fin$0;
 FltpGetTargetInfo();
-FltpGetTxVolContext();
+? FltpGetTxVolContext;
 FltpGetUniqueIdentifierForObject();
 ? FltpGetUniqueIdentifierForObject$fin$0;
 FltpGetUniqueIdentifierForVolume();
@@ -5522,7 +5547,7 @@ FltpInsertIrp();
 ? FltpInsertVolumeInstance;
 ? FltpInsertVolumeInstance$fin$0;
 ? FltpInternalCompletePendedPreOperation;
-FltpInvalidateNameCacheForTxRename();
+? FltpInvalidateNameCacheForTxRename;
 ? FltpInvalidateNameCaching;
 ? FltpInvalidateNameCachingAllFrames;
 FltpIoGetDeviceObjectPointer();
@@ -5532,7 +5557,7 @@ FltpIrpCtrlStackProfilerTimer();
 FltpIsDaxVolume();
 FltpIsOpenByObjectId();
 FltpIsVolumeDetached();
-FltpKtmNotification();
+? FltpKtmNotification;
 ? FltpLegacyProcessingAfterPreCallbacksCompleted;
 ? FltpLinkCompletionNodeToInstance;
 FltpLinkFilter();
@@ -5546,12 +5571,13 @@ FltpLogEventWithObjectID();
 FltpManualDeviceAttachTimer();
 ? FltpManualDeviceAttachWorker;
 FltpMarkAllCallbacksForDeletion();
-? FltpMeasureFreeInstance;
-? FltpMeasureInitInstance;
+FltpMeasureFreeInstance();
+FltpMeasureInitInstance();
 FltpMiniFilterDriverUnload();
 FltpMiniFilterDummyUnload();
 ? FltpMoveCallbackDataToIrp;
 ? FltpMoveIrpToCallbackData;
+? FltpMsgDeviceControl;
 ? FltpMsgDispatch;
 ? FltpNameCanBeExpanded;
 FltpNoFilterCallbackCompletion();
@@ -5593,14 +5619,14 @@ FltpPrivateLock();
 ? FltpProcessContextRegistration;
 ? FltpProcessContextRegistration$fin$0;
 FltpProcessDeferredIoWorkItem();
-? FltpProcessDirtyData;
+FltpProcessDirtyData();
 ? FltpProcessGenericWorkItem;
-FltpProcessIoCompletion();
+? FltpProcessIoCompletion;
 FltpProcessIrpCtrlStackProfiler();
 FltpProcessOperationStatusCallbacks();
 FltpProcessShutdownRequest();
 FltpPropagateCallbackDataMdl();
-FltpPurgeAndReinstateNameCacheForTxRename();
+? FltpPurgeAndReinstateNameCacheForTxRename;
 FltpPurgeMessageWaiters();
 FltpPurgeVolumeNameCache();
 ? FltpQueryInformationFile;
@@ -5622,7 +5648,7 @@ FltpReleaseLock();
 FltpReleaseMessageWaiterLock();
 FltpReleaseStreamForSectionConflict();
 ? FltpReleaseStreamListCtrl;
-FltpReleaseTxVolContext();
+? FltpReleaseTxVolContext;
 ? FltpRemoveAllNamesCachedForFileObject;
 FltpRemoveAllStreamHandleContextsForFileObject();
 FltpRemoveCallbacksForInstance();
@@ -5684,11 +5710,11 @@ FltpTelemetrySerializeLegacyFilterInfo();
 FltpTelemetrySerializeLegacyFiltersInfo();
 ? FltpTelemetrySerializeLegacyFiltersInfo$fin$0;
 FltpTelemetryUnloadFilter();
-? FltpTelemetryVolumeAttach;
+FltpTelemetryVolumeAttach();
 FltpTerminateActiveConnections();
 FltpTraceRedirectedFileIo();
 FltpTranslateIoctlDataBuffers();
-FltpTxVolKtmNotification();
+? FltpTxVolKtmNotification;
 FltpTxVolWaitForCommitFinalize();
 FltpUnlinkCompletionNodeFromInstanceLocked();
 FltpUnlinkFilter();
@@ -5714,7 +5740,7 @@ FltpvValidateFileNameOptions();
 FltpvValidateReadWriteParameters();
 FltpvVerifyIoIrqlStatus();
 FltpvVerifyPreOperationStatus();
-FltpWaitForCommitFinalize();
+? FltpWaitForCommitFinalize;
 ? FltpWaitForRundownProtectionReleaseInternal;
 ? FltpWatchForRegistryChanges;
 ? FltpWatchForRegistryChanges$fin$0;
@@ -5728,7 +5754,7 @@ FltQueryVolumeInformationFile();
 FltQueueDeferredIoWorkItem();
 ? FltQueueGenericWorkItem;
 FltReadFile();
-FltReadFileEx();
+? FltReadFileEx;
 ? FltReferenceContext;
 ? FltReferenceFileNameInformation;
 ? FltRegisterFilter;
@@ -5772,7 +5798,7 @@ FltSetQuotaInformationFile();
 FltSetSecurityObject();
 FltSetStreamContext();
 FltSetStreamHandleContext();
-FltSetTransactionContext();
+? FltSetTransactionContext;
 ? FltSetTransactionContext$fin$0;
 FltSetVolumeContext();
 ? FltSetVolumeContext$fin$0;
@@ -5780,7 +5806,7 @@ FltSetVolumeInformation();
 ? FltStartFiltering;
 ? FltStartFiltering$fin$0;
 FltSupportsFileContexts();
-? FltSupportsFileContextsEx;
+FltSupportsFileContextsEx();
 FltSupportsStreamContexts();
 FltSupportsStreamHandleContexts();
 FltTagFile();
@@ -5924,6 +5950,15 @@ __GSHandlerCheck_SEH();
 __GSHandlerCheckCommon();
 _guard_check_icall_nop();
 _guard_dispatch_icall_nop();
+__guard_ss_verify_failure();
+__guard_ss_verify_failure_default();
+__guard_ss_verify_failure_r10();
+__guard_ss_verify_failure_r8();
+__guard_ss_verify_failure_r9();
+__guard_ss_verify_failure_rcx();
+__guard_ss_verify_failure_rdx();
+__guard_ss_verify_sp();
+__guard_ss_verify_sp_default();
 ? HandleStreamListNotSupported;
 ? InsertContextEntry;
 ? IssueControlOperation;
@@ -5954,13 +5989,12 @@ SetContextIntoFileList();
 ? SetContextIntoFileList$fin$0;
 ? SetContextIntoStreamList;
 ? SetContextIntoStreamList$fin$0;
-StRtlGetIoCacheIntention();
 StRtlSetIoCacheIntention();
 ? TargetedIOCtrlAttachAsFoCtx;
 ? TargetedIOCtrlGenerateECP;
 ? _TlgDefineProvider_annotation__TlgFltMgrTelemetryProviderProv;
 ? _TlgEnableCallback;
-? _TlgKeywordOn;
+_TlgKeywordOn();
 _TlgWrite();
 TraceLoggingRegisterEx();
 TreeFindNodeOrParent();
@@ -5971,7 +6005,6 @@ TreeUnlink();
 ? TreeUnlinkMulti;
 ? TreeUnlinkMultiDoWalk;
 TreeUnlinkNextNode();
-TreeUnlinkNoBalance();
 TxVolDisableNameCachingForStream();
 ValidateIoParameters();
 WPP_SF_();
@@ -6023,7 +6056,7 @@ WppTraceCallback();
 
 // Globals
 
-__@@_PchSym_@00@nrmpvimvoUuhUurogvintiUurogviUnkUlyquivUznwGEUkxsOlyq@fltMgr;
+__@@_PchSym_@00@KxulyqvxgPillgKxunrmpvimvoUuhUurogvintiUurogviUnkUlyquivUznwGEUkxsOlyq@fltMgr;
 ContextTypeInfo;
 __dynamic_value_reloc_table;
 ECP_TYPE_OPEN_REPARSE_GUID;
@@ -6077,6 +6110,8 @@ __guard_iat_count;
 __guard_iat_table;
 __guard_longjmp_count;
 __guard_longjmp_table;
+__guard_ss_verify_failure_fptr;
+__guard_ss_verify_sp_fptr;
 GUID_ECP_FLT_CREATEFILE_TARGET;
 GUID_ECP_IO_DEVICE_HINT;
 GUID_NULL;
@@ -6109,13 +6144,13 @@ WPP_53b84f71342c3caa814193de27a3eb02_Traceguids;
 WPP_54147dd00aa03f548e4357b805af0f91_Traceguids;
 WPP_5ee89fca7deb37eb80c8e2f6b01f78fc_Traceguids;
 WPP_7baa659d04ac33d3aa48009088529df2_Traceguids;
+WPP_8a6728acf71b31a8a62ed536b4388eb3_Traceguids;
 WPP_8ffecb1c8b1831ec2df350eff5e47117_Traceguids;
-WPP_a169ebe01c5938fa194e08fb7f6faa5e_Traceguids;
+WPP_9da17f3b781231ecaa690953384412e5_Traceguids;
 WPP_ad0a512b3ee3381b9f0fb469b3aa178d_Traceguids;
 WPP_b6fc0300d11f33e68123fe69bdff414b_Traceguids;
 WPP_bd320f67426739bd71b9999cf0637710_Traceguids;
 WPP_c8b7fc85d64d3ede5b2a919ebf7d66ef_Traceguids;
-WPP_cb88e71ad6a83ed2c60fd90883e0fcd8_Traceguids;
 WPP_e11b6d7779d53ef31580662322524777_Traceguids;
 WPP_ef47a3eb52ad3dbd8129cb2c43c7a97d_Traceguids;
 WPP_f0d913edcf1d378fdfaad57c1f5497d4_Traceguids;
