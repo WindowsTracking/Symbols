@@ -1,10 +1,8 @@
 
 // Functions
 
-BTCpuFlushInstructionCache();
 BTCpuGetBopCode();
 BTCpuGetContext();
-BTCpuIsProcessorFeaturePresent();
 BTCpuProcessInit();
 BTCpuResetToConsistentState();
 BTCpuSetContext();
@@ -21,15 +19,6 @@ _DllMainCRTStartupForGS();
 GetCurrentProcessorNumber();
 _guard_check_icall_nop();
 _guard_dispatch_icall_nop();
-__guard_ss_verify_failure();
-__guard_ss_verify_failure_default();
-__guard_ss_verify_failure_r10();
-__guard_ss_verify_failure_r8();
-__guard_ss_verify_failure_r9();
-__guard_ss_verify_failure_rcx();
-__guard_ss_verify_failure_rdx();
-__guard_ss_verify_sp();
-__guard_ss_verify_sp_default();
 KiFastSystemCall2();
 NtTerminateProcess();
 QuerySystemTime();
@@ -91,6 +80,7 @@ XSaveSHelper();
 
 CpupSystemCallFast;
 __dynamic_value_reloc_table;
+__enclave_config;
 __guard_check_icall_fptr;
 __guard_dispatch_icall_fptr;
 __guard_fids_count;
@@ -100,8 +90,6 @@ __guard_iat_count;
 __guard_iat_table;
 __guard_longjmp_count;
 __guard_longjmp_table;
-__guard_ss_verify_failure_fptr;
-__guard_ss_verify_sp_fptr;
 __IMPORT_DESCRIPTOR_ntdll;
 __IMPORT_DESCRIPTOR_wow64;
 KiFastSystemCall;

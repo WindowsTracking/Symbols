@@ -1,5 +1,5 @@
 /*
- * PDB file: csrss.pdb\35A823192641B1E2818E7BC1E6BECEF31\csrss.pdb
+ * PDB file: csrss.pdb\BC6BFEC3BDBF76BEAEB1241D3B3F58DE1\csrss.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -34,6 +34,7 @@ enum DEVICE_TEXT_TYPE;
 enum _DEVICE_USAGE_NOTIFICATION_TYPE;
 enum _DEVICE_WAKE_DEPTH;
 struct _DEVOBJ_EXTENSION;
+enum _DIRECTORY_NOTIFY_INFORMATION_CLASS;
 struct _DISPATCHER_HEADER;
 struct _DMA_ADAPTER;
 struct _DMA_ADAPTER_INFO;
@@ -86,6 +87,7 @@ struct _IO_COMPLETION_CONTEXT;
 struct _IO_DRIVER_CREATE_CONTEXT;
 enum _IO_PRIORITY_HINT;
 struct _IO_PRIORITY_INFO;
+enum _IO_RATE_CONTROL_TYPE;
 struct _IO_RESOURCE_DESCRIPTOR;
 struct _IO_RESOURCE_LIST;
 struct _IO_RESOURCE_REQUIREMENTS_LIST;
@@ -156,6 +158,7 @@ struct _PRIVILEGE_SET;
 struct _PROCESSOR_NUMBER;
 enum _PS_ATTRIBUTE_NUM;
 enum PS_CREATE_STATE;
+struct _PS_MITIGATION_AUDIT_OPTIONS_MAP;
 enum _PS_MITIGATION_OPTION;
 struct _PS_MITIGATION_OPTIONS_MAP;
 enum _PS_PROTECTED_SIGNER;
@@ -733,6 +736,12 @@ typedef struct _DEVOBJ_EXTENSION
   void* VerifierContext;
 } DEVOBJ_EXTENSION, *PDEVOBJ_EXTENSION;
 
+typedef enum _DIRECTORY_NOTIFY_INFORMATION_CLASS
+{
+  DirectoryNotifyInformation = 1,
+  DirectoryNotifyExtendedInformation = 2,
+} DIRECTORY_NOTIFY_INFORMATION_CLASS, *PDIRECTORY_NOTIFY_INFORMATION_CLASS;
+
 typedef struct _DISPATCHER_HEADER
 {
   union
@@ -819,34 +828,46 @@ typedef struct _DISPATCHER_HEADER
     struct
     {
       unsigned char ThreadType;
-      unsigned char ThreadReserved;
       union
       {
-        unsigned char ThreadControlFlags;
+        unsigned char ThreadSpecControl;
         struct
         {
           struct /* bitfield */
           {
-            unsigned char CycleProfiling : 1; /* bit position: 0 */
-            unsigned char CounterProfiling : 1; /* bit position: 1 */
-            unsigned char GroupScheduling : 1; /* bit position: 2 */
-            unsigned char AffinitySet : 1; /* bit position: 3 */
-            unsigned char Tagged : 1; /* bit position: 4 */
-            unsigned char EnergyProfiling : 1; /* bit position: 5 */
-            unsigned char ThreadReservedControlFlags : 2; /* bit position: 6 */
+            unsigned char SpecControlIbrs : 1; /* bit position: 0 */
+            unsigned char SpecControlStibp : 1; /* bit position: 1 */
+            unsigned char SpecControlReserved : 6; /* bit position: 2 */
           }; /* bitfield */
           union
           {
-            unsigned char DebugActive;
-            struct /* bitfield */
+            unsigned char ThreadControlFlags;
+            struct
             {
-              unsigned char ActiveDR7 : 1; /* bit position: 0 */
-              unsigned char Instrumented : 1; /* bit position: 1 */
-              unsigned char Minimal : 1; /* bit position: 2 */
-              unsigned char Reserved4 : 3; /* bit position: 3 */
-              unsigned char UmsScheduled : 1; /* bit position: 6 */
-              unsigned char UmsPrimary : 1; /* bit position: 7 */
-            }; /* bitfield */
+              struct /* bitfield */
+              {
+                unsigned char CycleProfiling : 1; /* bit position: 0 */
+                unsigned char CounterProfiling : 1; /* bit position: 1 */
+                unsigned char GroupScheduling : 1; /* bit position: 2 */
+                unsigned char AffinitySet : 1; /* bit position: 3 */
+                unsigned char Tagged : 1; /* bit position: 4 */
+                unsigned char EnergyProfiling : 1; /* bit position: 5 */
+                unsigned char ThreadReservedControlFlags : 2; /* bit position: 6 */
+              }; /* bitfield */
+              union
+              {
+                unsigned char DebugActive;
+                struct /* bitfield */
+                {
+                  unsigned char ActiveDR7 : 1; /* bit position: 0 */
+                  unsigned char Instrumented : 1; /* bit position: 1 */
+                  unsigned char Minimal : 1; /* bit position: 2 */
+                  unsigned char Reserved4 : 3; /* bit position: 3 */
+                  unsigned char UmsScheduled : 1; /* bit position: 6 */
+                  unsigned char UmsPrimary : 1; /* bit position: 7 */
+                }; /* bitfield */
+              };
+            };
           };
         };
       };
@@ -1220,7 +1241,8 @@ typedef enum _FILE_INFORMATION_CLASS
   FileRenameInformationExBypassAccessCheck = 66,
   FileDesiredStorageClassInformation = 67,
   FileStatInformation = 68,
-  FileMaximumInformation = 69,
+  FileMemoryPartitionInformation = 69,
+  FileMaximumInformation = 70,
 } FILE_INFORMATION_CLASS, *PFILE_INFORMATION_CLASS;
 
 typedef struct _FILE_NETWORK_OPEN_INFORMATION
@@ -1583,6 +1605,36 @@ typedef struct _IO_PRIORITY_INFO
   enum _IO_PRIORITY_HINT IoPriority;
 } IO_PRIORITY_INFO, *PIO_PRIORITY_INFO;
 
+typedef enum _IO_RATE_CONTROL_TYPE
+{
+  IoRateControlTypeCapMin = 0,
+  IoRateControlTypeIopsCap = 0,
+  IoRateControlTypeBandwidthCap = 1,
+  IoRateControlTypeTimePercentCap = 2,
+  IoRateControlTypeCapMax = 2,
+  IoRateControlTypeReservationMin = 3,
+  IoRateControlTypeIopsReservation = 3,
+  IoRateControlTypeBandwidthReservation = 4,
+  IoRateControlTypeTimePercentReservation = 5,
+  IoRateControlTypeReservationMax = 5,
+  IoRateControlTypeCriticalReservationMin = 6,
+  IoRateControlTypeIopsCriticalReservation = 6,
+  IoRateControlTypeBandwidthCriticalReservation = 7,
+  IoRateControlTypeTimePercentCriticalReservation = 8,
+  IoRateControlTypeCriticalReservationMax = 8,
+  IoRateControlTypeSoftCapMin = 9,
+  IoRateControlTypeIopsSoftCap = 9,
+  IoRateControlTypeBandwidthSoftCap = 10,
+  IoRateControlTypeTimePercentSoftCap = 11,
+  IoRateControlTypeSoftCapMax = 11,
+  IoRateControlTypeLimitExcessNotifyMin = 12,
+  IoRateControlTypeIopsLimitExcessNotify = 12,
+  IoRateControlTypeBandwidthLimitExcessNotify = 13,
+  IoRateControlTypeTimePercentLimitExcessNotify = 14,
+  IoRateControlTypeLimitExcessNotifyMax = 14,
+  IoRateControlTypeMax = 15,
+} IO_RATE_CONTROL_TYPE, *PIO_RATE_CONTROL_TYPE;
+
 typedef struct _IO_RESOURCE_DESCRIPTOR
 {
   unsigned char Option;
@@ -1776,6 +1828,13 @@ typedef struct _IO_STACK_LOCATION
         unsigned long CompletionFilter;
         long __PADDING__[1];
       } NotifyDirectory;
+      struct
+      {
+        unsigned long Length;
+        unsigned long CompletionFilter;
+        enum _DIRECTORY_NOTIFY_INFORMATION_CLASS DirectoryNotifyInformationClass;
+        long __PADDING__[1];
+      } NotifyDirectoryEx;
       struct
       {
         unsigned long Length;
@@ -2402,10 +2461,44 @@ typedef struct _KPRCB
   unsigned long ApicMask;
   void* AcpiReserved;
   unsigned long CFlushSize;
-  unsigned long PrcbPad10;
-  unsigned __int64 PrcbPad11[2];
+  union
+  {
+    volatile long BamFlags;
+    struct /* bitfield */
+    {
+      unsigned long BamQosLevel : 2; /* bit position: 0 */
+      unsigned long PendingQosUpdate : 2; /* bit position: 2 */
+      unsigned long BamFlagsReserved : 28; /* bit position: 4 */
+    }; /* bitfield */
+  };
+  union
+  {
+    struct
+    {
+      unsigned __int64 TrappedSecurityDomain;
+      union
+      {
+        unsigned char BpbState;
+        struct
+        {
+          struct /* bitfield */
+          {
+            unsigned char BpbIbrsPresent : 1; /* bit position: 0 */
+            unsigned char BpbStibpPresent : 1; /* bit position: 1 */
+            unsigned char BpbSmepPresent : 1; /* bit position: 2 */
+            unsigned char BpbSimulateIbrs : 1; /* bit position: 3 */
+            unsigned char BpbSimulateIbpb : 1; /* bit position: 4 */
+            unsigned char BpbReserved : 3; /* bit position: 5 */
+          }; /* bitfield */
+          unsigned char BpbPad[7];
+        };
+      };
+    };
+    unsigned __int64 PrcbPad11[2];
+  };
   struct _KPROCESSOR_STATE ProcessorState;
   unsigned __int64 PrcbPad12[6];
+  long __PADDING__[4];
 } KPRCB, *PKPRCB;
 
 struct _KPROCESS;
@@ -2547,7 +2640,8 @@ typedef struct _KUSER_SHARED_DATA
       unsigned long DbgSecureBootEnabled : 1; /* bit position: 7 */
       unsigned long DbgMultiSessionSku : 1; /* bit position: 8 */
       unsigned long DbgMultiUsersInSessionSku : 1; /* bit position: 9 */
-      unsigned long SpareBits : 22; /* bit position: 10 */
+      unsigned long DbgStateSeparationEnabled : 1; /* bit position: 10 */
+      unsigned long SpareBits : 21; /* bit position: 11 */
     }; /* bitfield */
   };
   unsigned long DataFlagsPad[1];
@@ -2575,7 +2669,7 @@ typedef struct _KUSER_SHARED_DATA
   unsigned char QpcInterruptTimeIncrementShift;
   unsigned short UnparkedProcessorCount;
   unsigned long EnclaveFeatureMask[4];
-  unsigned long Reserved8;
+  unsigned long TelemetryCoverageRound;
   unsigned short UserModeGlobalLogger[16];
   unsigned long ImageFileExecutionOptions;
   unsigned long LangGenerationCount;
@@ -2919,7 +3013,7 @@ typedef struct _PEB
     void* KernelCallbackTable;
     void* UserSharedInfoPtr;
   };
-  unsigned long SystemReserved[1];
+  unsigned long SystemReserved;
   unsigned long AtlThunkSListPtr32;
   void* ApiSetMap;
   unsigned long TlsExpansionCounter;
@@ -2998,6 +3092,9 @@ typedef struct _PEB
   unsigned __int64 TppWorkerpListLock;
   struct _LIST_ENTRY TppWorkerpList;
   void* WaitOnAddressHashTable[128];
+  void* TelemetryCoverageHeader;
+  unsigned long CloudFileFlags;
+  long __PADDING__[1];
 } PEB, *PPEB;
 
 typedef struct _PEB_LDR_DATA
@@ -3117,7 +3214,8 @@ typedef enum _PS_ATTRIBUTE_NUM
   PsAttributeSafeOpenPromptOriginClaim = 23,
   PsAttributeBnoIsolation = 24,
   PsAttributeDesktopAppPolicy = 25,
-  PsAttributeMax = 26,
+  PsAttributeChpe = 26,
+  PsAttributeMax = 27,
 } PS_ATTRIBUTE_NUM, *PPS_ATTRIBUTE_NUM;
 
 enum PS_CREATE_STATE
@@ -3131,6 +3229,11 @@ enum PS_CREATE_STATE
   PsCreateSuccess = 6,
   PsCreateMaximumStates = 7,
 };
+
+typedef struct _PS_MITIGATION_AUDIT_OPTIONS_MAP
+{
+  unsigned __int64 Map[2];
+} PS_MITIGATION_AUDIT_OPTIONS_MAP, *PPS_MITIGATION_AUDIT_OPTIONS_MAP;
 
 typedef enum _PS_MITIGATION_OPTION
 {
@@ -3154,6 +3257,15 @@ typedef enum _PS_MITIGATION_OPTION
   PS_MITIGATION_OPTION_LOADER_INTEGRITY_CONTINUITY = 17,
   PS_MITIGATION_OPTION_STRICT_CONTROL_FLOW_GUARD = 18,
   PS_MITIGATION_OPTION_RESTRICT_SET_THREAD_CONTEXT = 19,
+  PS_MITIGATION_OPTION_ROP_STACKPIVOT = 20,
+  PS_MITIGATION_OPTION_ROP_CALLER_CHECK = 21,
+  PS_MITIGATION_OPTION_ROP_SIMEXEC = 22,
+  PS_MITIGATION_OPTION_EXPORT_ADDRESS_FILTER = 23,
+  PS_MITIGATION_OPTION_EXPORT_ADDRESS_FILTER_PLUS = 24,
+  PS_MITIGATION_OPTION_RESTRICT_CHILD_PROCESS_CREATION = 25,
+  PS_MITIGATION_OPTION_IMPORT_ADDRESS_FILTER = 26,
+  PS_MITIGATION_OPTION_MODULE_TAMPERING_PROTECTION = 27,
+  PS_MITIGATION_OPTION_RESTRICT_INDIRECT_BRANCH_PREDICTION = 28,
 } PS_MITIGATION_OPTION, *PPS_MITIGATION_OPTION;
 
 typedef struct _PS_MITIGATION_OPTIONS_MAP
@@ -3599,7 +3711,8 @@ typedef struct _SYSTEM_POWER_STATE_CONTEXT
       unsigned long CurrentSystemState : 4; /* bit position: 16 */
       unsigned long IgnoreHibernationPath : 1; /* bit position: 20 */
       unsigned long PseudoTransition : 1; /* bit position: 21 */
-      unsigned long Reserved2 : 10; /* bit position: 22 */
+      unsigned long KernelSoftReboot : 1; /* bit position: 22 */
+      unsigned long Reserved2 : 9; /* bit position: 23 */
     }; /* bitfield */
     unsigned long ContextAsUlong;
   };
@@ -3623,7 +3736,10 @@ typedef struct _TEB
   unsigned long CurrentLocale;
   unsigned long FpSoftwareStatusRegister;
   void* ReservedForDebuggerInstrumentation[16];
-  void* SystemReserved1[32];
+  void* SystemReserved1[30];
+  char PlaceholderCompatibilityMode;
+  char PlaceholderReserved[11];
+  unsigned long ProxiedProcessId;
   struct _ACTIVATION_CONTEXT_STACK _ActivationStack;
   unsigned char WorkingOnBehalfTicket[8];
   long ExceptionCode;
@@ -4210,15 +4326,6 @@ typedef struct _XSTATE_FEATURE
 
 _guard_check_icall_nop();
 _guard_dispatch_icall_nop();
-__guard_ss_verify_failure();
-__guard_ss_verify_failure_default();
-__guard_ss_verify_failure_r10();
-__guard_ss_verify_failure_r8();
-__guard_ss_verify_failure_r9();
-__guard_ss_verify_failure_rcx();
-__guard_ss_verify_failure_rdx();
-__guard_ss_verify_sp();
-__guard_ss_verify_sp_default();
 ? main;
 NtProcessStartup();
 ? NtProcessStartup_AfterSecurityCookieInitialized;
@@ -4235,6 +4342,7 @@ __security_init_cookie_ex();
 // Globals
 
 __dynamic_value_reloc_table;
+__enclave_config;
 __guard_check_icall_fptr;
 __guard_dispatch_icall_fptr;
 __guard_fids_count;
@@ -4244,8 +4352,6 @@ __guard_iat_count;
 __guard_iat_table;
 __guard_longjmp_count;
 __guard_longjmp_table;
-__guard_ss_verify_failure_fptr;
-__guard_ss_verify_sp_fptr;
 __IMPORT_DESCRIPTOR_CSRSRV;
 __IMPORT_DESCRIPTOR_ntdll;
 _load_config_used;
