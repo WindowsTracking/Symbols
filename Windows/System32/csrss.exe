@@ -1,5 +1,5 @@
 /*
- * PDB file: csrss.pdb\BC6BFEC3BDBF76BEAEB1241D3B3F58DE1\csrss.pdb
+ * PDB file: csrss.pdb\6959FB90774BE1C710B46855506CA0D81\csrss.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -25,6 +25,7 @@ struct _CSR_NT_SESSION;
 struct _CSR_PROCESS;
 struct _CSR_THREAD;
 struct _CURDIR;
+struct _CUSTOM_SYSTEM_EVENT_TRIGGER_CONFIG;
 struct _DEVICE_CAPABILITIES;
 struct _DEVICE_OBJECT;
 struct _DEVICE_OBJECT_POWER_EXTENSION;
@@ -197,6 +198,7 @@ union _SLIST_HEADER;
 struct _STRING;
 enum _SYSTEM_POWER_STATE;
 struct _SYSTEM_POWER_STATE_CONTEXT;
+enum _SYSTEM_PROCESS_CLASSIFICATION;
 struct _TEB;
 struct _TEB_ACTIVE_FRAME;
 struct _TEB_ACTIVE_FRAME_CONTEXT;
@@ -229,6 +231,7 @@ union _WHEA_PERSISTENCE_INFO;
 union _WHEA_REVISION;
 union _WHEA_TIMESTAMP;
 struct _WORK_QUEUE_ITEM;
+struct _XSAVE_AREA_HEADER;
 struct _XSAVE_FORMAT;
 struct _XSTATE_CONFIGURATION;
 struct _XSTATE_FEATURE;
@@ -591,6 +594,12 @@ typedef struct _CURDIR
   void* Handle;
 } CURDIR, *PCURDIR;
 
+typedef struct _CUSTOM_SYSTEM_EVENT_TRIGGER_CONFIG
+{
+  unsigned long Size;
+  const wchar_t* TriggerId;
+} CUSTOM_SYSTEM_EVENT_TRIGGER_CONFIG, *PCUSTOM_SYSTEM_EVENT_TRIGGER_CONFIG;
+
 typedef struct _DEVICE_CAPABILITIES
 {
   unsigned short Size;
@@ -618,7 +627,9 @@ typedef struct _DEVICE_CAPABILITIES
     unsigned long Reserved1 : 1; /* bit position: 18 */
     unsigned long WakeFromInterrupt : 1; /* bit position: 19 */
     unsigned long SecureDevice : 1; /* bit position: 20 */
-    unsigned long Reserved : 11; /* bit position: 21 */
+    unsigned long ChildOfVgaEnabledBridge : 1; /* bit position: 21 */
+    unsigned long DecodeIoOnBoot : 1; /* bit position: 22 */
+    unsigned long Reserved : 9; /* bit position: 23 */
   }; /* bitfield */
   unsigned long Address;
   unsigned long UINumber;
@@ -828,46 +839,35 @@ typedef struct _DISPATCHER_HEADER
     struct
     {
       unsigned char ThreadType;
+      unsigned char ThreadReserved;
       union
       {
-        unsigned char ThreadSpecControl;
+        unsigned char ThreadControlFlags;
         struct
         {
           struct /* bitfield */
           {
-            unsigned char SpecControlIbrs : 1; /* bit position: 0 */
-            unsigned char SpecControlStibp : 1; /* bit position: 1 */
-            unsigned char SpecControlReserved : 6; /* bit position: 2 */
+            unsigned char CycleProfiling : 1; /* bit position: 0 */
+            unsigned char CounterProfiling : 1; /* bit position: 1 */
+            unsigned char GroupScheduling : 1; /* bit position: 2 */
+            unsigned char AffinitySet : 1; /* bit position: 3 */
+            unsigned char Tagged : 1; /* bit position: 4 */
+            unsigned char EnergyProfiling : 1; /* bit position: 5 */
+            unsigned char SchedulerAssist : 1; /* bit position: 6 */
+            unsigned char ThreadReservedControlFlags : 1; /* bit position: 7 */
           }; /* bitfield */
           union
           {
-            unsigned char ThreadControlFlags;
-            struct
+            unsigned char DebugActive;
+            struct /* bitfield */
             {
-              struct /* bitfield */
-              {
-                unsigned char CycleProfiling : 1; /* bit position: 0 */
-                unsigned char CounterProfiling : 1; /* bit position: 1 */
-                unsigned char GroupScheduling : 1; /* bit position: 2 */
-                unsigned char AffinitySet : 1; /* bit position: 3 */
-                unsigned char Tagged : 1; /* bit position: 4 */
-                unsigned char EnergyProfiling : 1; /* bit position: 5 */
-                unsigned char ThreadReservedControlFlags : 2; /* bit position: 6 */
-              }; /* bitfield */
-              union
-              {
-                unsigned char DebugActive;
-                struct /* bitfield */
-                {
-                  unsigned char ActiveDR7 : 1; /* bit position: 0 */
-                  unsigned char Instrumented : 1; /* bit position: 1 */
-                  unsigned char Minimal : 1; /* bit position: 2 */
-                  unsigned char Reserved4 : 3; /* bit position: 3 */
-                  unsigned char UmsScheduled : 1; /* bit position: 6 */
-                  unsigned char UmsPrimary : 1; /* bit position: 7 */
-                }; /* bitfield */
-              };
-            };
+              unsigned char ActiveDR7 : 1; /* bit position: 0 */
+              unsigned char Instrumented : 1; /* bit position: 1 */
+              unsigned char Minimal : 1; /* bit position: 2 */
+              unsigned char Reserved4 : 3; /* bit position: 3 */
+              unsigned char UmsScheduled : 1; /* bit position: 6 */
+              unsigned char UmsPrimary : 1; /* bit position: 7 */
+            }; /* bitfield */
           };
         };
       };
@@ -950,6 +950,7 @@ typedef struct _DMA_OPERATIONS
   void* JoinDmaDomain /* function */;
   void* LeaveDmaDomain /* function */;
   void* GetDmaDomain /* function */;
+  void* AllocateCommonBufferWithBounds /* function */;
 } DMA_OPERATIONS, *PDMA_OPERATIONS;
 
 typedef struct _DMA_TRANSFER_INFO
@@ -1242,7 +1243,9 @@ typedef enum _FILE_INFORMATION_CLASS
   FileDesiredStorageClassInformation = 67,
   FileStatInformation = 68,
   FileMemoryPartitionInformation = 69,
-  FileMaximumInformation = 70,
+  FileStatLxInformation = 70,
+  FileCaseSensitiveInformation = 71,
+  FileMaximumInformation = 72,
 } FILE_INFORMATION_CLASS, *PFILE_INFORMATION_CLASS;
 
 typedef struct _FILE_NETWORK_OPEN_INFORMATION
@@ -2103,7 +2106,9 @@ enum JOB_OBJECT_IO_RATE_CONTROL_FLAGS
 {
   JOB_OBJECT_IO_RATE_CONTROL_ENABLE = 1,
   JOB_OBJECT_IO_RATE_CONTROL_STANDALONE_VOLUME = 2,
-  JOB_OBJECT_IO_RATE_CONTROL_VALID_FLAGS = 3,
+  JOB_OBJECT_IO_RATE_CONTROL_FORCE_UNIT_ACCESS_ALL = 4,
+  JOB_OBJECT_IO_RATE_CONTROL_FORCE_UNIT_ACCESS_ON_SOFT_CAP = 8,
+  JOB_OBJECT_IO_RATE_CONTROL_VALID_FLAGS = 15,
 };
 
 enum JOB_OBJECT_NET_RATE_CONTROL_FLAGS
@@ -2463,16 +2468,6 @@ typedef struct _KPRCB
   unsigned long CFlushSize;
   union
   {
-    volatile long BamFlags;
-    struct /* bitfield */
-    {
-      unsigned long BamQosLevel : 2; /* bit position: 0 */
-      unsigned long PendingQosUpdate : 2; /* bit position: 2 */
-      unsigned long BamFlagsReserved : 28; /* bit position: 4 */
-    }; /* bitfield */
-  };
-  union
-  {
     struct
     {
       unsigned __int64 TrappedSecurityDomain;
@@ -2483,21 +2478,41 @@ typedef struct _KPRCB
         {
           struct /* bitfield */
           {
-            unsigned char BpbIbrsPresent : 1; /* bit position: 0 */
-            unsigned char BpbStibpPresent : 1; /* bit position: 1 */
-            unsigned char BpbSmepPresent : 1; /* bit position: 2 */
-            unsigned char BpbSimulateIbrs : 1; /* bit position: 3 */
-            unsigned char BpbSimulateIbpb : 1; /* bit position: 4 */
-            unsigned char BpbReserved : 3; /* bit position: 5 */
+            unsigned char BpbCpuIdle : 1; /* bit position: 0 */
+            unsigned char BpbFlushRsbOnTrap : 1; /* bit position: 1 */
+            unsigned char BpbIbpbOnReturn : 1; /* bit position: 2 */
+            unsigned char BpbIbpbOnTrap : 1; /* bit position: 3 */
+            unsigned char BpbStateReserved : 4; /* bit position: 4 */
           }; /* bitfield */
-          unsigned char BpbPad[7];
+          union
+          {
+            unsigned char BpbFeatures;
+            struct
+            {
+              struct /* bitfield */
+              {
+                unsigned char BpbClearOnIdle : 1; /* bit position: 0 */
+                unsigned char BpbEnabled : 1; /* bit position: 1 */
+                unsigned char BpbSmep : 1; /* bit position: 2 */
+                unsigned char BpbFeaturesReserved : 5; /* bit position: 3 */
+              }; /* bitfield */
+              unsigned char BpbCurrentSpecCtrl;
+              unsigned char BpbKernelSpecCtrl;
+              unsigned char BpbNmiSpecCtrl;
+              unsigned char BpbUserSpecCtrl;
+              unsigned char BpbPad[2];
+            };
+          };
         };
       };
     };
     unsigned __int64 PrcbPad11[2];
   };
   struct _KPROCESSOR_STATE ProcessorState;
-  unsigned __int64 PrcbPad12[6];
+  struct _XSAVE_AREA_HEADER* ExtendedSupervisorState;
+  unsigned long ProcessorSignature;
+  unsigned long PrcbPad11a;
+  unsigned __int64 PrcbPad12[4];
   long __PADDING__[4];
 } KPRCB, *PKPRCB;
 
@@ -3094,7 +3109,9 @@ typedef struct _PEB
   void* WaitOnAddressHashTable[128];
   void* TelemetryCoverageHeader;
   unsigned long CloudFileFlags;
-  long __PADDING__[1];
+  unsigned long CloudFileDiagFlags;
+  char PlaceholderCompatibilityMode;
+  char PlaceholderCompatibilityModeReserved[7];
 } PEB, *PPEB;
 
 typedef struct _PEB_LDR_DATA
@@ -3266,6 +3283,7 @@ typedef enum _PS_MITIGATION_OPTION
   PS_MITIGATION_OPTION_IMPORT_ADDRESS_FILTER = 26,
   PS_MITIGATION_OPTION_MODULE_TAMPERING_PROTECTION = 27,
   PS_MITIGATION_OPTION_RESTRICT_INDIRECT_BRANCH_PREDICTION = 28,
+  PS_MITIGATION_OPTION_SPECULATIVE_STORE_BYPASS_DISABLE = 29,
 } PS_MITIGATION_OPTION, *PPS_MITIGATION_OPTION;
 
 typedef struct _PS_MITIGATION_OPTIONS_MAP
@@ -3717,6 +3735,16 @@ typedef struct _SYSTEM_POWER_STATE_CONTEXT
     unsigned long ContextAsUlong;
   };
 } SYSTEM_POWER_STATE_CONTEXT, *PSYSTEM_POWER_STATE_CONTEXT;
+
+typedef enum _SYSTEM_PROCESS_CLASSIFICATION
+{
+  SystemProcessClassificationNormal = 0,
+  SystemProcessClassificationSystem = 1,
+  SystemProcessClassificationSecureSystem = 2,
+  SystemProcessClassificationMemCompression = 3,
+  SystemProcessClassificationRegistry = 4,
+  SystemProcessClassificationMaximum = 5,
+} SYSTEM_PROCESS_CLASSIFICATION, *PSYSTEM_PROCESS_CLASSIFICATION;
 
 typedef struct _TEB
 {
@@ -4271,6 +4299,13 @@ typedef struct _WORK_QUEUE_ITEM
   void* WorkerRoutine /* function */;
   void* Parameter;
 } WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM;
+
+typedef struct _XSAVE_AREA_HEADER
+{
+  unsigned __int64 Mask;
+  unsigned __int64 CompactionMask;
+  unsigned __int64 Reserved2[6];
+} XSAVE_AREA_HEADER, *PXSAVE_AREA_HEADER;
 
 typedef struct _XSAVE_FORMAT
 {

@@ -84,6 +84,7 @@ CsrThreadRefcountZero();
 CsrUnhandledExceptionFilter();
 CsrUnlockProcess();
 CsrUnlockThread();
+CsrUpdateShutdownFlagsForLuid();
 CsrValidateMessageBuffer();
 CsrValidateMessageString();
 _DllMainCRTStartupForGS();

@@ -8,6 +8,7 @@ BTCpuResetToConsistentState();
 BTCpuSetContext();
 BTCpuSimulate();
 BTCpuTurboThunkControl();
+__C_specific_handler();
 CpupReturnFromSimulatedCode();
 CpupSaveLegacyFloatingPointState();
 CpupSimulateHandler();
