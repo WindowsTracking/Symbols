@@ -1,5 +1,5 @@
 /*
- * PDB file: csrss.pdb\6959FB90774BE1C710B46855506CA0D81\csrss.pdb
+ * PDB file: csrss.pdb\B15357E36F5EECABBEF200DE7D6D4B111\csrss.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -44,6 +44,7 @@ enum DMA_COMPLETION_STATUS;
 struct _DMA_OPERATIONS;
 struct _DMA_TRANSFER_INFO;
 struct _DMA_TRANSFER_INFO_V1;
+struct _DMA_TRANSFER_INFO_V2;
 struct _DRIVER_EXTENSION;
 struct _DRIVER_OBJECT;
 struct _ECP_LIST;
@@ -123,6 +124,7 @@ struct _KTHREAD;
 struct _KTSS64;
 struct _KUSER_SHARED_DATA;
 union _LARGE_INTEGER;
+struct _LEAP_SECOND_DATA;
 struct LIST_ENTRY32;
 struct LIST_ENTRY64;
 struct _LIST_ENTRY;
@@ -227,6 +229,11 @@ union _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR_VALIDBITS;
 enum _WHEA_ERROR_SEVERITY;
 enum _WHEA_ERROR_SOURCE_TYPE;
 enum _WHEA_ERROR_TYPE;
+struct _WHEA_EVENT_LOG_ENTRY;
+union _WHEA_EVENT_LOG_ENTRY_FLAGS;
+struct _WHEA_EVENT_LOG_ENTRY_HEADER;
+enum _WHEA_EVENT_LOG_ENTRY_ID;
+enum _WHEA_EVENT_LOG_ENTRY_TYPE;
 union _WHEA_PERSISTENCE_INFO;
 union _WHEA_REVISION;
 union _WHEA_TIMESTAMP;
@@ -956,7 +963,11 @@ typedef struct _DMA_OPERATIONS
 typedef struct _DMA_TRANSFER_INFO
 {
   unsigned long Version;
-  struct _DMA_TRANSFER_INFO_V1 V1;
+  union
+  {
+    struct _DMA_TRANSFER_INFO_V1 V1;
+    struct _DMA_TRANSFER_INFO_V2 V2;
+  };
 } DMA_TRANSFER_INFO, *PDMA_TRANSFER_INFO;
 
 typedef struct _DMA_TRANSFER_INFO_V1
@@ -965,6 +976,14 @@ typedef struct _DMA_TRANSFER_INFO_V1
   unsigned long ScatterGatherElementCount;
   unsigned long ScatterGatherListSize;
 } DMA_TRANSFER_INFO_V1, *PDMA_TRANSFER_INFO_V1;
+
+typedef struct _DMA_TRANSFER_INFO_V2
+{
+  unsigned long MapRegisterCount;
+  unsigned long ScatterGatherElementCount;
+  unsigned long ScatterGatherListSize;
+  unsigned long LogicalPageCount;
+} DMA_TRANSFER_INFO_V2, *PDMA_TRANSFER_INFO_V2;
 
 typedef struct _DRIVER_EXTENSION
 {
@@ -1245,7 +1264,11 @@ typedef enum _FILE_INFORMATION_CLASS
   FileMemoryPartitionInformation = 69,
   FileStatLxInformation = 70,
   FileCaseSensitiveInformation = 71,
-  FileMaximumInformation = 72,
+  FileLinkInformationEx = 72,
+  FileLinkInformationExBypassAccessCheck = 73,
+  FileStorageReserveIdInformation = 74,
+  FileCaseSensitiveInformationForceAccessCheck = 75,
+  FileMaximumInformation = 76,
 } FILE_INFORMATION_CLASS, *PFILE_INFORMATION_CLASS;
 
 typedef struct _FILE_NETWORK_OPEN_INFORMATION
@@ -1321,7 +1344,8 @@ typedef enum _FSINFOCLASS
   FileFsSectorSizeInformation = 11,
   FileFsDataCopyInformation = 12,
   FileFsMetadataSizeInformation = 13,
-  FileFsMaximumInformation = 14,
+  FileFsFullSizeInformationEx = 14,
+  FileFsMaximumInformation = 15,
 } FSINFOCLASS, *PFSINFOCLASS;
 
 typedef struct _GDI_TEB_BATCH
@@ -1809,12 +1833,14 @@ typedef struct _IO_STACK_LOCATION
       {
         unsigned long Length;
         unsigned long Key;
+        unsigned long Flags;
         union _LARGE_INTEGER ByteOffset;
       } Read;
       struct
       {
         unsigned long Length;
         unsigned long Key;
+        unsigned long Flags;
         union _LARGE_INTEGER ByteOffset;
       } Write;
       struct
@@ -2482,7 +2508,8 @@ typedef struct _KPRCB
             unsigned char BpbFlushRsbOnTrap : 1; /* bit position: 1 */
             unsigned char BpbIbpbOnReturn : 1; /* bit position: 2 */
             unsigned char BpbIbpbOnTrap : 1; /* bit position: 3 */
-            unsigned char BpbStateReserved : 4; /* bit position: 4 */
+            unsigned char BpbIbpbOnRetpolineExit : 1; /* bit position: 4 */
+            unsigned char BpbStateReserved : 3; /* bit position: 5 */
           }; /* bitfield */
           union
           {
@@ -2500,7 +2527,7 @@ typedef struct _KPRCB
               unsigned char BpbKernelSpecCtrl;
               unsigned char BpbNmiSpecCtrl;
               unsigned char BpbUserSpecCtrl;
-              unsigned char BpbPad[2];
+              volatile short PairRegister;
             };
           };
         };
@@ -2511,8 +2538,9 @@ typedef struct _KPRCB
   struct _KPROCESSOR_STATE ProcessorState;
   struct _XSAVE_AREA_HEADER* ExtendedSupervisorState;
   unsigned long ProcessorSignature;
-  unsigned long PrcbPad11a;
-  unsigned __int64 PrcbPad12[4];
+  unsigned long ProcessorFlags;
+  unsigned __int64 PrcbPad12a;
+  unsigned __int64 PrcbPad12[3];
   long __PADDING__[4];
 } KPRCB, *PKPRCB;
 
@@ -2725,6 +2753,8 @@ typedef union _LARGE_INTEGER
     __int64 QuadPart;
   };
 } LARGE_INTEGER, *PLARGE_INTEGER;
+
+struct _LEAP_SECOND_DATA;
 
 typedef struct _LIST_ENTRY
 {
@@ -3019,7 +3049,8 @@ typedef struct _PEB
       unsigned long ProcessUsingFTH : 1; /* bit position: 4 */
       unsigned long ProcessPreviouslyThrottled : 1; /* bit position: 5 */
       unsigned long ProcessCurrentlyThrottled : 1; /* bit position: 6 */
-      unsigned long ReservedBits0 : 25; /* bit position: 7 */
+      unsigned long ProcessImagesHotPatched : 1; /* bit position: 7 */
+      unsigned long ReservedBits0 : 24; /* bit position: 8 */
     }; /* bitfield */
   };
   unsigned char Padding1[4];
@@ -3112,6 +3143,17 @@ typedef struct _PEB
   unsigned long CloudFileDiagFlags;
   char PlaceholderCompatibilityMode;
   char PlaceholderCompatibilityModeReserved[7];
+  struct _LEAP_SECOND_DATA* LeapSecondData;
+  union
+  {
+    unsigned long LeapSecondFlags;
+    struct /* bitfield */
+    {
+      unsigned long SixtySecondEnabled : 1; /* bit position: 0 */
+      unsigned long Reserved : 31; /* bit position: 1 */
+    }; /* bitfield */
+  };
+  unsigned long NtGlobalFlag2;
 } PEB, *PPEB;
 
 typedef struct _PEB_LDR_DATA
@@ -3284,6 +3326,8 @@ typedef enum _PS_MITIGATION_OPTION
   PS_MITIGATION_OPTION_MODULE_TAMPERING_PROTECTION = 27,
   PS_MITIGATION_OPTION_RESTRICT_INDIRECT_BRANCH_PREDICTION = 28,
   PS_MITIGATION_OPTION_SPECULATIVE_STORE_BYPASS_DISABLE = 29,
+  PS_MITIGATION_OPTION_ALLOW_DOWNGRADE_DYNAMIC_CODE_POLICY = 30,
+  PS_MITIGATION_OPTION_CET_SHADOW_STACKS = 31,
 } PS_MITIGATION_OPTION, *PPS_MITIGATION_OPTION;
 
 typedef struct _PS_MITIGATION_OPTIONS_MAP
@@ -3595,6 +3639,7 @@ typedef struct _RTL_USER_PROCESS_PARAMETERS
   void* PackageDependencyData;
   unsigned long ProcessGroupId;
   unsigned long LoaderThreads;
+  struct _UNICODE_STRING RedirectionDllName;
 } RTL_USER_PROCESS_PARAMETERS, *PRTL_USER_PROCESS_PARAMETERS;
 
 typedef struct _SCATTER_GATHER_ELEMENT
@@ -3730,7 +3775,8 @@ typedef struct _SYSTEM_POWER_STATE_CONTEXT
       unsigned long IgnoreHibernationPath : 1; /* bit position: 20 */
       unsigned long PseudoTransition : 1; /* bit position: 21 */
       unsigned long KernelSoftReboot : 1; /* bit position: 22 */
-      unsigned long Reserved2 : 9; /* bit position: 23 */
+      unsigned long DirectedDripsTransition : 1; /* bit position: 23 */
+      unsigned long Reserved2 : 8; /* bit position: 24 */
     }; /* bitfield */
     unsigned long ContextAsUlong;
   };
@@ -3766,7 +3812,8 @@ typedef struct _TEB
   void* ReservedForDebuggerInstrumentation[16];
   void* SystemReserved1[30];
   char PlaceholderCompatibilityMode;
-  char PlaceholderReserved[11];
+  unsigned char PlaceholderHydrationAlwaysExplicit;
+  char PlaceholderReserved[10];
   unsigned long ProxiedProcessId;
   struct _ACTIVATION_CONTEXT_STACK _ActivationStack;
   unsigned char WorkingOnBehalfTicket[8];
@@ -3778,7 +3825,8 @@ typedef struct _TEB
   unsigned __int64 InstrumentationCallbackPreviousSp;
   unsigned long TxFsContext;
   unsigned char InstrumentationCallbackDisabled;
-  unsigned char Padding1[3];
+  unsigned char UnalignedLoadStoreExceptions;
+  unsigned char Padding1[2];
   struct _GDI_TEB_BATCH GdiTebBatch;
   struct _CLIENT_ID RealClientId;
   void* GdiCachedProcessHandle;
@@ -3842,8 +3890,7 @@ typedef struct _TEB
   unsigned long IsImpersonating;
   void* NlsCache;
   void* pShimData;
-  unsigned short HeapVirtualAffinity;
-  unsigned short LowFragHeapDataSlot;
+  unsigned long HeapData;
   unsigned char Padding7[4];
   void* CurrentTransactionHandle;
   struct _TEB_ACTIVE_FRAME* ActiveFrame;
@@ -4039,7 +4086,8 @@ typedef struct _WAIT_CONTEXT_BLOCK
         unsigned long SyncCallback : 1; /* bit position: 0 */
         unsigned long DmaContext : 1; /* bit position: 1 */
         unsigned long ZeroMapRegisters : 1; /* bit position: 2 */
-        unsigned long Reserved : 29; /* bit position: 3 */
+        unsigned long Reserved : 9; /* bit position: 3 */
+        unsigned long NumberOfRemapPages : 20; /* bit position: 12 */
       }; /* bitfield */
     };
   };
@@ -4243,6 +4291,46 @@ typedef enum _WHEA_ERROR_TYPE
   WheaErrTypeGeneric = 6,
 } WHEA_ERROR_TYPE, *PWHEA_ERROR_TYPE;
 
+typedef struct _WHEA_EVENT_LOG_ENTRY
+{
+  struct _WHEA_EVENT_LOG_ENTRY_HEADER Header;
+} WHEA_EVENT_LOG_ENTRY, *PWHEA_EVENT_LOG_ENTRY;
+
+typedef union _WHEA_EVENT_LOG_ENTRY_FLAGS
+{
+  union
+  {
+    unsigned long Reserved : 32; /* bit position: 0 */
+    unsigned long AsULONG;
+  };
+} WHEA_EVENT_LOG_ENTRY_FLAGS, *PWHEA_EVENT_LOG_ENTRY_FLAGS;
+
+typedef struct _WHEA_EVENT_LOG_ENTRY_HEADER
+{
+  unsigned long Signature;
+  unsigned long Version;
+  unsigned long Length;
+  enum _WHEA_EVENT_LOG_ENTRY_TYPE Type;
+  unsigned long OwnerTag;
+  enum _WHEA_EVENT_LOG_ENTRY_ID Id;
+  union _WHEA_EVENT_LOG_ENTRY_FLAGS Flags;
+  unsigned long PayloadLength;
+} WHEA_EVENT_LOG_ENTRY_HEADER, *PWHEA_EVENT_LOG_ENTRY_HEADER;
+
+typedef enum _WHEA_EVENT_LOG_ENTRY_ID
+{
+  WheaEventLogEntryIdCmcPollingTimeout = -2147483647,
+  WheaEventLogEntryIdWheaInit = -2147483646,
+  WheaEventLogEntryIdMax = -2147483645,
+} WHEA_EVENT_LOG_ENTRY_ID, *PWHEA_EVENT_LOG_ENTRY_ID;
+
+typedef enum _WHEA_EVENT_LOG_ENTRY_TYPE
+{
+  WheaEventLogEntryTypeInformational = 0,
+  WheaEventLogEntryTypeWarning = 1,
+  WheaEventLogEntryTypeError = 2,
+} WHEA_EVENT_LOG_ENTRY_TYPE, *PWHEA_EVENT_LOG_ENTRY_TYPE;
+
 typedef union _WHEA_PERSISTENCE_INFO
 {
   union
@@ -4346,7 +4434,7 @@ typedef struct _XSTATE_CONFIGURATION
   unsigned __int64 AlignedFeatures;
   unsigned long AllFeatureSize;
   unsigned long AllFeatures[64];
-  long __PADDING__[1];
+  unsigned __int64 EnabledUserVisibleSupervisorFeatures;
 } XSTATE_CONFIGURATION, *PXSTATE_CONFIGURATION;
 
 typedef struct _XSTATE_FEATURE

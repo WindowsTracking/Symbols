@@ -1,5 +1,5 @@
 /*
- * PDB file: hal.pdb\DB0EB66CA5BF6CC42C19E0B2ECF346531\hal.pdb
+ * PDB file: hal.pdb\103E32C24D84ABC7A861BEAB76C3C68E1\hal.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -43,6 +43,7 @@ struct _DMA_TRANSFER_CONTEXT;
 struct _DMA_TRANSFER_CONTEXT_V1;
 struct _DMA_TRANSFER_INFO;
 struct _DMA_TRANSFER_INFO_V1;
+struct _DMA_TRANSFER_INFO_V2;
 enum _DMA_WIDTH;
 struct _DRIVER_EXTENSION;
 struct _DRIVER_OBJECT;
@@ -61,6 +62,7 @@ struct _EXCEPTION_REGISTRATION_RECORD;
 struct _EXT_DELETE_PARAMETERS;
 struct _EXT_IOMMU_DEVICE_ID;
 struct _EXT_IOMMU_DEVICE_ID_ACPI;
+struct _EXT_IOMMU_DEVICE_ID_GIC;
 struct _EXT_IOMMU_DEVICE_ID_PCI;
 struct _EXT_IOMMU_DEVICE_ID_TEST;
 enum _EXT_IOMMU_DEVICE_TYPE;
@@ -89,6 +91,7 @@ struct _HAL_HV_SVM_SYSTEM_CAPABILITIES;
 enum _HAL_INIT_PHASE;
 struct _HAL_INTEL_ENLIGHTENMENT_INFORMATION;
 struct _HALP_ALLOC_CONTEXT;
+enum _HALP_DMA_ADAPTER_ALLOCATION_STATE;
 struct _HALP_DMA_ADAPTER_OBJECT;
 struct _HALP_DMA_CHANNEL;
 struct _HALP_DMA_CONTROLLER;
@@ -164,6 +167,7 @@ struct _MAILSLOT_CREATE_PARAMETERS;
 struct _MAPIC;
 union _MCG_STATUS;
 union _MCI_STATUS;
+struct _MCUPDATE_INFO;
 struct _MDL;
 enum _MEMORY_CACHING_TYPE;
 enum _MEMORY_CACHING_TYPE_ORIG;
@@ -233,6 +237,11 @@ union _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR_VALIDBITS;
 enum _WHEA_ERROR_SEVERITY;
 enum _WHEA_ERROR_SOURCE_TYPE;
 enum _WHEA_ERROR_TYPE;
+struct _WHEA_EVENT_LOG_ENTRY;
+union _WHEA_EVENT_LOG_ENTRY_FLAGS;
+struct _WHEA_EVENT_LOG_ENTRY_HEADER;
+enum _WHEA_EVENT_LOG_ENTRY_ID;
+enum _WHEA_EVENT_LOG_ENTRY_TYPE;
 union _WHEA_PERSISTENCE_INFO;
 struct _WHEA_PROCESSOR_GENERIC_ERROR_SECTION;
 union _WHEA_PROCESSOR_GENERIC_ERROR_SECTION_VALIDBITS;
@@ -303,6 +312,7 @@ typedef struct _ADAPTER_OBJECT
   unsigned long MapRegistersPerChannel;
   void* MapRegisterBase;
   unsigned long NumberOfMapRegisters;
+  unsigned long MaxTransferLength;
   void* CrashDumpRegisterBase[2];
   unsigned long NumberOfCrashDumpRegisters[2];
   unsigned long CrashDumpRegisterRefCount[2];
@@ -349,6 +359,18 @@ typedef struct _ADAPTER_OBJECT
   struct _EXT_IOMMU_DEVICE_ID* DeviceId;
   void* IommuDevice;
   struct _MDL* ScatterGatherMdl;
+  unsigned __int64 LowMemoryLogicalAddressBase;
+  union
+  {
+    unsigned long LowMemoryLogicalAddressQueueFlags;
+    struct /* bitfield */
+    {
+      unsigned long LowMemoryLogicalAddressInUse : 1; /* bit position: 0 */
+      unsigned long WaitingOnLowMemoryLogicalAddress : 1; /* bit position: 1 */
+    }; /* bitfield */
+  };
+  unsigned __int64 LowMemoryLogicalAddressQueueLock;
+  enum _HALP_DMA_ADAPTER_ALLOCATION_STATE AllocationState;
   unsigned long ScatterGatherBufferLength;
   struct _SCATTER_GATHER_LIST ScatterGatherBuffer;
 } ADAPTER_OBJECT, *PADAPTER_OBJECT;
@@ -1009,7 +1031,11 @@ typedef struct _DMA_TRANSFER_CONTEXT_V1
 typedef struct _DMA_TRANSFER_INFO
 {
   unsigned long Version;
-  struct _DMA_TRANSFER_INFO_V1 V1;
+  union
+  {
+    struct _DMA_TRANSFER_INFO_V1 V1;
+    struct _DMA_TRANSFER_INFO_V2 V2;
+  };
 } DMA_TRANSFER_INFO, *PDMA_TRANSFER_INFO;
 
 typedef struct _DMA_TRANSFER_INFO_V1
@@ -1018,6 +1044,14 @@ typedef struct _DMA_TRANSFER_INFO_V1
   unsigned long ScatterGatherElementCount;
   unsigned long ScatterGatherListSize;
 } DMA_TRANSFER_INFO_V1, *PDMA_TRANSFER_INFO_V1;
+
+typedef struct _DMA_TRANSFER_INFO_V2
+{
+  unsigned long MapRegisterCount;
+  unsigned long ScatterGatherElementCount;
+  unsigned long ScatterGatherListSize;
+  unsigned long LogicalPageCount;
+} DMA_TRANSFER_INFO_V2, *PDMA_TRANSFER_INFO_V2;
 
 typedef enum _DMA_WIDTH
 {
@@ -1185,10 +1219,11 @@ typedef struct _EXT_IOMMU_DEVICE_ID
     struct _EXT_IOMMU_DEVICE_ID_ACPI Acpi;
     unsigned char IoApicId;
     unsigned __int64 LogicalId;
+    struct _EXT_IOMMU_DEVICE_ID_TEST Test;
     struct
     {
-      struct _EXT_IOMMU_DEVICE_ID_TEST Test;
-      long __PADDING__[2];
+      struct _EXT_IOMMU_DEVICE_ID_GIC Gic;
+      long __PADDING__[3];
     };
   };
 } EXT_IOMMU_DEVICE_ID, *PEXT_IOMMU_DEVICE_ID;
@@ -1197,6 +1232,11 @@ typedef struct _EXT_IOMMU_DEVICE_ID_ACPI
 {
   const char* ObjectName;
 } EXT_IOMMU_DEVICE_ID_ACPI, *PEXT_IOMMU_DEVICE_ID_ACPI;
+
+typedef struct _EXT_IOMMU_DEVICE_ID_GIC
+{
+  unsigned int LineNumber;
+} EXT_IOMMU_DEVICE_ID_GIC, *PEXT_IOMMU_DEVICE_ID_GIC;
 
 typedef struct _EXT_IOMMU_DEVICE_ID_PCI
 {
@@ -1224,7 +1264,7 @@ typedef struct _EXT_IOMMU_DEVICE_ID_PCI
       };
     };
   };
-  unsigned short* DevicePath;
+  wchar_t* DevicePath;
 } EXT_IOMMU_DEVICE_ID_PCI, *PEXT_IOMMU_DEVICE_ID_PCI;
 
 typedef struct _EXT_IOMMU_DEVICE_ID_TEST
@@ -1239,8 +1279,9 @@ typedef enum _EXT_IOMMU_DEVICE_TYPE
   EXT_IOMMU_DEVICE_TYPE_ACPI = 2,
   EXT_IOMMU_DEVICE_TYPE_IOAPIC = 3,
   EXT_IOMMU_DEVICE_TYPE_LOGICAL = 4,
-  EXT_IOMMU_DEVICE_TYPE_TEST = 5,
-  EXT_IOMMU_DEVICE_TYPE_MAX = 6,
+  EXT_IOMMU_DEVICE_TYPE_GIC = 5,
+  EXT_IOMMU_DEVICE_TYPE_TEST = 6,
+  EXT_IOMMU_DEVICE_TYPE_MAX = 7,
 } EXT_IOMMU_DEVICE_TYPE, *PEXT_IOMMU_DEVICE_TYPE;
 
 typedef enum _EXT_IOMMU_TRANSLATION_TYPE
@@ -1458,7 +1499,11 @@ typedef enum _FILE_INFORMATION_CLASS
   FileMemoryPartitionInformation = 69,
   FileStatLxInformation = 70,
   FileCaseSensitiveInformation = 71,
-  FileMaximumInformation = 72,
+  FileLinkInformationEx = 72,
+  FileLinkInformationExBypassAccessCheck = 73,
+  FileStorageReserveIdInformation = 74,
+  FileCaseSensitiveInformationForceAccessCheck = 75,
+  FileMaximumInformation = 76,
 } FILE_INFORMATION_CLASS, *PFILE_INFORMATION_CLASS;
 
 typedef struct _FILE_NETWORK_OPEN_INFORMATION
@@ -1532,7 +1577,8 @@ typedef enum _FSINFOCLASS
   FileFsSectorSizeInformation = 11,
   FileFsDataCopyInformation = 12,
   FileFsMetadataSizeInformation = 13,
-  FileFsMaximumInformation = 14,
+  FileFsFullSizeInformationEx = 14,
+  FileFsMaximumInformation = 15,
 } FSINFOCLASS, *PFSINFOCLASS;
 
 typedef struct _GEN_ADDR
@@ -1697,33 +1743,34 @@ typedef enum _HAL_INIT_PHASE
   HalInitPhaseBspProcEarlyTimerReady = 2,
   HalInitPhaseBspProcEarlyEnd = 3,
   HalInitPhasePnProcEarly = 4,
-  HalInitPhasePnProcEarlyEnd = 5,
-  HalInitPhaseBspSystemEarly = 6,
-  HalInitPhaseBspSystemEarlyAcpiReady = 7,
-  HalInitPhaseBspSystemEarlyHalExtensionsReady = 8,
-  HalInitPhaseBspSystemEarlyInterruptsAlmostReady = 9,
-  HalInitPhaseBspSystemEarlyIommusReady = 10,
-  HalInitPhaseBspSystemEarlyInterruptsReady = 11,
-  HalInitPhaseBspSystemEarlyDmaReady = 11,
-  HalInitPhaseBspSystemEarlyProcReady = 12,
-  HalInitPhaseBspSystemEarlyHwPerfCntReady = 13,
-  HalInitPhaseBspSystemEarlyAllocationDone = 14,
-  HalInitPhaseBspSystemEarlyEnd = 15,
-  HalInitPhaseBspSystemLate = 16,
-  HalInitPhaseBspSystemLateEnd = 17,
-  HalInitPhasePnSystemLate = 18,
-  HalInitPhasePnSystemLateEnd = 19,
-  HalInitPhaseAllProcStartComplete = 20,
-  HalInitPhaseAllProcStartCompleteEnd = 21,
-  HalInitPhaseAcpiPdoStarted = 22,
-  HalInitPhaseAcpiPdoStartedEnd = 23,
-  HalInitPhaseReportResources = 24,
-  HalInitPhaseReportResourcesEnd = 25,
-  HalInitPhaseReportCoreSystemResources = 26,
-  HalInitPhaseReportCoreSystemResourcesEnd = 27,
-  HalInitPhaseInitializeTelemetry = 28,
-  HalInitPhaseTelemetryReady = 29,
-  HalInitPhaseTelemetryEnd = 30,
+  HalInitPhasePnProcEarlyInterruptsReady = 5,
+  HalInitPhasePnProcEarlyEnd = 6,
+  HalInitPhaseBspSystemEarly = 7,
+  HalInitPhaseBspSystemEarlyAcpiReady = 8,
+  HalInitPhaseBspSystemEarlyHalExtensionsReady = 9,
+  HalInitPhaseBspSystemEarlyInterruptsAlmostReady = 10,
+  HalInitPhaseBspSystemEarlyIommusReady = 11,
+  HalInitPhaseBspSystemEarlyInterruptsReady = 12,
+  HalInitPhaseBspSystemEarlyDmaReady = 12,
+  HalInitPhaseBspSystemEarlyProcReady = 13,
+  HalInitPhaseBspSystemEarlyHwPerfCntReady = 14,
+  HalInitPhaseBspSystemEarlyAllocationDone = 15,
+  HalInitPhaseBspSystemEarlyEnd = 16,
+  HalInitPhaseBspSystemLate = 17,
+  HalInitPhaseBspSystemLateEnd = 18,
+  HalInitPhasePnSystemLate = 19,
+  HalInitPhasePnSystemLateEnd = 20,
+  HalInitPhaseAllProcStartComplete = 21,
+  HalInitPhaseAllProcStartCompleteEnd = 22,
+  HalInitPhaseAcpiPdoStarted = 23,
+  HalInitPhaseAcpiPdoStartedEnd = 24,
+  HalInitPhaseReportResources = 25,
+  HalInitPhaseReportResourcesEnd = 26,
+  HalInitPhaseReportCoreSystemResources = 27,
+  HalInitPhaseReportCoreSystemResourcesEnd = 28,
+  HalInitPhaseInitializeTelemetry = 29,
+  HalInitPhaseTelemetryReady = 30,
+  HalInitPhaseTelemetryEnd = 31,
 } HAL_INIT_PHASE, *PHAL_INIT_PHASE;
 
 typedef struct _HAL_INTEL_ENLIGHTENMENT_INFORMATION
@@ -1797,6 +1844,16 @@ typedef struct _HALP_ALLOC_CONTEXT
   struct _LIST_ENTRY BufferList;
   unsigned __int64 Lock;
 } HALP_ALLOC_CONTEXT, *PHALP_ALLOC_CONTEXT;
+
+typedef enum _HALP_DMA_ADAPTER_ALLOCATION_STATE
+{
+  HalpDmaAdapterAllocationStateNone = 0,
+  HalpDmaAdapterAllocateChannel = 1,
+  HalpDmaAdapterAllocateMapRegisters = 2,
+  HalpDmaAdapterAllocateChannelRemapResources = 3,
+  HalpDmaAdapterAllocationStateComplete = 4,
+  HalpDmaAdapterAllocationStateMax = 5,
+} HALP_DMA_ADAPTER_ALLOCATION_STATE, *PHALP_DMA_ADAPTER_ALLOCATION_STATE;
 
 typedef struct _HALP_DMA_ADAPTER_OBJECT
 {
@@ -1882,8 +1939,8 @@ typedef struct _HALP_DMA_DOMAIN_OBJECT
   unsigned __int64 LaStateLock;
   enum _EXT_IOMMU_TRANSLATION_TYPE TranslationType;
   struct _ADAPTER_OBJECT* OwningAdapter;
-  struct _LIST_ENTRY CommonBufferListHead;
-  unsigned __int64 CommonBufferListLock;
+  struct _RTL_RB_TREE CommonBufferRoot;
+  unsigned __int64 CommonBufferTreeLock;
   unsigned long DomainRefCount;
   long __PADDING__[1];
 } HALP_DMA_DOMAIN_OBJECT, *PHALP_DMA_DOMAIN_OBJECT;
@@ -1929,6 +1986,7 @@ typedef struct _HALP_DMA_TRANSLATION_ENTRY
   unsigned long MappedLength;
   unsigned __int64 LogicalAddress;
   unsigned __int64 LogicalMappedLength;
+  unsigned __int64 NextLogicalAddress;
   union
   {
     union
@@ -1950,6 +2008,8 @@ typedef struct _HALP_DMA_TRANSLATION_ENTRY
     };
   } u;
   struct _HALP_DMA_TRANSLATION_ENTRY* NextMapping;
+  unsigned char LogicalBounceBufferPremapped;
+  char __PADDING__[7];
 } HALP_DMA_TRANSLATION_ENTRY, *PHALP_DMA_TRANSLATION_ENTRY;
 
 typedef struct _HARDWARE_PTE
@@ -2374,12 +2434,14 @@ typedef struct _IO_STACK_LOCATION
       {
         unsigned long Length;
         unsigned long Key;
+        unsigned long Flags;
         union _LARGE_INTEGER ByteOffset;
       } Read;
       struct
       {
         unsigned long Length;
         unsigned long Key;
+        unsigned long Flags;
         union _LARGE_INTEGER ByteOffset;
       } Write;
       struct
@@ -3014,8 +3076,9 @@ typedef struct _KPRCB
   struct _KPROCESSOR_STATE ProcessorState;
   struct _XSAVE_AREA_HEADER* ExtendedSupervisorState;
   unsigned long ProcessorSignature;
-  unsigned long PrcbPad11a;
-  unsigned __int64 PrcbPad12[4];
+  unsigned long ProcessorFlags;
+  unsigned __int64 PrcbPad12a;
+  unsigned __int64 PrcbPad12[3];
   long __PADDING__[4];
 } KPRCB, *PKPRCB;
 
@@ -3194,7 +3257,8 @@ typedef union _MCG_STATUS
         unsigned long RestartIpValid : 1; /* bit position: 0 */
         unsigned long ErrorIpValid : 1; /* bit position: 1 */
         unsigned long MachineCheckInProgress : 1; /* bit position: 2 */
-        unsigned long Reserved1 : 29; /* bit position: 3 */
+        unsigned long LocalMceValid : 1; /* bit position: 3 */
+        unsigned long Reserved1 : 28; /* bit position: 4 */
       }; /* bitfield */
       unsigned long Reserved2;
     };
@@ -3227,6 +3291,14 @@ typedef union _MCI_STATUS
     unsigned __int64 QuadPart;
   };
 } MCI_STATUS, *PMCI_STATUS;
+
+typedef struct _MCUPDATE_INFO
+{
+  struct _LIST_ENTRY List;
+  unsigned long Status;
+  unsigned __int64 Id;
+  unsigned __int64 VendorScratch[2];
+} MCUPDATE_INFO, *PMCUPDATE_INFO;
 
 typedef struct _MDL
 {
@@ -3792,7 +3864,8 @@ typedef struct _SYSTEM_POWER_STATE_CONTEXT
       unsigned long IgnoreHibernationPath : 1; /* bit position: 20 */
       unsigned long PseudoTransition : 1; /* bit position: 21 */
       unsigned long KernelSoftReboot : 1; /* bit position: 22 */
-      unsigned long Reserved2 : 9; /* bit position: 23 */
+      unsigned long DirectedDripsTransition : 1; /* bit position: 23 */
+      unsigned long Reserved2 : 8; /* bit position: 24 */
     }; /* bitfield */
     unsigned long ContextAsUlong;
   };
@@ -3866,7 +3939,8 @@ typedef struct _WAIT_CONTEXT_BLOCK
         unsigned long SyncCallback : 1; /* bit position: 0 */
         unsigned long DmaContext : 1; /* bit position: 1 */
         unsigned long ZeroMapRegisters : 1; /* bit position: 2 */
-        unsigned long Reserved : 29; /* bit position: 3 */
+        unsigned long Reserved : 9; /* bit position: 3 */
+        unsigned long NumberOfRemapPages : 20; /* bit position: 12 */
       }; /* bitfield */
     };
   };
@@ -4076,6 +4150,46 @@ typedef enum _WHEA_ERROR_TYPE
   WheaErrTypePCIXDevice = 5,
   WheaErrTypeGeneric = 6,
 } WHEA_ERROR_TYPE, *PWHEA_ERROR_TYPE;
+
+typedef struct _WHEA_EVENT_LOG_ENTRY
+{
+  struct _WHEA_EVENT_LOG_ENTRY_HEADER Header;
+} WHEA_EVENT_LOG_ENTRY, *PWHEA_EVENT_LOG_ENTRY;
+
+typedef union _WHEA_EVENT_LOG_ENTRY_FLAGS
+{
+  union
+  {
+    unsigned long Reserved : 32; /* bit position: 0 */
+    unsigned long AsULONG;
+  };
+} WHEA_EVENT_LOG_ENTRY_FLAGS, *PWHEA_EVENT_LOG_ENTRY_FLAGS;
+
+typedef struct _WHEA_EVENT_LOG_ENTRY_HEADER
+{
+  unsigned long Signature;
+  unsigned long Version;
+  unsigned long Length;
+  enum _WHEA_EVENT_LOG_ENTRY_TYPE Type;
+  unsigned long OwnerTag;
+  enum _WHEA_EVENT_LOG_ENTRY_ID Id;
+  union _WHEA_EVENT_LOG_ENTRY_FLAGS Flags;
+  unsigned long PayloadLength;
+} WHEA_EVENT_LOG_ENTRY_HEADER, *PWHEA_EVENT_LOG_ENTRY_HEADER;
+
+typedef enum _WHEA_EVENT_LOG_ENTRY_ID
+{
+  WheaEventLogEntryIdCmcPollingTimeout = -2147483647,
+  WheaEventLogEntryIdWheaInit = -2147483646,
+  WheaEventLogEntryIdMax = -2147483645,
+} WHEA_EVENT_LOG_ENTRY_ID, *PWHEA_EVENT_LOG_ENTRY_ID;
+
+typedef enum _WHEA_EVENT_LOG_ENTRY_TYPE
+{
+  WheaEventLogEntryTypeInformational = 0,
+  WheaEventLogEntryTypeWarning = 1,
+  WheaEventLogEntryTypeError = 2,
+} WHEA_EVENT_LOG_ENTRY_TYPE, *PWHEA_EVENT_LOG_ENTRY_TYPE;
 
 typedef union _WHEA_PERSISTENCE_INFO
 {
@@ -4299,38 +4413,38 @@ DefaultQueryInformation();
 DefaultRemoveProfileSource();
 DefaultRestartProfiling();
 DefaultSetInterval();
-? DmrCheckPathMatch;
+DmrCheckPathMatch();
 DmrConvertDeviceScope();
-? DmrEnumerateRmrrDomains;
+DmrEnumerateRmrrDomains();
 DmrFindDrhdForDeviceScope();
 DmrFreeRmrrTree();
 DmrGetNextDeviceScope();
 DmrGetNextDrhdDeviceScope();
 DmrGetNextRemappingStructure();
-? DmrpRmrrTreeAddNewScope;
-? DmrpRmrrTreeAddRegionToDevice;
+DmrpRmrrTreeAddNewScope();
+DmrpRmrrTreeAddRegionToDevice();
 DmrValidateDeviceScope();
 EmonAddProfileSource();
 EmonAllocateCounter();
-EmonConfigureCounter();
+? EmonConfigureCounter;
 EmonDisableMonitoring();
 EmonEnableMonitoring();
 EmonFreeCounter();
-EmonInitializeProfiling();
+? EmonInitializeProfiling;
 EmonOverflowHandler();
 EmonPauseProfiling();
 EmonPreOverflowHandler();
-EmonQueryInformation();
+? EmonQueryInformation;
 EmonRemoveProfileSource();
 ? EmonRestartProfiling;
 EmonResumeProfiling();
 ? EmonSetInterval;
-? ExtEnvAllocateMemory;
+ExtEnvAllocateMemory();
 ExtEnvAllocatePhysicalMemory();
 ExtEnvFreeMemory();
 ExtEnvFreePhysicalMemory();
 ExtEnvInitializeSpinLock();
-? ExtEnvRegisterIommu;
+ExtEnvRegisterIommu();
 ExtEnvSetVpptTarget();
 __GSHandlerCheck();
 __GSHandlerCheck_SEH();
@@ -4354,8 +4468,8 @@ HalAllocateAdapterChannel();
 HalAllocateAdapterChannelEx();
 HalAllocateAdapterChannelV2();
 HalAllocateCommonBuffer();
-HalAllocateCommonBufferEx();
-HalAllocateCommonBufferV2();
+HalAllocateCommonBufferExV2();
+HalAllocateCommonBufferExV3();
 HalAllocateCommonBufferWithBounds();
 HalAllocateCrashDumpRegisters();
 HalAllocateDomainCommonBuffer();
@@ -4364,7 +4478,7 @@ HalAllProcessorsStarted();
 HalAssignSlotResources();
 HalBugCheckSystem();
 ? HalBuildMdlFromScatterGatherListV2;
-? HalBuildMdlFromScatterGatherListV3;
+HalBuildMdlFromScatterGatherListV3();
 HalBuildScatterGatherListEx();
 ? HalBuildScatterGatherListV2;
 HalBuildScatterGatherListV3();
@@ -4394,7 +4508,7 @@ HalEnumerateEnvironmentVariablesEx();
 HalFixInterruptLine();
 ? HalFlushAdapterBuffersEx;
 HalFlushCommonBuffer();
-HalFlushDmaBuffer();
+? HalFlushDmaBuffer;
 HalFreeAdapterObject();
 HalFreeCommonBuffer();
 HalFreeCommonBufferV3();
@@ -4410,13 +4524,13 @@ HalGetDmaDomain();
 HalGetDmaTransferInfo();
 ? HalGetDmaTransferInfoInternal;
 HalGetEnvironmentVariable();
-? HalGetEnvironmentVariableEx;
+HalGetEnvironmentVariableEx();
 ? HalGetInterruptTargetInformation;
 HalGetInterruptVector();
 HalGetMemoryCachingRequirements();
 ? HalGetMessageRoutingInfo;
 ? HalGetProcessorIdByNtNumber;
-HalGetScatterGatherList();
+? HalGetScatterGatherList;
 HalGetScatterGatherListEx();
 HalGetVectorInput();
 HalHandleMcheck();
@@ -4430,6 +4544,7 @@ HaliGetDmaAdapter();
 HaliGetInterruptTranslator();
 HaliHaltSystem();
 HaliHandlePCIConfigSpaceAccess();
+HaliInitializePlatformDebugTriggers();
 HaliInitPnpDriver();
 HaliInitPowerManagement();
 ? HaliLocateHiberRanges;
@@ -4442,12 +4557,13 @@ HaliPciInterfaceReadConfig();
 HaliPciInterfaceWriteConfig();
 ? HaliQuerySystemInformation;
 HaliRemoveInterruptRemapping();
+HaliRunPlatformDebugTriggers();
 HaliSetMaxLegacyPciBusNumber();
 HaliSetPciErrorHandlerCallback();
 HaliSetSystemInformation();
 ? HaliSetWakeAlarm;
 HalIsHyperThreadingEnabled();
-HalJoinDmaDomain();
+? HalJoinDmaDomain;
 HalLeaveDmaDomain();
 HalMakeBeep();
 HalMapIoSpace();
@@ -4458,6 +4574,7 @@ HalMatchAcpiOemId();
 HalMatchAcpiOemRevision();
 ? HalMatchAcpiOemTableId;
 HalMatchAcpiRevision();
+? HalMcFinishMicrocode;
 HalMcUpdateReadPCIConfig();
 Halp8254TimerAcknowledgeInterrupt();
 Halp8254TimerArm();
@@ -4501,9 +4618,9 @@ HalpAcpiPmRegisterWriteRegister();
 ? HalpAcpiPreSleep;
 HalpAcpiRealTimeToUtcTime();
 ? HalpAcpiSetupPmRegister;
-HalpAcpiSetupPmRegisterLegacy();
+? HalpAcpiSetupPmRegisterLegacy;
 ? HalpAcpiTableCacheInit;
-HalpAcpiValidateAcpiTable();
+? HalpAcpiValidateAcpiTable;
 ? HalpAcquireCmosSpinLock;
 ? HalpAcquireCmosSpinLockAndWait;
 HalpAcquireHighLevelLock();
@@ -4523,7 +4640,7 @@ HalpAllocateCR3Root();
 HalpAllocateDmaChannels();
 HalpAllocateDmaResources();
 HalpAllocateDmaResourcesInternal();
-HalpAllocateDomainCommonBufferInternal();
+? HalpAllocateDomainCommonBufferInternal;
 HalpAllocateEarlyPages();
 HalpAllocateGsivForSecondaryInterrupt();
 HalpAllocateHalCounters();
@@ -4533,7 +4650,7 @@ HalpAllocateMapRegisters();
 HalpAllocatePmcCounterSet();
 HalpAllocateScratchMemory();
 ? HalpAllocPhysicalMemory;
-? HalpAllocPhysicalMemoryInternal;
+HalpAllocPhysicalMemoryInternal();
 HalpApic1EndOfInterrupt();
 HalpApic1ReadRegister();
 HalpApic1WaitForIcr();
@@ -4624,11 +4741,12 @@ HalpCmciInit();
 HalpCmcInitializeErrorPacketContents();
 HalpCmcInitializePolling();
 HalpCmciPollProcessor();
-HalpCmciResetState();
+HalpCmciResetStateAMD();
 ? HalpCmciSetProcessorConfig;
 HalpCmciSetProcessorConfigAMD();
 ? HalpCmciSetProcessorConfigIntel;
 HalpCmciSetProcessorMiscConfigAMD();
+HalpCmcLogPollingTimeoutEvent();
 ? HalpCmcPollProcessor;
 ? HalpCmcStartPolling;
 HalpCmcWorkerRoutine();
@@ -4640,7 +4758,7 @@ HalpCollectPmcCounters();
 HalpCommitCR3Worker();
 HalpConnectThermalInterrupt();
 ? HalpConsumeLowMemory;
-HalpConvertEfiToNtStatus();
+? HalpConvertEfiToNtStatus;
 ? HalpCopyDebugDescriptor;
 ? HalpCorrectErrSrc;
 HalpCorrectGenericErrSrc();
@@ -4648,7 +4766,7 @@ HalpCorrectMachineCheckErrSrc();
 HalpCorrectNMIErrSrc();
 HalpCpuID();
 HalpCreateErrorRecord();
-HalpCreateInterrupt();
+? HalpCreateInterrupt;
 HalpCreateMachineCheckErrorRecord();
 HalpCreateMcaMemoryErrorRecord();
 HalpCreateMcaProcessorErrorRecord();
@@ -4657,7 +4775,6 @@ HalpCreateSecondaryIcEntry();
 HalpcSetCmosDataByType();
 HalpDbgInitSystem();
 HalpDeallocateMsiLines();
-HalpDeleteProfileSource();
 HalpDeleteSecondaryIcEntry();
 HalpDeviceEquals();
 HalpDisableCmciOnProcessor();
@@ -4668,6 +4785,7 @@ HalpDisableSecondaryInterrupt();
 HalpDispatchWmi();
 HalpDmaAcquireBufferMappings();
 HalpDmaAddReservedRangesToDomain();
+HalpDmaAllocateAndPremapLa();
 ? HalpDmaAllocateChildAdapterV2;
 ? HalpDmaAllocateChildAdapterV3;
 HalpDmaAllocateContiguousMemory();
@@ -4677,7 +4795,7 @@ HalpDmaAllocateContiguousPagesFromContiguousPoolAtHighLevelV2();
 HalpDmaAllocateContiguousPagesFromContiguousPoolAtHighLevelV3();
 HalpDmaAllocateContiguousPagesFromContiguousPoolV2();
 HalpDmaAllocateContiguousPagesFromContiguousPoolV3();
-HalpDmaAllocateDomain();
+? HalpDmaAllocateDomain;
 ? HalpDmaAllocateEmergencyResources;
 HalpDmaAllocateLocalContiguousPool();
 HalpDmaAllocateLocalScatterPool();
@@ -4727,8 +4845,9 @@ HalpDmaFlushDriverMdl();
 HalpDmaFlushScatterTransferV2();
 HalpDmaFlushScatterTransferV3();
 HalpDmaForceAllocation();
-? HalpDmaFreeChildAdapter;
+HalpDmaFreeChildAdapter();
 ? HalpDmaFreeCrashDumpRegisters;
+HalpDmaFreeLa();
 HalpDmaFreeMapRegisters();
 HalpDmaFreeTranslationBuffer();
 HalpDmaGetAdapterCacheAlignment();
@@ -4771,6 +4890,7 @@ HalpDmaReferenceDomainObject();
 HalpDmaReleaseBufferMappings();
 HalpDmaRemoveAdapterFromChannelQueue();
 HalpDmaRemoveAdapterFromMasterQueue();
+HalpDmaRemoveAdapterFromRemapQueue();
 HalpDmaRemoveWcb();
 HalpDmaReturnPageToOwner();
 HalpDmaReturnPageToSource();
@@ -4784,7 +4904,7 @@ HalpDmaZeroMapBuffers();
 HalpDomainLaAllocate();
 HalpDomainLaDelete();
 HalpDpGetInterruptReplayState();
-HalpDpInitDiscard();
+? HalpDpInitDiscard;
 HalpDpInitSystem();
 HalpDpOfflineProcessorForReplace();
 HalpDpPostReplace();
@@ -4805,12 +4925,12 @@ HalpECmosWriteByte();
 HalpEfiBugCheckAddPagesCallback();
 HalpEfiInitializeOnResume();
 ? HalpEfiLockOutRuntimeCallsForSystemSleep;
-HalpEfiStartRuntimeCode();
+? HalpEfiStartRuntimeCode;
 HalpEnableSecondaryInterrupt();
 HalpEndOfBoot();
 HalpEnumerateEnvironmentVariablesWithFilter();
 HalPerformEndOfInterrupt();
-HalpErrataApplyPerProcessor();
+? HalpErrataApplyPerProcessor;
 HalpErrataInitDiscard();
 HalpErrataInitSystem();
 ? HalpExtBuildResourceIdString;
@@ -4851,14 +4971,13 @@ HalpGetCmosData();
 HalpGetCpuInfo();
 HalpGetDisplayBiosInformation();
 ? HalpGetDynamicDevicePointer;
-? HalpGetHotPlugMemoryInfo;
 ? HalpGetIommuInterface;
 HalpGetIrtEntryCount();
 HalpGetMcaExtendedLogStatusBlock();
 HalpGetMcaLog();
 ? HalpGetMcaPcrContext;
 HalpGetMceInformation();
-? HalpGetNumaProcMemoryCount;
+HalpGetNumaProcMemoryCount();
 HalpGetPCIData();
 ? HalpGetPlatformTimerInformation;
 ? HalpGetProcessorBrandString;
@@ -4868,23 +4987,27 @@ HalpGetSetCmosData();
 HalpGhesMemoryErrorHandler();
 HalpGrowMapBufferWorker();
 HalpHalExtInitSystem();
+HalpHandleMachineCheck();
 HalpHandleMaskUnmaskSecondaryInterrupt();
 HalpHandlePreviousMcaErrors();
 HalpHandlePreviousMcaErrorsOnProcessor();
 HalpHpetAcknowledgeInterrupt();
 HalpHpetArmTimer();
-HalpHpetDiscover();
+? HalpHpetDiscover;
 HalpHpetInitialize();
 HalpHpetQueryCounter();
 HalpHpetSetMatchValue();
-HalpHpetSetMessageInterruptRouting();
 HalpHpetStop();
+HalpHsaAllocateReservedDomainList();
+HalpHsaCreateReservedDevice();
+HalpHsaFindReservedDomain();
+HalpHsapInitializeReservedDomain();
 HalpHvBuildDeviceId();
 HalpHvCounterInitialize();
 ? HalpHvCounterQueryCounter;
 HalpHvCounterUpdateCallback();
 HalpHvCpuid();
-HalpHvDiscover();
+? HalpHvDiscover;
 HalpHvEnterSleepState();
 HalpHvEpCpuid();
 ? HalpHvEpReadMsr;
@@ -4901,11 +5024,10 @@ HalpHvInitSystem();
 HalpHvIsReferenceTscConfigured();
 HalpHvLpReadMcaStatusMsr();
 ? HalpHvLpReadMultipleMsr;
+HalpHvMapDeviceInterrupt();
 HalpHvMapDeviceMsiRange();
-HalpHvMapIoApicDeviceInterrupt();
 HalpHvMceConsumedMemoryErrorRecovery();
 HalpHvNotifyDebugDeviceAvailable();
-HalpHvQueryAssociatedProcessors();
 HalpHvQueryHyperlaunchEntrypoint();
 HalpHvRetargetDeviceMsiInterrupt();
 HalpHvRetargetIoApicDeviceInterrupt();
@@ -4914,13 +5036,13 @@ HalpHvSetMachineCheckRecoveryState();
 HalpHvSetSleepStateProperty();
 HalpHvStartProcessor();
 HalpHvStartVirtualProcessor();
-HalpHvTimerAcknowledgeInterrupt();
+? HalpHvTimerAcknowledgeInterrupt;
 HalpHvTimerArm();
-? HalpHvTimerInitialize;
+HalpHvTimerInitialize();
 HalpHvTimerSetInterruptVector();
 HalpHvTimerStop();
+HalpHvUnmapDeviceInterrupt();
 HalpHvUnmapDeviceMsiRange();
-HalpHvUnmapIoApicDeviceInterrupt();
 HalpHvVpStartEnabled();
 HalpHvWatchdogArm();
 ? HalpHvWatchdogDiscover;
@@ -4936,7 +5058,7 @@ HalpInitGenericErrorSourcePollingRoutine();
 HalpInitializeCmciVector();
 ? HalpInitializeConfigurationFromMadt;
 ? HalpInitializeErrSrc;
-HalpInitializeGenericErrorSource();
+? HalpInitializeGenericErrorSource;
 HalpInitializeGhesRecovery();
 HalpInitializeInterruptRemappingBspLate();
 ? HalpInitializeInterrupts;
@@ -4946,10 +5068,11 @@ HalpInitializeInterruptRemappingBspLate();
 HalpInitializeNMI();
 ? HalpInitializePmcCounterSetInfo;
 ? HalpInitializePnTimers;
-HalpInitializeProfiling();
+? HalpInitializeProfiling;
 ? HalpInitializeSecondaryInterruptServices;
 HalpInitializeTelemetry();
 ? HalpInitializeTimers;
+? HalpInitializeWheaPhysicalMappings;
 ? HalpInitMemoryCachingRequirementsTable;
 HalpInitNonBusHandler();
 ? HalpInitSystemHelper;
@@ -4957,10 +5080,9 @@ HalpInitSystemPhase0();
 HalpInitSystemPhase1();
 HalpInsertProfileSource();
 HalpInsertSecondarySignalList();
-HalpInterruptAddTarget();
 ? HalpInterruptApplyOverrides;
 HalpInterruptBuildGlobalStartupStub();
-HalpInterruptBuildStartupStub();
+? HalpInterruptBuildStartupStub;
 HalpInterruptCmciService();
 HalpInterruptConnect();
 HalpInterruptControllerInUse();
@@ -4980,8 +5102,8 @@ HalpInterruptFindLinesForGsiRange();
 ? HalpInterruptGenerateMessage;
 ? HalpInterruptGetApicVersion;
 ? HalpInterruptGetHighestPriorityInterrupt;
+? HalpInterruptGetIdentifiers;
 ? HalpInterruptGetIrtInfo;
-HalpInterruptGetLocalIdentifier();
 ? HalpInterruptGetNextProcessorLocalId;
 HalpInterruptGetParkingPageInformation();
 HalpInterruptGetPriority();
@@ -4997,6 +5119,7 @@ HalpInterruptInitPowerManagement();
 ? HalpInterruptInitSystem;
 HalpInterruptIsCmciSupported();
 HalpInterruptIsGsiValid();
+HalpInterruptIsHvLineBasedIntRemappingSupported();
 ? HalpInterruptIsMsiSupported;
 HalpInterruptIsPicStateIntact();
 HalpInterruptIsRemappingRequired();
@@ -5048,7 +5171,7 @@ HalpInterruptSetProcessorStartContext();
 HalpInterruptSetRemappedDestination();
 HalpInterruptSetRemappedDestinationHv();
 ? HalpInterruptSetRemappedLineStateInternal;
-HalpInterruptSortProcessorTable();
+? HalpInterruptSortProcessorTable;
 HalpInterruptSpuriousService();
 HalpInterruptStandardEndOfInterrupt();
 ? HalpInterruptStartProcessor;
@@ -5060,18 +5183,18 @@ HalpInterruptUnmaskLevelTriggeredLines();
 HalpInterruptUpdateLinesPostSwap();
 HalpInterruptUpdateLocalUnitIdentifier();
 HalpInterruptVectorDataToGsiv();
-HalpInterruptWaitForProcessorStartUp();
+? HalpInterruptWaitForProcessorStartUp;
 HalpInvokeIsrForGsiv();
 HalpIoDelay();
-? HalpIommuAcquireNewDomain;
+HalpIommuAcquireNewDomain();
 HalpIommuAllocateAndZeroPageTable();
-HalpIommuAllocateDmaDomain();
+? HalpIommuAllocateDmaDomain;
 HalpIommuAttachDeviceDomain();
 HalpIommuBlockDevice();
 HalpIommuCheckDpptException();
 HalpIommuCheckExceptionList();
 HalpIommuCleanupPageTable();
-? HalpIommuConfigureInterrupt;
+HalpIommuConfigureInterrupt();
 HalpIommuConstructReservedPageTable();
 HalpIommuConstructReservedPageTables();
 HalpIommuCreateDevice();
@@ -5082,58 +5205,61 @@ HalpIommuDereferenceHardwareDomain();
 HalpIommuDetermineReservedPciRid();
 HalpIommuDomainMapLogicalRange();
 HalpIommuDomainUnmapLogicalRange();
-HalpIommuEnableInterrupts();
+? HalpIommuEnableInterrupts;
 HalpIommuExtMarkHiberMemory();
+HalpIommuFlushDmaDomain();
 HalpIommuFlushDomainTB();
-HalpIommuFlushPhysicalPtesFromCache();
-HalpIommuFlushPhysicalPtesFromCacheSize();
 HalpIommuFreeDeviceId();
 HalpIommuFreeDmaDomain();
 HalpIommuFreeDomain();
-HalpIommuFreePageTable();
 HalpIommuGetDeviceId();
 HalpIommuGetDmarptRootAddress();
 HalpIommuGetExceptionList();
 HalpIommuGetHardwareDomain();
 HalpIommuGetNextFlushDevice();
-HalpIommuGetPlatformSpecificPageTableConfigs();
+HalpIommuGetPageTableType();
 HalpIommuGetReservedRanges();
 HalpIommuGetSecurityPolicy();
 ? HalpIommuHsaDiscover;
 ? HalpIommuInitDiscard;
-HalpIommuInitializeAll();
-HalpIommuInitializeDmaGuardPolicy();
-HalpIommuInitializeDmar();
+? HalpIommuInitializeAll;
+? HalpIommuInitializeDmaGuardPolicy;
+? HalpIommuInitializeDmar;
 HalpIommuInitializeDmarPageTable();
 HalpIommuInitInterrupts();
 ? HalpIommuInitSystem;
 HalpIommuInterruptRoutine();
-HalpIommuIvtDiscover();
 HalpIommuJoinDmaDomain();
 HalpIommuLeaveDmaDomain();
-HalpIommuLocateFromDevice();
+? HalpIommuLocateFromDevice;
 HalpIommuMapLogicalRange();
 ? HalpIommuMarkHiberPhase;
 ? HalpIommuPopulateExceptionList;
-HalpIommuProcessReservations();
+HalpIommuProcessDeviceEntries();
+HalpIommuProcessIvhdEntry();
+HalpIommuProcessMemoryErrata();
+? HalpIommuProcessReservations;
 HalpIommuProcessReservationsInternal();
+HalpIommuQueryAcpiDeviceMapping();
+? HalpIommuRegisterBuiltinPlugins;
 ? HalpIommuRegisterDispatchTable;
-HalpIommuSetPolicy();
 HalpIommuSetupMessageInterruptRouting();
 ? HalpIommuSupportEnabled;
 HalpIommuUnblockDevice();
 HalpIommuUnmapLogicalRange();
-HalpIommuUpdatePageTableLevel();
-HalpIommuUpdatePageWalkCapability();
+? HalpIommuUpdatePageTableLevel;
+? HalpIommuUpdatePageWalkCapability;
 HalpIommuUpdateRemappingDestination();
 HalpIommuUpdateRemappingTableEntry();
 HalpIrtAllocateIndex();
 HalpIrtFreeIndex();
 HalpIsCmciImplemented();
 HalpIsEFIRuntimeActive();
+HalpIsHeap64KRegionExecutable();
 ? HalpIsHvPresent;
 HalpIsHvUsedForReboot();
 ? HalpIsInterruptTypeSecondary;
+? HalpIsLmceSupported;
 ? HalpIsMicrosoftCompatibleHvLoaded;
 ? HalpIsPartitionCpuManager;
 ? HalpIsUefiFirmwareResourceTablePresent;
@@ -5148,11 +5274,11 @@ HalpIumSetTime();
 HalpIumSetVariable();
 HalpIumUpdateCapsule();
 HalpIvtAllocateReservedDomainList();
-? HalpIvtCheckIdPathMatch;
+HalpIvtCheckIdPathMatch();
 HalpIvtCreateReservedDevice();
 HalpIvtFindReservedDomain();
 HalpIvtpInitializeReservedDomain();
-? HalpIvtProcessDmarTable;
+HalpIvtProcessDmarTable();
 HalpIvtProcessDrhdEntry();
 HalpKdEnumerateDebuggingDevices();
 HalpKdReadPCIConfig();
@@ -5168,7 +5294,7 @@ HalpLapDeleteSubtree();
 HalpLapSplitNode();
 HalpLaReserveRange();
 HalpLbrCaptureStack();
-? HalpLbrClearStack;
+HalpLbrClearStack();
 HalpLbrConfigurationWorker();
 HalpLbrConfigureProcessor();
 HalpLbrConfigureRecording();
@@ -5204,7 +5330,7 @@ HalpMcaReadError();
 ? HalpMcaReadErrorPresence;
 HalpMcaReportError();
 ? HalpMcaResumeProcessorConfig;
-HalpMcaSetFeatureFlags();
+? HalpMcaSetFeatureFlags;
 ? HalpMcaSetProcessorConfig;
 HalpMceBarrierWait();
 HalpMceHandler();
@@ -5216,9 +5342,13 @@ HalpMceInitializeErrorPacketContents();
 HalpMceInitializeRecovery();
 HalpMceInitProcessor();
 HalpMceRecovery();
-HalpMcExportData();
+? HalpMcExportAllData;
+? HalpMcExportAndChargeNeededData;
+HalpMcInitializeMicrocodeInfo();
+? HalpMcRecordProcessorInfo;
+HalpMcSetUpdateInfoInvalid();
 HalpMcUpdateFindDataTableEntry();
-HalpMcUpdateInitialize();
+? HalpMcUpdateInitialize;
 HalpMcUpdateLock();
 HalpMcUpdateMicrocode();
 HalpMcUpdatePostUpdate();
@@ -5231,13 +5361,14 @@ HalpMiscBugCheckCallback();
 HalpMiscInitializeTelemetry();
 HalpMiscInitSystem();
 ? HalpMiscIsLegacyPcType;
+HalpMmAllocateAndInsertPageTablePage();
 HalpMmAllocateMemory();
 ? HalpMmAllocateMemoryInternal;
 HalpMmAllocatePerProcessorMemory();
 ? HalpMmAllocCtxAlloc;
 ? HalpMmAllocCtxAllocBuffer;
 HalpMmAllocCtxBufferCleanup();
-? HalpMmAllocCtxFree;
+HalpMmAllocCtxFree();
 HalpMmAllocCtxInit();
 HalpMmAllocCtxMarkHiberPhase();
 ? HalpMmBuildTiledMemoryMap;
@@ -5255,25 +5386,34 @@ HalPnpGetDmaAdapter();
 HalPnpInterfaceNullReference();
 HalpNullReadWriteBusData();
 HalpNumaAddRangeProximity();
+HalpNumaCompareMemorySideCacheEntries();
+HalpNumaCompareMemorySideCacheNodeAndLevel();
 ? HalpNumaInitializeStaticConfiguration;
+HalpNumaParseHmat();
+? HalpNumaQueryMemorySideCacheInfo;
 HalpNumaQueryNodeCapacity();
 HalpNumaQueryNodeDistance();
-HalpNumaQueryProcessorNode();
+? HalpNumaQueryProcessorNode;
 HalpNumaQueryProximityId();
-HalpNumaQueryProximityNode();
+? HalpNumaQueryProximityNode;
 ? HalpNumaSwapP0NodeToFront;
 ? HalpParseChannelCount;
 HalpPassIrpFromFdoToPdo();
 HalpPciAccessIoConfigSpace();
+HalpPciAccessMmConfigSpace();
+HalpPCIAcquireConfigSpaceLock();
+? HalpPciCheckAmdK8;
 ? HalpPCIConfig;
-? HalpPciConvertDevicePathToRid;
-? HalpPciGetHpetInterruptSource;
+HalpPciConvertDevicePathToRid();
+HalpPciGetHpetInterruptSource();
 HalpPciGetHpetInterruptSourceAmd();
 HalpPciGetHpetInterruptSourceIntel();
+HalpPciGetMmConfigPhysicalAddress();
 HalpPciHandleSecureAccess();
 ? HalpPciInitializeMmConfigAccess;
 HalpPciInitSystem();
 HalpPciIsAddressWithinMcfg();
+HalpPciMapMmConfigPhysicalAddress();
 HalpPciMarkHiberPhase();
 HalpPCIPerformConfigAccess();
 HalpPciReadIoConfigUchar();
@@ -5306,7 +5446,7 @@ HalpPmTimerQueryCounterMemory();
 HalpPnpInitSystem();
 HalpPopulateMsiMessages();
 HalpPostPnpInitialize();
-HalpPostSleepMP();
+? HalpPostSleepMP;
 HalpPowerEarlyRestore();
 HalpPowerInitDiscard();
 ? HalpPowerInitFwPerformanceTableMappings;
@@ -5319,6 +5459,7 @@ HalpPowerWriteResetCommand();
 HalpPrepareForBugcheck();
 HalpPreprocessNmi();
 HalpPreserveNvsArea();
+HalpProcessAcpiStartDevice();
 HalpProcessorFence();
 ? HalpProcessorPrepareForIdle;
 ? HalpProcessorResumeFromIdle;
@@ -5335,13 +5476,14 @@ HalpQueryCapsuleCapabilities();
 HalpQueryChannelTopologyInformation();
 ? HalpQueryDebuggerInformation;
 ? HalpQueryDeviceRelations;
+HalpQueryHeterogeneousMemoryAttributesInterface();
 ? HalpQueryIdFdo;
 ? HalpQueryIdPdo;
 ? HalpQueryInterface;
 ? HalpQueryIommuReservedRegionInformation;
 HalpQueryMaximumGsiv();
 ? HalpQueryMaximumRegisteredProcessorCount;
-HalpQueryNumaRangeTableInformation();
+? HalpQueryNumaRangeTableInformation;
 HalpQueryPccInterface();
 HalpQueryPrimaryInterruptInformation();
 HalpQueryProfileInformation();
@@ -5367,8 +5509,11 @@ HalpRegisterDmaController();
 HalpRegisterKdSupportFunctions();
 HalpRegisterPeiErrorSource();
 HalpRegisterSecondaryIcInterface();
-? HalpRegisterUsbController;
+HalpRegisterUsbController();
+HalpReleaseSecondaryIcEntryExclusive();
 HalpReleaseSecondaryIcEntryShared();
+HalpRemapVirtualAddress64();
+HalpRemoveProfileSourceFromList();
 ? HalpReportResourceUsage;
 HalpRequestGenericErrorRecovery();
 HalpReserveHalPtes();
@@ -5397,7 +5542,7 @@ HalpSetCmosData();
 HalpSetIrtEntry();
 HalpSetPartitionInformation();
 ? HalpSetPCIData;
-? HalpSetPlatformFlags;
+HalpSetPlatformFlags();
 HalpSetProfileSourceInterval();
 ? HalpSetResumeTime;
 HalpSetSystemInformation();
@@ -5413,22 +5558,22 @@ HalpSfiTimerArm();
 HalpSfiTimerInitialize();
 HalpSfiTimerQueryCounter();
 HalpSfiTimerStop();
-HalpShouldRecoveryBeAttempted();
 HalpShutdown();
 HalpSignalRAS();
 HalpSimpleCheck();
 HalpSocApiAllocatePhysicalMemory();
+HalpStartPccCommand();
 HalpStopLegacyUsbInterrupts();
 HalpStopLegacyUsbInterruptsInternal();
 HalpStoreFreeCr3();
 HalpTimerAlwaysOnClockInterrupt();
 HalpTimerCalculateMaximumAllowableDrift();
-HalpTimerCalibratePerformanceCounter();
+? HalpTimerCalibratePerformanceCounter;
 HalpTimerCaptureCloestAuxiliaryQpcPair();
 HalpTimerCaptureCurrentAuxiliaryQpcPair();
 HalpTimerClearProblem();
 HalpTimerClockActivate();
-HalpTimerClockArm();
+? HalpTimerClockArm;
 ? HalpTimerClockInitialize;
 ? HalpTimerClockInterrupt;
 HalpTimerClockInterruptStub();
@@ -5436,22 +5581,24 @@ HalpTimerClockInterruptStub();
 HalpTimerClockPowerChange();
 ? HalpTimerClockStop;
 ? HalpTimerConfigureInterrupt;
-HalpTimerConfigureQpcBypass();
+? HalpTimerConfigureQpcBypass;
 HalpTimerConvertAuxiliaryCounter();
 HalpTimerConvertAuxiliaryCounterToPerformanceCounter();
 HalpTimerConvertPerformanceCounterToAuxiliaryCounter();
+HalpTimerCreateReferencePage();
 HalpTimerDelayedQueryCounter();
 ? HalpTimerDetermineValidTimerPairReadLatency;
 ? HalpTimerDpcRoutine;
 ? HalpTimerEnableHypervisorTimer;
 HalpTimerFindBestAlwaysOnTimer();
 ? HalpTimerFindIdealClockSource;
-HalpTimerFindIdealPerformanceCounterSource();
+? HalpTimerFindIdealPerformanceCounterSource;
 ? HalpTimerFindIdealWatchdog;
 ? HalpTimerGetClockConfiguration;
 ? HalpTimerGetClockRates;
 ? HalpTimerGetInternalData;
 HalpTimerGetProfilingHandler();
+HalpTimerGetReferencePage();
 ? HalpTimerGetSavedPerformanceCounter;
 HalpTimerGetSkip();
 HalpTimerHypervisorInterrupt();
@@ -5463,9 +5610,10 @@ HalpTimerHypervisorInterruptStub();
 ? HalpTimerInitializeHypervisorTimer;
 ? HalpTimerInitializeProfiling;
 HalpTimerInitializeSystemWatchdog();
+HalpTimerInitializeVpptClockTimer();
 HalpTimerInitPowerManagement();
 ? HalpTimerInitSystem;
-HalpTimerIsHostQpcAvailable();
+HalpTimerMarkHiberPhase();
 HalpTimerMarkWake();
 HalpTimerMeasureAllProcessorFrequencies();
 ? HalpTimerMeasureFrequencies;
@@ -5481,7 +5629,7 @@ HalpTimerPowerCriticalTransitionCallback();
 ? HalpTimerPrepareClockInterrupt;
 HalpTimerProfileInterrupt();
 HalpTimerProfilePowerChange();
-HalpTimerPropagateQpcBiasUpdate();
+? HalpTimerPropagateQpcBiasUpdate;
 ? HalpTimerQueryAndResetRtcErrors;
 HalpTimerQueryAuxiliaryCounterFrequency();
 HalpTimerQueryCycleCounter();
@@ -5490,7 +5638,6 @@ HalpTimerQueryProfileAvailability();
 HalpTimerQueryWakeTime();
 HalpTimerQueryWatchdogType();
 ? HalpTimerReadTimerPairWithLatencyLimit;
-HalpTimerReadTimeStampCounterWithFence();
 ? HalpTimerRegister;
 ? HalpTimerRegisterBuiltinPlugins;
 HalpTimerRegisterBuiltinPluginsCommon();
@@ -5503,6 +5650,7 @@ HalpTimerRestoreProcessorCounter();
 HalpTimerSaveProcessorFrequency();
 HalpTimerScaleCounter();
 ? HalpTimerSchedulePeriodicQueries;
+HalpTimerSelectFallbackPerformanceCounter();
 ? HalpTimerSelectRoles;
 HalpTimerSetProblemEx();
 HalpTimerSetProfilingHandler();
@@ -5531,6 +5679,7 @@ HalpTimerWatchdogStart();
 HalpTimerWatchdogStop();
 HalpTimerWatchdogTriggerSystemReset();
 HalpTimerWatchdogWakeSetDueTime();
+HalpTopologyInitSystem();
 HalpTranslateBusAddress();
 HalpTranslateToLegacyMcaException();
 HalpTscAdjustToLeader();
@@ -5548,22 +5697,21 @@ HalpTscAdvSynchToTarget();
 HalpTscCheckAdjustMsrCapability();
 HalpTscCompatibilitySynchronization();
 ? HalpTscDiscover;
-? HalpTscFallback;
+HalpTscFallback();
 HalpTscFallbackToPlatformSource();
-? HalpTscFinalizeDisposition;
-HalpTscGetAttributes();
+? HalpTscGetAttributes;
 ? HalpTscInitialize;
 HalpTscInitializeSynchronizationContext();
 HalpTscQueryCounter();
 HalpTscQueryCounterOrdered();
-HalpTscReportSyncStatus();
+? HalpTscReportSyncStatus;
 ? HalpTscReserveResources;
 ? HalpTscSynchronization;
 ? HalpTscSynchronizationWorker;
 ? HalpTscTraceProcessorSynchronization;
-? HalpTscTraceStatus;
+HalpTscTraceStatus();
 HalpUnloadMicrocode();
-HalpUnmapVirtualAddress();
+? HalpUnmapVirtualAddress;
 ? HalpUnmaskInterrupt;
 HalpUnregisterSecondaryIcInterface();
 HalpUpdateCapsule();
@@ -5571,8 +5719,7 @@ HalpUpdateConfigurationFromMsct();
 HalpUpdateCoolingPacket();
 HalpUpdateIrtDestinationId();
 HalpUpdateNumaConfiguration();
-HalpUsbLegacyDeviceHandoff();
-HalpUsbLegacyReadPCIConfig();
+? HalpUsbLegacyDeviceHandoff;
 HalpUsbLegacyScanBusForHandoff();
 HalpUsbLegacyStopOhciInterrupt();
 HalpUsbLegacyStopUhciInterrupt();
@@ -5584,10 +5731,12 @@ HalpValidateInterface();
 HalpValidateMpns();
 ? HalpValidPCISlot;
 HalpVerifyGenericError();
-? HalpVerifySratEntryLengthAndFlag;
+HalpVerifyHmatEntryValidity();
+HalpVerifySratEntryLengthAndFlag();
 HalpVpptAcknowledgeInterrupt();
 HalpVpptArmTimer();
 HalpVpptInitialize();
+HalpVpptInitializePhysicalTimer();
 HalpVpptStop();
 HalpVpptTimerRegister();
 HalpVpptUpdatePhysicalTimer();
@@ -5645,7 +5794,7 @@ HalSetProfileInterval();
 HalSetRealTimeClock();
 HalSetTimerProblem();
 HalSocGetAcpiTable();
-HalSocRequestApi();
+? HalSocRequestApi;
 ? HalSocRequestConfigurationData;
 HalStartDynamicProcessor();
 ? HalStartNextProcessor;
@@ -5656,14 +5805,25 @@ HalTranslateBusAddress();
 HalUnmapIoSpace();
 ? HalUpdateTimerCapabilities;
 HalWriteBootRegister();
+HsaAttachDeviceDomain();
+HsaAttachDeviceDomainInternal();
+HsaBuildDeviceTableEntry();
+HsaCompleteFlush();
 HsaConfigureSettings();
+HsaCreateDevice();
+HsaDeleteDevice();
+HsaDetachDeviceDomain();
 HsaDisableInterrupt();
 HsaDismissPageFault();
 HsaEnableInterrupt();
 HsaEnsureNoPendingFaults();
+HsaEnumerateIvmdDevices();
 HsaFindDevice();
 HsaFlushDeviceTbOnly();
+HsaFlushDomainTb();
 HsaFlushTb();
+HsaFlushTbInternal();
+HsaGetBlockedDomain();
 HsaGetPageFault();
 HsaGrowPasidTable();
 HsaHandleInterrupt();
@@ -5671,15 +5831,25 @@ HsaInitializeIommu();
 HsaInvalidateDTE();
 HsaIommuSendCommand();
 HsaMarkHiberRegions();
+HsaProcessDeviceExceptions();
+HsaProcessIvmd();
+HsaProcessReservedDomains();
+HsaQueryAcpiDeviceMapping();
 HsaSetDevicePasidTable();
 HsaSetDeviceSvmCapabilities();
 HsaSetMessageInterruptRouting();
 HsaSetPasidAddressSpace();
+HsaSlConfigureIntermediatePhysicalPte();
+HsaSlConfigureLeafPhysicalPte();
+HsaSyncFlush();
+HsaUpdateDeviceTableEntry();
 HviGetHardwareFeatures();
+HviGetHypervisorFeatures();
+HviIsAnyHypervisorPresent();
 ? HviIsXboxNanovisorPresent;
 ? IoFlushAdapterBuffers;
-IoFlushAdapterBuffersV2();
-? IoFlushAdapterBuffersV3;
+? IoFlushAdapterBuffersV2;
+IoFlushAdapterBuffersV3();
 IoFreeAdapterChannel();
 IoFreeAdapterChannelV2();
 IoFreeAdapterChannelV3();
@@ -5687,7 +5857,7 @@ IoFreeAdapterChannelV3Internal();
 IoFreeAdapterChannelV3Passive();
 IoFreeMapRegisters();
 IoFreeMapRegistersV2();
-? IoFreeMapRegistersV3;
+IoFreeMapRegistersV3();
 ? IoMapTransfer;
 ? IoMapTransferInternal;
 IommuBeginDeviceReset();
@@ -5718,12 +5888,12 @@ IommuMapLogicalRange();
 ? IommupGetSystemContext;
 IommupHvConfigureDeviceDomain();
 IommupHvDismissPageFault();
-IommupHvFlushDeviceDomain();
 IommupHvFlushDeviceDomainVaList();
 IommupHvGetDeviceCapabilities();
 IommupHvGetPageFault();
 IommupHvInitializeLibrary();
 IommupHvInterruptRoutine();
+IommupHvMapDeviceLogical();
 IommupHvMapDeviceLogicalRange();
 IommupHvRegisterDeviceId();
 IommupHvUnmapDevice();
@@ -5733,9 +5903,12 @@ IommuProcessPageRequestQueue();
 IommupValidateMdl();
 IommuQueryInputMappings();
 IommuSetAddressSpace();
+IommuSetDeviceFaultReporting();
 IommuUnmapDevice();
 IommuUnmapIdentityRange();
 IommuUnmapLogicalRange();
+IvmdFindDeviceEntry();
+IvmdProcessRange();
 IvtAllocateContextTable();
 IvtAttachDeviceDomain();
 IvtAttachDeviceDomainInternal();
@@ -5743,7 +5916,7 @@ IvtBuildContextEntry();
 IvtBuildExtendedContextEntry();
 IvtCancelPageRequests();
 IvtCheckForReservedRegion();
-? IvtClearPendingFaults;
+IvtClearPendingFaults();
 IvtCompleteFlush();
 IvtConfigureSettings();
 IvtCreateDevice();
@@ -5752,35 +5925,38 @@ IvtDetachDeviceDomain();
 IvtDisableInterrupt();
 IvtDismissPageFault();
 IvtDrainSvmPageRequests();
-? IvtEnableInterrupt;
+IvtEnableInterrupt();
 IvtEnsureNoPendingFaults();
 IvtEnumerateRmrrDevices();
-? IvtFindDevice;
+IvtFindDevice();
 IvtFlushDeviceTbOnly();
 IvtFlushDomainTb();
 IvtFlushTb();
-? IvtFlushTbInternal;
+IvtFlushTbInternal();
 IvtGetBlockedDomain();
-? IvtGetContextEntryType;
+IvtGetContextEntryType();
+IvtGetIdentityMappedDomain();
 IvtGetPageFault();
 IvtGrowPasidTable();
 IvtHandleInterrupt();
-? IvtInitializeIommu;
+IvtInitializeIdentityMappings();
+IvtInitializeIommu();
+IvtInitializeLargePagePte();
 IvtInitializeMTRR();
 IvtInvalidateAllContextEntries();
 IvtInvalidateContextEntry();
 IvtInvalidateExtendedContextEntry();
 IvtInvalidateRemappingTableEntries();
 IvtInvalidateRemappingTableEntry();
-? IvtIommuSendCommand;
-? IvtIommuWaitCommand;
+IvtIommuSendCommand();
+IvtIommuWaitCommand();
 IvtMarkHiberRegions();
 IvtpGetNextInternalDeviceScope();
 IvtProcessDeviceExceptions();
 IvtProcessReservedDomains();
 IvtSetDevicePasidTable();
 IvtSetDeviceSvmCapabilities();
-? IvtSetMessageInterruptRouting;
+IvtSetMessageInterruptRouting();
 IvtSetPasidAddressSpace();
 IvtSlConfigureIntermediatePhysicalPte();
 IvtSlConfigureLeafPhysicalPte();
@@ -5788,7 +5964,7 @@ IvtSyncFlush();
 IvtUpdateContextEntry();
 IvtUpdateExtendedContextEntry();
 IvtUpdateExtendedDestination();
-? IvtUpdateGlobalCommand;
+IvtUpdateGlobalCommand();
 IvtUpdateInterruptDestination();
 IvtUpdateRemappingDestination();
 IvtUpdateRemappingTableEntry();
@@ -5813,6 +5989,7 @@ READ_PORT_USHORT_PAIR();
 __report_gsfailure();
 RtlMoveMemory();
 RtlRaiseException();
+RtlUdiv128();
 __security_check_cookie();
 __security_init_cookie();
 _setjmp();
@@ -5860,15 +6037,15 @@ x86BiosSetPciBusData();
 ? x86BiosTranslateAddress;
 x86BiosWriteCmosPort();
 x86BiosWriteCmosPortByte();
-x86BiosWriteIoSpace();
+? x86BiosWriteIoSpace;
 x86BiosWriteMemory();
 ? x86BiosWritePciAddressPort;
-? x86BiosWritePciDataPort;
+x86BiosWritePciDataPort();
 XmAaaOp();
 XmAadOp();
 XmAamOp();
 XmAasOp();
-? XmAccumImmediate;
+XmAccumImmediate();
 XmAccumRegister();
 XmAdcOp();
 XmAddOp();
@@ -5885,21 +6062,21 @@ XmBtrOp();
 XmBtsOp();
 XmByteImmediate();
 ? XmCallOp;
-? XmCbwOp;
+XmCbwOp();
 XmClcOp();
 XmCldOp();
 XmCliOp();
 XmCmcOp();
 XmCmpOp();
-? XmCmpsOp;
+XmCmpsOp();
 XmCmpxchgOp();
-? XmCompareOperands;
-? XmCwdOp;
+XmCompareOperands();
+XmCwdOp();
 XmDaaOp();
 XmDasOp();
 XmDecOp();
 ? XmDivOp;
-? XmEffectiveOffset;
+XmEffectiveOffset();
 XmEmulateInterrupt();
 ? XmEmulateStream;
 XmEnterOp();
@@ -5907,32 +6084,32 @@ XmEnterOp();
 XmEvaluateIndexSpecifier();
 XmExecuteInt1a();
 XmFlagsRegister();
-? XmGeneralBitOffset;
+XmGeneralBitOffset();
 XmGeneralRegister();
 ? XmGetCodeByte;
-? XmGetImmediateSourceValue;
+XmGetImmediateSourceValue();
 ? XmGetLongImmediate;
 ? XmGetOffsetAddress;
 XmGetRegisterAddress();
 ? XmGetStringAddress;
 ? XmGetStringAddressRange;
 ? XmGetWordImmediate;
-? XmGroup1General;
-? XmGroup1Immediate;
+XmGroup1General();
+XmGroup1Immediate();
 XmGroup2By1();
-? XmGroup2ByByte;
+XmGroup2ByByte();
 XmGroup2ByCL();
 XmGroup3General();
 ? XmGroup45General;
 XmGroup7General();
-? XmGroup8BitOffset;
+XmGroup8BitOffset();
 XmHltOp();
 XmIdivOp();
 XmIllOp();
 XmImmediateEnter();
 XmImmediateJump();
 XmImulImmediate();
-? XmImulOp;
+XmImulOp();
 XmImulxOp();
 XmIncOp();
 XmInitializeEmulator();
@@ -5942,20 +6119,20 @@ XmInt1aFindPciClassCode();
 XmInt1aFindPciDevice();
 XmInt1aReadConfigRegister();
 XmInt1aWriteConfigRegister();
-? XmIntOp;
+XmIntOp();
 XmIretOp();
 XmJcxzOp();
 XmJmpOp();
 ? XmJxxOp;
 XmLahfOp();
 XmLeaveOp();
-? XmLoadSegment;
-? XmLodsOp;
+XmLoadSegment();
+XmLodsOp();
 ? XmLongJump;
-XmLoopOp();
+? XmLoopOp;
 XmMoveGeneral();
 XmMoveImmediate();
-? XmMoveRegImmediate;
+XmMoveRegImmediate();
 XmMoveSegment();
 XmMoveXxGeneral();
 XmMovOp();
@@ -5972,24 +6149,24 @@ XmOrOp();
 XmOutsOp();
 XmPopaOp();
 XmPopGeneral();
-? XmPopOp;
+XmPopOp();
 ? XmPopStack;
 XmPortDX();
-? XmPortImmediate;
+XmPortImmediate();
 ? XmPrefixOpcode;
 XmPushaOp();
 XmPushImmediate();
-? XmPushOp;
+XmPushOp();
 XmPushPopSegment();
 ? XmPushStack;
 XmRclOp();
 XmRcrOp();
 XmRdtscOp();
 ? XmRetOp;
-? XmRolOp;
+XmRolOp();
 XmRorOp();
 XmSahfOp();
-? XmSarOp;
+XmSarOp();
 XmSbbOp();
 XmScasOp();
 XmSegmentOffset();
@@ -6001,7 +6178,7 @@ XmSetSourceValue();
 XmShiftDouble();
 XmShldOp();
 XmShlOp();
-? XmShortJump;
+XmShortJump();
 XmShrdOp();
 XmShrOp();
 XmSmswOp();
@@ -6013,8 +6190,8 @@ XmStoreResult();
 XmStringOperands();
 XmSubOp();
 XmSubOperands();
-? XmSxxOp;
-? XmTestOp;
+XmSxxOp();
+XmTestOp();
 XmXaddOp();
 XmXchgOp();
 XmXlatOpcode();
@@ -6050,13 +6227,18 @@ DmaDispatch;
 DmarCommonPageTableBits;
 EmonCounterResolution;
 EmonCounterStatus;
+EmonFixedCounterResolution;
+EmonNumberArchCounters;
 EmonNumberCounters;
+EmonNumberFixedCounters;
+EmonOverflowMask;
 EmonProfileInterface;
 EmonProfileIntervalLimits;
 EmonProfileSourceDescriptorCount;
 EmonProfileSourceDescriptorListHead;
 EmonProfileSourceDescriptorListLock;
 EmonProfileSourceDescriptorTable;
+EmonVersion;
 ExtEnvAllocationList;
 ExtEnvAllocationLock;
 ExtEnvLockList;
@@ -6110,6 +6292,7 @@ HalIommuDispatch;
 HalMcSleepDisabled;
 HalName;
 HalpAcpiFacsMapping;
+HalpAcpiHmat;
 HalpAcpiMpst;
 HalpAcpiMsct;
 HalpAcpiMultiNode;
@@ -6153,6 +6336,8 @@ HalpChannelMemoryRangeCount;
 HalpChannelMemoryRanges;
 HalpChipHackCount;
 HalpChipHacksTable;
+HalpClockTickLog;
+HalpClockTickLogIndex;
 HalpClockTimer;
 HalpClockWorkUnion;
 HalpCmcContext;
@@ -6257,6 +6442,7 @@ HalpHeapEnd;
 HalpHeapStart;
 HalpHiberInProgress;
 HalpHiberProcState;
+HalpHmaConfig;
 HalpHpetBaseAddress;
 HalpHpetDebugTimerArm;
 HalpHpetGsiOffset;
@@ -6345,6 +6531,7 @@ HalpIommuBypassDomain;
 HalpIommuCount;
 HalpIommuDmaGuardTableOptIn;
 HalpIommuDomainId;
+HalpIommuEnableGpuIdentityMapping;
 HalpIommuExceptionList;
 HalpIommuList;
 HalpIommuMaxPageTableDepth;
@@ -6378,6 +6565,8 @@ HalpLbrMostSignificantToAddrBit;
 HalpLbrSelectFlags;
 HalpLbrStackSize;
 HalpLbrSyncBarrier;
+HalpLmceNotSupportedCount;
+HalpLmceSupportedCount;
 HalpLocalApic;
 HalpLocalApicPhysical;
 HalpLowMemoryMap;
@@ -6412,16 +6601,25 @@ HalpMceEnabled;
 HalpMceErrorFound;
 HalpMceErrorSource;
 HalpMceErrorSourceId;
+HalpMceLocalHandlingLock;
 HalpMceLock;
 HalpMceProcessorCount;
 HalpMceRendezvousCount;
 HalpMceRendezvousInProgress;
 HalpMceRendezvousSrarOnlyCount;
+HalpMcUpdateData;
+HalpMcUpdateDataCharged;
+HalpMcUpdateDataSize;
 HalpMcUpdateExportDataFunc;
+HalpMcUpdateInfoHead;
+HalpMcUpdateInfoValid;
 HalpMcUpdateLockFunc;
 HalpMcUpdateMicrocodeFunc;
+HalpMcUpdateMicrocodeFuncEx;
+HalpMcUpdateMinVerSupported;
 HalpMcUpdatePostUpdateFunc;
-HalpMcUpdateSkipUpdate;
+HalpMcUpdateRecordingSupported;
+HalpMcUpdateSelfHosting;
 HalpMcUpdateUnlockFunc;
 HalpMemoryCoolingPacket;
 HalpMemoryCoolingPacketLock;
@@ -6433,6 +6631,7 @@ HalpMiscDiscardLowMemory;
 HalpMmLeftoverMemory;
 HalpMmLeftoverMemorySize;
 HalpMmLoaderBlock;
+HalpMmPagingLevels;
 HalpMoveMemory;
 HalpNewAdapter;
 HalpNmiConfiguration;
@@ -6571,6 +6770,7 @@ HalpTimerProcessorFrequencyKnown;
 HalpTimerProcessorsFrozen;
 HalpTimerProfilingCallback;
 HalpTimerQpcFreqForAuxQpcConversion;
+HalpTimerReferencePage;
 HalpTimerRegistrationAllowed;
 HalpTimerRtcApi;
 HalpTimerRtcErrorCode;
@@ -6613,6 +6813,8 @@ HalpVpptLock;
 HalpVpptPhysicalTimer;
 HalpVpptPhysicalTimerTarget;
 HalpVpptQueue;
+HalpVpptRegistered;
+HalpVpptSkipApi;
 HalpVrtcTimeStale;
 HalpWAETDeviceFlags;
 HalpWakeupState;
@@ -6631,7 +6833,11 @@ HalpWheaWriteMsr;
 HalSubComponents;
 HalUefiHardwareIdString;
 HiberFreeCR3;
+HsaBlockedPageTable;
+HsaBlockedPageTablePhysical;
+HsaIvhdList;
 HsaPhysicalMemoryApi;
+HsaSlPhyPteInterface;
 __IMPORT_DESCRIPTOR_kdcom;
 __IMPORT_DESCRIPTOR_ntoskrnl;
 __IMPORT_DESCRIPTOR_PSHED;
@@ -6655,6 +6861,7 @@ KdComPortInUse;
 KdDebugDevice;
 KdDebuggerNotPresent;
 KdHvComPortInUse;
+KeDynamicPartitioningSupported;
 KiBugCheckData;
 LastKnownGood;
 _load_config_used;
@@ -6672,13 +6879,19 @@ __NULL_IMPORT_DESCRIPTOR;
 PcDmaChannelState;
 PcDmaDispatch;
 PCIDeref;
-__pde_base;
+__pde_base_la48;
+__pde_base_la57;
+PdttTable;
+__ple_base_la57;
 PmAcpiDispatchTable;
 PmRegisters;
-__ppe_base;
+__ppe_base_la48;
+__ppe_base_la57;
 PROCESSOR_GENERIC_ERROR_SECTION_GUID;
-__pte_base;
-__pxe_base;
+__pte_base_la48;
+__pte_base_la57;
+__pxe_base_la48;
+__pxe_base_la57;
 SecondaryGsivAssignedCount;
 SecondaryGsivRangeSize;
 SecondaryGsivRangeStart;

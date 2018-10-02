@@ -2,11 +2,12 @@
 // Functions
 
 BTCpuGetBopCode();
-BTCpuGetContext();
-BTCpuProcessInit();
+? BTCpuGetContext;
+? BTCpuProcessInit;
 BTCpuResetToConsistentState();
-BTCpuSetContext();
+? BTCpuSetContext;
 BTCpuSimulate();
+? BTCpuSimulate$filt$0;
 BTCpuTurboThunkControl();
 __C_specific_handler();
 CpupReturnFromSimulatedCode();
@@ -33,11 +34,7 @@ RemoveIoCompletionFault();
 RemoveIoCompletionResume();
 __report_gsfailure();
 RtlCaptureContext();
-RtlFxToFnFrame();
 RtlLookupFunctionEntry();
-RtlpWow64CtxFromAmd64();
-RtlpWow64GetContextOnAmd64();
-RtlpWow64SetContextOnAmd64();
 RtlUnhandledExceptionFilter();
 RtlVirtualUnwind();
 RunSimulatedCode();
@@ -73,9 +70,6 @@ TurboDispatchJumpAddressEnd();
 TurboDispatchJumpAddressStart();
 WaitForMultipleObjects();
 WaitForMultipleObjects32();
-XRestoreSHelper();
-XSaveCHelper();
-XSaveSHelper();
 
 // Globals
 
