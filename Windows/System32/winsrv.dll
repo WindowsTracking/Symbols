@@ -2,44 +2,29 @@
 // Functions
 
 ApiSetQueryApiSetPresence();
-DefaultProcessShutdown();
 __delayLoadHelper2();
 _DllMainCRTStartupForGS();
-_ExitWindowsEx();
-__GSHandlerCheck();
-__GSHandlerCheckCommon();
 _guard_check_icall_nop();
 _guard_dispatch_icall_nop();
-InternalCreateCallbackThread();
 IsConhost();
-IsUserMinInitializePresent();
 IsUserServerDllInitializationExtPresent();
-memset();
+IsUserServerDllInitializationMinPresent();
 __report_gsfailure();
 __security_check_cookie();
 __security_init_cookie();
-SrvCreateSystemThreads();
 SrvEndTask();
-SrvExitWindowsEx();
 __tailMerge_ext_ms_win_core_winsrv_l1_1_0_dll();
-__tailMerge_ext_ms_win_rtcore_ntuser_mininit_l1_1_0_dll();
+__tailMerge_ext_ms_win_core_winsrv_min_l1_1_0_dll();
 UserClientShutdown();
-UserClientShutdownProcesses();
+UserCreateCallbackThread();
 UserHardError();
-UserIdlePowerThread();
 ? UserServerDllInitialization;
-UserSessionThread();
 
 // Globals
 
 __DefaultResolveDelayLoadedAPIFlags;
 __DELAY_IMPORT_DESCRIPTOR_ext_ms_win_core_winsrv_l1_1_0_dll;
-__DELAY_IMPORT_DESCRIPTOR_ext_ms_win_rtcore_ntuser_mininit_l1_1_0_dll;
-__dynamic_value_reloc_table;
-ghIdlePowerThread;
-ghSessionInitializedEvent;
-ghSessionThread;
-ghSessionThreadShutdownEvent;
+__DELAY_IMPORT_DESCRIPTOR_ext_ms_win_core_winsrv_min_l1_1_0_dll;
 __guard_check_icall_fptr;
 __guard_dispatch_icall_fptr;
 __guard_fids_count;
@@ -50,7 +35,7 @@ __guard_iat_table;
 __guard_longjmp_count;
 __guard_longjmp_table;
 __hmod__ext_ms_win_core_winsrv_l1_1_0_dll;
-__hmod__ext_ms_win_rtcore_ntuser_mininit_l1_1_0_dll;
+__hmod__ext_ms_win_core_winsrv_min_l1_1_0_dll;
 __IMPORT_DESCRIPTOR_api-ms-win-core-apiquery-l1-1-0;
 __IMPORT_DESCRIPTOR_api-ms-win-core-delayload-l1-1-0;
 __IMPORT_DESCRIPTOR_api-ms-win-core-delayload-l1-1-1;
@@ -76,6 +61,4 @@ __ResolveDelayLoadedAPIFlags;
 __security_cookie;
 __security_cookie_complement;
 __sz_ext_ms_win_core_winsrv_l1_1_0_dll;
-__sz_ext_ms_win_rtcore_ntuser_mininit_l1_1_0_dll;
-UserServerApiDispatchTable;
-UserServerApiServerValidTable;
+__sz_ext_ms_win_core_winsrv_min_l1_1_0_dll;

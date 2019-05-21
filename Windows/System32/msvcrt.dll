@@ -19,7 +19,7 @@
 ? ``eh vector destructor iterator''::`1'::fin$0;
 ? `dynamic atexit destructor for '__ExceptionPtr::m_badAllocExceptionPtr'';
 ? `dynamic initializer for '__ExceptionPtr::m_badAllocExceptionPtr'';
-? `std::shared_ptr<__ExceptionPtr>::_Resetp<__ExceptionPtr,void (__cdecl*)(__ExceptionPtr * __ptr64),_DebugMallocator<int> >'::`1'::catch$1;
+? `std::shared_ptr<__ExceptionPtr>::_Resetp<__ExceptionPtr,void (__cdecl*)(__ExceptionPtr *),_DebugMallocator<int> >'::`1'::catch$1;
 ? `std::shared_ptr<__ExceptionPtr>::_Resetp<__ExceptionPtr>'::`1'::catch$1;
 ? `type_info::name'::`1'::fin$0;
 abort();
@@ -2100,7 +2100,6 @@ _daylight;
 _days;
 __dnames;
 _dstbias;
-__dynamic_value_reloc_table;
 _environ;
 __error_mode;
 private: static class std::shared_ptr<class __ExceptionPtr> __ExceptionPtr::m_badAllocExceptionPtr;

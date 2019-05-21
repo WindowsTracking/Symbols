@@ -89,7 +89,6 @@ DebugDpfltrId;
 DebugInfoLevel;
 __DefaultResolveDelayLoadedAPIFlags;
 __DELAY_IMPORT_DESCRIPTOR_SspiSrv_dll;
-__dynamic_value_reloc_table;
 gHasInitLsaIfConfig;
 gLsaIfLock;
 gLsapAliasAdminsSid;

@@ -1,5 +1,5 @@
 /*
- * PDB file: csrss.pdb\B15357E36F5EECABBEF200DE7D6D4B111\csrss.pdb
+ * PDB file: csrss.pdb\FEDF7396216AB75E80990B9A8F2CE01F1\csrss.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -40,6 +40,7 @@ struct _DISPATCHER_HEADER;
 struct _DMA_ADAPTER;
 struct _DMA_ADAPTER_INFO;
 struct _DMA_ADAPTER_INFO_V1;
+struct _DMA_COMMON_BUFFER_VECTOR;
 enum DMA_COMPLETION_STATUS;
 struct _DMA_OPERATIONS;
 struct _DMA_TRANSFER_INFO;
@@ -68,7 +69,6 @@ enum _FILE_INFORMATION_CLASS;
 struct _FILE_NETWORK_OPEN_INFORMATION;
 struct _FILE_OBJECT;
 struct _FILE_STANDARD_INFORMATION;
-struct _FLS_CALLBACK_INFO;
 enum _FSINFOCLASS;
 struct _GDI_TEB_BATCH;
 struct _GENERAL_LOOKASIDE;
@@ -215,6 +215,7 @@ union _ULARGE_INTEGER;
 struct _UNICODE_STRING;
 enum _USER_ACTIVITY_PRESENCE;
 struct _VPB;
+enum _VRF_TRIAGE_CONTEXT;
 struct _WAIT_CONTEXT_BLOCK;
 enum _WHEA_ERROR_PACKET_DATA_FORMAT;
 union _WHEA_ERROR_PACKET_FLAGS;
@@ -722,6 +723,7 @@ typedef enum _DEVICE_USAGE_NOTIFICATION_TYPE
   DeviceUsageTypeDumpFile = 3,
   DeviceUsageTypeBoot = 4,
   DeviceUsageTypePostDisplay = 5,
+  DeviceUsageTypeGuestAssigned = 6,
 } DEVICE_USAGE_NOTIFICATION_TYPE, *PDEVICE_USAGE_NOTIFICATION_TYPE;
 
 typedef enum _DEVICE_WAKE_DEPTH
@@ -913,6 +915,8 @@ typedef struct _DMA_ADAPTER_INFO_V1
   unsigned long MinimumTransferUnit;
 } DMA_ADAPTER_INFO_V1, *PDMA_ADAPTER_INFO_V1;
 
+struct _DMA_COMMON_BUFFER_VECTOR;
+
 enum DMA_COMPLETION_STATUS
 {
   DmaComplete = 0,
@@ -958,6 +962,10 @@ typedef struct _DMA_OPERATIONS
   void* LeaveDmaDomain /* function */;
   void* GetDmaDomain /* function */;
   void* AllocateCommonBufferWithBounds /* function */;
+  void* AllocateCommonBufferVector /* function */;
+  void* GetCommonBufferFromVectorByIndex /* function */;
+  void* FreeCommonBufferFromVector /* function */;
+  void* FreeCommonBufferVector /* function */;
 } DMA_OPERATIONS, *PDMA_OPERATIONS;
 
 typedef struct _DMA_TRANSFER_INFO
@@ -1326,8 +1334,6 @@ typedef struct _FILE_STANDARD_INFORMATION
   unsigned char Directory;
   char __PADDING__[2];
 } FILE_STANDARD_INFORMATION, *PFILE_STANDARD_INFORMATION;
-
-struct _FLS_CALLBACK_INFO;
 
 typedef enum _FSINFOCLASS
 {
@@ -2481,7 +2487,8 @@ typedef struct _KPRCB
   unsigned char CpuVendor;
   unsigned char CoresPerPhysicalProcessor;
   unsigned char LogicalProcessorsPerCore;
-  unsigned __int64 PrcbPad04[6];
+  unsigned __int64 TscFrequency;
+  unsigned __int64 PrcbPad04[5];
   struct _KNODE* ParentNode;
   unsigned __int64 GroupSetMember;
   unsigned char Group;
@@ -2659,7 +2666,7 @@ typedef struct _KUSER_SHARED_DATA
       unsigned char Reserved : 2; /* bit position: 6 */
     }; /* bitfield */
   };
-  unsigned char Reserved6[2];
+  unsigned short CyclesPerYield;
   volatile unsigned long ActiveConsoleId;
   volatile unsigned long DismountCount;
   unsigned long ComPlusPackage;
@@ -3113,11 +3120,8 @@ typedef struct _PEB
   const struct _ACTIVATION_CONTEXT_DATA* SystemDefaultActivationContextData;
   struct _ASSEMBLY_STORAGE_MAP* SystemAssemblyStorageMap;
   unsigned __int64 MinimumStackCommit;
-  struct _FLS_CALLBACK_INFO* FlsCallback;
-  struct _LIST_ENTRY FlsListHead;
-  void* FlsBitmap;
-  unsigned long FlsBitmapBits[4];
-  unsigned long FlsHighIndex;
+  void* SparePointers[4];
+  unsigned long SpareUlongs[5];
   void* WerRegistrationData;
   void* WerShipAssertPtr;
   void* pUnused;
@@ -3327,7 +3331,7 @@ typedef enum _PS_MITIGATION_OPTION
   PS_MITIGATION_OPTION_RESTRICT_INDIRECT_BRANCH_PREDICTION = 28,
   PS_MITIGATION_OPTION_SPECULATIVE_STORE_BYPASS_DISABLE = 29,
   PS_MITIGATION_OPTION_ALLOW_DOWNGRADE_DYNAMIC_CODE_POLICY = 30,
-  PS_MITIGATION_OPTION_CET_SHADOW_STACKS = 31,
+  PS_MITIGATION_OPTION_CET_USER_SHADOW_STACKS = 31,
 } PS_MITIGATION_OPTION, *PPS_MITIGATION_OPTION;
 
 typedef struct _PS_MITIGATION_OPTIONS_MAP
@@ -3640,6 +3644,10 @@ typedef struct _RTL_USER_PROCESS_PARAMETERS
   unsigned long ProcessGroupId;
   unsigned long LoaderThreads;
   struct _UNICODE_STRING RedirectionDllName;
+  struct _UNICODE_STRING HeapPartitionName;
+  unsigned __int64* DefaultThreadpoolCpuSetMasks;
+  unsigned long DefaultThreadpoolCpuSetMaskCount;
+  long __PADDING__[1];
 } RTL_USER_PROCESS_PARAMETERS, *PRTL_USER_PROCESS_PARAMETERS;
 
 typedef struct _SCATTER_GATHER_ELEMENT
@@ -4072,6 +4080,18 @@ typedef struct _VPB
   wchar_t VolumeLabel[32];
 } VPB, *PVPB;
 
+typedef enum _VRF_TRIAGE_CONTEXT
+{
+  VRF_TRIAGE_CONTEXT_NONE = 0,
+  VRF_TRIAGE_CONTEXT_DEFAULT = 1,
+  VRF_TRIAGE_CONTEXT_DEVELOPMENT = 1,
+  VRF_TRIAGE_CONTEXT_CERTIFICATION = 2,
+  VRF_TRIAGE_CONTEXT_FLIGHT_TARGETED = 3,
+  VRF_TRIAGE_CONTEXT_FLIGHT_DIAGNOSTICS = 4,
+  VRF_TRIAGE_CONTEXT_FLIGHT_MONITORING = 5,
+  NUM_VRF_TRIAGE_CONTEXTS = 6,
+} VRF_TRIAGE_CONTEXT, *PVRF_TRIAGE_CONTEXT;
+
 typedef struct _WAIT_CONTEXT_BLOCK
 {
   union
@@ -4185,7 +4205,8 @@ typedef union _WHEA_ERROR_RECORD_HEADER_FLAGS
       unsigned long Recovered : 1; /* bit position: 0 */
       unsigned long PreviousError : 1; /* bit position: 1 */
       unsigned long Simulated : 1; /* bit position: 2 */
-      unsigned long Reserved : 29; /* bit position: 3 */
+      unsigned long DeviceDriver : 1; /* bit position: 3 */
+      unsigned long Reserved : 28; /* bit position: 4 */
     }; /* bitfield */
     unsigned long AsULONG;
   };
@@ -4277,7 +4298,10 @@ typedef enum _WHEA_ERROR_SOURCE_TYPE
   WheaErrSrcTypeIPFCPE = 11,
   WheaErrSrcTypeGenericV2 = 12,
   WheaErrSrcTypeSCIGenericV2 = 13,
-  WheaErrSrcTypeMax = 14,
+  WheaErrSrcTypeBMC = 14,
+  WheaErrSrcTypePMEM = 15,
+  WheaErrSrcTypeDeviceDriver = 16,
+  WheaErrSrcTypeMax = 17,
 } WHEA_ERROR_SOURCE_TYPE, *PWHEA_ERROR_SOURCE_TYPE;
 
 typedef enum _WHEA_ERROR_TYPE
@@ -4289,6 +4313,7 @@ typedef enum _WHEA_ERROR_TYPE
   WheaErrTypePCIXBus = 4,
   WheaErrTypePCIXDevice = 5,
   WheaErrTypeGeneric = 6,
+  WheaErrTypePmem = 7,
 } WHEA_ERROR_TYPE, *PWHEA_ERROR_TYPE;
 
 typedef struct _WHEA_EVENT_LOG_ENTRY
@@ -4300,7 +4325,15 @@ typedef union _WHEA_EVENT_LOG_ENTRY_FLAGS
 {
   union
   {
-    unsigned long Reserved : 32; /* bit position: 0 */
+    struct /* bitfield */
+    {
+      unsigned long LogTelemetry : 1; /* bit position: 0 */
+      unsigned long LogInternalEtw : 1; /* bit position: 1 */
+      unsigned long LogBlackbox : 1; /* bit position: 2 */
+      unsigned long LogSel : 1; /* bit position: 3 */
+      unsigned long RawSel : 1; /* bit position: 4 */
+      unsigned long Reserved : 27; /* bit position: 5 */
+    }; /* bitfield */
     unsigned long AsULONG;
   };
 } WHEA_EVENT_LOG_ENTRY_FLAGS, *PWHEA_EVENT_LOG_ENTRY_FLAGS;
@@ -4321,7 +4354,33 @@ typedef enum _WHEA_EVENT_LOG_ENTRY_ID
 {
   WheaEventLogEntryIdCmcPollingTimeout = -2147483647,
   WheaEventLogEntryIdWheaInit = -2147483646,
-  WheaEventLogEntryIdMax = -2147483645,
+  WheaEventLogEntryIdCmcSwitchToPolling = -2147483645,
+  WheaEventLogEntryIdDroppedCorrectedError = -2147483644,
+  WheaEventLogEntryIdStartedReportHwError = -2147483643,
+  WheaEventLogEntryIdPFAMemoryOfflined = -2147483642,
+  WheaEventLogEntryIdPFAMemoryRemoveMonitor = -2147483641,
+  WheaEventLogEntryIdPFAMemoryPolicy = -2147483640,
+  WheaEventLogEntryIdPshedInjectError = -2147483639,
+  WheaEventLogEntryIdOscCapabilities = -2147483638,
+  WheaEventLogEntryIdPshedPluginRegister = -2147483637,
+  WheaEventLogEntryIdAddRemoveErrorSource = -2147483636,
+  WheaEventLogEntryIdWorkQueueItem = -2147483635,
+  WheaEventLogEntryIdAttemptErrorRecovery = -2147483634,
+  WheaEventLogEntryIdMcaFoundErrorInBank = -2147483633,
+  WheaEventLogEntryIdMcaStuckErrorCheck = -2147483632,
+  WheaEventLogEntryIdMcaErrorCleared = -2147483631,
+  WheaEventLogEntryIdClearedPoison = -2147483630,
+  WheaEventLogEntryIdProcessEINJ = -2147483629,
+  WheaEventLogEntryIdProcessHEST = -2147483628,
+  WheaEventLogEntryIdCreateGenericRecord = -2147483627,
+  WheaEventLogEntryIdErrorRecord = -2147483626,
+  WheaEventLogEntryIdErrorRecordLimit = -2147483625,
+  WheaEventLogEntryIdSELEventFailed = -2147483624,
+  WheaEventLogEntryIdErrSrcArrayInvalid = -2147483623,
+  WheaEventLogEntryIdErrSrcInvalid = -2147483616,
+  WheaEventLogEntryIdGenericErrMemMap = -2147483615,
+  WheaEventLogEntryIdPshedCallbackCollision = -2147483614,
+  WheaEventLogEntryIdSELBugCheckProgress = -2147483613,
 } WHEA_EVENT_LOG_ENTRY_ID, *PWHEA_EVENT_LOG_ENTRY_ID;
 
 typedef enum _WHEA_EVENT_LOG_ENTRY_TYPE
@@ -4464,7 +4523,6 @@ __security_init_cookie_ex();
 
 // Globals
 
-__dynamic_value_reloc_table;
 __enclave_config;
 __guard_check_icall_fptr;
 __guard_dispatch_icall_fptr;
