@@ -540,7 +540,7 @@ WahCreateSocketHandle();
 WahDisableNonIFSHandleSupport();
 WahEnableNonIFSHandleSupport();
 ? WahEnumerateHandleContexts;
-? WahInsertHandleContext;
+WahInsertHandleContext();
 WahNotifyAllProcesses();
 ? WahOpenApcHelper;
 WahOpenCurrentThread();

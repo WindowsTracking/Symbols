@@ -1,5 +1,5 @@
 /*
- * PDB file: ntdll.pdb\B54F3499813EBCF139AEFDD664E98FDD1\ntdll.pdb
+ * PDB file: ntdll.pdb\0C2E19EA1901E9B82E4567D2D21E56D21\ntdll.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -259,6 +259,7 @@ struct _KPROCESS;
 enum _KPROCESS_PPM_POLICY;
 enum _KPROCESS_STATE;
 struct _KPROCESSOR_STATE;
+union _KQOS_GROUPING_SETS;
 struct _KQUEUE;
 struct _KREQUEST_PACKET;
 struct _KSCB;
@@ -5582,6 +5583,7 @@ typedef struct _KNODE
   unsigned __int64 DeepIdleSet;
   unsigned __int64 IdleConstrainedSet;
   unsigned __int64 NonParkedSet;
+  unsigned __int64 SoftParkedSet;
   unsigned __int64 NonIsrTargetedSet;
   long ParkLock;
   unsigned short ThreadSeed;
@@ -5608,8 +5610,9 @@ typedef struct _KNODE
   unsigned char Spare10;
   struct _KHETERO_PROCESSOR_SET HeteroSets[5];
   unsigned __int64 PpmConfiguredQosSets[4];
+  union _KQOS_GROUPING_SETS QosGroupingSets;
   unsigned __int64 LLCLeaders;
-  long __PADDING__[10];
+  long __PADDING__[6];
 } KNODE, *PKNODE;
 
 typedef enum _KOBJECTS
@@ -5832,7 +5835,7 @@ typedef struct _KPRCB
   struct _GENERAL_LOOKASIDE_POOL PPNxPagedLookasideList[32];
   struct _GENERAL_LOOKASIDE_POOL PPNPagedLookasideList[32];
   struct _GENERAL_LOOKASIDE_POOL PPPagedLookasideList[32];
-  unsigned __int64 PrcbPad20;
+  unsigned __int64 MsrIa32TsxCtrl;
   struct _SINGLE_LIST_ENTRY DeferredReadyListHead;
   volatile long MmPageFaultCount;
   volatile long MmCopyOnWriteCount;
@@ -6116,10 +6119,10 @@ typedef struct _KPRCB
   unsigned long PrcbPad138b;
   unsigned __int64 PrcbPad138c;
   unsigned short PrcbPad138d;
-  unsigned short PrcbPad138e;
+  unsigned short VerwSelector;
+  unsigned long PrcbPad139;
   unsigned long DbgMceNestingLevel;
   unsigned long DbgMceFlags;
-  unsigned long PrcbPad139b;
   unsigned __int64 PrcbPad140[505];
   unsigned __int64 PrcbPad140a[8];
   unsigned __int64 PrcbPad141[504];
@@ -6242,6 +6245,12 @@ typedef struct _KPROCESSOR_STATE
   struct _KSPECIAL_REGISTERS SpecialRegisters;
   struct _CONTEXT ContextFrame;
 } KPROCESSOR_STATE, *PKPROCESSOR_STATE;
+
+typedef union _KQOS_GROUPING_SETS
+{
+  unsigned __int64 SingleCoreSet;
+  unsigned __int64 SmtSet;
+} KQOS_GROUPING_SETS, *PKQOS_GROUPING_SETS;
 
 typedef struct _KQUEUE
 {
@@ -9054,7 +9063,7 @@ typedef struct _PROCESSOR_POWER_STATE
   unsigned char NonInterruptibleTransition;
   unsigned char PepWokenTransition;
   unsigned char HvTargetState;
-  unsigned char Reserved;
+  unsigned char SoftParked;
   unsigned long TargetIdleState;
   struct _PROC_IDLE_POLICY IdlePolicy;
   volatile union _PPM_IDLE_SYNCHRONIZATION_STATE Synchronization;
@@ -15083,7 +15092,7 @@ RtlQueryModuleInformation();
 ? RtlQueryPackageClaims;
 RtlQueryPackageIdentity();
 RtlQueryPackageIdentityEx();
-? RtlQueryPerformanceCounter;
+RtlQueryPerformanceCounter();
 RtlQueryPerformanceFrequency();
 RtlQueryProcessBackTraceInformation();
 ? RtlQueryProcessBackTraceInformation$fin$0;

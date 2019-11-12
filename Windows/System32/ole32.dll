@@ -1,5 +1,5 @@
 /*
- * PDB file: ole32.pdb\EC385CEE495BF16259FEC3724F96A5831\ole32.pdb
+ * PDB file: ole32.pdb\CF75A06F65B94C035B77ABBEFE9F7BA31\ole32.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -48520,7 +48520,10 @@ enum POWER_MONITOR_REQUEST_REASON
   MonitorRequestReasonPdcSignalHolographicShell = 43,
   MonitorRequestReasonPdcSignalFingerprint = 44,
   MonitorRequestReasonDirectedDrips = 45,
-  MonitorRequestReasonMax = 46,
+  MonitorRequestReasonDim = 46,
+  MonitorRequestReasonBuiltinPanel = 47,
+  MonitorRequestReasonDisplayRequiredUnDim = 48,
+  MonitorRequestReasonMax = 49,
 };
 
 typedef enum _POWER_MONITOR_REQUEST_TYPE
@@ -55485,6 +55488,7 @@ typedef enum _SECURE_SETTING_VALUE_TYPE
   SecureSettingValueTypeUlong = 1,
   SecureSettingValueTypeBinary = 2,
   SecureSettingValueTypeString = 3,
+  SecureSettingValueTypeUnknown = 4,
 } SECURE_SETTING_VALUE_TYPE, *PSECURE_SETTING_VALUE_TYPE;
 
 enum SECURELOCKCODE
@@ -60393,7 +60397,10 @@ typedef struct _SYSTEM_SPECULATION_CONTROL_INFORMATION
       unsigned long HvL1tfMigitationNotEnabled_LoadOption : 1; /* bit position: 21 */
       unsigned long HvL1tfMigitationNotEnabled_CoreScheduler : 1; /* bit position: 22 */
       unsigned long EnhancedIbrsReported : 1; /* bit position: 23 */
-      unsigned long Reserved : 8; /* bit position: 24 */
+      unsigned long MdsHardwareProtected : 1; /* bit position: 24 */
+      unsigned long MbClearEnabled : 1; /* bit position: 25 */
+      unsigned long MbClearReported : 1; /* bit position: 26 */
+      unsigned long Reserved : 5; /* bit position: 27 */
     }; /* bitfield */
   } SpeculationControlFlags;
 } SYSTEM_SPECULATION_CONTROL_INFORMATION, *PSYSTEM_SPECULATION_CONTROL_INFORMATION;

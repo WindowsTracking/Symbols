@@ -1,5 +1,5 @@
 /*
- * PDB file: fltMgr.pdb\86770AC4A8D705D917C56CF75CC382381\fltMgr.pdb
+ * PDB file: fltMgr.pdb\F99A6E24134785EDAFFB506D7E121C681\fltMgr.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -5807,7 +5807,7 @@ FltpRemoveCallbacksForInstance();
 FltpRemoveFinalComponent();
 FltpRemoveIrp();
 ? FltpRemoveMessageWaiter;
-? FltpRemoveVolumeContextsForFilter;
+FltpRemoveVolumeContextsForFilter();
 FltPrepareComplete();
 FltPrepareToReuseEcp();
 FltPrePrepareComplete();
@@ -6314,13 +6314,13 @@ VerifierObjectTypeNames;
 WPP_0d57b338101a31a719c39a4e09715b3e_Traceguids;
 WPP_19c78ccaf51134d9ad73507bc744d594_Traceguids;
 WPP_379d4bb82040314179ab3b5a13d22875_Traceguids;
+WPP_391669b02d8d3a8cac6c14ac85cf79a1_Traceguids;
 WPP_39a1600fdddd34ead9da08e9cc05f806_Traceguids;
 WPP_45f7b0f80edc3ce90a5c052a6348a357_Traceguids;
 WPP_46c0b2541379331ad927204df6f63ed2_Traceguids;
 WPP_5105c04d9d6f317ea2cc48692510652e_Traceguids;
 WPP_519c0920c4433aafee0b6e725e84cba7_Traceguids;
 WPP_619a1c838f9934d0de845d704da93a49_Traceguids;
-WPP_6c54b9badec33aad9a357d3d8a969e4d_Traceguids;
 WPP_6cf6bafe7e1531008c2942bd9b4512d7_Traceguids;
 WPP_7840179beb6b390ca475d2dc9baf15fe_Traceguids;
 WPP_94a1ca5a919830e54c83b7ae96f53c07_Traceguids;

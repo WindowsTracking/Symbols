@@ -323,7 +323,7 @@ BasepConfigureAppCertDlls();
 ? BasepConstructSxsCreateProcessMessage;
 BasepCopyEncryption();
 ? BasepCopyEncryption$fin$0;
-? BasepCreateActCtx;
+BasepCreateActCtx();
 BasepDoTapeOperation();
 ? BasepFindActCtxSection_CheckAndConvertParameters;
 ? BasepFindActCtxSection_FillOutReturnData;

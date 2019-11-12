@@ -1,5 +1,5 @@
 /*
- * PDB file: combase.pdb\D15B0EE42A165244226A522796F15E871\combase.pdb
+ * PDB file: combase.pdb\47A7451DB472F3542564D234B47CE8AC1\combase.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -125,6 +125,7 @@ enum _ALPC_PORT_INFORMATION_CLASS;
 struct _ALPC_PORT_MESSAGE_ZONE_INFORMATION;
 struct _ALPC_SECURITY_ATTR;
 struct _ALPC_SERVER_INFORMATION;
+struct _ALPC_SERVER_SESSION_INFORMATION;
 struct _ALPC_TOKEN_ATTR;
 struct _ALPC_WORK_ON_BEHALF_ATTR;
 struct _ALPC_WORK_ON_BEHALF_TICKET;
@@ -22849,6 +22850,7 @@ typedef enum _ALPC_PORT_INFORMATION_CLASS
   AlpcRegisterCallbackInformation = 9,
   AlpcCompletionListRundownInformation = 10,
   AlpcWaitForPortReferences = 11,
+  AlpcServerSessionInformation = 12,
 } ALPC_PORT_INFORMATION_CLASS, *PALPC_PORT_INFORMATION_CLASS;
 
 typedef struct _ALPC_PORT_MESSAGE_ZONE_INFORMATION
@@ -22881,6 +22883,12 @@ typedef struct _ALPC_SERVER_INFORMATION
     } Out;
   };
 } ALPC_SERVER_INFORMATION, *PALPC_SERVER_INFORMATION;
+
+typedef struct _ALPC_SERVER_SESSION_INFORMATION
+{
+  unsigned long SessionId;
+  unsigned long ProcessId;
+} ALPC_SERVER_SESSION_INFORMATION, *PALPC_SERVER_SESSION_INFORMATION;
 
 typedef struct _ALPC_TOKEN_ATTR
 {
@@ -29224,9 +29232,7 @@ class ComTelemetryProvider::CallContext
 {
 };
 
-class ComTelemetryProvider::Instance::__l2::<lambda_e3011b5478d3ecd7a1ca6f8e4e7e228c>
-{
-};
+class ComTelemetryProvider::Instance::__l2::<lambda_e3011b5478d3ecd7a1ca6f8e4e7e228c>;
 
 struct ComTelemetryProvider::StaticHandle
 {
@@ -60483,13 +60489,7 @@ typedef struct __midl_frag1038_t
 
 typedef struct __midl_frag103_t
 {
-  struct _NDR64_BOGUS_STRUCTURE_HEADER_FORMAT frag1;
-  struct
-  {
-    struct _NDR64_SIMPLE_REGION_FORMAT frag1;
-    struct _NDR64_EMBEDDED_COMPLEX_FORMAT frag2;
-    struct _NDR64_SIMPLE_MEMBER_FORMAT frag3;
-  } frag2;
+  struct _NDR64_POINTER_FORMAT frag1;
 } _midl_frag103_t, *P_midl_frag103_t;
 
 typedef struct __midl_frag1041_t
@@ -60515,9 +60515,57 @@ typedef struct __midl_frag1044_t
 
 typedef struct __midl_frag104_t
 {
-  struct _NDR64_PROC_FORMAT frag1;
-  struct _NDR64_PARAM_FORMAT frag2;
-  struct _NDR64_PARAM_FORMAT frag3;
+  struct _NDR64_NON_ENCAPSULATED_UNION frag1;
+  struct _NDR64_UNION_ARM_SELECTOR frag2;
+  struct _NDR64_UNION_ARM frag3;
+  struct _NDR64_UNION_ARM frag4;
+  struct _NDR64_UNION_ARM frag5;
+  struct _NDR64_UNION_ARM frag6;
+  struct _NDR64_UNION_ARM frag7;
+  struct _NDR64_UNION_ARM frag8;
+  struct _NDR64_UNION_ARM frag9;
+  struct _NDR64_UNION_ARM frag10;
+  struct _NDR64_UNION_ARM frag11;
+  struct _NDR64_UNION_ARM frag12;
+  struct _NDR64_UNION_ARM frag13;
+  struct _NDR64_UNION_ARM frag14;
+  struct _NDR64_UNION_ARM frag15;
+  struct _NDR64_UNION_ARM frag16;
+  struct _NDR64_UNION_ARM frag17;
+  struct _NDR64_UNION_ARM frag18;
+  struct _NDR64_UNION_ARM frag19;
+  struct _NDR64_UNION_ARM frag20;
+  struct _NDR64_UNION_ARM frag21;
+  struct _NDR64_UNION_ARM frag22;
+  struct _NDR64_UNION_ARM frag23;
+  struct _NDR64_UNION_ARM frag24;
+  struct _NDR64_UNION_ARM frag25;
+  struct _NDR64_UNION_ARM frag26;
+  struct _NDR64_UNION_ARM frag27;
+  struct _NDR64_UNION_ARM frag28;
+  struct _NDR64_UNION_ARM frag29;
+  struct _NDR64_UNION_ARM frag30;
+  struct _NDR64_UNION_ARM frag31;
+  struct _NDR64_UNION_ARM frag32;
+  struct _NDR64_UNION_ARM frag33;
+  struct _NDR64_UNION_ARM frag34;
+  struct _NDR64_UNION_ARM frag35;
+  struct _NDR64_UNION_ARM frag36;
+  struct _NDR64_UNION_ARM frag37;
+  struct _NDR64_UNION_ARM frag38;
+  struct _NDR64_UNION_ARM frag39;
+  struct _NDR64_UNION_ARM frag40;
+  struct _NDR64_UNION_ARM frag41;
+  struct _NDR64_UNION_ARM frag42;
+  struct _NDR64_UNION_ARM frag43;
+  struct _NDR64_UNION_ARM frag44;
+  struct _NDR64_UNION_ARM frag45;
+  struct _NDR64_UNION_ARM frag46;
+  struct _NDR64_UNION_ARM frag47;
+  struct _NDR64_UNION_ARM frag48;
+  struct _NDR64_UNION_ARM frag49;
+  unsigned int frag50;
+  long __PADDING__[1];
 } _midl_frag104_t, *P_midl_frag104_t;
 
 typedef struct __midl_frag1050_t
@@ -60908,18 +60956,8 @@ typedef struct __midl_frag1237_t
 
 typedef struct __midl_frag123_t
 {
-  struct _NDR64_STRUCTURE_HEADER_FORMAT frag1;
-  struct
-  {
-    struct _NDR64_NO_REPEAT_FORMAT frag1;
-    struct _NDR64_POINTER_INSTANCE_HEADER_FORMAT frag2;
-    struct _NDR64_POINTER_FORMAT frag3;
-    struct _NDR64_NO_REPEAT_FORMAT frag4;
-    struct _NDR64_POINTER_INSTANCE_HEADER_FORMAT frag5;
-    struct _NDR64_POINTER_FORMAT frag6;
-    unsigned char frag7;
-    char __PADDING__[7];
-  } frag2;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
 } _midl_frag123_t, *P_midl_frag123_t;
 
 typedef struct __midl_frag1242_t
@@ -60956,8 +60994,11 @@ typedef struct __midl_frag1256_t
 
 typedef struct __midl_frag125_t
 {
-  struct _NDR64_CONF_ARRAY_HEADER_FORMAT frag1;
-  struct _NDR64_ARRAY_ELEMENT_INFO frag2;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
+  struct _NDR64_PARAM_FORMAT frag3;
+  struct _NDR64_PARAM_FORMAT frag4;
+  struct _NDR64_PARAM_FORMAT frag5;
 } _midl_frag125_t, *P_midl_frag125_t;
 
 typedef struct __midl_frag1263_t
@@ -61065,7 +61106,7 @@ typedef struct __midl_frag129_t
 
 typedef struct __midl_frag12_t
 {
-  struct _NDR64_CONF_VAR_BOGUS_ARRAY_HEADER_FORMAT frag1;
+  struct _NDR64_STRUCTURE_HEADER_FORMAT frag1;
 } _midl_frag12_t, *P_midl_frag12_t;
 
 typedef struct __midl_frag1301_t
@@ -61283,8 +61324,11 @@ typedef struct __midl_frag1399_t
 
 typedef struct __midl_frag13_t
 {
-  unsigned int frag1;
-  struct _NDR64_EXPR_VAR frag2;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
+  struct _NDR64_PARAM_FORMAT frag3;
+  struct _NDR64_PARAM_FORMAT frag4;
+  struct _NDR64_PARAM_FORMAT frag5;
 } _midl_frag13_t, *P_midl_frag13_t;
 
 typedef struct __midl_frag1402_t
@@ -61759,9 +61803,107 @@ typedef struct __midl_frag159_t
 
 typedef struct __midl_frag15_t
 {
-  struct _NDR64_PROC_FORMAT frag1;
-  struct _NDR64_PARAM_FORMAT frag2;
-  struct _NDR64_PARAM_FORMAT frag3;
+  struct _NDR64_NON_ENCAPSULATED_UNION frag1;
+  struct _NDR64_UNION_ARM_SELECTOR frag2;
+  struct _NDR64_UNION_ARM frag3;
+  struct _NDR64_UNION_ARM frag4;
+  struct _NDR64_UNION_ARM frag5;
+  struct _NDR64_UNION_ARM frag6;
+  struct _NDR64_UNION_ARM frag7;
+  struct _NDR64_UNION_ARM frag8;
+  struct _NDR64_UNION_ARM frag9;
+  struct _NDR64_UNION_ARM frag10;
+  struct _NDR64_UNION_ARM frag11;
+  struct _NDR64_UNION_ARM frag12;
+  struct _NDR64_UNION_ARM frag13;
+  struct _NDR64_UNION_ARM frag14;
+  struct _NDR64_UNION_ARM frag15;
+  struct _NDR64_UNION_ARM frag16;
+  struct _NDR64_UNION_ARM frag17;
+  struct _NDR64_UNION_ARM frag18;
+  struct _NDR64_UNION_ARM frag19;
+  struct _NDR64_UNION_ARM frag20;
+  struct _NDR64_UNION_ARM frag21;
+  struct _NDR64_UNION_ARM frag22;
+  struct _NDR64_UNION_ARM frag23;
+  struct _NDR64_UNION_ARM frag24;
+  struct _NDR64_UNION_ARM frag25;
+  struct _NDR64_UNION_ARM frag26;
+  struct _NDR64_UNION_ARM frag27;
+  struct _NDR64_UNION_ARM frag28;
+  struct _NDR64_UNION_ARM frag29;
+  struct _NDR64_UNION_ARM frag30;
+  struct _NDR64_UNION_ARM frag31;
+  struct _NDR64_UNION_ARM frag32;
+  struct _NDR64_UNION_ARM frag33;
+  struct _NDR64_UNION_ARM frag34;
+  struct _NDR64_UNION_ARM frag35;
+  struct _NDR64_UNION_ARM frag36;
+  struct _NDR64_UNION_ARM frag37;
+  struct _NDR64_UNION_ARM frag38;
+  struct _NDR64_UNION_ARM frag39;
+  struct _NDR64_UNION_ARM frag40;
+  struct _NDR64_UNION_ARM frag41;
+  struct _NDR64_UNION_ARM frag42;
+  struct _NDR64_UNION_ARM frag43;
+  struct _NDR64_UNION_ARM frag44;
+  struct _NDR64_UNION_ARM frag45;
+  struct _NDR64_UNION_ARM frag46;
+  struct _NDR64_UNION_ARM frag47;
+  struct _NDR64_UNION_ARM frag48;
+  struct _NDR64_UNION_ARM frag49;
+  struct _NDR64_UNION_ARM frag50;
+  struct _NDR64_UNION_ARM frag51;
+  struct _NDR64_UNION_ARM frag52;
+  struct _NDR64_UNION_ARM frag53;
+  struct _NDR64_UNION_ARM frag54;
+  struct _NDR64_UNION_ARM frag55;
+  struct _NDR64_UNION_ARM frag56;
+  struct _NDR64_UNION_ARM frag57;
+  struct _NDR64_UNION_ARM frag58;
+  struct _NDR64_UNION_ARM frag59;
+  struct _NDR64_UNION_ARM frag60;
+  struct _NDR64_UNION_ARM frag61;
+  struct _NDR64_UNION_ARM frag62;
+  struct _NDR64_UNION_ARM frag63;
+  struct _NDR64_UNION_ARM frag64;
+  struct _NDR64_UNION_ARM frag65;
+  struct _NDR64_UNION_ARM frag66;
+  struct _NDR64_UNION_ARM frag67;
+  struct _NDR64_UNION_ARM frag68;
+  struct _NDR64_UNION_ARM frag69;
+  struct _NDR64_UNION_ARM frag70;
+  struct _NDR64_UNION_ARM frag71;
+  struct _NDR64_UNION_ARM frag72;
+  struct _NDR64_UNION_ARM frag73;
+  struct _NDR64_UNION_ARM frag74;
+  struct _NDR64_UNION_ARM frag75;
+  struct _NDR64_UNION_ARM frag76;
+  struct _NDR64_UNION_ARM frag77;
+  struct _NDR64_UNION_ARM frag78;
+  struct _NDR64_UNION_ARM frag79;
+  struct _NDR64_UNION_ARM frag80;
+  struct _NDR64_UNION_ARM frag81;
+  struct _NDR64_UNION_ARM frag82;
+  struct _NDR64_UNION_ARM frag83;
+  struct _NDR64_UNION_ARM frag84;
+  struct _NDR64_UNION_ARM frag85;
+  struct _NDR64_UNION_ARM frag86;
+  struct _NDR64_UNION_ARM frag87;
+  struct _NDR64_UNION_ARM frag88;
+  struct _NDR64_UNION_ARM frag89;
+  struct _NDR64_UNION_ARM frag90;
+  struct _NDR64_UNION_ARM frag91;
+  struct _NDR64_UNION_ARM frag92;
+  struct _NDR64_UNION_ARM frag93;
+  struct _NDR64_UNION_ARM frag94;
+  struct _NDR64_UNION_ARM frag95;
+  struct _NDR64_UNION_ARM frag96;
+  struct _NDR64_UNION_ARM frag97;
+  struct _NDR64_UNION_ARM frag98;
+  struct _NDR64_UNION_ARM frag99;
+  unsigned int frag100;
+  long __PADDING__[1];
 } _midl_frag15_t, *P_midl_frag15_t;
 
 typedef struct __midl_frag1606_t
@@ -61909,7 +62051,8 @@ typedef struct __midl_frag1659_t
 
 typedef struct __midl_frag165_t
 {
-  struct _NDR64_CONF_VAR_ARRAY_HEADER_FORMAT frag1;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
 } _midl_frag165_t, *P_midl_frag165_t;
 
 typedef struct __midl_frag1664_t
@@ -61930,8 +62073,7 @@ typedef struct __midl_frag1669_t
 
 typedef struct __midl_frag166_t
 {
-  unsigned int frag1;
-  struct _NDR64_EXPR_VAR frag2;
+  struct _NDR64_STRUCTURE_HEADER_FORMAT frag1;
 } _midl_frag166_t, *P_midl_frag166_t;
 
 typedef struct __midl_frag1671_t
@@ -61960,9 +62102,10 @@ typedef struct __midl_frag1677_t
 
 typedef struct __midl_frag167_t
 {
-  unsigned int frag1;
-  struct _NDR64_EXPR_OPERATOR frag2;
-  struct _NDR64_EXPR_VAR frag3;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
+  struct _NDR64_PARAM_FORMAT frag3;
+  struct _NDR64_PARAM_FORMAT frag4;
 } _midl_frag167_t, *P_midl_frag167_t;
 
 typedef struct __midl_frag1682_t
@@ -61991,9 +62134,18 @@ typedef struct __midl_frag1691_t
 
 typedef struct __midl_frag16_t
 {
-  unsigned int frag1;
-  struct _NDR64_EXPR_OPERATOR frag2;
-  struct _NDR64_EXPR_VAR frag3;
+  struct _NDR64_CONF_VAR_ARRAY_HEADER_FORMAT frag1;
+  struct
+  {
+    struct _NDR64_REPEAT_FORMAT frag1;
+    struct
+    {
+      struct _NDR64_POINTER_INSTANCE_HEADER_FORMAT frag1;
+      struct _NDR64_POINTER_FORMAT frag2;
+    } frag2;
+    unsigned char frag3;
+    char __PADDING__[7];
+  } frag2;
 } _midl_frag16_t, *P_midl_frag16_t;
 
 typedef struct __midl_frag1700_t
@@ -62500,19 +62652,10 @@ typedef struct __midl_frag1838_t
 
 typedef struct __midl_frag183_t
 {
-  struct _NDR64_CONF_ARRAY_HEADER_FORMAT frag1;
-  struct
-  {
-    struct _NDR64_REPEAT_FORMAT frag1;
-    struct
-    {
-      struct _NDR64_POINTER_INSTANCE_HEADER_FORMAT frag1;
-      struct _NDR64_POINTER_FORMAT frag2;
-    } frag2;
-    unsigned char frag3;
-    char __PADDING__[7];
-  } frag2;
-  struct _NDR64_ARRAY_ELEMENT_INFO frag3;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
+  struct _NDR64_PARAM_FORMAT frag3;
+  struct _NDR64_PARAM_FORMAT frag4;
 } _midl_frag183_t, *P_midl_frag183_t;
 
 typedef struct __midl_frag1845_t
@@ -62826,8 +62969,7 @@ typedef struct __midl_frag1948_t
 
 typedef struct __midl_frag194_t
 {
-  struct _NDR64_CONF_ARRAY_HEADER_FORMAT frag1;
-  struct _NDR64_ARRAY_ELEMENT_INFO frag2;
+  struct _NDR64_FIX_ARRAY_HEADER_FORMAT frag1;
 } _midl_frag194_t, *P_midl_frag194_t;
 
 typedef struct __midl_frag1951_t
@@ -62852,14 +62994,8 @@ typedef struct __midl_frag1956_t
 
 typedef struct __midl_frag195_t
 {
-  struct _NDR64_BOGUS_STRUCTURE_HEADER_FORMAT frag1;
-  struct
-  {
-    struct _NDR64_SIMPLE_MEMBER_FORMAT frag1;
-    struct _NDR64_MEMPAD_FORMAT frag2;
-    struct _NDR64_SIMPLE_MEMBER_FORMAT frag3;
-    struct _NDR64_SIMPLE_MEMBER_FORMAT frag4;
-  } frag2;
+  unsigned int frag1;
+  struct _NDR64_EXPR_VAR frag2;
 } _midl_frag195_t, *P_midl_frag195_t;
 
 typedef struct __midl_frag1961_t
@@ -63044,11 +63180,8 @@ typedef struct __midl_frag2018_t
 
 typedef struct __midl_frag201_t
 {
-  struct _NDR64_PROC_FORMAT frag1;
-  struct _NDR64_PARAM_FORMAT frag2;
-  struct _NDR64_PARAM_FORMAT frag3;
-  struct _NDR64_PARAM_FORMAT frag4;
-  struct _NDR64_PARAM_FORMAT frag5;
+  struct _NDR64_CONF_ARRAY_HEADER_FORMAT frag1;
+  struct _NDR64_ARRAY_ELEMENT_INFO frag2;
 } _midl_frag201_t, *P_midl_frag201_t;
 
 typedef struct __midl_frag2022_t
@@ -63113,8 +63246,7 @@ typedef struct __midl_frag2046_t
 
 typedef struct __midl_frag204_t
 {
-  unsigned int frag1;
-  struct _NDR64_EXPR_VAR frag2;
+  struct _NDR64_POINTER_FORMAT frag1;
 } _midl_frag204_t, *P_midl_frag204_t;
 
 typedef struct __midl_frag2050_t
@@ -63209,8 +63341,10 @@ typedef struct __midl_frag210_t
 
 typedef struct __midl_frag211_t
 {
-  struct _NDR64_CONF_ARRAY_HEADER_FORMAT frag1;
-  struct _NDR64_ARRAY_ELEMENT_INFO frag2;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
+  struct _NDR64_PARAM_FORMAT frag3;
+  struct _NDR64_PARAM_FORMAT frag4;
 } _midl_frag211_t, *P_midl_frag211_t;
 
 typedef struct __midl_frag212_t
@@ -63227,7 +63361,8 @@ typedef struct __midl_frag213_t
 
 typedef struct __midl_frag214_t
 {
-  struct _NDR64_POINTER_FORMAT frag1;
+  unsigned int frag1;
+  struct _NDR64_EXPR_VAR frag2;
 } _midl_frag214_t, *P_midl_frag214_t;
 
 typedef struct __midl_frag215_t
@@ -63303,7 +63438,9 @@ typedef struct __midl_frag223_t
 
 typedef struct __midl_frag224_t
 {
-  struct _NDR64_POINTER_FORMAT frag1;
+  unsigned int frag1;
+  struct _NDR64_EXPR_OPERATOR frag2;
+  struct _NDR64_EXPR_VAR frag3;
 } _midl_frag224_t, *P_midl_frag224_t;
 
 typedef struct __midl_frag225_t
@@ -63355,8 +63492,8 @@ typedef struct __midl_frag231_t
 
 typedef struct __midl_frag232_t
 {
-  struct _NDR64_CONF_ARRAY_HEADER_FORMAT frag1;
-  struct _NDR64_ARRAY_ELEMENT_INFO frag2;
+  unsigned int frag1;
+  struct _NDR64_EXPR_VAR frag2;
 } _midl_frag232_t, *P_midl_frag232_t;
 
 typedef struct __midl_frag233_t
@@ -63429,8 +63566,9 @@ typedef struct __midl_frag241_t
 
 typedef struct __midl_frag242_t
 {
-  unsigned int frag1;
-  struct _NDR64_EXPR_VAR frag2;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
+  struct _NDR64_PARAM_FORMAT frag3;
 } _midl_frag242_t, *P_midl_frag242_t;
 
 typedef struct __midl_frag244_t
@@ -63452,9 +63590,8 @@ typedef struct __midl_frag245_t
 
 typedef struct __midl_frag246_t
 {
-  struct _NDR64_PROC_FORMAT frag1;
-  struct _NDR64_PARAM_FORMAT frag2;
-  struct _NDR64_PARAM_FORMAT frag3;
+  struct _NDR64_CONF_ARRAY_HEADER_FORMAT frag1;
+  struct _NDR64_ARRAY_ELEMENT_INFO frag2;
 } _midl_frag246_t, *P_midl_frag246_t;
 
 typedef struct __midl_frag247_t
@@ -63524,34 +63661,13 @@ typedef struct __midl_frag254_t
 
 typedef struct __midl_frag255_t
 {
-  struct _NDR64_BOGUS_STRUCTURE_HEADER_FORMAT frag1;
-  struct
-  {
-    struct _NDR64_SIMPLE_MEMBER_FORMAT frag1;
-    struct _NDR64_MEMPAD_FORMAT frag2;
-    struct _NDR64_SIMPLE_MEMBER_FORMAT frag3;
-    struct _NDR64_SIMPLE_MEMBER_FORMAT frag4;
-    struct _NDR64_SIMPLE_MEMBER_FORMAT frag5;
-    struct _NDR64_MEMPAD_FORMAT frag6;
-    struct _NDR64_BUFFER_ALIGN_FORMAT frag7;
-    struct _NDR64_SIMPLE_MEMBER_FORMAT frag8;
-  } frag2;
+  unsigned int frag1;
+  struct _NDR64_EXPR_VAR frag2;
 } _midl_frag255_t, *P_midl_frag255_t;
 
 typedef struct __midl_frag257_t
 {
-  struct _NDR64_STRUCTURE_HEADER_FORMAT frag1;
-  struct
-  {
-    struct _NDR64_NO_REPEAT_FORMAT frag1;
-    struct _NDR64_POINTER_INSTANCE_HEADER_FORMAT frag2;
-    struct _NDR64_POINTER_FORMAT frag3;
-    struct _NDR64_NO_REPEAT_FORMAT frag4;
-    struct _NDR64_POINTER_INSTANCE_HEADER_FORMAT frag5;
-    struct _NDR64_POINTER_FORMAT frag6;
-    unsigned char frag7;
-    char __PADDING__[7];
-  } frag2;
+  struct _NDR64_POINTER_FORMAT frag1;
 } _midl_frag257_t, *P_midl_frag257_t;
 
 typedef struct __midl_frag258_t
@@ -63591,8 +63707,8 @@ typedef struct __midl_frag25_t
 
 typedef struct __midl_frag260_t
 {
-  unsigned int frag1;
-  struct _NDR64_EXPR_VAR frag2;
+  struct _NDR64_CONF_ARRAY_HEADER_FORMAT frag1;
+  struct _NDR64_ARRAY_ELEMENT_INFO frag2;
 } _midl_frag260_t, *P_midl_frag260_t;
 
 typedef struct __midl_frag261_t
@@ -63685,8 +63801,7 @@ typedef struct __midl_frag273_t
 
 typedef struct __midl_frag274_t
 {
-  struct _NDR64_CONF_ARRAY_HEADER_FORMAT frag1;
-  struct _NDR64_ARRAY_ELEMENT_INFO frag2;
+  struct _NDR64_POINTER_FORMAT frag1;
 } _midl_frag274_t, *P_midl_frag274_t;
 
 typedef struct __midl_frag275_t
@@ -63697,9 +63812,7 @@ typedef struct __midl_frag275_t
 
 typedef struct __midl_frag276_t
 {
-  struct _NDR64_PROC_FORMAT frag1;
-  struct _NDR64_PARAM_FORMAT frag2;
-  struct _NDR64_PARAM_FORMAT frag3;
+  struct _NDR64_POINTER_FORMAT frag1;
 } _midl_frag276_t, *P_midl_frag276_t;
 
 typedef struct __midl_frag277_t
@@ -63869,7 +63982,9 @@ typedef struct __midl_frag296_t
 
 typedef struct __midl_frag297_t
 {
-  struct _NDR64_CONF_VAR_BOGUS_ARRAY_HEADER_FORMAT frag1;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
+  struct _NDR64_PARAM_FORMAT frag3;
 } _midl_frag297_t, *P_midl_frag297_t;
 
 typedef struct __midl_frag298_t
@@ -63887,18 +64002,11 @@ typedef struct __midl_frag29_t
 
 typedef struct __midl_frag2_t
 {
-  struct _NDR64_STRUCTURE_HEADER_FORMAT frag1;
-  struct
-  {
-    struct _NDR64_NO_REPEAT_FORMAT frag1;
-    struct _NDR64_POINTER_INSTANCE_HEADER_FORMAT frag2;
-    struct _NDR64_POINTER_FORMAT frag3;
-    struct _NDR64_NO_REPEAT_FORMAT frag4;
-    struct _NDR64_POINTER_INSTANCE_HEADER_FORMAT frag5;
-    struct _NDR64_POINTER_FORMAT frag6;
-    unsigned char frag7;
-    char __PADDING__[7];
-  } frag2;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
+  struct _NDR64_PARAM_FORMAT frag3;
+  struct _NDR64_PARAM_FORMAT frag4;
+  struct _NDR64_PARAM_FORMAT frag5;
 } _midl_frag2_t, *P_midl_frag2_t;
 
 typedef struct __midl_frag301_t
@@ -63908,14 +64016,9 @@ typedef struct __midl_frag301_t
 
 typedef struct __midl_frag302_t
 {
-  struct _NDR64_BOGUS_STRUCTURE_HEADER_FORMAT frag1;
-  struct
-  {
-    struct _NDR64_SIMPLE_MEMBER_FORMAT frag1;
-    struct _NDR64_MEMPAD_FORMAT frag2;
-    struct _NDR64_SIMPLE_MEMBER_FORMAT frag3;
-    struct _NDR64_SIMPLE_MEMBER_FORMAT frag4;
-  } frag2;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
+  struct _NDR64_PARAM_FORMAT frag3;
 } _midl_frag302_t, *P_midl_frag302_t;
 
 typedef struct __midl_frag303_t
@@ -63936,11 +64039,14 @@ typedef struct __midl_frag305_t
 
 typedef struct __midl_frag306_t
 {
-  struct _NDR64_PROC_FORMAT frag1;
-  struct _NDR64_PARAM_FORMAT frag2;
-  struct _NDR64_PARAM_FORMAT frag3;
-  struct _NDR64_PARAM_FORMAT frag4;
-  struct _NDR64_PARAM_FORMAT frag5;
+  struct _NDR64_BOGUS_STRUCTURE_HEADER_FORMAT frag1;
+  struct
+  {
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag1;
+    struct _NDR64_MEMPAD_FORMAT frag2;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag3;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag4;
+  } frag2;
 } _midl_frag306_t, *P_midl_frag306_t;
 
 typedef struct __midl_frag307_t
@@ -64218,6 +64324,8 @@ typedef struct __midl_frag376_t
   struct _NDR64_PROC_FORMAT frag1;
   struct _NDR64_PARAM_FORMAT frag2;
   struct _NDR64_PARAM_FORMAT frag3;
+  struct _NDR64_PARAM_FORMAT frag4;
+  struct _NDR64_PARAM_FORMAT frag5;
 } _midl_frag376_t, *P_midl_frag376_t;
 
 typedef struct __midl_frag378_t
@@ -64531,7 +64639,13 @@ typedef struct __midl_frag449_t
 
 typedef struct __midl_frag44_t
 {
-  struct _NDR64_CONF_STRUCTURE_HEADER_FORMAT frag1;
+  struct _NDR64_BOGUS_STRUCTURE_HEADER_FORMAT frag1;
+  struct
+  {
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag1;
+    struct _NDR64_EMBEDDED_COMPLEX_FORMAT frag2;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag3;
+  } frag2;
 } _midl_frag44_t, *P_midl_frag44_t;
 
 typedef struct __midl_frag450_t
@@ -64676,14 +64790,8 @@ typedef struct __midl_frag487_t
 
 typedef struct __midl_frag48_t
 {
-  struct _NDR64_BOGUS_STRUCTURE_HEADER_FORMAT frag1;
-  struct
-  {
-    struct _NDR64_SIMPLE_MEMBER_FORMAT frag1;
-    struct _NDR64_MEMPAD_FORMAT frag2;
-    struct _NDR64_SIMPLE_MEMBER_FORMAT frag3;
-    struct _NDR64_SIMPLE_MEMBER_FORMAT frag4;
-  } frag2;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
 } _midl_frag48_t, *P_midl_frag48_t;
 
 typedef struct __midl_frag496_t
@@ -64705,7 +64813,7 @@ typedef struct __midl_frag49_t
 
 typedef struct __midl_frag4_t
 {
-  struct _NDR64_CONF_STRUCTURE_HEADER_FORMAT frag1;
+  struct _NDR64_CONF_VAR_BOGUS_ARRAY_HEADER_FORMAT frag1;
 } _midl_frag4_t, *P_midl_frag4_t;
 
 typedef struct __midl_frag509_t
@@ -64717,10 +64825,8 @@ typedef struct __midl_frag509_t
 
 typedef struct __midl_frag50_t
 {
-  struct _NDR64_PROC_FORMAT frag1;
-  struct _NDR64_PARAM_FORMAT frag2;
-  struct _NDR64_PARAM_FORMAT frag3;
-  struct _NDR64_PARAM_FORMAT frag4;
+  unsigned int frag1;
+  struct _NDR64_EXPR_VAR frag2;
 } _midl_frag50_t, *P_midl_frag50_t;
 
 typedef struct __midl_frag513_t
@@ -64867,11 +64973,8 @@ typedef struct __midl_frag558_t
 
 typedef struct __midl_frag55_t
 {
-  struct _NDR64_PROC_FORMAT frag1;
-  struct _NDR64_PARAM_FORMAT frag2;
-  struct _NDR64_PARAM_FORMAT frag3;
-  struct _NDR64_PARAM_FORMAT frag4;
-  struct _NDR64_PARAM_FORMAT frag5;
+  unsigned int frag1;
+  struct _NDR64_EXPR_VAR frag2;
 } _midl_frag55_t, *P_midl_frag55_t;
 
 typedef struct __midl_frag566_t
@@ -64964,8 +65067,8 @@ typedef struct __midl_frag59_t
 
 typedef struct __midl_frag5_t
 {
-  unsigned int frag1;
-  struct _NDR64_EXPR_VAR frag2;
+  struct _NDR64_CONF_ARRAY_HEADER_FORMAT frag1;
+  struct _NDR64_ARRAY_ELEMENT_INFO frag2;
 } _midl_frag5_t, *P_midl_frag5_t;
 
 typedef struct __midl_frag603_t
@@ -65526,8 +65629,10 @@ typedef struct __midl_frag777_t
 
 typedef struct __midl_frag77_t
 {
-  struct _NDR64_CONF_ARRAY_HEADER_FORMAT frag1;
-  struct _NDR64_ARRAY_ELEMENT_INFO frag2;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
+  struct _NDR64_PARAM_FORMAT frag3;
+  struct _NDR64_PARAM_FORMAT frag4;
 } _midl_frag77_t, *P_midl_frag77_t;
 
 typedef struct __midl_frag780_t
@@ -65700,8 +65805,14 @@ typedef struct __midl_frag816_t
 
 typedef struct __midl_frag81_t
 {
-  struct _NDR64_CONF_ARRAY_HEADER_FORMAT frag1;
-  struct _NDR64_ARRAY_ELEMENT_INFO frag2;
+  struct _NDR64_BOGUS_STRUCTURE_HEADER_FORMAT frag1;
+  struct
+  {
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag1;
+    struct _NDR64_MEMPAD_FORMAT frag2;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag3;
+    struct _NDR64_SIMPLE_MEMBER_FORMAT frag4;
+  } frag2;
 } _midl_frag81_t, *P_midl_frag81_t;
 
 typedef struct __midl_frag821_t
@@ -65743,19 +65854,12 @@ typedef struct __midl_frag828_t
 
 typedef struct __midl_frag82_t
 {
-  struct _NDR64_CONF_ARRAY_HEADER_FORMAT frag1;
-  struct
-  {
-    struct _NDR64_REPEAT_FORMAT frag1;
-    struct
-    {
-      struct _NDR64_POINTER_INSTANCE_HEADER_FORMAT frag1;
-      struct _NDR64_POINTER_FORMAT frag2;
-    } frag2;
-    unsigned char frag3;
-    char __PADDING__[7];
-  } frag2;
-  struct _NDR64_ARRAY_ELEMENT_INFO frag3;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
+  struct _NDR64_PARAM_FORMAT frag3;
+  struct _NDR64_PARAM_FORMAT frag4;
+  struct _NDR64_PARAM_FORMAT frag5;
+  struct _NDR64_PARAM_FORMAT frag6;
 } _midl_frag82_t, *P_midl_frag82_t;
 
 typedef struct __midl_frag832_t
@@ -66098,19 +66202,8 @@ typedef struct __midl_frag948_t
 
 typedef struct __midl_frag94_t
 {
-  struct _NDR64_CONF_ARRAY_HEADER_FORMAT frag1;
-  struct
-  {
-    struct _NDR64_REPEAT_FORMAT frag1;
-    struct
-    {
-      struct _NDR64_POINTER_INSTANCE_HEADER_FORMAT frag1;
-      struct _NDR64_POINTER_FORMAT frag2;
-    } frag2;
-    unsigned char frag3;
-    char __PADDING__[7];
-  } frag2;
-  struct _NDR64_ARRAY_ELEMENT_INFO frag3;
+  unsigned int frag1;
+  struct _NDR64_EXPR_VAR frag2;
 } _midl_frag94_t, *P_midl_frag94_t;
 
 typedef struct __midl_frag951_t
@@ -66241,7 +66334,10 @@ typedef struct __midl_frag995_t
 
 typedef struct __midl_frag99_t
 {
-  struct _NDR64_POINTER_FORMAT frag1;
+  struct _NDR64_PROC_FORMAT frag1;
+  struct _NDR64_PARAM_FORMAT frag2;
+  struct _NDR64_PARAM_FORMAT frag3;
+  struct _NDR64_PARAM_FORMAT frag4;
 } _midl_frag99_t, *P_midl_frag99_t;
 
 typedef struct __midl_frag9_t
@@ -100448,11 +100544,15 @@ struct PARAM_DESCRIPTION
 
 typedef struct _PARAM_STRUCT
 {
-  struct IEnumSTATPROPSETSTG* This;
-  unsigned long celt;
+  struct IStorage* This;
+  unsigned long reserved1;
   char Pad0[4];
-  struct tagSTATPROPSETSTG* rgelt;
-  unsigned long* pceltFetched;
+  unsigned long cbReserved2;
+  char Pad1[4];
+  unsigned char* reserved2;
+  unsigned long reserved3;
+  char Pad2[4];
+  struct IEnumSTATSTG** ppenum;
   HRESULT _RetVal;
   long __PADDING__[1];
 } PARAM_STRUCT, *PPARAM_STRUCT;
@@ -111208,6 +111308,7 @@ typedef enum _SECURE_SETTING_VALUE_TYPE
   SecureSettingValueTypeUlong = 1,
   SecureSettingValueTypeBinary = 2,
   SecureSettingValueTypeString = 3,
+  SecureSettingValueTypeUnknown = 4,
 } SECURE_SETTING_VALUE_TYPE, *PSECURE_SETTING_VALUE_TYPE;
 
 typedef struct _SECURITY_ATTRIBUTES
@@ -118250,7 +118351,10 @@ typedef struct _SYSTEM_SPECULATION_CONTROL_INFORMATION
       unsigned long HvL1tfMigitationNotEnabled_LoadOption : 1; /* bit position: 21 */
       unsigned long HvL1tfMigitationNotEnabled_CoreScheduler : 1; /* bit position: 22 */
       unsigned long EnhancedIbrsReported : 1; /* bit position: 23 */
-      unsigned long Reserved : 8; /* bit position: 24 */
+      unsigned long MdsHardwareProtected : 1; /* bit position: 24 */
+      unsigned long MbClearEnabled : 1; /* bit position: 25 */
+      unsigned long MbClearReported : 1; /* bit position: 26 */
+      unsigned long Reserved : 5; /* bit position: 27 */
     }; /* bitfield */
   } SpeculationControlFlags;
 } SYSTEM_SPECULATION_CONTROL_INFORMATION, *PSYSTEM_SPECULATION_CONTROL_INFORMATION;
@@ -134533,7 +134637,9 @@ struct wil::details::EnabledStateManager::CachedUsageData
   union wil_details_FeaturePropertyCache* data;
 };
 
-class wil::details::EnabledStateManager::EnsureSubscribedToStateChangesUnderLock::__l5::<lambda_42ed7cb8e6cd03c5242b9a63c40e80d6>;
+class wil::details::EnabledStateManager::EnsureSubscribedToStateChangesUnderLock::__l5::<lambda_42ed7cb8e6cd03c5242b9a63c40e80d6>
+{
+};
 
 class wil::details::EnabledStateManager::RecordCachedUsageUnderLock::__l9::<lambda_395b8c38dee70e6dfe044506095802dc>
 {
@@ -138948,7 +139054,8 @@ enum WINDOWCOMPOSITIONATTRIB
   WCA_HOLOGRAPHIC = 23,
   WCA_EXCLUDED_FROM_DDA = 24,
   WCA_PASSIVEUPDATEMODE = 25,
-  WCA_LAST = 26,
+  WCA_USEDARKMODECOLORS = 26,
+  WCA_LAST = 27,
 };
 
 class Windows::ApplicationModel::Activation::BackgroundActivatedEventArgs;
@@ -170592,7 +170699,7 @@ struct _NDR_EXPR_DESC acpickl_ExprDesc;
 struct std::atomic<bool> ActivateOnHost::s_initialized;
 struct std::atomic<unsigned long> ActivateOnHost::s_machineActivateOnHostFlags;
 void (* const ActivationContext::`vftable'[13])(void);
-void (* const ActivationContextFactory::`vftable'[8])(void);
+void (* const ActivationContextFactory::`vftable'[9])(void);
 void (* const ActivationProperties::`vftable'[4])(void);
 void (* const ActivationPropertiesIn::`vftable'[4])(void);
 void (* const ActivationPropertiesOut::`vftable'[16])(void);
@@ -170726,11 +170833,11 @@ struct _GUID APPID_SystemApp;
 const struct tagProxyFileInfo * const aProxyFileList[6];
 const struct _GUID * const arBrokenRefCount[4];
 void (* const ASTAState::`vftable'[4])(void);
-void (* const AsyncActionCompletedHandlerFacade::`vftable'[4])(void);
+void (* const AsyncActionCompletedHandlerFacade::`vftable'[9])(void);
 void (* const AsyncActionFacade::`vftable'[9])(void);
 struct IAsyncRpcChannelBufferVtbl AsyncChannelWrapperVtbl;
-void (* const AsyncComClientCall::`vftable'[9])(void);
-void (* const AsyncComServerCall::`vftable'[1])(void);
+void (* const AsyncComClientCall::`vftable'[37])(void);
+void (* const AsyncComServerCall::`vftable'[4])(void);
 struct _GUID ASYNCHRONOUS_CAUSALITY_PROVIDER;
 struct _MCGEN_TRACE_CONTEXT ASYNCHRONOUS_CAUSALITY_PROVIDER_Context;
 const unsigned short AsyncIAdviseSink2_FormatStringOffsetTable[12];
@@ -170816,7 +170923,7 @@ void (* const BaseAsyncOperationFacade<Windows::Foundation::IAsyncAction>::`vfta
 void (* const BridgeSTAState::`vftable'[4])(void);
 void (* const BspCatalogBase::`vftable'[5])(void);
 void (* const BspCatalogSCM::`vftable'[14])(void);
-void (* const BspRegCatalogUser::`vftable'[5])(void);
+void (* const BspRegCatalogUser::`vftable'[40])(void);
 void (* const CAbstractStream::`vftable'[17])(void);
 void (* const CachedCallEvent::`vftable'[1])(void);
 void (* const CachedEvent::`vftable'[1])(void);
@@ -170827,7 +170934,7 @@ void (* const CActivationStore::`vftable'[4])(void);
 void (* const CAddrControl::`vftable'[5])(void);
 void (* const CAddrExclusionList::`vftable'[7])(void);
 void (* const CAggId::`vftable'[5])(void);
-void (* const CAgileReferenceMarshaled::`vftable'[5])(void);
+void (* const CAgileReferenceMarshaled::`vftable'[9])(void);
 void (* const CAgileReferenceToAgileObject::`vftable'[5])(void);
 void (* const CAgileReferenceViaGit::`vftable'[5])(void);
 void (* const CallbackWrapper<unsigned __int64,long (__cdecl*)(void *,unsigned __int64,unsigned int,unsigned char *)>::`vftable'[1])(void);
@@ -170843,11 +170950,11 @@ class CausalityControlCallback *CausalityControlCallback::_head;
 class Microsoft::WRL::Wrappers::SRWLock CausalityControlCallback::_lock;
 int CAuthInfo::_fNeedSSL;
 struct tagSOLE_AUTHENTICATION_LIST *CAuthInfo::_sList;
-void (* const CBaseCall::`vftable'[1])(void);
+void (* const CBaseCall::`vftable'[3])(void);
 unsigned int CBaseCall::s_uCurrentCallTraceId;
 void (* const CBaseMInterfacePointerMarshalingStream::`vftable'[17])(void);
 void (* const CChannelHandle::`vftable'[1])(void);
-void (* const CChannelObject::`vftable'[4])(void);
+void (* const CChannelObject::`vftable'[1])(void);
 int CClassCache::_bCanceledTimer;
 struct SHashChain CClassCache::_CEBuckets[23];
 class CClassCache::CCEHashTable CClassCache::_ClassEntries;
@@ -170902,9 +171009,9 @@ const unsigned long CClassCache::CWinRTLocalSvrClassEntry::DUMMY_SIG;
 const unsigned long CClassCache::CWinRTLocalSvrClassEntry::SIG;
 void (* const CClientCall::`vftable'[1])(void);
 bool CClientCall::s_bInitialized;
-void (* const CClientCallMgr::`vftable'[5])(void);
+void (* const CClientCallMgr::`vftable'[7])(void);
 void (* const CClientCallMgr::CPrivUnknown::`vftable'[3])(void);
-void (* const CClientChannel::`vftable'[6])(void);
+void (* const CClientChannel::`vftable'[5])(void);
 void (* const CClientContextActivator::`vftable'[6])(void);
 void (* const CClientSecurity::`vftable'[6])(void);
 void (* const CCliModalLoop::`vftable'[3])(void);
@@ -170933,8 +171040,8 @@ class COleStaticMutexSem CCtxCall::_mxsCtxCallLock;
 void (* const CCtxCall::`vftable'[1])(void);
 int CCtxCall::s_iAvailable;
 void *CCtxCall::s_pAllocList[20];
-void (* const CCtxChnl::`vftable'[7])(void);
-void (* const CCtxComChnl::`vftable'[7])(void);
+void (* const CCtxChnl::`vftable'[5])(void);
+void (* const CCtxComChnl::`vftable'[6])(void);
 void (* const CCtxHook::`vftable'[9])(void);
 void (* const CCtxPropHashTable::`vftable'[9])(void);
 struct SHashChain CCtxTable::s_CtxPropBuckets[23];
@@ -170969,8 +171076,8 @@ void (* const CExtensionPackagesIterator::`vftable'[9])(void);
 void (* const CExtensionRegistration::`vftable'[10])(void);
 void (* const CExtensionRegistrationsIterator::`vftable'[9])(void);
 void (* const CFmCtrlUnknown::`vftable'[3])(void);
-void (* const CFreeMarshaler::`vftable'[3])(void);
-void (* const CGIPMessageParam::`vftable'[4])(void);
+void (* const CFreeMarshaler::`vftable'[9])(void);
+void (* const CGIPMessageParam::`vftable'[1])(void);
 int CGIPTable::_fInNAUninit;
 class CListBase<0,1> CGIPTable::_InUseList;
 class COleStaticMutexSem CGIPTable::_mxs;
@@ -170985,7 +171092,7 @@ struct tagIPIDEntry CIPIDTable::_oidListHead;
 class CPageAllocator CIPIDTable::_palloc;
 struct _EVENT_DESCRIPTOR ClassNotRegError;
 struct _EVENT_DESCRIPTOR ClearErrorEvent;
-void (* const ClientCall::`vftable'[36])(void);
+void (* const ClientCall::`vftable'[1])(void);
 struct _EVENT_DESCRIPTOR ClientDeregisteringRundownObjectOfInterest;
 struct _EVENT_DESCRIPTOR ClientRegisteringRundownObjectOfInterest;
 struct _EVENT_DESCRIPTOR CliModalLoopDelayEvent;
@@ -171100,7 +171207,7 @@ void (* const CMachineGlobalObjectTable::`vftable'[7])(void);
 void (* const CManualResetEvent::`vftable'[6])(void);
 void (* const CMarshalingStreamOnUserMarshalCallback::`vftable'[17])(void);
 void (* const CMemStm::`vftable'[14])(void);
-void (* const CMessageCall::`vftable'[26])(void);
+void (* const CMessageCall::`vftable'[1])(void);
 void (* const CMetadataEnumeratorT<unsigned int,IMetaDataImport2>::`vftable'[2])(void);
 void (* const CMethodEnumerator::`vftable'[2])(void);
 void (* const CMethodParameterEnumerator::`vftable'[2])(void);
@@ -171293,8 +171400,8 @@ wchar_t *CRpcResolver::_pwszWinstaDesktop;
 class COleStaticMutexSem CRpcThreadCache::_mxs;
 class CRpcThread *CRpcThreadCache::_pFreeList;
 void (* const CSCInnerUnknown::`vftable'[3])(void);
-void (* const CServerChannel::`vftable'[8])(void);
-void (* const CServerChannel::CServerCallMgr::`vftable'[10])(void);
+void (* const CServerChannel::`vftable'[5])(void);
+void (* const CServerChannel::CServerCallMgr::`vftable'[6])(void);
 void (* const CServerContextActivator::`vftable'[6])(void);
 class COleStaticMutexSem CServerSecurity::_mxs;
 class CPageAllocator CServerSecurity::_palloc;
@@ -171318,7 +171425,7 @@ struct IReleaseMarshalBuffersVtbl CStdAsyncStubBuffer_ReleaseMarshalBuffersVtbl;
 struct IRpcStubBufferVtbl CStdAsyncStubBufferVtbl;
 void (* const CStdClassFactory::`vftable'[5])(void);
 void (* const CStdEvent::`vftable'[6])(void);
-void (* const CStdIdentity::`vftable'[4])(void);
+void (* const CStdIdentity::`vftable'[5])(void);
 void (* const CStdIdentity::CInternalUnk::`vftable'[4])(void);
 void (* const CStdMarshal::`vftable'[9])(void);
 struct ICallFactoryVtbl CStdProxyBuffer2_CallFactoryVtbl;
@@ -171344,9 +171451,9 @@ void (* const CStreamOnBuffer::`vftable'[14])(void);
 void (* const CStringHashTable::`vftable'[7])(void);
 void (* const CSurrogateActivator::`vftable'[6])(void);
 class CSurrogateActivator *CSurrogateActivator::s_pCSA;
-void (* const CSurrogateProcessActivator::`vftable'[5])(void);
+void (* const CSurrogateProcessActivator::`vftable'[15])(void);
 void (* const CSuspendMonitor::`vftable'[6])(void);
-void (* const CSyncClientCall::`vftable'[37])(void);
+void (* const CSyncClientCall::`vftable'[5])(void);
 void (* const CSynchronizeContainer::`vftable'[5])(void);
 void (* const CSystemRegistryCatalog::`vftable'[5])(void);
 _CT??_R0?AVexception@std@@@8??0exception@std@@QEAA@AEBV01@@Z24;
@@ -171791,13 +171898,13 @@ void (* const GenericAsyncActionWithProgressFacade::`vftable'[11])(void);
 void (* const GenericAsyncCompletedHandlerFacade::`vftable'[9])(void);
 void (* const GenericAsyncOperationFacade::`vftable'[3])(void);
 void (* const GenericAsyncOperationWithProgressFacade::`vftable'[3])(void);
-void (* const GenericCoTaskMemStream::`vftable'[16])(void);
+void (* const GenericCoTaskMemStream::`vftable'[10])(void);
 void (* const GenericMarshalingStreamWithContextAttributesViaCallback<<lambda_067a833f7a883b83bd91f476fad853cc>,AllocationWrapper>::`vftable'[17])(void);
 void (* const GenericMarshalingStreamWithContextAttributesViaCallback<<lambda_91b9c2081604f88f3d10867a00117b23>,AllocationWrapper>::`vftable'[10])(void);
 void (* const GenericMarshalingStreamWithContextAttributesViaCallback<<lambda_bed21f8ad1674960758d9b7f45c166d1>,AllocationWrapper>::`vftable'[10])(void);
 void (* const GenericStream::`vftable'[10])(void);
 void (* const GenericStreamBase<IMarshalingStream,AllocationWrapper>::`vftable'[10])(void);
-void (* const GenericStreamBase<IStream,AllocationWrapper>::`vftable'[10])(void);
+void (* const GenericStreamBase<IStream,AllocationWrapper>::`vftable'[16])(void);
 void (* const GenericStreamBase<IStream,CoTaskMemAllocAllocator>::`vftable'[16])(void);
 enum tagEventLogSD genumAccessSD;
 class CErrorChannelHook gErrorHook;
@@ -172207,19 +172314,19 @@ const unsigned char GuidMap[20];
 struct _GUID guidPartitionProperty;
 class CWinRTApartmentActivator gWinRTApartmentActivator;
 wchar_t gwszLRPCEndPoint[39];
-void (* const HandleHolder::`vftable'[17])(void);
-void (* const HandleWrapper<CompositionHandleWrapperTraits>::`vftable'[8])(void);
+void (* const HandleHolder::`vftable'[9])(void);
+void (* const HandleWrapper<CompositionHandleWrapperTraits>::`vftable'[9])(void);
 void (* const HandleWrapper<EventHandleWrapperTraits>::`vftable'[8])(void);
-void (* const HandleWrapper<FileHandleWrapperTraits>::`vftable'[8])(void);
-void (* const HandleWrapper<JobHandleWrapperTraits>::`vftable'[8])(void);
+void (* const HandleWrapper<FileHandleWrapperTraits>::`vftable'[9])(void);
+void (* const HandleWrapper<JobHandleWrapperTraits>::`vftable'[9])(void);
 void (* const HandleWrapper<MutexHandleWrapperTraits>::`vftable'[8])(void);
 void (* const HandleWrapper<PipeHandleWrapperTraits>::`vftable'[8])(void);
-void (* const HandleWrapper<ProcessHandleWrapperTraits>::`vftable'[8])(void);
+void (* const HandleWrapper<ProcessHandleWrapperTraits>::`vftable'[9])(void);
 void (* const HandleWrapper<RegistryKeyHandleWrapperTraits>::`vftable'[8])(void);
-void (* const HandleWrapper<SectionHandleWrapperTraits>::`vftable'[8])(void);
+void (* const HandleWrapper<SectionHandleWrapperTraits>::`vftable'[9])(void);
 void (* const HandleWrapper<SemaphoreHandleWrapperTraits>::`vftable'[8])(void);
-void (* const HandleWrapper<SocketHandleWrapperTraits>::`vftable'[8])(void);
-void (* const HandleWrapper<ThreadHandleWrapperTraits>::`vftable'[8])(void);
+void (* const HandleWrapper<SocketHandleWrapperTraits>::`vftable'[9])(void);
+void (* const HandleWrapper<ThreadHandleWrapperTraits>::`vftable'[9])(void);
 void (* const HandleWrapper<TokenHandleWrapperTraits>::`vftable'[8])(void);
 void (* const HandleWrapperFactory<CompositionHandleWrapperTraits>::`vftable'[8])(void);
 void (* const HandleWrapperFactory<EventHandleWrapperTraits>::`vftable'[8])(void);
@@ -173528,13 +173635,13 @@ void (* const Microsoft::WRL::RuntimeClass<CActivatableClassRegistration,Windows
 void (* const Microsoft::WRL::RuntimeClass<IInspectable,Microsoft::WRL::FtmBase>::`vftable'[7])(void);
 void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<14>,IUnknown>::`vftable'[4])(void);
 void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<1>,Windows::Foundation::IActivationContext,Microsoft::WRL::FtmBase>::`vftable'[4])(void);
-void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<2>,IAgileReference,Microsoft::WRL::FtmBase>::`vftable'[9])(void);
+void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<2>,IAgileReference,Microsoft::WRL::FtmBase>::`vftable'[5])(void);
 void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<2>,IComCatalogInternalImpl,IComCatalogTreatAsClass,IPackagedComProxyStubCatalogInternal,IPackagedComClassCatalogInternal,ITypeLibCatalogInternal>::`vftable'[6])(void);
 void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<2>,IComClassInfoImpl,IClassClassicInfoImpl,IClassClassicInfo2Impl,IClassClassicInfo3Impl,IComClassCategoryInfo,IOleClassInfo,ICacheRefresh,IRegistration>::`vftable'[4])(void);
 void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<2>,IComClassInfoImpl,IClassClassicInfoImpl>::`vftable'[10])(void);
 void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<2>,IComClassInfoImpl,IWinRTRuntimeClassInfo,IRegistration>::`vftable'[5])(void);
 void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<2>,IExtensionPackagesIterator>::`vftable'[9])(void);
-void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<2>,IHandleHolder,Microsoft::WRL::FtmBase>::`vftable'[17])(void);
+void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<2>,IHandleHolder,Microsoft::WRL::FtmBase>::`vftable'[9])(void);
 void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<2>,IPackagedComClassIdIterator>::`vftable'[7])(void);
 void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<2>,IPackagedComProgIdIterator>::`vftable'[5])(void);
 void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<2>,IPSFactoryBuffer,IWinRTInterfaceInformation>::`vftable'[6])(void);
@@ -173558,29 +173665,29 @@ void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<2>,
 void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<2>,RegistrationStoreTypes::IDataFactory>::`vftable'[5])(void);
 void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<2>,Windows::Foundation::IEventHandler<Windows::Foundation::Diagnostics::TracingStatusChangedEventArgs *>,Microsoft::WRL::FtmBase>::`vftable'[9])(void);
 void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<3>,IAsyncInfo,IWinrtAsyncPatternFacade,Microsoft::WRL::FtmBase>::`vftable'[4])(void);
-void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<3>,Windows::Foundation::Collections::Detail::IStreamSerializerForMarshaling,Windows::Storage::Streams::IDataReader,Windows::Storage::Streams::IDataWriter>::`vftable'[33])(void);
+void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<3>,Windows::Foundation::Collections::Detail::IStreamSerializerForMarshaling,Windows::Storage::Streams::IDataReader,Windows::Storage::Streams::IDataWriter>::`vftable'[4])(void);
 void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<3>,Windows::Foundation::IExtensionRegistration,IExtensionActivationContext,Microsoft::WRL::FtmBase,Windows::Foundation::Collections::IMapView<HSTRING__ *,IInspectable *> >::`vftable'[9])(void);
-void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<7>,Microsoft::WRL::CloakedIid<Windows::Foundation::Handles::Internal::IUnwrapCompositionHandle>,IMarshal>::`vftable'[9])(void);
-void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<7>,Microsoft::WRL::CloakedIid<Windows::Foundation::Handles::Internal::IUnwrapEventHandle>,IMarshal>::`vftable'[8])(void);
+void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<7>,Microsoft::WRL::CloakedIid<Windows::Foundation::Handles::Internal::IUnwrapCompositionHandle>,IMarshal>::`vftable'[8])(void);
+void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<7>,Microsoft::WRL::CloakedIid<Windows::Foundation::Handles::Internal::IUnwrapEventHandle>,IMarshal>::`vftable'[9])(void);
 void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<7>,Microsoft::WRL::CloakedIid<Windows::Foundation::Handles::Internal::IUnwrapFileHandle>,IMarshal>::`vftable'[8])(void);
 void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<7>,Microsoft::WRL::CloakedIid<Windows::Foundation::Handles::Internal::IUnwrapJobHandle>,IMarshal>::`vftable'[8])(void);
-void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<7>,Microsoft::WRL::CloakedIid<Windows::Foundation::Handles::Internal::IUnwrapMutexHandle>,IMarshal>::`vftable'[9])(void);
-void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<7>,Microsoft::WRL::CloakedIid<Windows::Foundation::Handles::Internal::IUnwrapPipeHandle>,IMarshal>::`vftable'[8])(void);
+void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<7>,Microsoft::WRL::CloakedIid<Windows::Foundation::Handles::Internal::IUnwrapMutexHandle>,IMarshal>::`vftable'[8])(void);
+void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<7>,Microsoft::WRL::CloakedIid<Windows::Foundation::Handles::Internal::IUnwrapPipeHandle>,IMarshal>::`vftable'[9])(void);
 void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<7>,Microsoft::WRL::CloakedIid<Windows::Foundation::Handles::Internal::IUnwrapProcessHandle>,IMarshal>::`vftable'[8])(void);
 void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<7>,Microsoft::WRL::CloakedIid<Windows::Foundation::Handles::Internal::IUnwrapRegistryKeyHandle>,IMarshal>::`vftable'[8])(void);
-void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<7>,Microsoft::WRL::CloakedIid<Windows::Foundation::Handles::Internal::IUnwrapSectionHandle>,IMarshal>::`vftable'[9])(void);
-void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<7>,Microsoft::WRL::CloakedIid<Windows::Foundation::Handles::Internal::IUnwrapSemaphoreHandle>,IMarshal>::`vftable'[8])(void);
+void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<7>,Microsoft::WRL::CloakedIid<Windows::Foundation::Handles::Internal::IUnwrapSectionHandle>,IMarshal>::`vftable'[8])(void);
+void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<7>,Microsoft::WRL::CloakedIid<Windows::Foundation::Handles::Internal::IUnwrapSemaphoreHandle>,IMarshal>::`vftable'[9])(void);
 void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<7>,Microsoft::WRL::CloakedIid<Windows::Foundation::Handles::Internal::IUnwrapSocketHandle>,IMarshal>::`vftable'[8])(void);
 void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<7>,Microsoft::WRL::CloakedIid<Windows::Foundation::Handles::Internal::IUnwrapThreadHandle>,IMarshal>::`vftable'[8])(void);
-void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<7>,Microsoft::WRL::CloakedIid<Windows::Foundation::Handles::Internal::IUnwrapTokenHandle>,IMarshal>::`vftable'[9])(void);
-void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IIterator<HSTRING__ *>,Microsoft::WRL::FtmBase>::`vftable'[4])(void);
+void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<7>,Microsoft::WRL::CloakedIid<Windows::Foundation::Handles::Internal::IUnwrapTokenHandle>,IMarshal>::`vftable'[8])(void);
+void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IIterator<HSTRING__ *>,Microsoft::WRL::FtmBase>::`vftable'[11])(void);
 void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IIterator<Windows::Foundation::Collections::IKeyValuePair<_GUID,bool> *>,Microsoft::WRL::FtmBase>::`vftable'[11])(void);
 void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IIterator<Windows::Foundation::Collections::IKeyValuePair<_GUID,HSTRING__ *> *>,Microsoft::WRL::FtmBase>::`vftable'[4])(void);
 void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IIterator<Windows::Foundation::Collections::IKeyValuePair<HSTRING__ *,IInspectable *> *> >::`vftable'[4])(void);
 void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IIterator<Windows::Foundation::Collections::IKeyValuePair<HSTRING__ *,IInspectable *> *>,Microsoft::WRL::FtmBase>::`vftable'[9])(void);
 void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IIterator<Windows::Foundation::Collections::IKeyValuePair<HSTRING__ *,unsigned char> *> >::`vftable'[11])(void);
 void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IIterator<Windows::Foundation::Collections::IKeyValuePair<PackagedComCatalog::Internal::TypeLibVersionLocaleIdPair,unsigned int> *> >::`vftable'[11])(void);
-void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IIterator<Windows::Foundation::Collections::IKeyValuePair<unsigned int,HSTRING__ *> *>,Microsoft::WRL::FtmBase>::`vftable'[9])(void);
+void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IIterator<Windows::Foundation::Collections::IKeyValuePair<unsigned int,HSTRING__ *> *>,Microsoft::WRL::FtmBase>::`vftable'[4])(void);
 void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IIterator<Windows::Foundation::IExtensionRegistration *>,Microsoft::WRL::FtmBase>::`vftable'[9])(void);
 void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IKeyValuePair<_GUID,bool>,Microsoft::WRL::FtmBase>::`vftable'[4])(void);
 void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IKeyValuePair<_GUID,HSTRING__ *>,Microsoft::WRL::FtmBase>::`vftable'[4])(void);
@@ -173594,7 +173701,7 @@ void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IMa
 void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IMap<HSTRING__ *,IInspectable *>,Windows::Foundation::Collections::IIterable<Windows::Foundation::Collections::IKeyValuePair<HSTRING__ *,IInspectable *> *>,Microsoft::WRL::FtmBase>::`vftable'[7])(void);
 void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IMap<HSTRING__ *,unsigned char>,Windows::Foundation::Collections::IIterable<Windows::Foundation::Collections::IKeyValuePair<HSTRING__ *,unsigned char> *> >::`vftable'[4])(void);
 void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IMap<PackagedComCatalog::Internal::TypeLibVersionLocaleIdPair,unsigned int>,Windows::Foundation::Collections::IIterable<Windows::Foundation::Collections::IKeyValuePair<PackagedComCatalog::Internal::TypeLibVersionLocaleIdPair,unsigned int> *> >::`vftable'[4])(void);
-void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IMap<unsigned int,HSTRING__ *>,Windows::Foundation::Collections::IIterable<Windows::Foundation::Collections::IKeyValuePair<unsigned int,HSTRING__ *> *>,Microsoft::WRL::FtmBase>::`vftable'[9])(void);
+void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IMap<unsigned int,HSTRING__ *>,Windows::Foundation::Collections::IIterable<Windows::Foundation::Collections::IKeyValuePair<unsigned int,HSTRING__ *> *>,Microsoft::WRL::FtmBase>::`vftable'[7])(void);
 void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IMapView<_GUID,bool>,Windows::Foundation::Collections::IIterable<Windows::Foundation::Collections::IKeyValuePair<_GUID,bool> *>,Microsoft::WRL::FtmBase>::`vftable'[11])(void);
 void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IMapView<_GUID,HSTRING__ *>,Windows::Foundation::Collections::IIterable<Windows::Foundation::Collections::IKeyValuePair<_GUID,HSTRING__ *> *>,Microsoft::WRL::FtmBase>::`vftable'[7])(void);
 void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IMapView<HSTRING__ *,IInspectable *>,Windows::Foundation::Collections::IIterable<Windows::Foundation::Collections::IKeyValuePair<HSTRING__ *,IInspectable *> *> >::`vftable'[11])(void);
@@ -173603,8 +173710,8 @@ void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IMa
 void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IMapView<HSTRING__ *,unsigned char>,Windows::Foundation::Collections::IIterable<Windows::Foundation::Collections::IKeyValuePair<HSTRING__ *,unsigned char> *> >::`vftable'[4])(void);
 void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IMapView<PackagedComCatalog::Internal::TypeLibVersionLocaleIdPair,unsigned int>,Windows::Foundation::Collections::IIterable<Windows::Foundation::Collections::IKeyValuePair<PackagedComCatalog::Internal::TypeLibVersionLocaleIdPair,unsigned int> *> >::`vftable'[4])(void);
 void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IMapView<unsigned int,HSTRING__ *>,Windows::Foundation::Collections::IIterable<Windows::Foundation::Collections::IKeyValuePair<unsigned int,HSTRING__ *> *>,Microsoft::WRL::FtmBase>::`vftable'[4])(void);
-void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IVector<HSTRING__ *>,Windows::Foundation::Collections::IIterable<HSTRING__ *>,Microsoft::WRL::FtmBase>::`vftable'[7])(void);
-void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IVectorView<HSTRING__ *>,Windows::Foundation::Collections::IIterable<HSTRING__ *>,Microsoft::WRL::FtmBase>::`vftable'[4])(void);
+void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IVector<HSTRING__ *>,Windows::Foundation::Collections::IIterable<HSTRING__ *>,Microsoft::WRL::FtmBase>::`vftable'[19])(void);
+void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Collections::IVectorView<HSTRING__ *>,Windows::Foundation::Collections::IIterable<HSTRING__ *>,Microsoft::WRL::FtmBase>::`vftable'[9])(void);
 void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::Diagnostics::ITracingStatusChangedEventArgs,Microsoft::WRL::FtmBase>::`vftable'[4])(void);
 void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::IExeServerRegistration,Windows::Foundation::IExeServerAttributes>::`vftable'[15])(void);
 void (* const Microsoft::WRL::RuntimeClass<Windows::Foundation::IExtensionCatalog,Microsoft::WRL::FtmBase>::`vftable'[9])(void);
@@ -175620,19 +175727,19 @@ void (* const ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<Obje
 void (* const ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,WinRT::Metadata::Marshaling::MetadataStruct,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<0>,WinRT::Metadata::Marshaling::MetadataStruct,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataStructBase> > >::`vftable'[1])(void);
 void (* const ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,WinRT::Metadata::Marshaling::MetadataStructBase,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<0>,WinRT::Metadata::Marshaling::MetadataStructBase,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataType> > >::`vftable'[1])(void);
 void (* const ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,WinRT::Metadata::Marshaling::MetadataUnknown,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<0>,WinRT::Metadata::Marshaling::MetadataUnknown,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataType> > >::`vftable'[1])(void);
-void (* const ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,WinrtAsyncChannelOperation,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<17>,WinrtAsyncChannelOperation,ObjectLibrary::ForwardedBases<WinrtAsyncChannelOperationEntry,Dcomrem::Async::AsyncBaseStateMachine<WinrtAsyncChannelOperation,2,AsyncDelegateStorage,AsyncDelegateStorage>,IWinrtAsyncChannelOperation,IAsyncClientTransport,IClientTransportCallEvents,IServerTransportCallEvents> > >::`vftable'[4])(void);
-void (* const ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,WinrtAsyncResponse,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<1>,WinrtAsyncResponse,ObjectLibrary::ForwardedBases<WinrtAsyncChannelMessage> > >::`vftable'[5])(void);
+void (* const ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,WinrtAsyncChannelOperation,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<17>,WinrtAsyncChannelOperation,ObjectLibrary::ForwardedBases<WinrtAsyncChannelOperationEntry,Dcomrem::Async::AsyncBaseStateMachine<WinrtAsyncChannelOperation,2,AsyncDelegateStorage,AsyncDelegateStorage>,IWinrtAsyncChannelOperation,IAsyncClientTransport,IClientTransportCallEvents,IServerTransportCallEvents> > >::`vftable'[1])(void);
+void (* const ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,WinrtAsyncResponse,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<1>,WinrtAsyncResponse,ObjectLibrary::ForwardedBases<WinrtAsyncChannelMessage> > >::`vftable'[1])(void);
 void (* const ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,WinrtAsyncServerContinuationMessage,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<1>,WinrtAsyncServerContinuationMessage,ObjectLibrary::ForwardedBases<WinrtAsyncChannelMessage> > >::`vftable'[1])(void);
 void (* const ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,12,ObjectLibrary::AllocationCachingOptions<8> >,CAsyncCall,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<65>,CAsyncCall,ObjectLibrary::ForwardedBases<CMessageCall> > >::`vftable'[1])(void);
 void (* const ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,12,ObjectLibrary::AllocationCachingOptions<8> >,CClientCall,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<65>,CClientCall,ObjectLibrary::ForwardedBases<CMessageCall> > >::`vftable'[1])(void);
-void (* const ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,12,ObjectLibrary::Details::Nil>,CSyncClientCall,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<0>,CSyncClientCall,ObjectLibrary::ForwardedBases<StandardComClientCall,ICancelMethodCalls> > >::`vftable'[5])(void);
-void (* const ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,12,ObjectLibrary::Details::Nil>,SyncServerCall,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<1>,SyncServerCall,ObjectLibrary::ForwardedBases<StandardComServerCall> > >::`vftable'[1])(void);
-void (* const ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<ObjectLibrary::NoAllocator,2,ObjectLibrary::Details::Nil>,CDllHost,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<8>,CDllHost,ObjectLibrary::ForwardedBases<IDLLHost,IMessageParam> > >::`vftable'[4])(void);
+void (* const ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,12,ObjectLibrary::Details::Nil>,CSyncClientCall,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<0>,CSyncClientCall,ObjectLibrary::ForwardedBases<StandardComClientCall,ICancelMethodCalls> > >::`vftable'[1])(void);
+void (* const ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,12,ObjectLibrary::Details::Nil>,SyncServerCall,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<1>,SyncServerCall,ObjectLibrary::ForwardedBases<StandardComServerCall> > >::`vftable'[4])(void);
+void (* const ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<ObjectLibrary::NoAllocator,2,ObjectLibrary::Details::Nil>,CDllHost,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<8>,CDllHost,ObjectLibrary::ForwardedBases<IDLLHost,IMessageParam> > >::`vftable'[1])(void);
 void (* const ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<PrivMemAllocator,0,ObjectLibrary::Details::Nil>,WinrtAsyncChannelMessage,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<0>,WinrtAsyncChannelMessage,ObjectLibrary::ForwardedBases<IMessageParam> > >::`vftable'[1])(void);
 void (* const ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<PrivMemAllocator,1,ObjectLibrary::Details::Nil>,POSTRELRIFREF,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<1>,POSTRELRIFREF,ObjectLibrary::ForwardedBases<IMessageParam> > >::`vftable'[1])(void);
 void (* const ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<PrivMemAllocator,368,ObjectLibrary::Details::Nil>,ClientCall,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<4>,ClientCall,ObjectLibrary::ForwardedBases<CBaseCall> > >::`vftable'[5])(void);
-void (* const ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<PrivMemAllocator,368,ObjectLibrary::Details::Nil>,ServerCall,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<4>,ServerCall,ObjectLibrary::ForwardedBases<CBaseCall,IMessageParam,IServerCall> > >::`vftable'[3])(void);
-void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<0>,CSyncClientCall,ObjectLibrary::ForwardedBases<StandardComClientCall,ICancelMethodCalls> >::`vftable'[13])(void);
+void (* const ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<PrivMemAllocator,368,ObjectLibrary::Details::Nil>,ServerCall,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<4>,ServerCall,ObjectLibrary::ForwardedBases<CBaseCall,IMessageParam,IServerCall> > >::`vftable'[21])(void);
+void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<0>,CSyncClientCall,ObjectLibrary::ForwardedBases<StandardComClientCall,ICancelMethodCalls> >::`vftable'[5])(void);
 void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<0>,WinRT::Metadata::Marshaling::MetadataArray,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataType> >::`vftable'[1])(void);
 void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<0>,WinRT::Metadata::Marshaling::MetadataBaseType,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataType> >::`vftable'[1])(void);
 void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<0>,WinRT::Metadata::Marshaling::MetadataClass,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataType> >::`vftable'[1])(void);
@@ -175650,28 +175757,28 @@ void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReference
 void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<0>,WinRT::Metadata::Marshaling::MetadataUnknown,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataType> >::`vftable'[1])(void);
 void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<0>,WinrtAsyncChannelMessage,ObjectLibrary::ForwardedBases<IMessageParam> >::`vftable'[1])(void);
 void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<0>,WinrtAsyncClientCall,ObjectLibrary::ForwardedBases<LegacyFreeSyncClientCall,IWinrtAsyncClientCall> >::`vftable'[1])(void);
-void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<0>,WinrtAsyncServerCall,ObjectLibrary::ForwardedBases<LegacyFreeSyncServerCall,IWinrtAsyncServerCall> >::`vftable'[22])(void);
-void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<17>,WinrtAsyncChannelOperation,ObjectLibrary::ForwardedBases<WinrtAsyncChannelOperationEntry,Dcomrem::Async::AsyncBaseStateMachine<WinrtAsyncChannelOperation,2,AsyncDelegateStorage,AsyncDelegateStorage>,IWinrtAsyncChannelOperation,IAsyncClientTransport,IClientTransportCallEvents,IServerTransportCallEvents> >::`vftable'[9])(void);
-void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<1>,AsyncComClientCall,ObjectLibrary::ForwardedBases<StandardComClientCall,IAsyncClientTransport> >::`vftable'[9])(void);
-void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<1>,AsyncComServerCall,ObjectLibrary::ForwardedBases<StandardComServerCall> >::`vftable'[4])(void);
-void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<1>,CChannelObject,ObjectLibrary::ForwardedBases<IAsyncRpcChannelBuffer,IRpcSyntaxNegotiate,ICancelMethodCalls,IClientSecurity,IChannelWrapper,IMessageParam> >::`vftable'[4])(void);
-void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<1>,CClientChannel,ObjectLibrary::ForwardedBases<CCtxComChnl,IRpcSyntaxNegotiate> >::`vftable'[4])(void);
+void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<0>,WinrtAsyncServerCall,ObjectLibrary::ForwardedBases<LegacyFreeSyncServerCall,IWinrtAsyncServerCall> >::`vftable'[1])(void);
+void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<17>,WinrtAsyncChannelOperation,ObjectLibrary::ForwardedBases<WinrtAsyncChannelOperationEntry,Dcomrem::Async::AsyncBaseStateMachine<WinrtAsyncChannelOperation,2,AsyncDelegateStorage,AsyncDelegateStorage>,IWinrtAsyncChannelOperation,IAsyncClientTransport,IClientTransportCallEvents,IServerTransportCallEvents> >::`vftable'[13])(void);
+void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<1>,AsyncComClientCall,ObjectLibrary::ForwardedBases<StandardComClientCall,IAsyncClientTransport> >::`vftable'[1])(void);
+void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<1>,AsyncComServerCall,ObjectLibrary::ForwardedBases<StandardComServerCall> >::`vftable'[1])(void);
+void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<1>,CChannelObject,ObjectLibrary::ForwardedBases<IAsyncRpcChannelBuffer,IRpcSyntaxNegotiate,ICancelMethodCalls,IClientSecurity,IChannelWrapper,IMessageParam> >::`vftable'[1])(void);
+void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<1>,CClientChannel,ObjectLibrary::ForwardedBases<CCtxComChnl,IRpcSyntaxNegotiate> >::`vftable'[6])(void);
 void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<1>,CGIPMessageParam,ObjectLibrary::ForwardedBases<IMessageParam> >::`vftable'[4])(void);
-void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<1>,CServerChannel,ObjectLibrary::ForwardedBases<CCtxComChnl> >::`vftable'[6])(void);
+void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<1>,CServerChannel,ObjectLibrary::ForwardedBases<CCtxComChnl> >::`vftable'[8])(void);
 void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<1>,POSTRELRIFREF,ObjectLibrary::ForwardedBases<IMessageParam> >::`vftable'[1])(void);
-void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<1>,SyncServerCall,ObjectLibrary::ForwardedBases<StandardComServerCall> >::`vftable'[21])(void);
+void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<1>,SyncServerCall,ObjectLibrary::ForwardedBases<StandardComServerCall> >::`vftable'[4])(void);
 void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<1>,WinrtAsyncResponse,ObjectLibrary::ForwardedBases<WinrtAsyncChannelMessage> >::`vftable'[1])(void);
 void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<1>,WinrtAsyncServerContinuationMessage,ObjectLibrary::ForwardedBases<WinrtAsyncChannelMessage> >::`vftable'[1])(void);
 void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<4>,ClientCall,ObjectLibrary::ForwardedBases<CBaseCall> >::`vftable'[5])(void);
-void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<4>,ServerCall,ObjectLibrary::ForwardedBases<CBaseCall,IMessageParam,IServerCall> >::`vftable'[3])(void);
+void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<4>,ServerCall,ObjectLibrary::ForwardedBases<CBaseCall,IMessageParam,IServerCall> >::`vftable'[21])(void);
 void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<4>,StandardComClientCall,ObjectLibrary::ForwardedBases<ClientCall,IClientTransportCallEvents> >::`vftable'[36])(void);
-void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<4>,StandardComServerCall,ObjectLibrary::ForwardedBases<ServerCall,IServerTransportCallEvents> >::`vftable'[1])(void);
+void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<4>,StandardComServerCall,ObjectLibrary::ForwardedBases<ServerCall,IServerTransportCallEvents> >::`vftable'[4])(void);
 void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<65>,CAsyncCall,ObjectLibrary::ForwardedBases<CMessageCall> >::`vftable'[1])(void);
 void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<65>,CClientCall,ObjectLibrary::ForwardedBases<CMessageCall> >::`vftable'[1])(void);
-void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<8>,CDllHost,ObjectLibrary::ForwardedBases<IDLLHost,IMessageParam> >::`vftable'[4])(void);
+void (* const ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<8>,CDllHost,ObjectLibrary::ForwardedBases<IDLLHost,IMessageParam> >::`vftable'[1])(void);
 void (* const ObjectLibrary::AddDebugging<ObjectLibrary::DebuggingOptions<0>,ClientCall,ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<PrivMemAllocator,368,ObjectLibrary::Details::Nil>,ClientCall,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<4>,ClientCall,ObjectLibrary::ForwardedBases<CBaseCall> > > >::`vftable'[5])(void);
-void (* const ObjectLibrary::AddDebugging<ObjectLibrary::DebuggingOptions<0>,CMessageCall,ObjectLibrary::PolymorphicType<ObjectLibrary::OneOf<CAsyncCall,CClientCall>,CMessageCall,ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<PrivMemAllocator,368,ObjectLibrary::Details::Nil>,CMessageCall,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<4>,CMessageCall,ObjectLibrary::Details::Nil> > > >::`vftable'[3])(void);
-void (* const ObjectLibrary::AddDebugging<ObjectLibrary::DebuggingOptions<0>,ServerCall,ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<PrivMemAllocator,368,ObjectLibrary::Details::Nil>,ServerCall,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<4>,ServerCall,ObjectLibrary::ForwardedBases<CBaseCall,IMessageParam,IServerCall> > > >::`vftable'[4])(void);
+void (* const ObjectLibrary::AddDebugging<ObjectLibrary::DebuggingOptions<0>,CMessageCall,ObjectLibrary::PolymorphicType<ObjectLibrary::OneOf<CAsyncCall,CClientCall>,CMessageCall,ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<PrivMemAllocator,368,ObjectLibrary::Details::Nil>,CMessageCall,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<4>,CMessageCall,ObjectLibrary::Details::Nil> > > >::`vftable'[1])(void);
+void (* const ObjectLibrary::AddDebugging<ObjectLibrary::DebuggingOptions<0>,ServerCall,ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<PrivMemAllocator,368,ObjectLibrary::Details::Nil>,ServerCall,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<4>,ServerCall,ObjectLibrary::ForwardedBases<CBaseCall,IMessageParam,IServerCall> > > >::`vftable'[1])(void);
 struct std::atomic<ObjectLibrary::OptionalValue<unsigned __int64,ObjectLibrary::SentinelValue<unsigned __int64,-1> > > ObjectLibrary::AlmostStaticConstantValue<unsigned __int64,&ObjectLibrary::Details::MixinBase<CAsyncCall,ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<CMessageCall> > >::CallGetAllocationHeaderSizeIfExists<0>,ObjectLibrary::SentinelValue<unsigned __int64,-1> >::s_cachedValue;
 struct std::atomic<ObjectLibrary::OptionalValue<unsigned __int64,ObjectLibrary::SentinelValue<unsigned __int64,-1> > > ObjectLibrary::AlmostStaticConstantValue<unsigned __int64,&ObjectLibrary::Details::MixinBase<CClientCall,ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<CMessageCall> > >::CallGetAllocationHeaderSizeIfExists<0>,ObjectLibrary::SentinelValue<unsigned __int64,-1> >::s_cachedValue;
 struct std::atomic<ObjectLibrary::OptionalValue<unsigned __int64,ObjectLibrary::SentinelValue<unsigned __int64,-1> > > ObjectLibrary::AlmostStaticConstantValue<unsigned __int64,&ObjectLibrary::Details::MixinBase<ClientCall,ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<CBaseCall> > >::CallGetAllocationHeaderSizeIfExists<0>,ObjectLibrary::SentinelValue<unsigned __int64,-1> >::s_cachedValue;
@@ -175721,71 +175828,71 @@ struct ObjectLibrary::Details::GeneralTypeIdentity ObjectLibrary::Details::AddGe
 struct ObjectLibrary::Details::GeneralTypeIdentity ObjectLibrary::Details::AddGeneralTypeIdentityHelper<WinrtAsyncResponse,ObjectLibrary::Details::AddTypeIdentityLayersBuilder<WinrtAsyncResponse,ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,WinrtAsyncResponse,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<1>,WinrtAsyncResponse,ObjectLibrary::ForwardedBases<WinrtAsyncChannelMessage> > >,ObjectLibrary::ForwardedBases<WinrtAsyncChannelMessage> >::AddTypeIdLayerHelper<ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,WinrtAsyncResponse,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<1>,WinrtAsyncResponse,ObjectLibrary::ForwardedBases<WinrtAsyncChannelMessage> > >,ObjectLibrary::PolymorphicType<ObjectLibrary::OneOf<ServerCall,CChannelObject,CDllHost,CGIPMessageParam,POSTRELRIFREF,WinrtAsyncResponse,WinrtAsyncServerContinuationMessage>,IMessageParam,ObjectLibrary::ForwardedBases<ObjectLibrary::IComReferenceCounting> > >,1>::s_generalTypeIdentity;
 struct ObjectLibrary::Details::GeneralTypeIdentity ObjectLibrary::Details::AddGeneralTypeIdentityHelper<WinrtAsyncServerCall,ObjectLibrary::Details::AddTypeIdentityLayersBuilder<WinrtAsyncServerCall,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<0>,WinrtAsyncServerCall,ObjectLibrary::ForwardedBases<LegacyFreeSyncServerCall,IWinrtAsyncServerCall> >,ObjectLibrary::ForwardedBases<LegacyFreeSyncServerCall,IWinrtAsyncServerCall> >::AddTypeIdLayerHelper<ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<0>,WinrtAsyncServerCall,ObjectLibrary::ForwardedBases<LegacyFreeSyncServerCall,IWinrtAsyncServerCall> >,ObjectLibrary::PolymorphicType<ObjectLibrary::OneOf<CCtxCall,CSyncClientCall,AsyncComClientCall,WinrtAsyncClientCall,SyncServerCall,AsyncComServerCall,WinrtAsyncServerCall>,CBaseCall,ObjectLibrary::Details::Nil> >,1>::s_generalTypeIdentity;
 struct ObjectLibrary::Details::GeneralTypeIdentity ObjectLibrary::Details::AddGeneralTypeIdentityHelper<WinrtAsyncServerContinuationMessage,ObjectLibrary::Details::AddTypeIdentityLayersBuilder<WinrtAsyncServerContinuationMessage,ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,WinrtAsyncServerContinuationMessage,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<1>,WinrtAsyncServerContinuationMessage,ObjectLibrary::ForwardedBases<WinrtAsyncChannelMessage> > >,ObjectLibrary::ForwardedBases<WinrtAsyncChannelMessage> >::AddTypeIdLayerHelper<ObjectLibrary::AddAllocation<ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,WinrtAsyncServerContinuationMessage,ObjectLibrary::AddComReferenceCounting<ObjectLibrary::ComReferenceCountingOptions<1>,WinrtAsyncServerContinuationMessage,ObjectLibrary::ForwardedBases<WinrtAsyncChannelMessage> > >,ObjectLibrary::PolymorphicType<ObjectLibrary::OneOf<ServerCall,CChannelObject,CDllHost,CGIPMessageParam,POSTRELRIFREF,WinrtAsyncResponse,WinrtAsyncServerContinuationMessage>,IMessageParam,ObjectLibrary::ForwardedBases<ObjectLibrary::IComReferenceCounting> > >,1>::s_generalTypeIdentity;
-void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<CBaseCall,ICallFrameWalker,IServerCall> >::`vftable'[1])(void);
-void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<CBaseCall,IMessageParam,IServerCall> >::`vftable'[3])(void);
+void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<CBaseCall,ICallFrameWalker,IServerCall> >::`vftable'[21])(void);
+void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<CBaseCall,IMessageParam,IServerCall> >::`vftable'[21])(void);
 void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<CBaseCall> >::`vftable'[3])(void);
-void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<CCtxComChnl,IRpcSyntaxNegotiate> >::`vftable'[5])(void);
+void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<CCtxComChnl,IRpcSyntaxNegotiate> >::`vftable'[7])(void);
 void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<CCtxComChnl> >::`vftable'[7])(void);
-void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<ClientCall,IClientTransportCallEvents> >::`vftable'[13])(void);
+void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<ClientCall,IClientTransportCallEvents> >::`vftable'[1])(void);
 void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<CMessageCall> >::`vftable'[1])(void);
-void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<IAsyncRpcChannelBuffer,IRpcSyntaxNegotiate,ICancelMethodCalls,IClientSecurity,IChannelWrapper,IMessageParam> >::`vftable'[5])(void);
+void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<IAsyncRpcChannelBuffer,IRpcSyntaxNegotiate,ICancelMethodCalls,IClientSecurity,IChannelWrapper,IMessageParam> >::`vftable'[1])(void);
 void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<IDLLHost,IMessageParam> >::`vftable'[4])(void);
-void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<IMessageParam> >::`vftable'[4])(void);
+void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<IMessageParam> >::`vftable'[1])(void);
 void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<IPolicySet> >::`vftable'[4])(void);
-void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<IRpcChannelBuffer2,ICallFrameEvents,IRpcSyntaxNegotiate,IRpcChannelBufferMarshalingContext,IChannelHandleMarshal,IChannelCallObjectInitialization,IChannelProtocolBehavior> >::`vftable'[5])(void);
-void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<ISynchronize,IServerSecurity,IRpcStubBuffer,ICancelMethodCalls> >::`vftable'[6])(void);
+void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<IRpcChannelBuffer2,ICallFrameEvents,IRpcSyntaxNegotiate,IRpcChannelBufferMarshalingContext,IChannelHandleMarshal,IChannelCallObjectInitialization,IChannelProtocolBehavior> >::`vftable'[7])(void);
+void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<ISynchronize,IServerSecurity,IRpcStubBuffer,ICancelMethodCalls> >::`vftable'[10])(void);
 void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<LegacyFreeSyncClientCall,IWinrtAsyncClientCall> >::`vftable'[1])(void);
-void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<LegacyFreeSyncServerCall,IWinrtAsyncServerCall> >::`vftable'[4])(void);
+void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<LegacyFreeSyncServerCall,IWinrtAsyncServerCall> >::`vftable'[21])(void);
 void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<2>,Microsoft::WRL::ChainInterfaces<IRpcChannelBuffer3,IRpcChannelBuffer2,IRpcChannelBuffer,Microsoft::WRL::Details::Nil,Microsoft::WRL::Details::Nil,Microsoft::WRL::Details::Nil,Microsoft::WRL::Details::Nil,Microsoft::WRL::Details::Nil,Microsoft::WRL::Details::Nil,Microsoft::WRL::Details::Nil>,IRpcChannelBufferMarshalingContext,IChannelHandleMarshal,IChannelWrapper>,IWinrtAsyncClientRpcOleMessageCallProxyCallbacks,IWinrtAsyncProxyCall,IReturnObjectContainer,IStubCall> >::`vftable'[8])(void);
-void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<ServerCall,IServerTransportCallEvents> >::`vftable'[21])(void);
-void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<StandardComClientCall,IAsyncClientTransport> >::`vftable'[37])(void);
-void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<StandardComClientCall,ICancelMethodCalls> >::`vftable'[37])(void);
-void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<StandardComServerCall> >::`vftable'[4])(void);
+void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<ServerCall,IServerTransportCallEvents> >::`vftable'[4])(void);
+void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<StandardComClientCall,IAsyncClientTransport> >::`vftable'[13])(void);
+void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<StandardComClientCall,ICancelMethodCalls> >::`vftable'[13])(void);
+void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<StandardComServerCall> >::`vftable'[21])(void);
 void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataInterfaceBase> >::`vftable'[1])(void);
 void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataStructBase> >::`vftable'[1])(void);
 void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataType> >::`vftable'[1])(void);
 void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<WinrtAsyncChannelMessage> >::`vftable'[1])(void);
-void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<WinrtAsyncChannelOperationEntry,Dcomrem::Async::AsyncBaseStateMachine<WinrtAsyncChannelOperation,2,AsyncDelegateStorage,AsyncDelegateStorage>,IWinrtAsyncChannelOperation,IAsyncClientTransport,IClientTransportCallEvents,IServerTransportCallEvents> >::`vftable'[9])(void);
+void (* const ObjectLibrary::Details::Mixins_BaseForwarderLayer<ObjectLibrary::ForwardedBases<WinrtAsyncChannelOperationEntry,Dcomrem::Async::AsyncBaseStateMachine<WinrtAsyncChannelOperation,2,AsyncDelegateStorage,AsyncDelegateStorage>,IWinrtAsyncChannelOperation,IAsyncClientTransport,IClientTransportCallEvents,IServerTransportCallEvents> >::`vftable'[13])(void);
 void (* const ObjectLibrary::Details::PolymorphicTypeBase::`vftable'[1])(void);
-void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinRT::Metadata::Marshaling::MetadataArray,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataType> >::`vftable'[1])(void);
+void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinRT::Metadata::Marshaling::MetadataArray,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataType> >::`vftable'[21])(void);
 void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinRT::Metadata::Marshaling::MetadataBaseType,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataType> >::`vftable'[1])(void);
 void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinRT::Metadata::Marshaling::MetadataClass,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataType> >::`vftable'[21])(void);
-void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinRT::Metadata::Marshaling::MetadataDelegate,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataInterfaceBase> >::`vftable'[1])(void);
-void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinRT::Metadata::Marshaling::MetadataEnum,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataType> >::`vftable'[21])(void);
-void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinRT::Metadata::Marshaling::MetadataGuid,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataStructBase> >::`vftable'[1])(void);
-void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinRT::Metadata::Marshaling::MetadataInterface,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataInterfaceBase> >::`vftable'[1])(void);
+void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinRT::Metadata::Marshaling::MetadataDelegate,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataInterfaceBase> >::`vftable'[26])(void);
+void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinRT::Metadata::Marshaling::MetadataEnum,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataType> >::`vftable'[1])(void);
+void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinRT::Metadata::Marshaling::MetadataGuid,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataStructBase> >::`vftable'[22])(void);
+void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinRT::Metadata::Marshaling::MetadataInterface,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataInterfaceBase> >::`vftable'[26])(void);
 void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinRT::Metadata::Marshaling::MetadataInterfaceBase,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataType> >::`vftable'[1])(void);
 void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinRT::Metadata::Marshaling::MetadataPInterface,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataInterfaceBase> >::`vftable'[1])(void);
-void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinRT::Metadata::Marshaling::MetadataPInterfaceInstance,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataInterfaceBase> >::`vftable'[1])(void);
+void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinRT::Metadata::Marshaling::MetadataPInterfaceInstance,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataInterfaceBase> >::`vftable'[26])(void);
 void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinRT::Metadata::Marshaling::MetadataPointer,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataType> >::`vftable'[21])(void);
-void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinRT::Metadata::Marshaling::MetadataRange,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataType> >::`vftable'[1])(void);
+void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinRT::Metadata::Marshaling::MetadataRange,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataType> >::`vftable'[21])(void);
 void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinRT::Metadata::Marshaling::MetadataStruct,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataStructBase> >::`vftable'[1])(void);
 void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinRT::Metadata::Marshaling::MetadataStructBase,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataType> >::`vftable'[1])(void);
 void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinRT::Metadata::Marshaling::MetadataUnknown,ObjectLibrary::ForwardedBases<WinRT::Metadata::Marshaling::MetadataType> >::`vftable'[1])(void);
-void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,12,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,CSyncClientCall,ObjectLibrary::ForwardedBases<StandardComClientCall,ICancelMethodCalls> >::`vftable'[1])(void);
+void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,12,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,CSyncClientCall,ObjectLibrary::ForwardedBases<StandardComClientCall,ICancelMethodCalls> >::`vftable'[13])(void);
 void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<PrivMemAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinrtAsyncChannelMessage,ObjectLibrary::ForwardedBases<IMessageParam> >::`vftable'[1])(void);
 void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<PrivMemAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::OneOf<WinrtAsyncChannelOperationPlaceholder,WinrtAsyncChannelOperation>,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ContainmentSpecification<WinrtAsyncChannelOperationMap,WinrtAsyncChannelOperationEntry,ObjectLibrary::ContainerKind::OrderedMap,1> >,WinrtAsyncChannelOperationEntry,ObjectLibrary::Details::Nil>::`vftable'[1])(void);
-void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<WinRT::Metadata::Marshaling::MetadataTypeAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::OneOf<WinRT::Metadata::Marshaling::MetadataUnknown,WinRT::Metadata::Marshaling::MetadataBaseType,WinRT::Metadata::Marshaling::MetadataRange,WinRT::Metadata::Marshaling::MetadataInterface,WinRT::Metadata::Marshaling::MetadataStruct,WinRT::Metadata::Marshaling::MetadataGuid,WinRT::Metadata::Marshaling::MetadataEnum,WinRT::Metadata::Marshaling::MetadataClass,WinRT::Metadata::Marshaling::MetadataDelegate,WinRT::Metadata::Marshaling::MetadataPInterface,WinRT::Metadata::Marshaling::MetadataPInterfaceInstance,WinRT::Metadata::Marshaling::MetadataPointer,WinRT::Metadata::Marshaling::MetadataArray>,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinRT::Metadata::Marshaling::MetadataType,ObjectLibrary::Details::Nil>::`vftable'[1])(void);
-void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::ObjectNoAllocation,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinrtAsyncClientCall,ObjectLibrary::ForwardedBases<LegacyFreeSyncClientCall,IWinrtAsyncClientCall> >::`vftable'[1])(void);
-void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::ObjectNoAllocation,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinrtAsyncServerCall,ObjectLibrary::ForwardedBases<LegacyFreeSyncServerCall,IWinrtAsyncServerCall> >::`vftable'[21])(void);
-void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<17>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinrtAsyncChannelOperation,ObjectLibrary::ForwardedBases<WinrtAsyncChannelOperationEntry,Dcomrem::Async::AsyncBaseStateMachine<WinrtAsyncChannelOperation,2,AsyncDelegateStorage,AsyncDelegateStorage>,IWinrtAsyncChannelOperation,IAsyncClientTransport,IClientTransportCallEvents,IServerTransportCallEvents> >::`vftable'[4])(void);
-void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<1>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinrtAsyncResponse,ObjectLibrary::ForwardedBases<WinrtAsyncChannelMessage> >::`vftable'[1])(void);
+void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::AllocationOptions<WinRT::Metadata::Marshaling::MetadataTypeAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::OneOf<WinRT::Metadata::Marshaling::MetadataUnknown,WinRT::Metadata::Marshaling::MetadataBaseType,WinRT::Metadata::Marshaling::MetadataRange,WinRT::Metadata::Marshaling::MetadataInterface,WinRT::Metadata::Marshaling::MetadataStruct,WinRT::Metadata::Marshaling::MetadataGuid,WinRT::Metadata::Marshaling::MetadataEnum,WinRT::Metadata::Marshaling::MetadataClass,WinRT::Metadata::Marshaling::MetadataDelegate,WinRT::Metadata::Marshaling::MetadataPInterface,WinRT::Metadata::Marshaling::MetadataPInterfaceInstance,WinRT::Metadata::Marshaling::MetadataPointer,WinRT::Metadata::Marshaling::MetadataArray>,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinRT::Metadata::Marshaling::MetadataType,ObjectLibrary::Details::Nil>::`vftable'[2])(void);
+void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::ObjectNoAllocation,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinrtAsyncClientCall,ObjectLibrary::ForwardedBases<LegacyFreeSyncClientCall,IWinrtAsyncClientCall> >::`vftable'[11])(void);
+void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<0>,ObjectLibrary::ObjectNoAllocation,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinrtAsyncServerCall,ObjectLibrary::ForwardedBases<LegacyFreeSyncServerCall,IWinrtAsyncServerCall> >::`vftable'[1])(void);
+void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<17>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinrtAsyncChannelOperation,ObjectLibrary::ForwardedBases<WinrtAsyncChannelOperationEntry,Dcomrem::Async::AsyncBaseStateMachine<WinrtAsyncChannelOperation,2,AsyncDelegateStorage,AsyncDelegateStorage>,IWinrtAsyncChannelOperation,IAsyncClientTransport,IClientTransportCallEvents,IServerTransportCallEvents> >::`vftable'[1])(void);
+void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<1>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinrtAsyncResponse,ObjectLibrary::ForwardedBases<WinrtAsyncChannelMessage> >::`vftable'[5])(void);
 void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<1>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,0,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,WinrtAsyncServerContinuationMessage,ObjectLibrary::ForwardedBases<WinrtAsyncChannelMessage> >::`vftable'[1])(void);
-void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<1>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,12,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,SyncServerCall,ObjectLibrary::ForwardedBases<StandardComServerCall> >::`vftable'[1])(void);
-void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<1>,ObjectLibrary::AllocationOptions<PrivMemAllocator,1,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,POSTRELRIFREF,ObjectLibrary::ForwardedBases<IMessageParam> >::`vftable'[1])(void);
-void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<1>,ObjectLibrary::ObjectNoAllocation,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,AsyncComClientCall,ObjectLibrary::ForwardedBases<StandardComClientCall,IAsyncClientTransport> >::`vftable'[1])(void);
+void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<1>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,12,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,SyncServerCall,ObjectLibrary::ForwardedBases<StandardComServerCall> >::`vftable'[21])(void);
+void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<1>,ObjectLibrary::AllocationOptions<PrivMemAllocator,1,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,POSTRELRIFREF,ObjectLibrary::ForwardedBases<IMessageParam> >::`vftable'[4])(void);
+void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<1>,ObjectLibrary::ObjectNoAllocation,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,AsyncComClientCall,ObjectLibrary::ForwardedBases<StandardComClientCall,IAsyncClientTransport> >::`vftable'[13])(void);
 void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<1>,ObjectLibrary::ObjectNoAllocation,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,AsyncComServerCall,ObjectLibrary::ForwardedBases<StandardComServerCall> >::`vftable'[4])(void);
-void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<1>,ObjectLibrary::ObjectNoAllocation,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,CChannelObject,ObjectLibrary::ForwardedBases<IAsyncRpcChannelBuffer,IRpcSyntaxNegotiate,ICancelMethodCalls,IClientSecurity,IChannelWrapper,IMessageParam> >::`vftable'[1])(void);
+void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<1>,ObjectLibrary::ObjectNoAllocation,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,CChannelObject,ObjectLibrary::ForwardedBases<IAsyncRpcChannelBuffer,IRpcSyntaxNegotiate,ICancelMethodCalls,IClientSecurity,IChannelWrapper,IMessageParam> >::`vftable'[6])(void);
 void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<1>,ObjectLibrary::ObjectNoAllocation,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,CGIPMessageParam,ObjectLibrary::ForwardedBases<IMessageParam> >::`vftable'[4])(void);
-void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<4>,ObjectLibrary::AllocationOptions<PrivMemAllocator,368,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::DebuggingOptions<0>,ObjectLibrary::ObjectNoAssociations>,ClientCall,ObjectLibrary::ForwardedBases<CBaseCall> >::`vftable'[1])(void);
-void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<4>,ObjectLibrary::AllocationOptions<PrivMemAllocator,368,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::DebuggingOptions<0>,ObjectLibrary::ObjectNoAssociations>,ServerCall,ObjectLibrary::ForwardedBases<CBaseCall,IMessageParam,IServerCall> >::`vftable'[4])(void);
-void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<4>,ObjectLibrary::AllocationOptions<PrivMemAllocator,368,ObjectLibrary::Details::Nil>,ObjectLibrary::OneOf<CAsyncCall,CClientCall>,ObjectLibrary::DebuggingOptions<0>,ObjectLibrary::ObjectNoAssociations>,CMessageCall,ObjectLibrary::Details::Nil>::`vftable'[3])(void);
-void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<4>,ObjectLibrary::ObjectNoAllocation,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,StandardComClientCall,ObjectLibrary::ForwardedBases<ClientCall,IClientTransportCallEvents> >::`vftable'[1])(void);
+void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<4>,ObjectLibrary::AllocationOptions<PrivMemAllocator,368,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::DebuggingOptions<0>,ObjectLibrary::ObjectNoAssociations>,ClientCall,ObjectLibrary::ForwardedBases<CBaseCall> >::`vftable'[5])(void);
+void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<4>,ObjectLibrary::AllocationOptions<PrivMemAllocator,368,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::DebuggingOptions<0>,ObjectLibrary::ObjectNoAssociations>,ServerCall,ObjectLibrary::ForwardedBases<CBaseCall,IMessageParam,IServerCall> >::`vftable'[21])(void);
+void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<4>,ObjectLibrary::AllocationOptions<PrivMemAllocator,368,ObjectLibrary::Details::Nil>,ObjectLibrary::OneOf<CAsyncCall,CClientCall>,ObjectLibrary::DebuggingOptions<0>,ObjectLibrary::ObjectNoAssociations>,CMessageCall,ObjectLibrary::Details::Nil>::`vftable'[1])(void);
+void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<4>,ObjectLibrary::ObjectNoAllocation,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,StandardComClientCall,ObjectLibrary::ForwardedBases<ClientCall,IClientTransportCallEvents> >::`vftable'[36])(void);
 void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<4>,ObjectLibrary::ObjectNoAllocation,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,StandardComServerCall,ObjectLibrary::ForwardedBases<ServerCall,IServerTransportCallEvents> >::`vftable'[4])(void);
-void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<65>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,12,ObjectLibrary::AllocationCachingOptions<8> >,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,CAsyncCall,ObjectLibrary::ForwardedBases<CMessageCall> >::`vftable'[1])(void);
-void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<65>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,12,ObjectLibrary::AllocationCachingOptions<8> >,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,CClientCall,ObjectLibrary::ForwardedBases<CMessageCall> >::`vftable'[1])(void);
-void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<8>,ObjectLibrary::AllocationOptions<ObjectLibrary::NoAllocator,2,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,CDllHost,ObjectLibrary::ForwardedBases<IDLLHost,IMessageParam> >::`vftable'[4])(void);
-void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ObjectNoComReferenceCounting,ObjectLibrary::ObjectNoAllocation,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,CCtxCall,ObjectLibrary::ForwardedBases<CBaseCall,ICallFrameWalker,IServerCall> >::`vftable'[21])(void);
+void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<65>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,12,ObjectLibrary::AllocationCachingOptions<8> >,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,CAsyncCall,ObjectLibrary::ForwardedBases<CMessageCall> >::`vftable'[26])(void);
+void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<65>,ObjectLibrary::AllocationOptions<ObjectLibrary::InheritBaseAllocator,12,ObjectLibrary::AllocationCachingOptions<8> >,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,CClientCall,ObjectLibrary::ForwardedBases<CMessageCall> >::`vftable'[26])(void);
+void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ComReferenceCountingOptions<8>,ObjectLibrary::AllocationOptions<ObjectLibrary::NoAllocator,2,ObjectLibrary::Details::Nil>,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,CDllHost,ObjectLibrary::ForwardedBases<IDLLHost,IMessageParam> >::`vftable'[1])(void);
+void (* const ObjectLibrary::Object<ObjectLibrary::ObjectOptions<ObjectLibrary::ObjectNoComReferenceCounting,ObjectLibrary::ObjectNoAllocation,ObjectLibrary::ObjectNoPolymorphism,ObjectLibrary::ObjectNoDebugging,ObjectLibrary::ObjectNoAssociations>,CCtxCall,ObjectLibrary::ForwardedBases<CBaseCall,ICallFrameWalker,IServerCall> >::`vftable'[1])(void);
 const unsigned short OffsetArray[74][2];
 struct SHashChain OIDBuckets[23];
 void (* const OpaqueDataInfo::`vftable'[9])(void);
@@ -176244,20 +176351,20 @@ const int __scrt_ucrt_dll_is_in_use;
 unsigned __int64 __security_cookie;
 unsigned __int64 __security_cookie_complement;
 void (* const SecurityInfo::`vftable'[5])(void);
-void (* const ServerCall::`vftable'[38])(void);
+void (* const ServerCall::`vftable'[21])(void);
 void (* const ServerLocationInfo::`vftable'[13])(void);
 struct _EVENT_DESCRIPTOR ServerMarshalForRundownObjectOfInterest;
 int sfEndpointsProcessed;
 int sfProgrammaticEndpoints;
 const __int64 SIZING_HANDLE_COMMON_BUFFER[25];
-void (* const SpecialProperties::`vftable'[27])(void);
+void (* const SpecialProperties::`vftable'[9])(void);
 class ObjectLibrary::ReferencedPtr<WinRT::Metadata::Marshaling::TypeCache> spTypeCache;
 void (*spTypeCache$initializer$)(void);
 struct SHashChain SRFBuckets[23];
 struct _srgtprot_MIDL_PROC_FORMAT_STRING srgtprot__MIDL_ProcFormatString;
 struct _srgtprot_MIDL_TYPE_FORMAT_STRING srgtprot__MIDL_TypeFormatString;
-void (* const StandardComClientCall::`vftable'[13])(void);
-void (* const StandardComServerCall::`vftable'[1])(void);
+void (* const StandardComClientCall::`vftable'[1])(void);
+void (* const StandardComServerCall::`vftable'[21])(void);
 void (*StandardComServerCall::ServerCancelationCallbackTestHook)(void);
 struct _EVENT_DESCRIPTOR StartApplicationSynchronousOperationWorkItem_Important;
 struct _EVENT_DESCRIPTOR StartApplicationSynchronousOperationWorkItem_Required;
@@ -176281,10 +176388,10 @@ struct _EVENT_DESCRIPTOR StartSystemSynchronousWorkItem_Required;
 struct _EVENT_DESCRIPTOR StartSystemSynchronousWorkItem_Verbose;
 void (* const std::exception::`vftable'[2])(void);
 struct std::nothrow_t std::nothrow;
-void (* const StreamDataReaderWriter::`vftable'[4])(void);
+void (* const StreamDataReaderWriter::`vftable'[32])(void);
 long STRING_OPAQUE::s_totalStringCount;
 void **StublessClientVtbl;
-void (* const SyncServerCall::`vftable'[1])(void);
+void (* const SyncServerCall::`vftable'[4])(void);
 __sz_api_ms_win_core_debug_minidump_l1_1_0_dll;
 __sz_api_ms_win_core_winrt_propertysetprivate_l1_1_1_dll;
 __sz_api_ms_win_security_lsalookup_l1_1_0_dll;
@@ -176472,9 +176579,9 @@ void (* const Windows::Foundation::Collections::Internal::HashMap<HSTRING__ *,un
 void (* const Windows::Foundation::Collections::Internal::HashMap<PackagedComCatalog::Internal::TypeLibVersionLocaleIdPair,unsigned int,CPackagedComCatalog::TypeLibVersionLocaleIdPairRegistryNameHashFunction,CPackagedComCatalog::TypeLibVersionLocaleIdPairRegistryNameEqualityPredicate,CPackagedComCatalog::TypeLibVersionLocaleIdPairLifetimeTraits,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,Windows::Foundation::Collections::Internal::DefaultHashMapOptions<PackagedComCatalog::Internal::TypeLibVersionLocaleIdPair,unsigned int,CPackagedComCatalog::TypeLibVersionLocaleIdPairLifetimeTraits> >::`vftable'[14])(void);
 void (* const Windows::Foundation::Collections::Internal::HashMap<PackagedComCatalog::Internal::TypeLibVersionLocaleIdPair,unsigned int,CPackagedComCatalog::TypeLibVersionLocaleIdPairRegistryNameHashFunction,CPackagedComCatalog::TypeLibVersionLocaleIdPairRegistryNameEqualityPredicate,CPackagedComCatalog::TypeLibVersionLocaleIdPairLifetimeTraits,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,Windows::Foundation::Collections::Internal::DefaultHashMapOptions<PackagedComCatalog::Internal::TypeLibVersionLocaleIdPair,unsigned int,CPackagedComCatalog::TypeLibVersionLocaleIdPairLifetimeTraits> >::Iterator::`vftable'[11])(void);
 void (* const Windows::Foundation::Collections::Internal::HashMap<PackagedComCatalog::Internal::TypeLibVersionLocaleIdPair,unsigned int,CPackagedComCatalog::TypeLibVersionLocaleIdPairRegistryNameHashFunction,CPackagedComCatalog::TypeLibVersionLocaleIdPairRegistryNameEqualityPredicate,CPackagedComCatalog::TypeLibVersionLocaleIdPairLifetimeTraits,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,Windows::Foundation::Collections::Internal::DefaultHashMapOptions<PackagedComCatalog::Internal::TypeLibVersionLocaleIdPair,unsigned int,CPackagedComCatalog::TypeLibVersionLocaleIdPairLifetimeTraits> >::View::`vftable'[4])(void);
-void (* const Windows::Foundation::Collections::Internal::HashMap<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultHash<unsigned int>,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::HashMapOptions<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,0,1,0> >::`vftable'[7])(void);
-void (* const Windows::Foundation::Collections::Internal::HashMap<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultHash<unsigned int>,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::HashMapOptions<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,0,1,0> >::Iterator::`vftable'[9])(void);
-void (* const Windows::Foundation::Collections::Internal::HashMap<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultHash<unsigned int>,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::HashMapOptions<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,0,1,0> >::View::`vftable'[11])(void);
+void (* const Windows::Foundation::Collections::Internal::HashMap<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultHash<unsigned int>,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::HashMapOptions<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,0,1,0> >::`vftable'[9])(void);
+void (* const Windows::Foundation::Collections::Internal::HashMap<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultHash<unsigned int>,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::HashMapOptions<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,0,1,0> >::Iterator::`vftable'[4])(void);
+void (* const Windows::Foundation::Collections::Internal::HashMap<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultHash<unsigned int>,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::HashMapOptions<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,0,1,0> >::View::`vftable'[7])(void);
 void (* const Windows::Foundation::Collections::Internal::NaiveSplitView<_GUID,bool,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<_GUID>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<_GUID>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<bool>,Windows::Foundation::Collections::Internal::HashMapOptions<_GUID,bool,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<_GUID>,0,1,0> >::`vftable'[7])(void);
 void (* const Windows::Foundation::Collections::Internal::NaiveSplitView<_GUID,bool,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<_GUID>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<_GUID>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<bool>,Windows::Foundation::Collections::Internal::HashMapOptions<_GUID,bool,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<_GUID>,0,1,0> >::Chunk::`vftable'[1])(void);
 void (* const Windows::Foundation::Collections::Internal::NaiveSplitView<_GUID,bool,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<_GUID>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<_GUID>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<bool>,Windows::Foundation::Collections::Internal::HashMapOptions<_GUID,bool,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<_GUID>,0,1,0> >::ChunkElementIterator::`vftable'[9])(void);
@@ -176490,7 +176597,7 @@ void (* const Windows::Foundation::Collections::Internal::NaiveSplitView<HSTRING
 void (* const Windows::Foundation::Collections::Internal::NaiveSplitView<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<IInspectable *>,Windows::Foundation::Collections::Internal::DefaultHashMapOptions<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *> > >::ChunkElementIterator::`vftable'[11])(void);
 void (* const Windows::Foundation::Collections::Internal::NaiveSplitView<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<IInspectable *>,Windows::Foundation::Collections::Internal::DefaultHashMapOptions<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *> > >::ChunkView::`vftable'[4])(void);
 void (* const Windows::Foundation::Collections::Internal::NaiveSplitView<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<IInspectable *>,Windows::Foundation::Collections::Internal::DefaultHashMapOptions<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *> > >::SplitIterator::`vftable'[11])(void);
-void (* const Windows::Foundation::Collections::Internal::NaiveSplitView<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<IInspectable *>,Windows::Foundation::Collections::Internal::HashMapOptions<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,0,1,0> >::`vftable'[4])(void);
+void (* const Windows::Foundation::Collections::Internal::NaiveSplitView<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<IInspectable *>,Windows::Foundation::Collections::Internal::HashMapOptions<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,0,1,0> >::`vftable'[11])(void);
 void (* const Windows::Foundation::Collections::Internal::NaiveSplitView<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<IInspectable *>,Windows::Foundation::Collections::Internal::HashMapOptions<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,0,1,0> >::Chunk::`vftable'[1])(void);
 void (* const Windows::Foundation::Collections::Internal::NaiveSplitView<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<IInspectable *>,Windows::Foundation::Collections::Internal::HashMapOptions<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,0,1,0> >::ChunkElementIterator::`vftable'[9])(void);
 void (* const Windows::Foundation::Collections::Internal::NaiveSplitView<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<IInspectable *>,Windows::Foundation::Collections::Internal::HashMapOptions<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,0,1,0> >::ChunkView::`vftable'[9])(void);
@@ -176505,21 +176612,21 @@ void (* const Windows::Foundation::Collections::Internal::NaiveSplitView<Package
 void (* const Windows::Foundation::Collections::Internal::NaiveSplitView<PackagedComCatalog::Internal::TypeLibVersionLocaleIdPair,unsigned int,CPackagedComCatalog::TypeLibVersionLocaleIdPairRegistryNameEqualityPredicate,CPackagedComCatalog::TypeLibVersionLocaleIdPairLifetimeTraits,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,Windows::Foundation::Collections::Internal::DefaultHashMapOptions<PackagedComCatalog::Internal::TypeLibVersionLocaleIdPair,unsigned int,CPackagedComCatalog::TypeLibVersionLocaleIdPairLifetimeTraits> >::ChunkElementIterator::`vftable'[4])(void);
 void (* const Windows::Foundation::Collections::Internal::NaiveSplitView<PackagedComCatalog::Internal::TypeLibVersionLocaleIdPair,unsigned int,CPackagedComCatalog::TypeLibVersionLocaleIdPairRegistryNameEqualityPredicate,CPackagedComCatalog::TypeLibVersionLocaleIdPairLifetimeTraits,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,Windows::Foundation::Collections::Internal::DefaultHashMapOptions<PackagedComCatalog::Internal::TypeLibVersionLocaleIdPair,unsigned int,CPackagedComCatalog::TypeLibVersionLocaleIdPairLifetimeTraits> >::ChunkView::`vftable'[4])(void);
 void (* const Windows::Foundation::Collections::Internal::NaiveSplitView<PackagedComCatalog::Internal::TypeLibVersionLocaleIdPair,unsigned int,CPackagedComCatalog::TypeLibVersionLocaleIdPairRegistryNameEqualityPredicate,CPackagedComCatalog::TypeLibVersionLocaleIdPairLifetimeTraits,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,Windows::Foundation::Collections::Internal::DefaultHashMapOptions<PackagedComCatalog::Internal::TypeLibVersionLocaleIdPair,unsigned int,CPackagedComCatalog::TypeLibVersionLocaleIdPairLifetimeTraits> >::SplitIterator::`vftable'[4])(void);
-void (* const Windows::Foundation::Collections::Internal::NaiveSplitView<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::HashMapOptions<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,0,1,0> >::`vftable'[9])(void);
+void (* const Windows::Foundation::Collections::Internal::NaiveSplitView<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::HashMapOptions<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,0,1,0> >::`vftable'[7])(void);
 void (* const Windows::Foundation::Collections::Internal::NaiveSplitView<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::HashMapOptions<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,0,1,0> >::Chunk::`vftable'[1])(void);
 void (* const Windows::Foundation::Collections::Internal::NaiveSplitView<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::HashMapOptions<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,0,1,0> >::ChunkElementIterator::`vftable'[4])(void);
-void (* const Windows::Foundation::Collections::Internal::NaiveSplitView<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::HashMapOptions<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,0,1,0> >::ChunkView::`vftable'[9])(void);
-void (* const Windows::Foundation::Collections::Internal::NaiveSplitView<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::HashMapOptions<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,0,1,0> >::SplitIterator::`vftable'[9])(void);
+void (* const Windows::Foundation::Collections::Internal::NaiveSplitView<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::HashMapOptions<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,0,1,0> >::ChunkView::`vftable'[4])(void);
+void (* const Windows::Foundation::Collections::Internal::NaiveSplitView<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::HashMapOptions<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,0,1,0> >::SplitIterator::`vftable'[11])(void);
 void (* const Windows::Foundation::Collections::Internal::SimpleKeyValuePair<_GUID,bool,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<_GUID>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<bool>,1>::`vftable'[4])(void);
 void (* const Windows::Foundation::Collections::Internal::SimpleKeyValuePair<_GUID,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<_GUID>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,1>::`vftable'[9])(void);
 void (* const Windows::Foundation::Collections::Internal::SimpleKeyValuePair<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<IInspectable *>,0>::`vftable'[4])(void);
 void (* const Windows::Foundation::Collections::Internal::SimpleKeyValuePair<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<IInspectable *>,1>::`vftable'[4])(void);
 void (* const Windows::Foundation::Collections::Internal::SimpleKeyValuePair<HSTRING__ *,unsigned char,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned char>,0>::`vftable'[9])(void);
 void (* const Windows::Foundation::Collections::Internal::SimpleKeyValuePair<PackagedComCatalog::Internal::TypeLibVersionLocaleIdPair,unsigned int,CPackagedComCatalog::TypeLibVersionLocaleIdPairLifetimeTraits,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,0>::`vftable'[4])(void);
-void (* const Windows::Foundation::Collections::Internal::SimpleKeyValuePair<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,1>::`vftable'[4])(void);
-void (* const Windows::Foundation::Collections::Internal::SimpleVectorIterator<HSTRING__ *,Windows::Foundation::Collections::Internal::Vector<HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::VectorOptions<HSTRING__ *,0,1,0> >,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,XWinRT::IntVersionTag,1>::`vftable'[11])(void);
-void (* const Windows::Foundation::Collections::Internal::SimpleVectorView<HSTRING__ *,Windows::Foundation::Collections::Internal::Vector<HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::VectorOptions<HSTRING__ *,0,1,0> >,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,XWinRT::IntVersionTag,1>::`vftable'[4])(void);
-void (* const Windows::Foundation::Collections::Internal::Vector<HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::VectorOptions<HSTRING__ *,0,1,0> >::`vftable'[9])(void);
+void (* const Windows::Foundation::Collections::Internal::SimpleKeyValuePair<unsigned int,HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<unsigned int>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,1>::`vftable'[9])(void);
+void (* const Windows::Foundation::Collections::Internal::SimpleVectorIterator<HSTRING__ *,Windows::Foundation::Collections::Internal::Vector<HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::VectorOptions<HSTRING__ *,0,1,0> >,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,XWinRT::IntVersionTag,1>::`vftable'[9])(void);
+void (* const Windows::Foundation::Collections::Internal::SimpleVectorView<HSTRING__ *,Windows::Foundation::Collections::Internal::Vector<HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::VectorOptions<HSTRING__ *,0,1,0> >,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,XWinRT::IntVersionTag,1>::`vftable'[9])(void);
+void (* const Windows::Foundation::Collections::Internal::Vector<HSTRING__ *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::VectorOptions<HSTRING__ *,0,1,0> >::`vftable'[19])(void);
 void (* const Windows::Foundation::Collections::IVector<HSTRING__ *>::`vftable'[18])(void);
 void (* const Windows::Foundation::Collections::IVectorView<HSTRING__ *>::`vftable'[10])(void);
 struct Microsoft::WRL::Details::CreatorMap Windows::Foundation::Diagnostics::__object_AsyncCausalityTracerFactory;
@@ -176554,9 +176661,9 @@ void (* const WinRT::Metadata::Marshaling::MbmTelemetry::GetTypeInformation::`vf
 void (* const WinRT::Metadata::Marshaling::MetadataArray::`vftable'[21])(void);
 void (* const WinRT::Metadata::Marshaling::MetadataBaseType::`vftable'[1])(void);
 void (* const WinRT::Metadata::Marshaling::MetadataClass::`vftable'[21])(void);
-void (* const WinRT::Metadata::Marshaling::MetadataDelegate::`vftable'[1])(void);
+void (* const WinRT::Metadata::Marshaling::MetadataDelegate::`vftable'[26])(void);
 void (* const WinRT::Metadata::Marshaling::MetadataEnum::`vftable'[1])(void);
-void (* const WinRT::Metadata::Marshaling::MetadataGuid::`vftable'[1])(void);
+void (* const WinRT::Metadata::Marshaling::MetadataGuid::`vftable'[22])(void);
 void (* const WinRT::Metadata::Marshaling::MetadataInterface::`vftable'[1])(void);
 void (* const WinRT::Metadata::Marshaling::MetadataInterfaceBase::`vftable'[1])(void);
 void (* const WinRT::Metadata::Marshaling::MetadataLocator::`vftable'[1])(void);
@@ -176568,7 +176675,7 @@ void (* const WinRT::Metadata::Marshaling::MetadataScope::`vftable'[1])(void);
 void (* const WinRT::Metadata::Marshaling::MetadataStruct::`vftable'[1])(void);
 void (* const WinRT::Metadata::Marshaling::MetadataStructBase::`vftable'[1])(void);
 void (* const WinRT::Metadata::Marshaling::MetadataType::`vftable'[1])(void);
-void (* const WinRT::Metadata::Marshaling::MetadataUnknown::`vftable'[21])(void);
+void (* const WinRT::Metadata::Marshaling::MetadataUnknown::`vftable'[1])(void);
 const wchar_t WinRT::Metadata::Marshaling::pinterfaceMangledNamePrefix[4];
 const wchar_t *WinRT::Metadata::Marshaling::PointerEpilogString;
 const wchar_t *WinRT::Metadata::Marshaling::PointerPreambleString;
@@ -176614,8 +176721,8 @@ struct _EVENT_DESCRIPTOR WinRT_OutOfProc_ActivateInstance_End;
 struct _EVENT_DESCRIPTOR WinRT_OutOfProc_ActivateInstance_Start;
 struct _EVENT_DESCRIPTOR WinRT_OutOfProc_GetActivationFactory_End;
 struct _EVENT_DESCRIPTOR WinRT_OutOfProc_GetActivationFactory_Start;
-void (* const WinrtAsyncChannelMessage::`vftable'[5])(void);
-void (* const WinrtAsyncChannelOperation::`vftable'[13])(void);
+void (* const WinrtAsyncChannelMessage::`vftable'[1])(void);
+void (* const WinrtAsyncChannelOperation::`vftable'[4])(void);
 class IMessageParamList WinrtAsyncChannelOperation::s_backgroundThreadMessageList;
 unsigned int WinrtAsyncChannelOperation::s_currentAsyncInfoId;
 class WaitableCount WinrtAsyncChannelOperation::s_initializedChannelOperationCount;
@@ -176628,7 +176735,7 @@ void (* const WinrtAsyncClientCall::`vftable'[1])(void);
 void (* const WinrtAsyncProxyCall::`vftable'[8])(void);
 void (* const WinrtAsyncResponse::`vftable'[1])(void);
 void (* const WinrtAsyncRpcChannelBufferForTypeSerializer::`vftable'[6])(void);
-void (* const WinrtAsyncServerCall::`vftable'[22])(void);
+void (* const WinrtAsyncServerCall::`vftable'[1])(void);
 void (* const WinrtAsyncServerContinuationMessage::`vftable'[1])(void);
 unsigned int WinRTErrorFlags;
 void (* const WinrtHandleWrapperUnmarshaler::`vftable'[9])(void);
