@@ -1,5 +1,5 @@
 /*
- * PDB file: csrss.pdb\FEDF7396216AB75E80990B9A8F2CE01F1\csrss.pdb
+ * PDB file: csrss.pdb\3DBE5B77F5DFFEC08B3AF9F313D837781\csrss.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -10,6 +10,9 @@ struct _ACCESS_STATE;
 struct _ACTIVATION_CONTEXT;
 struct _ACTIVATION_CONTEXT_DATA;
 struct _ACTIVATION_CONTEXT_STACK;
+union _AER_BRIDGE_DESCRIPTOR_FLAGS;
+union _AER_ENDPOINT_DESCRIPTOR_FLAGS;
+union _AER_ROOTPORT_DESCRIPTOR_FLAGS;
 enum _ALTERNATIVE_ARCHITECTURE_TYPE;
 struct _ASSEMBLY_STORAGE_MAP;
 struct _AUX_ACCESS_DATA;
@@ -56,6 +59,7 @@ struct _ETHREAD;
 struct _EVENT_DATA_DESCRIPTOR;
 struct _EVENT_DESCRIPTOR;
 enum _EVENT_TYPE;
+enum _EX_POOL_PRIORITY;
 struct _EX_PUSH_LOCK;
 enum _EXCEPTION_DISPOSITION;
 struct _EXCEPTION_RECORD;
@@ -103,6 +107,7 @@ enum JOB_OBJECT_IO_RATE_CONTROL_FLAGS;
 enum JOB_OBJECT_NET_RATE_CONTROL_FLAGS;
 enum _JOBOBJECTINFOCLASS;
 struct _KAPC;
+enum _KCONTINUE_TYPE;
 struct _KDESCRIPTOR;
 struct _KDEVICE_QUEUE;
 struct _KDEVICE_QUEUE_ENTRY;
@@ -136,6 +141,7 @@ struct _MAILSLOT_CREATE_PARAMETERS;
 struct _MDL;
 enum _MEMORY_CACHING_TYPE;
 enum _MEMORY_CACHING_TYPE_ORIG;
+enum _MEMORY_PHYSICAL_CONTIGUITY_UNIT_STATE;
 enum _MODE;
 struct _NAMED_PIPE_CREATE_PARAMETERS;
 struct _NPAGED_LOOKASIDE_LIST;
@@ -198,6 +204,7 @@ struct _SINGLE_LIST_ENTRY;
 struct _SLIST_ENTRY;
 union _SLIST_HEADER;
 struct _STRING;
+enum _SYSTEM_FEATURE_CONFIGURATION_SECTION_TYPE;
 enum _SYSTEM_POWER_STATE;
 struct _SYSTEM_POWER_STATE_CONTEXT;
 enum _SYSTEM_PROCESS_CLASSIFICATION;
@@ -217,6 +224,10 @@ enum _USER_ACTIVITY_PRESENCE;
 struct _VPB;
 enum _VRF_TRIAGE_CONTEXT;
 struct _WAIT_CONTEXT_BLOCK;
+struct _WHEA_AER_BRIDGE_DESCRIPTOR;
+struct _WHEA_AER_ENDPOINT_DESCRIPTOR;
+struct _WHEA_AER_ROOTPORT_DESCRIPTOR;
+struct _WHEA_DEVICE_DRIVER_DESCRIPTOR;
 enum _WHEA_ERROR_PACKET_DATA_FORMAT;
 union _WHEA_ERROR_PACKET_FLAGS;
 struct _WHEA_ERROR_PACKET_V2;
@@ -228,6 +239,9 @@ struct _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR;
 union _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR_FLAGS;
 union _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR_VALIDBITS;
 enum _WHEA_ERROR_SEVERITY;
+struct _WHEA_ERROR_SOURCE_CONFIGURATION_DD;
+struct _WHEA_ERROR_SOURCE_DESCRIPTOR;
+enum _WHEA_ERROR_SOURCE_STATE;
 enum _WHEA_ERROR_SOURCE_TYPE;
 enum _WHEA_ERROR_TYPE;
 struct _WHEA_EVENT_LOG_ENTRY;
@@ -235,10 +249,24 @@ union _WHEA_EVENT_LOG_ENTRY_FLAGS;
 struct _WHEA_EVENT_LOG_ENTRY_HEADER;
 enum _WHEA_EVENT_LOG_ENTRY_ID;
 enum _WHEA_EVENT_LOG_ENTRY_TYPE;
+struct _WHEA_GENERIC_ERROR_DESCRIPTOR;
+struct _WHEA_GENERIC_ERROR_DESCRIPTOR_V2;
+struct _WHEA_IPF_CMC_DESCRIPTOR;
+struct _WHEA_IPF_CPE_DESCRIPTOR;
+struct _WHEA_IPF_MCA_DESCRIPTOR;
+struct _WHEA_NOTIFICATION_DESCRIPTOR;
+union _WHEA_NOTIFICATION_FLAGS;
+struct _WHEA_PCI_SLOT_NUMBER;
 union _WHEA_PERSISTENCE_INFO;
 union _WHEA_REVISION;
 union _WHEA_TIMESTAMP;
+struct _WHEA_XPF_CMC_DESCRIPTOR;
+struct _WHEA_XPF_MC_BANK_DESCRIPTOR;
+struct _WHEA_XPF_MCE_DESCRIPTOR;
+struct _WHEA_XPF_NMI_DESCRIPTOR;
 struct _WORK_QUEUE_ITEM;
+union _XPF_MC_BANK_FLAGS;
+union _XPF_MCE_FLAGS;
 struct _XSAVE_AREA_HEADER;
 struct _XSAVE_FORMAT;
 struct _XSTATE_CONFIGURATION;
@@ -291,6 +319,58 @@ typedef struct _ACTIVATION_CONTEXT_STACK
   unsigned long StackId;
   long __PADDING__[1];
 } ACTIVATION_CONTEXT_STACK, *PACTIVATION_CONTEXT_STACK;
+
+typedef union _AER_BRIDGE_DESCRIPTOR_FLAGS
+{
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned short UncorrectableErrorMaskRW : 1; /* bit position: 0 */
+      unsigned short UncorrectableErrorSeverityRW : 1; /* bit position: 1 */
+      unsigned short CorrectableErrorMaskRW : 1; /* bit position: 2 */
+      unsigned short AdvancedCapsAndControlRW : 1; /* bit position: 3 */
+      unsigned short SecondaryUncorrectableErrorMaskRW : 1; /* bit position: 4 */
+      unsigned short SecondaryUncorrectableErrorSevRW : 1; /* bit position: 5 */
+      unsigned short SecondaryCapsAndControlRW : 1; /* bit position: 6 */
+      unsigned short Reserved : 9; /* bit position: 7 */
+    }; /* bitfield */
+    unsigned short AsUSHORT;
+  };
+} AER_BRIDGE_DESCRIPTOR_FLAGS, *PAER_BRIDGE_DESCRIPTOR_FLAGS;
+
+typedef union _AER_ENDPOINT_DESCRIPTOR_FLAGS
+{
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned short UncorrectableErrorMaskRW : 1; /* bit position: 0 */
+      unsigned short UncorrectableErrorSeverityRW : 1; /* bit position: 1 */
+      unsigned short CorrectableErrorMaskRW : 1; /* bit position: 2 */
+      unsigned short AdvancedCapsAndControlRW : 1; /* bit position: 3 */
+      unsigned short Reserved : 12; /* bit position: 4 */
+    }; /* bitfield */
+    unsigned short AsUSHORT;
+  };
+} AER_ENDPOINT_DESCRIPTOR_FLAGS, *PAER_ENDPOINT_DESCRIPTOR_FLAGS;
+
+typedef union _AER_ROOTPORT_DESCRIPTOR_FLAGS
+{
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned short UncorrectableErrorMaskRW : 1; /* bit position: 0 */
+      unsigned short UncorrectableErrorSeverityRW : 1; /* bit position: 1 */
+      unsigned short CorrectableErrorMaskRW : 1; /* bit position: 2 */
+      unsigned short AdvancedCapsAndControlRW : 1; /* bit position: 3 */
+      unsigned short RootErrorCommandRW : 1; /* bit position: 4 */
+      unsigned short Reserved : 11; /* bit position: 5 */
+    }; /* bitfield */
+    unsigned short AsUSHORT;
+  };
+} AER_ROOTPORT_DESCRIPTOR_FLAGS, *PAER_ROOTPORT_DESCRIPTOR_FLAGS;
 
 typedef enum _ALTERNATIVE_ARCHITECTURE_TYPE
 {
@@ -753,6 +833,7 @@ typedef struct _DEVOBJ_EXTENSION
   struct _VPB* Vpb;
   void* DependencyNode;
   void* InterruptContext;
+  long InterruptCount;
   void* VerifierContext;
 } DEVOBJ_EXTENSION, *PDEVOBJ_EXTENSION;
 
@@ -873,7 +954,8 @@ typedef struct _DISPATCHER_HEADER
               unsigned char ActiveDR7 : 1; /* bit position: 0 */
               unsigned char Instrumented : 1; /* bit position: 1 */
               unsigned char Minimal : 1; /* bit position: 2 */
-              unsigned char Reserved4 : 3; /* bit position: 3 */
+              unsigned char Reserved4 : 2; /* bit position: 3 */
+              unsigned char AltSyscall : 1; /* bit position: 5 */
               unsigned char UmsScheduled : 1; /* bit position: 6 */
               unsigned char UmsPrimary : 1; /* bit position: 7 */
             }; /* bitfield */
@@ -1090,6 +1172,19 @@ typedef enum _EVENT_TYPE
   NotificationEvent = 0,
   SynchronizationEvent = 1,
 } EVENT_TYPE, *PEVENT_TYPE;
+
+typedef enum _EX_POOL_PRIORITY
+{
+  LowPoolPriority = 0,
+  LowPoolPrioritySpecialPoolOverrun = 8,
+  LowPoolPrioritySpecialPoolUnderrun = 9,
+  NormalPoolPriority = 16,
+  NormalPoolPrioritySpecialPoolOverrun = 24,
+  NormalPoolPrioritySpecialPoolUnderrun = 25,
+  HighPoolPriority = 32,
+  HighPoolPrioritySpecialPoolOverrun = 40,
+  HighPoolPrioritySpecialPoolUnderrun = 41,
+} EX_POOL_PRIORITY, *PEX_POOL_PRIORITY;
 
 typedef struct _EX_PUSH_LOCK
 {
@@ -2256,6 +2351,15 @@ typedef struct _KAPC
   char __PADDING__[5];
 } KAPC, *PKAPC;
 
+typedef enum _KCONTINUE_TYPE
+{
+  KCONTINUE_UNWIND = 0,
+  KCONTINUE_RESUME = 1,
+  KCONTINUE_LONGJUMP = 2,
+  KCONTINUE_SET = 3,
+  KCONTINUE_LAST = 4,
+} KCONTINUE_TYPE, *PKCONTINUE_TYPE;
+
 typedef struct _KDESCRIPTOR
 {
   unsigned short Pad[3];
@@ -2698,7 +2802,20 @@ typedef struct _KUSER_SHARED_DATA
   unsigned __int64 TestRetInstruction;
   __int64 QpcFrequency;
   unsigned long SystemCall;
-  unsigned long SystemCallPad0;
+  union
+  {
+    union
+    {
+      unsigned long AllFlags;
+      struct /* bitfield */
+      {
+        unsigned long Win32Process : 1; /* bit position: 0 */
+        unsigned long Sgx2Enclave : 1; /* bit position: 1 */
+        unsigned long VbsBasicEnclave : 1; /* bit position: 2 */
+        unsigned long SpareBits : 29; /* bit position: 3 */
+      }; /* bitfield */
+    };
+  } UserCetAvailableEnvironments;
   unsigned __int64 SystemCallPad[2];
   union
   {
@@ -2741,6 +2858,8 @@ typedef struct _KUSER_SHARED_DATA
   union _LARGE_INTEGER TimeZoneBiasEffectiveStart;
   union _LARGE_INTEGER TimeZoneBiasEffectiveEnd;
   struct _XSTATE_CONFIGURATION XState;
+  struct _KSYSTEM_TIME FeatureConfigurationChangeStamp;
+  unsigned long Spare;
 } KUSER_SHARED_DATA, *PKUSER_SHARED_DATA;
 
 typedef union _LARGE_INTEGER
@@ -2843,6 +2962,15 @@ typedef enum _MEMORY_CACHING_TYPE_ORIG
 {
   MmFrameBufferCached = 2,
 } MEMORY_CACHING_TYPE_ORIG, *PMEMORY_CACHING_TYPE_ORIG;
+
+typedef enum _MEMORY_PHYSICAL_CONTIGUITY_UNIT_STATE
+{
+  MemoryNotContiguous = 0,
+  MemoryAlignedAndContiguous = 1,
+  MemoryNotResident = 2,
+  MemoryNotEligibleToMakeContiguous = 3,
+  MemoryContiguityStateMax = 4,
+} MEMORY_PHYSICAL_CONTIGUITY_UNIT_STATE, *PMEMORY_PHYSICAL_CONTIGUITY_UNIT_STATE;
 
 typedef enum _MODE
 {
@@ -3295,7 +3423,7 @@ enum PS_CREATE_STATE
 
 typedef struct _PS_MITIGATION_AUDIT_OPTIONS_MAP
 {
-  unsigned __int64 Map[2];
+  unsigned __int64 Map[3];
 } PS_MITIGATION_AUDIT_OPTIONS_MAP, *PPS_MITIGATION_AUDIT_OPTIONS_MAP;
 
 typedef enum _PS_MITIGATION_OPTION
@@ -3332,11 +3460,12 @@ typedef enum _PS_MITIGATION_OPTION
   PS_MITIGATION_OPTION_SPECULATIVE_STORE_BYPASS_DISABLE = 29,
   PS_MITIGATION_OPTION_ALLOW_DOWNGRADE_DYNAMIC_CODE_POLICY = 30,
   PS_MITIGATION_OPTION_CET_USER_SHADOW_STACKS = 31,
+  PS_MITIGATION_OPTION_USER_CET_SET_CONTEXT_IP_VALIDATION = 32,
 } PS_MITIGATION_OPTION, *PPS_MITIGATION_OPTION;
 
 typedef struct _PS_MITIGATION_OPTIONS_MAP
 {
-  unsigned __int64 Map[2];
+  unsigned __int64 Map[3];
 } PS_MITIGATION_OPTIONS_MAP, *PPS_MITIGATION_OPTIONS_MAP;
 
 typedef enum _PS_PROTECTED_SIGNER
@@ -3647,7 +3776,7 @@ typedef struct _RTL_USER_PROCESS_PARAMETERS
   struct _UNICODE_STRING HeapPartitionName;
   unsigned __int64* DefaultThreadpoolCpuSetMasks;
   unsigned long DefaultThreadpoolCpuSetMaskCount;
-  long __PADDING__[1];
+  unsigned long DefaultThreadpoolThreadMaximum;
 } RTL_USER_PROCESS_PARAMETERS, *PRTL_USER_PROCESS_PARAMETERS;
 
 typedef struct _SCATTER_GATHER_ELEMENT
@@ -3757,6 +3886,14 @@ typedef struct _STRING
   unsigned short MaximumLength;
   char* Buffer;
 } STRING, *PSTRING;
+
+typedef enum _SYSTEM_FEATURE_CONFIGURATION_SECTION_TYPE
+{
+  SystemFeatureConfigurationSectionTypeBoot = 0,
+  SystemFeatureConfigurationSectionTypeRuntime = 1,
+  SystemFeatureConfigurationSectionTypeUsageTriggers = 2,
+  SystemFeatureConfigurationSectionTypeCount = 3,
+} SYSTEM_FEATURE_CONFIGURATION_SECTION_TYPE, *PSYSTEM_FEATURE_CONFIGURATION_SECTION_TYPE;
 
 typedef enum _SYSTEM_POWER_STATE
 {
@@ -4119,6 +4256,75 @@ typedef struct _WAIT_CONTEXT_BLOCK
   struct _KDPC* BufferChainingDpc;
 } WAIT_CONTEXT_BLOCK, *PWAIT_CONTEXT_BLOCK;
 
+typedef struct _WHEA_AER_BRIDGE_DESCRIPTOR
+{
+  unsigned short Type;
+  unsigned char Enabled;
+  unsigned char Reserved;
+  unsigned long BusNumber;
+  struct _WHEA_PCI_SLOT_NUMBER Slot;
+  unsigned short DeviceControl;
+  union _AER_BRIDGE_DESCRIPTOR_FLAGS Flags;
+  unsigned long UncorrectableErrorMask;
+  unsigned long UncorrectableErrorSeverity;
+  unsigned long CorrectableErrorMask;
+  unsigned long AdvancedCapsAndControl;
+  unsigned long SecondaryUncorrectableErrorMask;
+  unsigned long SecondaryUncorrectableErrorSev;
+  unsigned long SecondaryCapsAndControl;
+} WHEA_AER_BRIDGE_DESCRIPTOR, *PWHEA_AER_BRIDGE_DESCRIPTOR;
+
+typedef struct _WHEA_AER_ENDPOINT_DESCRIPTOR
+{
+  unsigned short Type;
+  unsigned char Enabled;
+  unsigned char Reserved;
+  unsigned long BusNumber;
+  struct _WHEA_PCI_SLOT_NUMBER Slot;
+  unsigned short DeviceControl;
+  union _AER_ENDPOINT_DESCRIPTOR_FLAGS Flags;
+  unsigned long UncorrectableErrorMask;
+  unsigned long UncorrectableErrorSeverity;
+  unsigned long CorrectableErrorMask;
+  unsigned long AdvancedCapsAndControl;
+} WHEA_AER_ENDPOINT_DESCRIPTOR, *PWHEA_AER_ENDPOINT_DESCRIPTOR;
+
+typedef struct _WHEA_AER_ROOTPORT_DESCRIPTOR
+{
+  unsigned short Type;
+  unsigned char Enabled;
+  unsigned char Reserved;
+  unsigned long BusNumber;
+  struct _WHEA_PCI_SLOT_NUMBER Slot;
+  unsigned short DeviceControl;
+  union _AER_ROOTPORT_DESCRIPTOR_FLAGS Flags;
+  unsigned long UncorrectableErrorMask;
+  unsigned long UncorrectableErrorSeverity;
+  unsigned long CorrectableErrorMask;
+  unsigned long AdvancedCapsAndControl;
+  unsigned long RootErrorCommand;
+} WHEA_AER_ROOTPORT_DESCRIPTOR, *PWHEA_AER_ROOTPORT_DESCRIPTOR;
+
+typedef struct _WHEA_DEVICE_DRIVER_DESCRIPTOR
+{
+  unsigned short Type;
+  unsigned char Enabled;
+  unsigned char Reserved;
+  struct _GUID SourceGuid;
+  unsigned short LogTag;
+  unsigned short Reserved2;
+  unsigned long PacketLength;
+  unsigned long PacketCount;
+  unsigned char* PacketBuffer;
+  struct _WHEA_ERROR_SOURCE_CONFIGURATION_DD Config;
+  struct _GUID CreatorId;
+  struct _GUID PartitionId;
+  unsigned long MaxSectionDataLength;
+  unsigned long MaxSectionsPerRecord;
+  unsigned char* PacketStateBuffer;
+  long OpenHandles;
+} WHEA_DEVICE_DRIVER_DESCRIPTOR, *PWHEA_DEVICE_DRIVER_DESCRIPTOR;
+
 typedef enum _WHEA_ERROR_PACKET_DATA_FORMAT
 {
   WheaDataFormatIPFSalRecord = 0,
@@ -4139,12 +4345,14 @@ typedef union _WHEA_ERROR_PACKET_FLAGS
     struct /* bitfield */
     {
       unsigned long PreviousError : 1; /* bit position: 0 */
-      unsigned long Reserved1 : 1; /* bit position: 1 */
+      unsigned long CriticalEvent : 1; /* bit position: 1 */
       unsigned long HypervisorError : 1; /* bit position: 2 */
       unsigned long Simulated : 1; /* bit position: 3 */
       unsigned long PlatformPfaControl : 1; /* bit position: 4 */
       unsigned long PlatformDirectedOffline : 1; /* bit position: 5 */
-      unsigned long Reserved2 : 26; /* bit position: 6 */
+      unsigned long AddressTranslationRequired : 1; /* bit position: 6 */
+      unsigned long AddressTranslationCompleted : 1; /* bit position: 7 */
+      unsigned long Reserved2 : 24; /* bit position: 8 */
     }; /* bitfield */
     unsigned long AsULONG;
   };
@@ -4206,7 +4414,9 @@ typedef union _WHEA_ERROR_RECORD_HEADER_FLAGS
       unsigned long PreviousError : 1; /* bit position: 1 */
       unsigned long Simulated : 1; /* bit position: 2 */
       unsigned long DeviceDriver : 1; /* bit position: 3 */
-      unsigned long Reserved : 28; /* bit position: 4 */
+      unsigned long CriticalEvent : 1; /* bit position: 4 */
+      unsigned long PersistPfn : 1; /* bit position: 5 */
+      unsigned long Reserved : 26; /* bit position: 6 */
     }; /* bitfield */
     unsigned long AsULONG;
   };
@@ -4282,6 +4492,53 @@ typedef enum _WHEA_ERROR_SEVERITY
   WheaErrSevInformational = 3,
 } WHEA_ERROR_SEVERITY, *PWHEA_ERROR_SEVERITY;
 
+typedef struct _WHEA_ERROR_SOURCE_CONFIGURATION_DD
+{
+  void* Initialize /* function */;
+  void* Uninitialize /* function */;
+  void* Correct /* function */;
+} WHEA_ERROR_SOURCE_CONFIGURATION_DD, *PWHEA_ERROR_SOURCE_CONFIGURATION_DD;
+
+typedef struct _WHEA_ERROR_SOURCE_DESCRIPTOR
+{
+  unsigned long Length;
+  unsigned long Version;
+  enum _WHEA_ERROR_SOURCE_TYPE Type;
+  enum _WHEA_ERROR_SOURCE_STATE State;
+  unsigned long MaxRawDataLength;
+  unsigned long NumRecordsToPreallocate;
+  unsigned long MaxSectionsPerRecord;
+  unsigned long ErrorSourceId;
+  unsigned long PlatformErrorSourceId;
+  unsigned long Flags;
+  union
+  {
+    union
+    {
+      struct _WHEA_XPF_MCE_DESCRIPTOR XpfMceDescriptor;
+      struct _WHEA_XPF_CMC_DESCRIPTOR XpfCmcDescriptor;
+      struct _WHEA_XPF_NMI_DESCRIPTOR XpfNmiDescriptor;
+      struct _WHEA_IPF_MCA_DESCRIPTOR IpfMcaDescriptor;
+      struct _WHEA_IPF_CMC_DESCRIPTOR IpfCmcDescriptor;
+      struct _WHEA_IPF_CPE_DESCRIPTOR IpfCpeDescriptor;
+      struct _WHEA_AER_ROOTPORT_DESCRIPTOR AerRootportDescriptor;
+      struct _WHEA_AER_ENDPOINT_DESCRIPTOR AerEndpointDescriptor;
+      struct _WHEA_AER_BRIDGE_DESCRIPTOR AerBridgeDescriptor;
+      struct _WHEA_GENERIC_ERROR_DESCRIPTOR GenErrDescriptor;
+      struct _WHEA_GENERIC_ERROR_DESCRIPTOR_V2 GenErrDescriptorV2;
+      struct _WHEA_DEVICE_DRIVER_DESCRIPTOR DeviceDriverDescriptor;
+    };
+  } Info;
+} WHEA_ERROR_SOURCE_DESCRIPTOR, *PWHEA_ERROR_SOURCE_DESCRIPTOR;
+
+typedef enum _WHEA_ERROR_SOURCE_STATE
+{
+  WheaErrSrcStateStopped = 1,
+  WheaErrSrcStateStarted = 2,
+  WheaErrSrcStateRemoved = 3,
+  WheaErrSrcStateRemovePending = 4,
+} WHEA_ERROR_SOURCE_STATE, *PWHEA_ERROR_SOURCE_STATE;
+
 typedef enum _WHEA_ERROR_SOURCE_TYPE
 {
   WheaErrSrcTypeMCE = 0,
@@ -4327,12 +4584,14 @@ typedef union _WHEA_EVENT_LOG_ENTRY_FLAGS
   {
     struct /* bitfield */
     {
-      unsigned long LogTelemetry : 1; /* bit position: 0 */
+      unsigned long Reserved1 : 1; /* bit position: 0 */
       unsigned long LogInternalEtw : 1; /* bit position: 1 */
       unsigned long LogBlackbox : 1; /* bit position: 2 */
       unsigned long LogSel : 1; /* bit position: 3 */
       unsigned long RawSel : 1; /* bit position: 4 */
-      unsigned long Reserved : 27; /* bit position: 5 */
+      unsigned long NoFormat : 1; /* bit position: 5 */
+      unsigned long Driver : 1; /* bit position: 6 */
+      unsigned long Reserved2 : 25; /* bit position: 7 */
     }; /* bitfield */
     unsigned long AsULONG;
   };
@@ -4375,12 +4634,31 @@ typedef enum _WHEA_EVENT_LOG_ENTRY_ID
   WheaEventLogEntryIdCreateGenericRecord = -2147483627,
   WheaEventLogEntryIdErrorRecord = -2147483626,
   WheaEventLogEntryIdErrorRecordLimit = -2147483625,
-  WheaEventLogEntryIdSELEventFailed = -2147483624,
   WheaEventLogEntryIdErrSrcArrayInvalid = -2147483623,
+  WheaEventLogEntryIdAcpiTimeOut = -2147483622,
+  WheaEventLogCmciRestart = -2147483621,
+  WheaEventLogCmciFinalRestart = -2147483620,
+  WheaEventLogEntryEtwOverFlow = -2147483619,
+  WheaEventLogAzccRootBusSearchErr = -2147483618,
+  WheaEventLogAzccRootBusList = -2147483617,
   WheaEventLogEntryIdErrSrcInvalid = -2147483616,
   WheaEventLogEntryIdGenericErrMemMap = -2147483615,
   WheaEventLogEntryIdPshedCallbackCollision = -2147483614,
   WheaEventLogEntryIdSELBugCheckProgress = -2147483613,
+  WheaEventLogEntryIdPshedPluginLoad = -2147483612,
+  WheaEventLogEntryIdPshedPluginUnload = -2147483611,
+  WheaEventLogEntryIdPshedPluginSupported = -2147483610,
+  WheaEventLogEntryIdDeviceDriver = -2147483609,
+  WheaEventLogEntryIdCmciImplPresent = -2147483608,
+  WheaEventLogEntryIdCmciInitError = -2147483607,
+  WheaEventLogEntryIdSELBugCheckRecovery = -2147483606,
+  WheaEventLogEntryIdDrvErrSrcInvalid = -2147483605,
+  WheaEventLogEntryIdDrvHandleBusy = -2147483604,
+  WheaEventLogEntryIdWheaHeartbeat = -2147483603,
+  WheaEventLogAzccRootBusPoisonSet = -2147483602,
+  WheaEventLogEntryIdSELBugCheckInfo = -2147483601,
+  WheaEventLogEntryIdErrDimmInfoMismatch = -2147483600,
+  WheaEventLogEntryIdeDpcEnabled = -2147483599,
 } WHEA_EVENT_LOG_ENTRY_ID, *PWHEA_EVENT_LOG_ENTRY_ID;
 
 typedef enum _WHEA_EVENT_LOG_ENTRY_TYPE
@@ -4389,6 +4667,181 @@ typedef enum _WHEA_EVENT_LOG_ENTRY_TYPE
   WheaEventLogEntryTypeWarning = 1,
   WheaEventLogEntryTypeError = 2,
 } WHEA_EVENT_LOG_ENTRY_TYPE, *PWHEA_EVENT_LOG_ENTRY_TYPE;
+
+typedef struct _WHEA_GENERIC_ERROR_DESCRIPTOR
+{
+  unsigned short Type;
+  unsigned char Reserved;
+  unsigned char Enabled;
+  unsigned long ErrStatusBlockLength;
+  unsigned long RelatedErrorSourceId;
+  unsigned char ErrStatusAddressSpaceID;
+  unsigned char ErrStatusAddressBitWidth;
+  unsigned char ErrStatusAddressBitOffset;
+  unsigned char ErrStatusAddressAccessSize;
+  union _LARGE_INTEGER ErrStatusAddress;
+  struct _WHEA_NOTIFICATION_DESCRIPTOR Notify;
+} WHEA_GENERIC_ERROR_DESCRIPTOR, *PWHEA_GENERIC_ERROR_DESCRIPTOR;
+
+typedef struct _WHEA_GENERIC_ERROR_DESCRIPTOR_V2
+{
+  unsigned short Type;
+  unsigned char Reserved;
+  unsigned char Enabled;
+  unsigned long ErrStatusBlockLength;
+  unsigned long RelatedErrorSourceId;
+  unsigned char ErrStatusAddressSpaceID;
+  unsigned char ErrStatusAddressBitWidth;
+  unsigned char ErrStatusAddressBitOffset;
+  unsigned char ErrStatusAddressAccessSize;
+  union _LARGE_INTEGER ErrStatusAddress;
+  struct _WHEA_NOTIFICATION_DESCRIPTOR Notify;
+  unsigned char ReadAckAddressSpaceID;
+  unsigned char ReadAckAddressBitWidth;
+  unsigned char ReadAckAddressBitOffset;
+  unsigned char ReadAckAddressAccessSize;
+  union _LARGE_INTEGER ReadAckAddress;
+  unsigned __int64 ReadAckPreserveMask;
+  unsigned __int64 ReadAckWriteMask;
+} WHEA_GENERIC_ERROR_DESCRIPTOR_V2, *PWHEA_GENERIC_ERROR_DESCRIPTOR_V2;
+
+typedef struct _WHEA_IPF_CMC_DESCRIPTOR
+{
+  unsigned short Type;
+  unsigned char Enabled;
+  unsigned char Reserved;
+} WHEA_IPF_CMC_DESCRIPTOR, *PWHEA_IPF_CMC_DESCRIPTOR;
+
+typedef struct _WHEA_IPF_CPE_DESCRIPTOR
+{
+  unsigned short Type;
+  unsigned char Enabled;
+  unsigned char Reserved;
+} WHEA_IPF_CPE_DESCRIPTOR, *PWHEA_IPF_CPE_DESCRIPTOR;
+
+typedef struct _WHEA_IPF_MCA_DESCRIPTOR
+{
+  unsigned short Type;
+  unsigned char Enabled;
+  unsigned char Reserved;
+} WHEA_IPF_MCA_DESCRIPTOR, *PWHEA_IPF_MCA_DESCRIPTOR;
+
+typedef struct _WHEA_NOTIFICATION_DESCRIPTOR
+{
+  unsigned char Type;
+  unsigned char Length;
+  union _WHEA_NOTIFICATION_FLAGS Flags;
+  union
+  {
+    union
+    {
+      struct
+      {
+        unsigned long PollInterval;
+      } Polled;
+      struct
+      {
+        unsigned long PollInterval;
+        unsigned long Vector;
+        unsigned long SwitchToPollingThreshold;
+        unsigned long SwitchToPollingWindow;
+        unsigned long ErrorThreshold;
+        unsigned long ErrorThresholdWindow;
+      } Interrupt;
+      struct
+      {
+        unsigned long PollInterval;
+        unsigned long Vector;
+        unsigned long SwitchToPollingThreshold;
+        unsigned long SwitchToPollingWindow;
+        unsigned long ErrorThreshold;
+        unsigned long ErrorThresholdWindow;
+      } LocalInterrupt;
+      struct
+      {
+        unsigned long PollInterval;
+        unsigned long Vector;
+        unsigned long SwitchToPollingThreshold;
+        unsigned long SwitchToPollingWindow;
+        unsigned long ErrorThreshold;
+        unsigned long ErrorThresholdWindow;
+      } Sci;
+      struct
+      {
+        unsigned long PollInterval;
+        unsigned long Vector;
+        unsigned long SwitchToPollingThreshold;
+        unsigned long SwitchToPollingWindow;
+        unsigned long ErrorThreshold;
+        unsigned long ErrorThresholdWindow;
+      } Nmi;
+      struct
+      {
+        unsigned long PollInterval;
+        unsigned long Vector;
+        unsigned long SwitchToPollingThreshold;
+        unsigned long SwitchToPollingWindow;
+        unsigned long ErrorThreshold;
+        unsigned long ErrorThresholdWindow;
+      } Sea;
+      struct
+      {
+        unsigned long PollInterval;
+        unsigned long Vector;
+        unsigned long SwitchToPollingThreshold;
+        unsigned long SwitchToPollingWindow;
+        unsigned long ErrorThreshold;
+        unsigned long ErrorThresholdWindow;
+      } Sei;
+      struct
+      {
+        unsigned long PollInterval;
+        unsigned long Vector;
+        unsigned long SwitchToPollingThreshold;
+        unsigned long SwitchToPollingWindow;
+        unsigned long ErrorThreshold;
+        unsigned long ErrorThresholdWindow;
+      } Gsiv;
+    };
+  } u;
+} WHEA_NOTIFICATION_DESCRIPTOR, *PWHEA_NOTIFICATION_DESCRIPTOR;
+
+typedef union _WHEA_NOTIFICATION_FLAGS
+{
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned short PollIntervalRW : 1; /* bit position: 0 */
+      unsigned short SwitchToPollingThresholdRW : 1; /* bit position: 1 */
+      unsigned short SwitchToPollingWindowRW : 1; /* bit position: 2 */
+      unsigned short ErrorThresholdRW : 1; /* bit position: 3 */
+      unsigned short ErrorThresholdWindowRW : 1; /* bit position: 4 */
+      unsigned short Reserved : 11; /* bit position: 5 */
+    }; /* bitfield */
+    unsigned short AsUSHORT;
+  };
+} WHEA_NOTIFICATION_FLAGS, *PWHEA_NOTIFICATION_FLAGS;
+
+typedef struct _WHEA_PCI_SLOT_NUMBER
+{
+  union
+  {
+    union
+    {
+      struct
+      {
+        struct /* bitfield */
+        {
+          unsigned long DeviceNumber : 5; /* bit position: 0 */
+          unsigned long FunctionNumber : 3; /* bit position: 5 */
+          unsigned long Reserved : 24; /* bit position: 8 */
+        }; /* bitfield */
+      } bits;
+      unsigned long AsULONG;
+    };
+  } u;
+} WHEA_PCI_SLOT_NUMBER, *PWHEA_PCI_SLOT_NUMBER;
 
 typedef union _WHEA_PERSISTENCE_INFO
 {
@@ -4440,12 +4893,80 @@ typedef union _WHEA_TIMESTAMP
   };
 } WHEA_TIMESTAMP, *PWHEA_TIMESTAMP;
 
+typedef struct _WHEA_XPF_CMC_DESCRIPTOR
+{
+  unsigned short Type;
+  unsigned char Enabled;
+  unsigned char NumberOfBanks;
+  unsigned long Reserved;
+  struct _WHEA_NOTIFICATION_DESCRIPTOR Notify;
+  struct _WHEA_XPF_MC_BANK_DESCRIPTOR Banks[32];
+} WHEA_XPF_CMC_DESCRIPTOR, *PWHEA_XPF_CMC_DESCRIPTOR;
+
+typedef struct _WHEA_XPF_MC_BANK_DESCRIPTOR
+{
+  unsigned char BankNumber;
+  unsigned char ClearOnInitialization;
+  unsigned char StatusDataFormat;
+  union _XPF_MC_BANK_FLAGS Flags;
+  unsigned long ControlMsr;
+  unsigned long StatusMsr;
+  unsigned long AddressMsr;
+  unsigned long MiscMsr;
+  unsigned __int64 ControlData;
+} WHEA_XPF_MC_BANK_DESCRIPTOR, *PWHEA_XPF_MC_BANK_DESCRIPTOR;
+
+typedef struct _WHEA_XPF_MCE_DESCRIPTOR
+{
+  unsigned short Type;
+  unsigned char Enabled;
+  unsigned char NumberOfBanks;
+  union _XPF_MCE_FLAGS Flags;
+  unsigned __int64 MCG_Capability;
+  unsigned __int64 MCG_GlobalControl;
+  struct _WHEA_XPF_MC_BANK_DESCRIPTOR Banks[32];
+} WHEA_XPF_MCE_DESCRIPTOR, *PWHEA_XPF_MCE_DESCRIPTOR;
+
+typedef struct _WHEA_XPF_NMI_DESCRIPTOR
+{
+  unsigned short Type;
+  unsigned char Enabled;
+} WHEA_XPF_NMI_DESCRIPTOR, *PWHEA_XPF_NMI_DESCRIPTOR;
+
 typedef struct _WORK_QUEUE_ITEM
 {
   struct _LIST_ENTRY List;
   void* WorkerRoutine /* function */;
   void* Parameter;
 } WORK_QUEUE_ITEM, *PWORK_QUEUE_ITEM;
+
+typedef union _XPF_MC_BANK_FLAGS
+{
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned char ClearOnInitializationRW : 1; /* bit position: 0 */
+      unsigned char ControlDataRW : 1; /* bit position: 1 */
+      unsigned char Reserved : 6; /* bit position: 2 */
+    }; /* bitfield */
+    unsigned char AsUCHAR;
+  };
+} XPF_MC_BANK_FLAGS, *PXPF_MC_BANK_FLAGS;
+
+typedef union _XPF_MCE_FLAGS
+{
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned long MCG_CapabilityRW : 1; /* bit position: 0 */
+      unsigned long MCG_GlobalControlRW : 1; /* bit position: 1 */
+      unsigned long Reserved : 30; /* bit position: 2 */
+    }; /* bitfield */
+    unsigned long AsULONG;
+  };
+} XPF_MCE_FLAGS, *PXPF_MCE_FLAGS;
 
 typedef struct _XSAVE_AREA_HEADER
 {
@@ -4533,6 +5054,22 @@ __guard_iat_count;
 __guard_iat_table;
 __guard_longjmp_count;
 __guard_longjmp_table;
+HotPatchSpareGlobal1;
+HotPatchSpareGlobal10;
+HotPatchSpareGlobal11;
+HotPatchSpareGlobal12;
+HotPatchSpareGlobal13;
+HotPatchSpareGlobal14;
+HotPatchSpareGlobal15;
+HotPatchSpareGlobal16;
+HotPatchSpareGlobal2;
+HotPatchSpareGlobal3;
+HotPatchSpareGlobal4;
+HotPatchSpareGlobal5;
+HotPatchSpareGlobal6;
+HotPatchSpareGlobal7;
+HotPatchSpareGlobal8;
+HotPatchSpareGlobal9;
 __IMPORT_DESCRIPTOR_CSRSRV;
 __IMPORT_DESCRIPTOR_ntdll;
 _load_config_used;
