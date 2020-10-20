@@ -1,5 +1,5 @@
 /*
- * PDB file: d3d12.pdb\3113FE6724BF466360F32DB79912B2691\d3d12.pdb
+ * PDB file: d3d12.pdb\24F1E00D7380F30BF93CCA6415A80C181\d3d12.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -7477,7 +7477,7 @@ public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct I
 public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CBlendState> >::LUCCompleteInitialization(void);
 public: virtual enum ED3D12DeviceChildType __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CBlendState> >::LUCGetChildType(void);
 public: virtual long __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CBlendState> >::LUCGetInternalIdentity(void * *);
-? CBridgeImpl<ID3D12LayeredUseCounted,ID3D12LayeredUseCounted,CLayeredObject<CBlendState> >::LUCLockCachedObjects;
+public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CBlendState> >::LUCLockCachedObjects(void);
 public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CBlendState> >::LUCPrepareForDestruction(void);
 public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CBlendState> >::LUCUnlockCachedObjects(void);
 public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CCommandAllocator> >::LUCCompleteInitialization(void);
@@ -7525,7 +7525,7 @@ public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct I
 public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CDepthStencilState> >::LUCCompleteInitialization(void);
 public: virtual enum ED3D12DeviceChildType __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CDepthStencilState> >::LUCGetChildType(void);
 public: virtual long __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CDepthStencilState> >::LUCGetInternalIdentity(void * *);
-? CBridgeImpl<ID3D12LayeredUseCounted,ID3D12LayeredUseCounted,CLayeredObject<CDepthStencilState> >::LUCLockCachedObjects;
+public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CDepthStencilState> >::LUCLockCachedObjects(void);
 public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CDepthStencilState> >::LUCPrepareForDestruction(void);
 public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CDepthStencilState> >::LUCUnlockCachedObjects(void);
 public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CDescriptorHeap> >::LUCCompleteInitialization(void);
@@ -7627,7 +7627,7 @@ public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct I
 public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CRasterizerState> >::LUCCompleteInitialization(void);
 public: virtual enum ED3D12DeviceChildType __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CRasterizerState> >::LUCGetChildType(void);
 public: virtual long __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CRasterizerState> >::LUCGetInternalIdentity(void * *);
-? CBridgeImpl<ID3D12LayeredUseCounted,ID3D12LayeredUseCounted,CLayeredObject<CRasterizerState> >::LUCLockCachedObjects;
+public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CRasterizerState> >::LUCLockCachedObjects(void);
 public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CRasterizerState> >::LUCPrepareForDestruction(void);
 public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CRasterizerState> >::LUCUnlockCachedObjects(void);
 public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CResource> >::LUCCompleteInitialization(void);
@@ -7639,7 +7639,7 @@ public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct I
 ? CBridgeImpl<ID3D12LayeredUseCounted,ID3D12LayeredUseCounted,CLayeredObject<CRootSignature> >::LUCCompleteInitialization;
 public: virtual enum ED3D12DeviceChildType __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CRootSignature> >::LUCGetChildType(void);
 public: virtual long __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CRootSignature> >::LUCGetInternalIdentity(void * *);
-? CBridgeImpl<ID3D12LayeredUseCounted,ID3D12LayeredUseCounted,CLayeredObject<CRootSignature> >::LUCLockCachedObjects;
+public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CRootSignature> >::LUCLockCachedObjects(void);
 ? CBridgeImpl<ID3D12LayeredUseCounted,ID3D12LayeredUseCounted,CLayeredObject<CRootSignature> >::LUCPrepareForDestruction;
 public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CRootSignature> >::LUCUnlockCachedObjects(void);
 public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CSchedulingGroup> >::LUCCompleteInitialization(void);
@@ -7651,13 +7651,13 @@ public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct I
 public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CShader> >::LUCCompleteInitialization(void);
 public: virtual enum ED3D12DeviceChildType __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CShader> >::LUCGetChildType(void);
 public: virtual long __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CShader> >::LUCGetInternalIdentity(void * *);
-? CBridgeImpl<ID3D12LayeredUseCounted,ID3D12LayeredUseCounted,CLayeredObject<CShader> >::LUCLockCachedObjects;
+public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CShader> >::LUCLockCachedObjects(void);
 public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CShader> >::LUCPrepareForDestruction(void);
 public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CShader> >::LUCUnlockCachedObjects(void);
 public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CShaderBytecode> >::LUCCompleteInitialization(void);
 public: virtual enum ED3D12DeviceChildType __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CShaderBytecode> >::LUCGetChildType(void);
 public: virtual long __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CShaderBytecode> >::LUCGetInternalIdentity(void * *);
-? CBridgeImpl<ID3D12LayeredUseCounted,ID3D12LayeredUseCounted,CLayeredObject<CShaderBytecode> >::LUCLockCachedObjects;
+public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CShaderBytecode> >::LUCLockCachedObjects(void);
 public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CShaderBytecode> >::LUCPrepareForDestruction(void);
 public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CShaderBytecode> >::LUCUnlockCachedObjects(void);
 public: virtual void __cdecl CBridgeImpl<struct ID3D12LayeredUseCounted,struct ID3D12LayeredUseCounted,class CLayeredObject<class CStateObject> >::LUCCompleteInitialization(void);
@@ -9123,6 +9123,7 @@ public: long __cdecl CDeviceChild<struct ID3D12DescriptorHeap>::LUCCompleteLayer
 public: bool __cdecl CDeviceChild<struct ID3D12DescriptorHeap>::LUCPrepareForDestruction(void);
 public: virtual long __cdecl CDeviceChild<struct ID3D12DescriptorHeap>::SetName(unsigned short const *);
 public: static struct ATL::_ATL_INTMAP_ENTRY const * __cdecl CDeviceChild<struct ID3D12DeviceChild>::_GetEntries(void);
+public: class CDevice * __cdecl CDeviceChild<struct ID3D12DeviceChild>::Device(void)const ;
 public: virtual long __cdecl CDeviceChild<struct ID3D12DeviceChild>::GetDevice(struct _GUID const &,void * *);
 public: void __cdecl CDeviceChild<struct ID3D12DeviceChild>::LUCCompleteInitialization(void);
 public: long __cdecl CDeviceChild<struct ID3D12DeviceChild>::LUCCompleteLayerConstruction(void);
@@ -9181,11 +9182,13 @@ public: long __cdecl CDeviceChild<struct ID3D12Resource2>::LUCCompleteLayerConst
 public: bool __cdecl CDeviceChild<struct ID3D12Resource2>::LUCPrepareForDestruction(void);
 public: virtual long __cdecl CDeviceChild<struct ID3D12Resource2>::SetName(unsigned short const *);
 public: static struct ATL::_ATL_INTMAP_ENTRY const * __cdecl CDeviceChild<struct ID3D12RootSignature>::_GetEntries(void);
+public: class CDevice * __cdecl CDeviceChild<struct ID3D12RootSignature>::Device(void)const ;
 public: virtual long __cdecl CDeviceChild<struct ID3D12RootSignature>::GetDevice(struct _GUID const &,void * *);
 public: long __cdecl CDeviceChild<struct ID3D12RootSignature>::LUCCompleteLayerConstruction(void);
 public: bool __cdecl CDeviceChild<struct ID3D12RootSignature>::LUCPrepareForDestruction(void);
 public: virtual long __cdecl CDeviceChild<struct ID3D12RootSignature>::SetName(unsigned short const *);
 public: static struct ATL::_ATL_INTMAP_ENTRY const * __cdecl CDeviceChild<struct ID3D12ShaderBytecode>::_GetEntries(void);
+public: class CDevice * __cdecl CDeviceChild<struct ID3D12ShaderBytecode>::Device(void)const ;
 public: virtual long __cdecl CDeviceChild<struct ID3D12ShaderBytecode>::GetDevice(struct _GUID const &,void * *);
 public: long __cdecl CDeviceChild<struct ID3D12ShaderBytecode>::LUCCompleteLayerConstruction(void);
 public: bool __cdecl CDeviceChild<struct ID3D12ShaderBytecode>::LUCPrepareForDestruction(void);
@@ -11267,7 +11270,7 @@ private: void __cdecl CSchedulingGroup::Uncache(class std::lock_guard<class std:
 public: __cdecl CShader::CShader(struct CShader::TConstructorArgs const &);
 ? CShader::FinalConstruct;
 ? CShader::FinalRelease;
-? CShaderBytecode::CShaderBytecode;
+public: __cdecl CShaderBytecode::CShaderBytecode(struct CShaderBytecode::TConstructorArgs const &);
 ? CShaderBytecode::FinalConstruct;
 ? CShaderBytecode::FinalRelease;
 public: virtual struct D3D12_SHADER_BYTECODE __cdecl CShaderBytecode::GetDesc(void);
@@ -18264,7 +18267,7 @@ public: __cdecl std::unique_lock<class std::mutex>::unique_lock<class std::mutex
 ? std::unique_lock<std::mutex>::unlock;
 public: __cdecl std::unique_lock<class std::mutex>::~unique_lock<class std::mutex>(void);
 public: __cdecl std::unique_lock<class std::recursive_mutex>::~unique_lock<class std::recursive_mutex>(void);
-public: void __cdecl std::unique_lock<class std::shared_mutex>::unlock(void);
+public: __cdecl std::unique_lock<class std::shared_mutex>::unique_lock<class std::shared_mutex>(class std::shared_mutex &);
 public: __cdecl std::unique_lock<class std::shared_mutex>::~unique_lock<class std::shared_mutex>(void);
 public: __cdecl std::unique_ptr<struct _D3DDDI_ALLOCATIONINFO2 [0],struct std::default_delete<struct _D3DDDI_ALLOCATIONINFO2 [0]> >::~unique_ptr<struct _D3DDDI_ALLOCATIONINFO2 [0],struct std::default_delete<struct _D3DDDI_ALLOCATIONINFO2 [0]> >(void);
 ? std::unique_ptr<`CDevice::QueueProcessingWorkCB_0062'::`2'::RTContext,std::default_delete<`CDevice::QueueProcessingWorkCB_0062'::`2'::RTContext> >::~unique_ptr<`CDevice::QueueProcessingWorkCB_0062'::`2'::RTContext,std::default_delete<`CDevice::QueueProcessingWorkCB_0062'::`2'::RTContext> >;

@@ -94,6 +94,7 @@ AhCreateLoadOptionsString();
 AhGetArcDevice();
 AhGetArcPath();
 _alloca_probe();
+AmdSlCalculateTmrs();
 AmdSlCreateOsSecureLoaderBlock();
 AmdSlLaunchMle();
 AmdSlMapMemory();

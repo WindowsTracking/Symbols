@@ -976,6 +976,7 @@ public: virtual char * __cdecl charNode::getString(char *,char *)const ;
 public: virtual int __cdecl charNode::length(void)const ;
 _chdir();
 _chdrive();
+? check_trailing;
 _chgsign();
 _chgsignf();
 __chkstk();

@@ -2125,7 +2125,7 @@ SendMessageTimeoutA();
 ? SendMessageTimeoutWorker;
 __int64 __cdecl SendMessageToUI(struct tagIMEUI *,unsigned int,unsigned __int64,__int64,int);
 ? SendMessageW;
-? SendMessageWorker;
+__int64 __cdecl SendMessageWorker(struct tagWND *,unsigned int,unsigned __int64,__int64,int);
 ? SendNotifyMessageA;
 SendNotifyMessageW();
 ? SendOpenStatusNotify;

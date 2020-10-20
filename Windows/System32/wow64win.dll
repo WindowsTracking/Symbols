@@ -1341,6 +1341,7 @@ RtlVirtualUnwind();
 __security_check_cookie();
 __security_init_cookie();
 __security_init_cookie_ex();
+ULongToPtr();
 whCallUserpExitWindowsEx();
 ? whCallUserpExitWindowsEx$fin$0;
 whcbClientAddFontResourceW();

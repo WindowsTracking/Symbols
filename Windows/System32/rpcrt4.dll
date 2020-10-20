@@ -1374,7 +1374,7 @@ void __cdecl Ndr64ComplexStructComputeConformanceSetup(struct _MIDL_STUB_MESSAGE
 ? Ndr64ConformantArrayMarshall;
 ? Ndr64ConformantArrayMemorySize;
 ? Ndr64ConformantArrayUnmarshall;
-? Ndr64ConformantStringBufferSize;
+void __cdecl Ndr64ConformantStringBufferSize(struct _MIDL_STUB_MESSAGE *,unsigned char *,void const *);
 ? Ndr64ConformantStringComputeConformanceSetup;
 ? Ndr64ConformantStringMarshall;
 ? Ndr64ConformantStringMemorySize;
@@ -1429,7 +1429,7 @@ void * __cdecl Ndr64ImplicitBindHandleMgr(struct _MIDL_STUB_DESC const *,unsigne
 ? Ndr64MesTypeDecode;
 ? Ndr64MesTypeEncode;
 void __cdecl Ndr64MesTypeFree(void *,struct _MIDL_TYPE_PICKLING_INFO const *,struct _MIDL_STUB_DESC const *,unsigned char const *,void *);
-? Ndr64NonConformantStringBufferSize;
+void __cdecl Ndr64NonConformantStringBufferSize(struct _MIDL_STUB_MESSAGE *,unsigned char *,void const *);
 ? Ndr64NonConformantStringMarshall;
 void __cdecl Ndr64NonConformantStringMemorySize(struct _MIDL_STUB_MESSAGE *,void const *);
 void __cdecl Ndr64NonConformantStringUnmarshall(struct _MIDL_STUB_MESSAGE *,unsigned char * *,void const *,bool);
@@ -2807,7 +2807,7 @@ long __cdecl RpcpAlpcInitializeMessageAttribute(unsigned long,class RPCP_ALPC_ME
 unsigned long __cdecl RpcpAlpcpGetHeaderSize(unsigned long);
 ? RpcpApplyIFEOConfigurations;
 void __cdecl RpcpAsyncSetRuntimeInfo(struct _RPC_ASYNC_STATE *,void *);
-RpcpBaseFormatTimeOut();
+? RpcpBaseFormatTimeOut;
 ? RpcpBindingHandleToSCall;
 void __cdecl RpcpClearThreadHoldsParentLock(void);
 void __cdecl RpcpCloneAndAddEEInfoChain(struct tagExtendedErrorInfo *);
@@ -3145,6 +3145,7 @@ void __cdecl TrimEEInfoToLength(unsigned __int64,unsigned __int64 *);
 long __cdecl TrimEEInfoToLengthByRemovingRecords(struct tagExtendedErrorInfo *,unsigned __int64,int *,unsigned __int64 *);
 long __cdecl TrimEEInfoToLengthByRemovingStrings(struct tagExtendedErrorInfo *,unsigned __int64,int *,unsigned __int64 *);
 void __cdecl TrimIfNecessaryAndSetImmediateBuffer(struct _LRPC_FAULT_MESSAGE *,long,unsigned __int64,struct tagExtendedErrorInfo *,int,int);
+long __cdecl ULongAdd(unsigned long,unsigned long,unsigned long *);
 ? UnicodeToAnsiString;
 void __cdecl UnLockIfDictIfNecessary(void);
 UnpickleEEInfo();
@@ -3206,7 +3207,7 @@ public: virtual long __cdecl WS_CONNECTION::Send(void *,void const *,unsigned lo
 public: virtual long __cdecl WS_CONNECTION::TurnOnKeepAlivesTemp(void *,int,unsigned long,unsigned long);
 long __cdecl WS_CONNECTION__Abort(class WS_CONNECTION *);
 long __cdecl WS_CONNECTION__Receive(class WS_CONNECTION *,void *,void *,unsigned long,unsigned long *,struct _OVERLAPPED *);
-long __cdecl WS_CONNECTION__Send(class WS_CONNECTION *,void *,void const *,unsigned long,unsigned long *,struct _OVERLAPPED *);
+? WS_CONNECTION__Send;
 long __cdecl WS_ConvertClientAddress(struct sockaddr const *,unsigned long,unsigned short * *);
 void __cdecl WS_DeactivateAddress(struct WS_ADDRESS *);
 struct NETWORK_ADDRESS_VECTOR * __cdecl WS_GetNetworkAddressVector(void *);
