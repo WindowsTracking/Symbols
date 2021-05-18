@@ -1,5 +1,5 @@
 /*
- * PDB file: ole32.pdb\1FD15B966391CA005960C3324D25F55A1\ole32.pdb
+ * PDB file: ole32.pdb\297F0CDB585CFFA37A28182DF1E3386C1\ole32.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -3588,7 +3588,7 @@ enum __MIDL___MIDL_itf_shpriv_core_0000_0321_0003;
 enum __MIDL___MIDL_itf_shpriv_core_0000_0321_0004;
 enum __MIDL___MIDL_itf_shpriv_core_0000_0321_0005;
 enum __MIDL___MIDL_itf_structuredquery_0000_0012_0001;
-enum __MIDL___MIDL_itf_winrtfileapi_0000_0036_0001;
+enum __MIDL___MIDL_itf_winrtfileapi_0000_0037_0001;
 union __MIDL___MIDL_itf_wtypes_0000_0001_0001::__MIDL___MIDL_itf_wtypes_0000_0001_0005;
 struct __MIDL___MIDL_itf_wtypes_0000_0001_0001;
 struct _MIDL_FORMAT_STRING;
@@ -4128,6 +4128,8 @@ struct _PROCESS_DEVICEMAP_INFORMATION_EX;
 struct _PROCESS_DISK_COUNTERS;
 struct _PROCESS_DYNAMIC_EH_CONTINUATION_TARGET;
 struct _PROCESS_DYNAMIC_EH_CONTINUATION_TARGETS_INFORMATION;
+struct _PROCESS_DYNAMIC_ENFORCED_ADDRESS_RANGE;
+struct _PROCESS_DYNAMIC_ENFORCED_ADDRESS_RANGES_INFORMATION;
 struct _PROCESS_DYNAMIC_FUNCTION_TABLE_INFORMATION;
 enum _PROCESS_ENERGY_COMPONENT_TYPE_NUM;
 struct _PROCESS_ENERGY_TRACKING_STATE;
@@ -4540,6 +4542,7 @@ union _RTL_IMAGE_MITIGATION_POLICY;
 struct _RTL_IMAGE_MITIGATION_SEHOP_POLICY;
 struct _RTL_IMAGE_MITIGATION_STRICT_HANDLE_CHECK_POLICY;
 struct _RTL_IMAGE_MITIGATION_SYSTEM_CALL_DISABLE_POLICY;
+struct _RTL_IMAGE_MITIGATION_USER_SHADOW_STACK_POLICY;
 struct _RTL_IMAGE_POLICY_METADATA;
 struct _RTL_LFG_RNG_STATE;
 enum _RTL_MEMORY_TYPE;
@@ -5191,6 +5194,7 @@ struct _SYSTEM_PLATFORM_BINARY_INFORMATION;
 struct _SYSTEM_POLICY_INFORMATION;
 struct _SYSTEM_POOL_ENTRY;
 struct _SYSTEM_POOL_INFORMATION;
+struct _SYSTEM_POOL_ZEROING_INFORMATION;
 struct _SYSTEM_POOLTAG;
 struct _SYSTEM_POOLTAG_INFORMATION;
 struct _SYSTEM_PORTABLE_WORKSPACE_EFI_LAUNCHER_INFORMATION;
@@ -5248,6 +5252,7 @@ struct _SYSTEM_SESSION_POOLTAG_INFORMATION;
 struct _SYSTEM_SESSION_PROCESS_INFORMATION;
 struct _SYSTEM_SET_TIME_ADJUST_INFORMATION;
 struct _SYSTEM_SET_TIME_ADJUST_INFORMATION_PRECISE;
+struct _SYSTEM_SHADOW_STACK_INFORMATION;
 struct _SYSTEM_SINGLE_MODULE_INFORMATION;
 struct _SYSTEM_SPECIAL_POOL_INFORMATION;
 struct _SYSTEM_SPECULATION_CONTROL_INFORMATION;
@@ -7503,6 +7508,7 @@ struct wil::WNF_CHANGE_STAMP_STRUCT;
 struct __WIL__WNF_STATE_NAME;
 struct __WIL__WNF_TYPE_ID;
 struct __WIL__WNF_USER_SUBSCRIPTION;
+struct wil_details_FeatureDescriptor;
 struct wil_details_FeatureReportingCache;
 union wil_details_FeatureStateCache;
 struct wil_details_FeatureTestState;
@@ -12096,6 +12102,7 @@ enum ARM64_FNPDATA_CR
 {
   PdataCrUnchained = 0,
   PdataCrUnchainedSavedLr = 1,
+  PdataCrChainedWithPac = 2,
   PdataCrChained = 3,
 };
 
@@ -28008,7 +28015,8 @@ typedef enum _IMAGE_MITIGATION_POLICY
   ImageChildProcessPolicy = 12,
   ImageSehopPolicy = 13,
   ImageHeapPolicy = 14,
-  MaxImageMitigationPolicy = 15,
+  ImageUserShadowStackPolicy = 15,
+  MaxImageMitigationPolicy = 16,
 } IMAGE_MITIGATION_POLICY, *PIMAGE_MITIGATION_POLICY;
 
 typedef struct _IMAGE_NT_HEADERS
@@ -32272,20 +32280,7 @@ typedef struct _KUSER_SHARED_DATA
   unsigned __int64 TestRetInstruction;
   __int64 QpcFrequency;
   unsigned long SystemCall;
-  union
-  {
-    union
-    {
-      unsigned long AllFlags;
-      struct /* bitfield */
-      {
-        unsigned long Win32Process : 1; /* bit position: 0 */
-        unsigned long Sgx2Enclave : 1; /* bit position: 1 */
-        unsigned long VbsBasicEnclave : 1; /* bit position: 2 */
-        unsigned long SpareBits : 29; /* bit position: 3 */
-      }; /* bitfield */
-    };
-  } UserCetAvailableEnvironments;
+  unsigned long Reserved2;
   unsigned __int64 SystemCallPad[2];
   union
   {
@@ -37958,13 +37953,13 @@ typedef enum __MIDL___MIDL_itf_structuredquery_0000_0012_0001
   NEC_HIGH = 2,
 } _MIDL___MIDL_itf_structuredquery_0000_0012_0001, *P_MIDL___MIDL_itf_structuredquery_0000_0012_0001;
 
-typedef enum __MIDL___MIDL_itf_winrtfileapi_0000_0036_0001
+typedef enum __MIDL___MIDL_itf_winrtfileapi_0000_0037_0001
 {
   PIL_MANAGED_BY_APPLICATION = 0,
   PIL_MOST_RECENTLY_USED = 1,
   PIL_SYSTEM = 2,
   PIL_CURRENT_WORKING_DIRECTORY = 3,
-} _MIDL___MIDL_itf_winrtfileapi_0000_0036_0001, *P_MIDL___MIDL_itf_winrtfileapi_0000_0036_0001;
+} _MIDL___MIDL_itf_winrtfileapi_0000_0037_0001, *P_MIDL___MIDL_itf_winrtfileapi_0000_0037_0001;
 
 typedef struct __MIDL___MIDL_itf_wtypes_0000_0001_0001
 {
@@ -42866,6 +42861,8 @@ enum PINNEDLISTMODIFYCALLER
   PMC_TRIMOOBEPINS = 33,
   PMC_MICROSOFTEDGE = 34,
   PMC_UPDATESHORTCUT = 35,
+  PMC_CLOUDDEFAULTLAYOUT = 36,
+  PMC_BROWSERDECLUTTER = 37,
 };
 
 enum PKA_FLAGS
@@ -44156,6 +44153,7 @@ typedef enum _PROC_THREAD_ATTRIBUTE_NUM
   ProcThreadAttributeSafeOpenPromptOriginClaim = 17,
   ProcThreadAttributeDesktopAppPolicy = 18,
   ProcThreadAttributePseudoConsole = 22,
+  ProcThreadAttributeMitigationAuditPolicy = 24,
 } PROC_THREAD_ATTRIBUTE_NUM, *PPROC_THREAD_ATTRIBUTE_NUM;
 
 typedef struct _PROCESS_ACCESS_TOKEN
@@ -44296,6 +44294,22 @@ typedef struct _PROCESS_DYNAMIC_EH_CONTINUATION_TARGETS_INFORMATION
   unsigned long Reserved2;
   struct _PROCESS_DYNAMIC_EH_CONTINUATION_TARGET* Targets;
 } PROCESS_DYNAMIC_EH_CONTINUATION_TARGETS_INFORMATION, *PPROCESS_DYNAMIC_EH_CONTINUATION_TARGETS_INFORMATION;
+
+typedef struct _PROCESS_DYNAMIC_ENFORCED_ADDRESS_RANGE
+{
+  unsigned __int64 BaseAddress;
+  unsigned __int64 Size;
+  unsigned long Flags;
+  long __PADDING__[1];
+} PROCESS_DYNAMIC_ENFORCED_ADDRESS_RANGE, *PPROCESS_DYNAMIC_ENFORCED_ADDRESS_RANGE;
+
+typedef struct _PROCESS_DYNAMIC_ENFORCED_ADDRESS_RANGES_INFORMATION
+{
+  unsigned short NumberOfRanges;
+  unsigned short Reserved;
+  unsigned long Reserved2;
+  struct _PROCESS_DYNAMIC_ENFORCED_ADDRESS_RANGE* Ranges;
+} PROCESS_DYNAMIC_ENFORCED_ADDRESS_RANGES_INFORMATION, *PPROCESS_DYNAMIC_ENFORCED_ADDRESS_RANGES_INFORMATION;
 
 typedef struct _PROCESS_DYNAMIC_FUNCTION_TABLE_INFORMATION
 {
@@ -44937,7 +44951,16 @@ typedef struct _PROCESS_MITIGATION_USER_SHADOW_STACK_POLICY
     struct /* bitfield */
     {
       unsigned long EnableUserShadowStack : 1; /* bit position: 0 */
-      unsigned long ReservedFlags : 31; /* bit position: 1 */
+      unsigned long AuditUserShadowStack : 1; /* bit position: 1 */
+      unsigned long SetContextIpValidation : 1; /* bit position: 2 */
+      unsigned long AuditSetContextIpValidation : 1; /* bit position: 3 */
+      unsigned long EnableUserShadowStackStrictMode : 1; /* bit position: 4 */
+      unsigned long BlockNonCetBinaries : 1; /* bit position: 5 */
+      unsigned long BlockNonCetBinariesNonEhcont : 1; /* bit position: 6 */
+      unsigned long AuditBlockNonCetBinaries : 1; /* bit position: 7 */
+      unsigned long CetDynamicApisOutOfProcOnly : 1; /* bit position: 8 */
+      unsigned long SetContextIpValidationRelaxedMode : 1; /* bit position: 9 */
+      unsigned long ReservedFlags : 22; /* bit position: 10 */
     }; /* bitfield */
   };
 } PROCESS_MITIGATION_USER_SHADOW_STACK_POLICY, *PPROCESS_MITIGATION_USER_SHADOW_STACK_POLICY;
@@ -45247,7 +45270,8 @@ typedef enum _PROCESSINFOCLASS
   ProcessFreeFiberShadowStackAllocation = 99,
   ProcessAltSystemCallInformation = 100,
   ProcessDynamicEHContinuationTargets = 101,
-  MaxProcessInfoClass = 102,
+  ProcessDynamicEnforcedCetCompatibleRanges = 102,
+  MaxProcessInfoClass = 103,
 } PROCESSINFOCLASS, *PPROCESSINFOCLASS;
 
 typedef enum _PROCESSOR_CACHE_TYPE
@@ -45749,7 +45773,8 @@ typedef enum _PS_ATTRIBUTE_NUM
   PsAttributeBnoIsolation = 24,
   PsAttributeDesktopAppPolicy = 25,
   PsAttributeChpe = 26,
-  PsAttributeMax = 27,
+  PsAttributeMitigationAuditOptions = 27,
+  PsAttributeMax = 28,
 } PS_ATTRIBUTE_NUM, *PPS_ATTRIBUTE_NUM;
 
 typedef struct _PS_BNO_ISOLATION_PARAMETERS
@@ -45911,6 +45936,8 @@ typedef enum _PS_MITIGATION_OPTION
   PS_MITIGATION_OPTION_ALLOW_DOWNGRADE_DYNAMIC_CODE_POLICY = 30,
   PS_MITIGATION_OPTION_CET_USER_SHADOW_STACKS = 31,
   PS_MITIGATION_OPTION_USER_CET_SET_CONTEXT_IP_VALIDATION = 32,
+  PS_MITIGATION_OPTION_BLOCK_NON_CET_BINARIES = 33,
+  PS_MITIGATION_OPTION_CET_DYNAMIC_APIS_OUT_OF_PROC_ONLY = 36,
 } PS_MITIGATION_OPTION, *PPS_MITIGATION_OPTION;
 
 typedef struct _PS_MITIGATION_OPTIONS_MAP
@@ -47909,7 +47936,8 @@ enum RTL_BSD_ITEM_TYPE
   RtlBsdItemPowerButtonPressInfo = 14,
   RtlBsdItemChecksum = 15,
   RtlBsdPowerTransitionExtension = 16,
-  RtlBsdItemMax = 17,
+  RtlBsdItemFeatureConfigurationState = 17,
+  RtlBsdItemMax = 18,
 };
 
 typedef struct _RTL_BUFFER
@@ -48232,10 +48260,12 @@ typedef enum _RTL_FEATURE_CONFIGURATION_OPERATION
 
 typedef enum _RTL_FEATURE_CONFIGURATION_PRIORITY
 {
-  FeatureConfigurationPriorityAll = 0,
+  FeatureConfigurationPriorityImageDefault = 0,
   FeatureConfigurationPriorityService = 4,
   FeatureConfigurationPriorityUser = 8,
+  FeatureConfigurationPriorityUserPolicy = 10,
   FeatureConfigurationPriorityTest = 12,
+  FeatureConfigurationPriorityImageOverride = 15,
   FeatureConfigurationPriorityMax = 15,
 } RTL_FEATURE_CONFIGURATION_PRIORITY, *PRTL_FEATURE_CONFIGURATION_PRIORITY;
 
@@ -48634,6 +48664,13 @@ typedef struct _RTL_IMAGE_MITIGATION_SYSTEM_CALL_DISABLE_POLICY
 {
   union _RTL_IMAGE_MITIGATION_POLICY BlockWin32kSystemCalls;
 } RTL_IMAGE_MITIGATION_SYSTEM_CALL_DISABLE_POLICY, *PRTL_IMAGE_MITIGATION_SYSTEM_CALL_DISABLE_POLICY;
+
+typedef struct _RTL_IMAGE_MITIGATION_USER_SHADOW_STACK_POLICY
+{
+  union _RTL_IMAGE_MITIGATION_POLICY UserShadowStack;
+  union _RTL_IMAGE_MITIGATION_POLICY SetContextIpValidation;
+  union _RTL_IMAGE_MITIGATION_POLICY BlockNonCetBinaries;
+} RTL_IMAGE_MITIGATION_USER_SHADOW_STACK_POLICY, *PRTL_IMAGE_MITIGATION_USER_SHADOW_STACK_POLICY;
 
 typedef struct _RTL_IMAGE_POLICY_METADATA
 {
@@ -50809,7 +50846,13 @@ typedef struct _SECTION_INTERNAL_IMAGE_INFORMATION
     {
       unsigned long ImageExportSuppressionEnabled : 1; /* bit position: 0 */
       unsigned long ImageCetShadowStacksReady : 1; /* bit position: 1 */
-      unsigned long Reserved : 30; /* bit position: 2 */
+      unsigned long ImageXfgEnabled : 1; /* bit position: 2 */
+      unsigned long ImageCetShadowStacksStrictMode : 1; /* bit position: 3 */
+      unsigned long ImageCetSetContextIpValidationRelaxedMode : 1; /* bit position: 4 */
+      unsigned long ImageCetDynamicApisAllowInProc : 1; /* bit position: 5 */
+      unsigned long ImageCetDowngradeReserved1 : 1; /* bit position: 6 */
+      unsigned long ImageCetDowngradeReserved2 : 1; /* bit position: 7 */
+      unsigned long Reserved : 24; /* bit position: 8 */
     }; /* bitfield */
   };
   long __PADDING__[1];
@@ -54341,7 +54384,20 @@ typedef enum _SYSTEM_INFORMATION_CLASS
   SystemFeatureConfigurationSectionInformation = 211,
   SystemFeatureUsageSubscriptionInformation = 212,
   SystemSecureSpeculationControlInformation = 213,
-  MaxSystemInfoClass = 214,
+  SystemSpacesBootInformation = 214,
+  SystemFwRamdiskInformation = 215,
+  SystemWheaIpmiHardwareInformation = 216,
+  SystemDifSetRuleClassInformation = 217,
+  SystemDifClearRuleClassInformation = 218,
+  SystemDifApplyPluginVerificationOnDriver = 219,
+  SystemDifRemovePluginVerificationOnDriver = 220,
+  SystemShadowStackInformation = 221,
+  SystemBuildVersionInformation = 222,
+  SystemPoolLimitInformation = 223,
+  SystemCodeIntegrityAddDynamicStore = 224,
+  SystemCodeIntegrityClearDynamicStores = 225,
+  SystemPoolZeroingInformation = 227,
+  MaxSystemInfoClass = 228,
 } SYSTEM_INFORMATION_CLASS, *PSYSTEM_INFORMATION_CLASS;
 
 typedef struct _SYSTEM_INTERRUPT_CPU_SET_INFORMATION
@@ -54842,6 +54898,11 @@ typedef struct _SYSTEM_POOL_INFORMATION
   unsigned long NumberOfEntries;
   struct _SYSTEM_POOL_ENTRY Entries[1];
 } SYSTEM_POOL_INFORMATION, *PSYSTEM_POOL_INFORMATION;
+
+typedef struct _SYSTEM_POOL_ZEROING_INFORMATION
+{
+  unsigned char PoolZeroingSupportPresent;
+} SYSTEM_POOL_ZEROING_INFORMATION, *PSYSTEM_POOL_ZEROING_INFORMATION;
 
 typedef struct _SYSTEM_POOLTAG
 {
@@ -55454,6 +55515,23 @@ typedef struct _SYSTEM_SET_TIME_ADJUST_INFORMATION_PRECISE
   unsigned char Enable;
   char __PADDING__[7];
 } SYSTEM_SET_TIME_ADJUST_INFORMATION_PRECISE, *PSYSTEM_SET_TIME_ADJUST_INFORMATION_PRECISE;
+
+typedef struct _SYSTEM_SHADOW_STACK_INFORMATION
+{
+  union
+  {
+    unsigned long Flags;
+    struct /* bitfield */
+    {
+      unsigned long CetCapable : 1; /* bit position: 0 */
+      unsigned long UserCetAllowed : 1; /* bit position: 1 */
+      unsigned long ReservedForUserCet : 6; /* bit position: 2 */
+      unsigned long KernelCetEnabled : 1; /* bit position: 8 */
+      unsigned long ReservedForKernelCet : 7; /* bit position: 9 */
+      unsigned long Reserved : 16; /* bit position: 16 */
+    }; /* bitfield */
+  };
+} SYSTEM_SHADOW_STACK_INFORMATION, *PSYSTEM_SHADOW_STACK_INFORMATION;
 
 typedef struct _SYSTEM_SINGLE_MODULE_INFORMATION
 {
@@ -61681,6 +61759,7 @@ struct tagMENUBARINFO
   {
     int fBarFocused : 1; /* bit position: 0 */
     int fFocused : 1; /* bit position: 1 */
+    int fUnused : 30; /* bit position: 2 */
   }; /* bitfield */
   long __PADDING__[1];
 };
@@ -72686,7 +72765,6 @@ enum wil::FeatureChangeTime
 
 enum wil::FeatureControlKind
 {
-  All = 0,
   Service = 1,
   User = 2,
   Testing = 3,
@@ -73328,6 +73406,17 @@ typedef struct __WIL__WNF_TYPE_ID
 
 struct __WIL__WNF_USER_SUBSCRIPTION;
 
+struct wil_details_FeatureDescriptor
+{
+  union wil_details_FeatureStateCache* featureStateCache;
+  unsigned int featureId;
+  unsigned char changeTime;
+  unsigned char isAlwaysDisabled;
+  unsigned char isAlwaysEnabled;
+  unsigned char isEnabledByDefault;
+  const struct wil_details_FeatureDescriptor* const* requiresFeatures;
+};
+
 struct wil_details_FeatureReportingCache
 {
   union wil_details_ReportedState reported;
@@ -73348,11 +73437,12 @@ union wil_details_FeatureStateCache
         unsigned int variantCached : 1; /* bit position: 2 */
         unsigned int effectiveState : 1; /* bit position: 3 */
         unsigned int desiredState : 1; /* bit position: 4 */
-        unsigned int reservedForKernelModeSupport : 2; /* bit position: 5 */
-        unsigned int hasNotification : 1; /* bit position: 7 */
-        unsigned int isVariant : 1; /* bit position: 8 */
-        unsigned int variant : 6; /* bit position: 9 */
-        unsigned int unused : 17; /* bit position: 15 */
+        unsigned int configuredState : 2; /* bit position: 5 */
+        unsigned int needsRefresh : 1; /* bit position: 7 */
+        unsigned int hasNotification : 1; /* bit position: 8 */
+        unsigned int isVariant : 1; /* bit position: 9 */
+        unsigned int variant : 6; /* bit position: 10 */
+        unsigned int unused : 16; /* bit position: 16 */
       }; /* bitfield */
       unsigned int payloadId;
     };
@@ -73573,7 +73663,6 @@ enum wil_FeatureEnabledState
 
 enum wil_FeatureEnabledStateKind
 {
-  wil_FeatureEnabledStateKind_All = 0,
   wil_FeatureEnabledStateKind_Service = 1,
   wil_FeatureEnabledStateKind_User = 2,
   wil_FeatureEnabledStateKind_Test = 3,
@@ -92016,10 +92105,12 @@ public: void __cdecl Microsoft::WRL::ComPtr<class Windows::Foundation::Collectio
 protected: unsigned long __cdecl Microsoft::WRL::ComPtr<class Windows::Foundation::Collections::Internal::NaiveSplitView<struct HSTRING__ *,struct IInspectable *,struct Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<struct HSTRING__ *>,struct Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<struct HSTRING__ *>,struct Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<struct IInspectable *>,struct Windows::Foundation::Collections::Internal::DefaultHashMapOptions<struct HSTRING__ *,struct IInspectable *,struct Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<struct HSTRING__ *> > > >::InternalRelease(void);
 public: class Microsoft::WRL::ComPtr<class Windows::Foundation::Collections::Internal::NaiveSplitView<struct HSTRING__ *,struct IInspectable *,struct Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<struct HSTRING__ *>,struct Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<struct HSTRING__ *>,struct Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<struct IInspectable *>,struct Windows::Foundation::Collections::Internal::DefaultHashMapOptions<struct HSTRING__ *,struct IInspectable *,struct Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<struct HSTRING__ *> > > > & __cdecl Microsoft::WRL::ComPtr<class Windows::Foundation::Collections::Internal::NaiveSplitView<struct HSTRING__ *,struct IInspectable *,struct Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<struct HSTRING__ *>,struct Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<struct HSTRING__ *>,struct Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<struct IInspectable *>,struct Windows::Foundation::Collections::Internal::DefaultHashMapOptions<struct HSTRING__ *,struct IInspectable *,struct Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<struct HSTRING__ *> > > >::operator=(class Microsoft::WRL::ComPtr<class Windows::Foundation::Collections::Internal::NaiveSplitView<struct HSTRING__ *,struct IInspectable *,struct Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<struct HSTRING__ *>,struct Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<struct HSTRING__ *>,struct Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<struct IInspectable *>,struct Windows::Foundation::Collections::Internal::DefaultHashMapOptions<struct HSTRING__ *,struct IInspectable *,struct Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<struct HSTRING__ *> > > > const &);
 protected: unsigned long __cdecl Microsoft::WRL::ComPtr<class Windows::Foundation::Collections::Internal::NaiveSplitView<struct HSTRING__ *,struct IInspectable *,struct Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<struct HSTRING__ *>,struct Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<struct HSTRING__ *>,struct Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<struct IInspectable *>,struct Windows::Foundation::Collections::Internal::DefaultHashMapOptions<struct HSTRING__ *,struct IInspectable *,struct Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<struct HSTRING__ *> > >::Chunk>::InternalRelease(void);
+public: class Microsoft::WRL::ComPtr<class Windows::Foundation::Collections::Internal::NaiveSplitView<struct HSTRING__ *,struct IInspectable *,struct Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<struct HSTRING__ *>,struct Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<struct HSTRING__ *>,struct Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<struct IInspectable *>,struct Windows::Foundation::Collections::Internal::DefaultHashMapOptions<struct HSTRING__ *,struct IInspectable *,struct Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<struct HSTRING__ *> > >::ChunkView> & __cdecl Microsoft::WRL::ComPtr<class Windows::Foundation::Collections::Internal::NaiveSplitView<struct HSTRING__ *,struct IInspectable *,struct Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<struct HSTRING__ *>,struct Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<struct HSTRING__ *>,struct Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<struct IInspectable *>,struct Windows::Foundation::Collections::Internal::DefaultHashMapOptions<struct HSTRING__ *,struct IInspectable *,struct Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<struct HSTRING__ *> > >::ChunkView>::operator=(class Microsoft::WRL::ComPtr<class Windows::Foundation::Collections::Internal::NaiveSplitView<struct HSTRING__ *,struct IInspectable *,struct Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<struct HSTRING__ *>,struct Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<struct HSTRING__ *>,struct Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<struct IInspectable *>,struct Windows::Foundation::Collections::Internal::DefaultHashMapOptions<struct HSTRING__ *,struct IInspectable *,struct Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<struct HSTRING__ *> > >::ChunkView> const &);
 void Microsoft::WRL::ComPtr<Windows::Foundation::Collections::Internal::NaiveSplitView<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<IInspectable *>,Windows::Foundation::Collections::Internal::DefaultHashMapOptions<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *> > > >::Attach(class Windows::Foundation::Collections::Internal::NaiveSplitView<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<IInspectable *>,Windows::Foundation::Collections::Internal::DefaultHashMapOptions<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *> > > *);
 unsigned long Microsoft::WRL::ComPtr<Windows::Foundation::Collections::Internal::NaiveSplitView<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<IInspectable *>,Windows::Foundation::Collections::Internal::DefaultHashMapOptions<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *> > > >::InternalRelease(void);
 class Microsoft::WRL::ComPtr<Windows::Foundation::Collections::Internal::NaiveSplitView<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<IInspectable *>,Windows::Foundation::Collections::Internal::DefaultHashMapOptions<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *> > > > &Microsoft::WRL::ComPtr<Windows::Foundation::Collections::Internal::NaiveSplitView<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<IInspectable *>,Windows::Foundation::Collections::Internal::DefaultHashMapOptions<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *> > > >::operator=(const class Microsoft::WRL::ComPtr<Windows::Foundation::Collections::Internal::NaiveSplitView<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<IInspectable *>,Windows::Foundation::Collections::Internal::DefaultHashMapOptions<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *> > > > &);
 unsigned long Microsoft::WRL::ComPtr<Windows::Foundation::Collections::Internal::NaiveSplitView<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<IInspectable *>,Windows::Foundation::Collections::Internal::DefaultHashMapOptions<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *> > >::Chunk>::InternalRelease(void);
+class Microsoft::WRL::ComPtr<Windows::Foundation::Collections::Internal::NaiveSplitView<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<IInspectable *>,Windows::Foundation::Collections::Internal::DefaultHashMapOptions<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *> > >::ChunkView> &Microsoft::WRL::ComPtr<Windows::Foundation::Collections::Internal::NaiveSplitView<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<IInspectable *>,Windows::Foundation::Collections::Internal::DefaultHashMapOptions<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *> > >::ChunkView>::operator=(const class Microsoft::WRL::ComPtr<Windows::Foundation::Collections::Internal::NaiveSplitView<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultEqualityPredicate<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<IInspectable *>,Windows::Foundation::Collections::Internal::DefaultHashMapOptions<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *> > >::ChunkView> &);
 protected: unsigned long __cdecl Microsoft::WRL::ComPtr<class Windows::Foundation::Collections::Internal::SimpleKeyValuePair<struct HSTRING__ *,struct IInspectable *,struct Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<struct HSTRING__ *>,struct Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<struct IInspectable *>,0> >::InternalRelease(void);
 unsigned long Microsoft::WRL::ComPtr<Windows::Foundation::Collections::Internal::SimpleKeyValuePair<HSTRING__ *,IInspectable *,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<HSTRING__ *>,Windows::Foundation::Collections::Internal::DefaultLifetimeTraits<IInspectable *>,0> >::InternalRelease(void);
 class Microsoft::WRL::Details::WeakReferenceImpl *Microsoft::WRL::Details::CreateWeakReference(struct IUnknown *);
@@ -92158,56 +92249,76 @@ HRESULT Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFl
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<1>,1,1,0,Windows::Foundation::Collections::IMapView<HSTRING__ *,IInspectable *>,Windows::Foundation::Collections::IIterable<Windows::Foundation::Collections::IKeyValuePair<HSTRING__ *,IInspectable *> *> >::Release(void);
 void Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<1>,1,1,0,Windows::Foundation::Collections::IMapView<HSTRING__ *,IInspectable *>,Windows::Foundation::Collections::IIterable<Windows::Foundation::Collections::IKeyValuePair<HSTRING__ *,IInspectable *> *> >::~RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<1>,1,1,0,Windows::Foundation::Collections::IMapView<HSTRING__ *,IInspectable *>,Windows::Foundation::Collections::IIterable<Windows::Foundation::Collections::IKeyValuePair<HSTRING__ *,IInspectable *> *> >(void);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IClipboardBroker>::AddRef(void);
+unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IClipboardBroker>::InternalAddRef(void);
 HRESULT Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IClipboardBroker>::QueryInterface(const struct _GUID &, void **);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IClipboardBroker>::Release(void);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IClipboardBrokerInternal>::AddRef(void);
+unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IClipboardBrokerInternal>::InternalAddRef(void);
 HRESULT Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IClipboardBrokerInternal>::QueryInterface(const struct _GUID &, void **);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IClipboardBrokerInternal>::Release(void);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IClipboardTaskCompletion,Microsoft::WRL::FtmBase>::AddRef(void);
+unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IClipboardTaskCompletion,Microsoft::WRL::FtmBase>::InternalAddRef(void);
 HRESULT Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IClipboardTaskCompletion,Microsoft::WRL::FtmBase>::QueryInterface(const struct _GUID &, void **);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IClipboardTaskCompletion,Microsoft::WRL::FtmBase>::Release(void);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IComClassIterator>::AddRef(void);
+unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IComClassIterator>::InternalAddRef(void);
 HRESULT Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IComClassIterator>::QueryInterface(const struct _GUID &, void **);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IComClassIterator>::Release(void);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IDataObject>::AddRef(void);
+unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IDataObject>::InternalAddRef(void);
 HRESULT Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IDataObject>::QueryInterface(const struct _GUID &, void **);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IDataObject>::Release(void);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IDragDropBroker,Microsoft::WRL::FtmBase>::AddRef(void);
+unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IDragDropBroker,Microsoft::WRL::FtmBase>::InternalAddRef(void);
 HRESULT Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IDragDropBroker,Microsoft::WRL::FtmBase>::QueryInterface(const struct _GUID &, void **);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IDragDropBroker,Microsoft::WRL::FtmBase>::Release(void);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IDragOperationInternal>::AddRef(void);
+unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IDragOperationInternal>::InternalAddRef(void);
 HRESULT Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IDragOperationInternal>::QueryInterface(const struct _GUID &, void **);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IDragOperationInternal>::Release(void);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IEnumFORMATETC>::AddRef(void);
+unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IEnumFORMATETC>::InternalAddRef(void);
 HRESULT Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IEnumFORMATETC>::QueryInterface(const struct _GUID &, void **);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IEnumFORMATETC>::Release(void);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IEnumGUID>::AddRef(void);
+unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IEnumGUID>::InternalAddRef(void);
 HRESULT Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IEnumGUID>::QueryInterface(const struct _GUID &, void **);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IEnumGUID>::Release(void);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IEnumUnknown,Microsoft::WRL::FtmBase>::AddRef(void);
+unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IEnumUnknown,Microsoft::WRL::FtmBase>::InternalAddRef(void);
 HRESULT Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IEnumUnknown,Microsoft::WRL::FtmBase>::QueryInterface(const struct _GUID &, void **);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IEnumUnknown,Microsoft::WRL::FtmBase>::Release(void);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IOleDataFormatIterator>::AddRef(void);
+unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IOleDataFormatIterator>::InternalAddRef(void);
 HRESULT Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IOleDataFormatIterator>::QueryInterface(const struct _GUID &, void **);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IOleDataFormatIterator>::Release(void);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IOleVerb>::AddRef(void);
+unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IOleVerb>::InternalAddRef(void);
 HRESULT Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IOleVerb>::QueryInterface(const struct _GUID &, void **);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IOleVerb>::Release(void);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IOleVerbIterator>::AddRef(void);
+unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IOleVerbIterator>::InternalAddRef(void);
 HRESULT Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IOleVerbIterator>::QueryInterface(const struct _GUID &, void **);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IOleVerbIterator>::Release(void);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,ITypeLibRegistration,Microsoft::WRL::FtmBase>::AddRef(void);
+unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,ITypeLibRegistration,Microsoft::WRL::FtmBase>::InternalAddRef(void);
 HRESULT Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,ITypeLibRegistration,Microsoft::WRL::FtmBase>::QueryInterface(const struct _GUID &, void **);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,ITypeLibRegistration,Microsoft::WRL::FtmBase>::Release(void);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,ITypeLibRegistrationReader,Microsoft::WRL::FtmBase>::AddRef(void);
+unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,ITypeLibRegistrationReader,Microsoft::WRL::FtmBase>::InternalAddRef(void);
 HRESULT Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,ITypeLibRegistrationReader,Microsoft::WRL::FtmBase>::QueryInterface(const struct _GUID &, void **);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,ITypeLibRegistrationReader,Microsoft::WRL::FtmBase>::Release(void);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IUnknown>::AddRef(void);
+unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IUnknown>::InternalAddRef(void);
 HRESULT Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IUnknown>::QueryInterface(const struct _GUID &, void **);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IUnknown>::Release(void);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IWeakReference>::AddRef(void);
+unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IWeakReference>::InternalAddRef(void);
 HRESULT Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IWeakReference>::QueryInterface(const struct _GUID &, void **);
 unsigned long Microsoft::WRL::Details::RuntimeClassImpl<Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,IWeakReference>::Release(void);
+unsigned long Microsoft::WRL::Details::SafeUnknownDecrementReference(long &);
+unsigned long Microsoft::WRL::Details::SafeUnknownIncrementReference(long &);
+unsigned long Microsoft::WRL::Details::StrongReference::IncrementStrongReference(void);
 void *Microsoft::WRL::Details::WeakReferenceImpl::`scalar deleting destructor'(unsigned int);
 HRESULT Microsoft::WRL::Details::WeakReferenceImpl::Resolve(const struct _GUID &, struct IInspectable **);
 void Microsoft::WRL::Details::WeakReferenceImpl::WeakReferenceImpl(struct IUnknown *);
@@ -93935,8 +94046,8 @@ void (* const CClassObj::`vftable'[5])(void);
 void (* const CClipboardBroker::`vftable'[10])(void);
 void (* const CClipboardBroker::CClipboardBrokerExternalReference::`vftable'[10])(void);
 void (* const CClipboardBroker::CClipboardBrokerMTAHelper::`vftable'[5])(void);
-void (* const CClipClientDataWrapper::`vftable'[9])(void);
-void (* const CClipDataObject::`vftable'[4])(void);
+void (* const CClipClientDataWrapper::`vftable'[4])(void);
+void (* const CClipDataObject::`vftable'[14])(void);
 void (* const CComCat::`vftable'[9])(void);
 void (* const CComCat::CInnerUnk::`vftable'[3])(void);
 void (* const CCompositeMoniker::`vftable'[4])(void);
@@ -93958,12 +94069,12 @@ void (* const CDefClient::CUnknownImpl::`vftable'[3])(void);
 void (* const CDefLink::`vftable'[10])(void);
 void (* const CDefLink::CAdvSinkImpl::`vftable'[8])(void);
 void (* const CDefLink::CPrivUnknown::`vftable'[3])(void);
-void (* const CDefObject::`vftable'[8])(void);
+void (* const CDefObject::`vftable'[5])(void);
 void (* const CDefObject::CAdvSinkImpl::`vftable'[8])(void);
 void (* const CDefObject::CPrivUnknown::`vftable'[3])(void);
 void (* const CDelayUnlockContainer::`vftable'[3])(void);
 void (* const CDragDataObject::`vftable'[12])(void);
-void (* const CDragDropBroker::`vftable'[6])(void);
+void (* const CDragDropBroker::`vftable'[9])(void);
 class COleStaticMutexSem CDragDropBroker::s_registrationLock;
 void (* const CDragOperation::`vftable'[8])(void);
 bool CDragOperation::s_fDoDragDropInFlight;
@@ -93986,7 +94097,7 @@ void (* const CExtHashTable::`vftable'[7])(void);
 void (* const CFileMoniker::`vftable'[4])(void);
 void (* const CFileMonikerFactory::`vftable'[4])(void);
 void (* const CFilteredRunningObjectTable::`vftable'[10])(void);
-void (* const CFont::`vftable'[7])(void);
+void (* const CFont::`vftable'[5])(void);
 int CFont::s_cFcr;
 int CFont::s_cFontObjs;
 int CFont::s_fInit;
@@ -94141,7 +94252,7 @@ void (* const CSCMergedEnum<IEnumGUID,_GUID>::`vftable'[7])(void);
 void (* const CSessionMoniker::`vftable'[4])(void);
 void (* const CStdClassFactory::`vftable'[5])(void);
 void (* const CStreamDummy::`vftable'[14])(void);
-void (* const CSyncSync::`vftable'[1])(void);
+void (* const CSyncSync::`vftable'[7])(void);
 _CT??_R0?AVSafeIntException@@@84;
 _CT??_R0J@84;
 _CTA1?AVSafeIntException@@;
@@ -94357,6 +94468,8 @@ void (*gTblLck$initializer$)(void);
 void *__guard_check_icall_fptr;
 void *__guard_dispatch_icall_fptr;
 const unsigned char _guard_dispatch_icall_nop;
+unsigned long __guard_eh_cont_count;
+void *__guard_eh_cont_table[0];
 unsigned long __guard_fids_count;
 void *__guard_fids_table[0];
 unsigned long __guard_flags;
@@ -94715,7 +94828,7 @@ void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<2>,
 void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<2>,IClipboardTaskCompletion,Microsoft::WRL::FtmBase>::`vftable'[5])(void);
 void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<2>,IComClassIterator>::`vftable'[7])(void);
 void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<2>,IDataObject>::`vftable'[13])(void);
-void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<2>,IDragDropBroker,Microsoft::WRL::FtmBase>::`vftable'[6])(void);
+void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<2>,IDragDropBroker,Microsoft::WRL::FtmBase>::`vftable'[9])(void);
 void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<2>,IDragOperationInternal>::`vftable'[8])(void);
 void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<2>,IEnumFORMATETC>::`vftable'[8])(void);
 void (* const Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<2>,IEnumGUID>::`vftable'[8])(void);

@@ -985,6 +985,7 @@ public: virtual unsigned long __cdecl ATL::CComContainedObject<class CDXGISwapCh
 ? ATL::CComCreator<ATL::CComCachedTearOffObject<CDXGISwapChainDWMLegacy> >::CreateInstance;
 public: long __cdecl ATL::CComCriticalSection::Init(void);
 public: __cdecl ATL::CComCritSecLock<class ATL::CComCriticalSection>::CComCritSecLock<class ATL::CComCriticalSection>(class ATL::CComCriticalSection &,bool);
+public: static unsigned long __cdecl ATL::CComMultiThreadModelNoCS::SafeDecrementReference(long *);
 ? ATL::CComObject<CDXGIAdapter>::`scalar deleting destructor';
 public: virtual unsigned long __cdecl ATL::CComObject<class CDXGIAdapter>::AddRef(void);
 ? ATL::CComObject<CDXGIAdapter>::CreateInstance;
@@ -1102,7 +1103,7 @@ public: __cdecl AutoHSDB::~AutoHSDB(void);
 public: __cdecl AutoUnbindFromDWM::~AutoUnbindFromDWM(void);
 bool __cdecl BinaryCompatValue<31>(char const (&)[31],bool,bool);
 __C_specific_handler();
-? CAdjustEnumForHybrid<CDXGIFactoryWrapper>::AdjustEnumForHybrid;
+public: void __cdecl CAdjustEnumForHybrid<struct CDXGIFactoryWrapper>::AdjustEnumForHybrid(void);
 public: virtual bool __cdecl CCloserDMF<0>::CloserDMF(class CDXGIModeDesc const &,class CDXGIModeDesc const &)const ;
 public: virtual bool __cdecl CCloserDMF<1>::CloserDMF(class CDXGIModeDesc const &,class CDXGIModeDesc const &)const ;
 public: virtual bool __cdecl CCloserDMF<2>::CloserDMF(class CDXGIModeDesc const &,class CDXGIModeDesc const &)const ;
@@ -1927,6 +1928,7 @@ public: unsigned int __cdecl CFlipPresentToDWM<struct CDXGISwapChainWrapper>::Pr
 public: unsigned int __cdecl CFlipPresentToDWM<struct CDXGISwapChainWrapper>::SwapChainIndexToPresent(void);
 public: unsigned int __cdecl CFlipPresentToDWM<struct CDXGISwapChainWrapper>::SwapChainProxyIndexToPresent(void);
 void __cdecl CheckDxgiDebugDll(void);
+long __cdecl CheckIsMSIXPackageImpl(unsigned short const *,int *);
 __chkstk();
 public: void __cdecl CLazyModule::BlitOcclusionWarn(class CDXGIFactory *);
 ? CLazyModule::CLazyModule;
@@ -2430,8 +2432,11 @@ public: static void __cdecl Microsoft::WRL::DelegateTraits<-1>::EnsureStackSnaps
 ? Microsoft::WRL::Details::DelegateArgTraits<long (__cdecl Windows::Foundation::ITypedEventHandler_impl<Windows::Foundation::Internal::AggregateType<Windows::UI::Composition::Core::CompositorController *,Windows::UI::Composition::Core::ICompositorController *>,IInspectable *>::*)(Windows::UI::Composition::Core::ICompositorController *,IInspectable *)>::DelegateInvokeHelper<Microsoft::WRL::Implements<Microsoft::WRL::RuntimeClassFlags<2>,Windows::Foundation::ITypedEventHandler<Windows::UI::Composition::Core::CompositorController *,IInspectable *>,Microsoft::WRL::FtmBase>,<lambda_e083218eab63af9c9f1e2ef924ebe9fe> &,-1,Windows::UI::Composition::Core::ICompositorController *,IInspectable *>::DelegateInvokeHelper<Microsoft::WRL::Implements<Microsoft::WRL::RuntimeClassFlags<2>,Windows::Foundation::ITypedEventHandler<Windows::UI::Composition::Core::CompositorController *,IInspectable *>,Microsoft::WRL::FtmBase>,<lambda_e083218eab63af9c9f1e2ef924ebe9fe> &,-1,Windows::UI::Composition::Core::ICompositorController *,IInspectable *>;
 ? Microsoft::WRL::Details::DelegateArgTraits<long (__cdecl Windows::Foundation::ITypedEventHandler_impl<Windows::Foundation::Internal::AggregateType<Windows::UI::Composition::Core::CompositorController *,Windows::UI::Composition::Core::ICompositorController *>,IInspectable *>::*)(Windows::UI::Composition::Core::ICompositorController *,IInspectable *)>::DelegateInvokeHelper<Microsoft::WRL::Implements<Microsoft::WRL::RuntimeClassFlags<2>,Windows::Foundation::ITypedEventHandler<Windows::UI::Composition::Core::CompositorController *,IInspectable *>,Microsoft::WRL::FtmBase>,<lambda_e083218eab63af9c9f1e2ef924ebe9fe> &,-1,Windows::UI::Composition::Core::ICompositorController *,IInspectable *>::Invoke;
 public: virtual unsigned long __cdecl Microsoft::WRL::Details::RuntimeClassImpl<struct Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,struct Microsoft::WRL::Implements<struct Microsoft::WRL::RuntimeClassFlags<2>,struct Windows::Foundation::ITypedEventHandler<class Windows::UI::Composition::Core::CompositorController *,struct IInspectable *>,class Microsoft::WRL::FtmBase> >::AddRef(void);
+protected: unsigned long __cdecl Microsoft::WRL::Details::RuntimeClassImpl<struct Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,struct Microsoft::WRL::Implements<struct Microsoft::WRL::RuntimeClassFlags<2>,struct Windows::Foundation::ITypedEventHandler<class Windows::UI::Composition::Core::CompositorController *,struct IInspectable *>,class Microsoft::WRL::FtmBase> >::InternalAddRef(void);
 public: virtual long __cdecl Microsoft::WRL::Details::RuntimeClassImpl<struct Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,struct Microsoft::WRL::Implements<struct Microsoft::WRL::RuntimeClassFlags<2>,struct Windows::Foundation::ITypedEventHandler<class Windows::UI::Composition::Core::CompositorController *,struct IInspectable *>,class Microsoft::WRL::FtmBase> >::QueryInterface(struct _GUID const &,void * *);
 public: virtual unsigned long __cdecl Microsoft::WRL::Details::RuntimeClassImpl<struct Microsoft::WRL::RuntimeClassFlags<2>,1,0,0,struct Microsoft::WRL::Implements<struct Microsoft::WRL::RuntimeClassFlags<2>,struct Windows::Foundation::ITypedEventHandler<class Windows::UI::Composition::Core::CompositorController *,struct IInspectable *>,class Microsoft::WRL::FtmBase> >::Release(void);
+unsigned long __cdecl Microsoft::WRL::Details::SafeUnknownDecrementReference(long volatile &);
+unsigned long __cdecl Microsoft::WRL::Details::SafeUnknownIncrementReference(long volatile &);
 protected: long __cdecl Microsoft::WRL::FtmBase::CanCastTo(struct _GUID const &,void * *);
 public: virtual long __cdecl Microsoft::WRL::FtmBase::DisconnectObject(unsigned long);
 public: __cdecl Microsoft::WRL::FtmBase::FtmBase(void);
@@ -2982,6 +2987,7 @@ public: class std::_Vector_iterator<class std::_Vector_val<struct std::_Simple_t
 public: __cdecl std::vector<struct DISPLAYCONFIG_PATH_INFO,class std::allocator<struct DISPLAYCONFIG_PATH_INFO> >::~vector<struct DISPLAYCONFIG_PATH_INFO,class std::allocator<struct DISPLAYCONFIG_PATH_INFO> >(void);
 protected: void __cdecl std::vector<struct GpuPreferenceAdapterInfo,class std::allocator<struct GpuPreferenceAdapterInfo> >::_Reallocate(unsigned __int64);
 protected: void __cdecl std::vector<struct GpuPreferenceAdapterInfo,class std::allocator<struct GpuPreferenceAdapterInfo> >::_Reserve(unsigned __int64);
+? std::vector<GpuPreferenceAdapterInfo,std::allocator<GpuPreferenceAdapterInfo> >::_Tidy;
 public: void __cdecl std::vector<struct GpuPreferenceAdapterInfo,class std::allocator<struct GpuPreferenceAdapterInfo> >::push_back(struct GpuPreferenceAdapterInfo &&);
 public: __cdecl std::vector<struct GpuPreferenceAdapterInfo,class std::allocator<struct GpuPreferenceAdapterInfo> >::~vector<struct GpuPreferenceAdapterInfo,class std::allocator<struct GpuPreferenceAdapterInfo> >(void);
 protected: void __cdecl std::vector<struct IDXGIResource *,class std::allocator<struct IDXGIResource *> >::_Reallocate(unsigned __int64);
@@ -3015,6 +3021,8 @@ protected: void __cdecl std::vector<class std::_List_unchecked_iterator<class st
 public: __cdecl std::vector<class std::_List_unchecked_iterator<class std::_List_val<struct std::_List_simple_types<struct std::pair<struct SGuid const ,class CPrivateData> > > >,struct std::_Wrap_alloc<class std::allocator<class std::_List_unchecked_iterator<class std::_List_val<struct std::_List_simple_types<struct std::pair<struct SGuid const ,class CPrivateData> > > > > > >::~vector<class std::_List_unchecked_iterator<class std::_List_val<struct std::_List_simple_types<struct std::pair<struct SGuid const ,class CPrivateData> > > >,struct std::_Wrap_alloc<class std::allocator<class std::_List_unchecked_iterator<class std::_List_val<struct std::_List_simple_types<struct std::pair<struct SGuid const ,class CPrivateData> > > > > > >(void);
 protected: void __cdecl std::vector<struct std::pair<struct SAdapterDesc const *,unsigned int>,class std::allocator<struct std::pair<struct SAdapterDesc const *,unsigned int> > >::_Reallocate(unsigned __int64);
 protected: void __cdecl std::vector<struct std::pair<struct SAdapterDesc const *,unsigned int>,class std::allocator<struct std::pair<struct SAdapterDesc const *,unsigned int> > >::_Reserve(unsigned __int64);
+protected: void __cdecl std::vector<struct std::pair<struct SAdapterDesc const *,unsigned int>,class std::allocator<struct std::pair<struct SAdapterDesc const *,unsigned int> > >::_Tidy(void);
+protected: void __cdecl std::vector<struct std::pair<struct SAdapterDesc const *,unsigned int>,class std::allocator<struct std::pair<struct SAdapterDesc const *,unsigned int> > >::_Xlen(void)const ;
 public: __cdecl std::vector<struct std::pair<struct SAdapterDesc const *,unsigned int>,class std::allocator<struct std::pair<struct SAdapterDesc const *,unsigned int> > >::~vector<struct std::pair<struct SAdapterDesc const *,unsigned int>,class std::allocator<struct std::pair<struct SAdapterDesc const *,unsigned int> > >(void);
 ? std::vector<std::pair<SAdapterDesc const *,unsigned int>,std::allocator<std::pair<SAdapterDesc const *,unsigned int> > >::_Reallocate;
 protected: void __cdecl std::vector<unsigned __int64,class std::allocator<unsigned __int64> >::_Reallocate(unsigned __int64);
@@ -3301,12 +3309,12 @@ public: bool __cdecl wil::details::FeatureImpl<struct __WilFeatureTraits_Feature
 public: bool __cdecl wil::details::FeatureImpl<struct __WilFeatureTraits_Feature_DXGI_eFSE_Enablement_Policy>::__private_ReportVariantDisabled(enum wil::VariantReportingKind);
 ? wil::details::FeatureImpl<__WilFeatureTraits_Feature_DXGI_eFSE_Enablement_Policy>::GetCachedFeatureEnabledState;
 ? wil::details::FeatureImpl<__WilFeatureTraits_Feature_DXGI_eFSE_Enablement_Policy>::GetCachedVariantState;
-? wil::details::FeatureImpl<__WilFeatureTraits_Feature_DXGI_eFSE_Enablement_Policy>::GetCurrentFeatureEnabledState;
+private: union wil_details_FeatureStateCache __cdecl wil::details::FeatureImpl<struct __WilFeatureTraits_Feature_DXGI_eFSE_Enablement_Policy>::GetCurrentFeatureEnabledState(int *);
 ? wil::details::FeatureImpl<__WilFeatureTraits_Feature_DXGI_eFSE_Enablement_Policy>::GetCurrentVariantState;
 public: void __cdecl wil::details::FeatureImpl<struct __WilFeatureTraits_Feature_DXGI_eFSE_Enablement_Policy>::ReportUsage(bool,enum wil::ReportingKind,unsigned __int64);
 ? wil::details::FeatureImpl<__WilFeatureTraits_Feature_DXGI_eFSE_Enablement_Policy>::ReportVariantUsage;
 ? wil::details::FeatureImpl<__WilFeatureTraits_Feature_DXGI_eFSE_OnByDefaultWithPromotion>::GetCachedFeatureEnabledState;
-? wil::details::FeatureImpl<__WilFeatureTraits_Feature_DXGI_eFSE_OnByDefaultWithPromotion>::GetCurrentFeatureEnabledState;
+private: union wil_details_FeatureStateCache __cdecl wil::details::FeatureImpl<struct __WilFeatureTraits_Feature_DXGI_eFSE_OnByDefaultWithPromotion>::GetCurrentFeatureEnabledState(int *);
 ? wil::details::FeatureImpl<__WilFeatureTraits_Feature_DXGI_eFSE_OnByDefaultWithPromotion>::ReportUsage;
 private: union wil_details_FeatureStateCache __cdecl wil::details::FeatureImpl<struct __WilFeatureTraits_Feature_DXGI_WindowAndDisplayMismatchShim>::GetCachedFeatureEnabledState(void);
 private: union wil_details_FeatureStateCache __cdecl wil::details::FeatureImpl<struct __WilFeatureTraits_Feature_DXGI_WindowAndDisplayMismatchShim>::GetCurrentFeatureEnabledState(int *);
@@ -3315,7 +3323,7 @@ private: union wil_details_FeatureStateCache __cdecl wil::details::FeatureImpl<s
 private: union wil_details_FeatureStateCache __cdecl wil::details::FeatureImpl<struct __WilFeatureTraits_Feature_DXGIEnableFullScreenInRemoteSession>::GetCurrentFeatureEnabledState(int *);
 public: void __cdecl wil::details::FeatureImpl<struct __WilFeatureTraits_Feature_DXGIEnableFullScreenInRemoteSession>::ReportUsage(bool,enum wil::ReportingKind,unsigned __int64);
 ? wil::details::FeatureImpl<__WilFeatureTraits_Feature_DXGIOnDDisplay>::GetCachedFeatureEnabledState;
-? wil::details::FeatureImpl<__WilFeatureTraits_Feature_DXGIOnDDisplay>::GetCurrentFeatureEnabledState;
+private: union wil_details_FeatureStateCache __cdecl wil::details::FeatureImpl<struct __WilFeatureTraits_Feature_DXGIOnDDisplay>::GetCurrentFeatureEnabledState(int *);
 public: void __cdecl wil::details::FeatureImpl<struct __WilFeatureTraits_Feature_DXGIOnDDisplay>::ReportUsage(bool,enum wil::ReportingKind,unsigned __int64);
 private: bool __cdecl wil::details::FeatureStateManager::EnsureStateData(void);
 private: void __cdecl wil::details::FeatureStateManager::EnsureSubscribedToProcessWideUsageFlushUnderLock(void);
@@ -3423,7 +3431,7 @@ public: static long __cdecl wil::details_abi::ProcessLocalStorageData<struct wil
 private: static long __cdecl wil::details_abi::ProcessLocalStorageData<struct wil::details_abi::ProcessLocalData>::MakeAndInitialize(unsigned short const *,class wil::unique_any_t<class wil::mutex_t<class wil::details::unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *),&void __cdecl wil::details::CloseHandle(void *),struct wistd::integral_constant<unsigned __int64,0>,void *,void *,0,std::nullptr_t> >,struct wil::err_returncode_policy> > &&,class wil::details_abi::ProcessLocalStorageData<struct wil::details_abi::ProcessLocalData> * *);
 public: void __cdecl wil::details_abi::ProcessLocalStorageData<struct wil::details_abi::ProcessLocalData>::Release(void);
 public: __cdecl wil::details_abi::ProcessLocalStorageData<struct wil::details_abi::ProcessLocalData>::~ProcessLocalStorageData<struct wil::details_abi::ProcessLocalData>(void);
-? wil::details_abi::RawUsageIndex::FindInsertionPointOrIncrement;
+private: unsigned char * __cdecl wil::details_abi::RawUsageIndex::FindInsertionPointOrIncrement(struct wil::details_abi::UsageIndexProperty &,unsigned char *,void *,unsigned __int64,unsigned int);
 ? wil::details_abi::RawUsageIndex::Iterate;
 ? wil::details_abi::RawUsageIndex::LowerBound;
 public: __cdecl wil::details_abi::RawUsageIndex::RawUsageIndex(unsigned short,unsigned short,enum wil::details_abi::CountSize,unsigned short,enum wil::details_abi::CountSize);
@@ -3733,6 +3741,8 @@ void (__cdecl* g_wil_details_recordFeatureUsage)(unsigned int,enum wil_details_S
 void (__cdecl* g_wil_details_RecordSRUMFeatureUsage)(unsigned int,unsigned int,unsigned int);
 __guard_check_icall_fptr;
 __guard_dispatch_icall_fptr;
+__guard_eh_cont_count;
+__guard_eh_cont_table;
 __guard_fids_count;
 __guard_fids_table;
 __guard_flags;

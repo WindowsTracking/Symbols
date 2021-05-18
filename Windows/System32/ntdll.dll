@@ -1,5 +1,5 @@
 /*
- * PDB file: ntdll.pdb\01DEFFF845AAA742EA34488610D487CB1\ntdll.pdb
+ * PDB file: ntdll.pdb\21A98F2D1A7574D87D399428C4AAB0DC1\ntdll.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -435,6 +435,7 @@ struct _PROCESSOR_PROFILE_CONTROL_AREA;
 enum _PS_ATTRIBUTE_NUM;
 union _PS_CLIENT_SECURITY_CONTEXT;
 enum PS_CREATE_STATE;
+struct _PS_DYNAMIC_ENFORCED_ADDRESS_RANGES;
 union _PS_INTERLOCKED_TIMER_DELAY_VALUES;
 struct _PS_IO_CONTROL_ENTRY;
 struct _PS_JOB_WAKE_INFORMATION;
@@ -477,6 +478,7 @@ struct _RTL_DYNAMIC_HASH_TABLE;
 struct _RTL_DYNAMIC_HASH_TABLE_CONTEXT;
 struct _RTL_DYNAMIC_HASH_TABLE_ENTRY;
 struct _RTL_DYNAMIC_HASH_TABLE_ENUMERATOR;
+enum _RTL_FEATURE_CONFIGURATION_PRIORITY;
 enum _RTL_GENERIC_COMPARE_RESULTS;
 struct _RTL_HASH_ENTRY;
 struct _RTL_HASH_TABLE;
@@ -544,6 +546,7 @@ struct _STRING;
 struct _SYNCH_COUNTERS;
 enum _SYSTEM_DLL_TYPE;
 enum _SYSTEM_FEATURE_CONFIGURATION_SECTION_TYPE;
+enum _SYSTEM_INFORMATION_CLASS;
 struct SYSTEM_POWER_CAPABILITIES;
 enum _SYSTEM_POWER_STATE;
 struct _SYSTEM_POWER_STATE_CONTEXT;
@@ -1513,7 +1516,8 @@ typedef struct _DYNAMIC_FUNCTION_TABLE
   wchar_t* OutOfProcessCallbackDll;
   enum _FUNCTION_TABLE_TYPE Type;
   unsigned long EntryCount;
-  struct _RTL_BALANCED_NODE TreeNode;
+  struct _RTL_BALANCED_NODE TreeNodeMin;
+  struct _RTL_BALANCED_NODE TreeNodeMax;
 } DYNAMIC_FUNCTION_TABLE, *PDYNAMIC_FUNCTION_TABLE;
 
 struct _ECP_LIST;
@@ -1927,6 +1931,7 @@ typedef struct _EPROCESS
       unsigned long VmProcessorHostTransition : 1; /* bit position: 24 */
       unsigned long AltSyscall : 1; /* bit position: 25 */
       unsigned long TimerResolutionIgnore : 1; /* bit position: 26 */
+      unsigned long DisallowUserTerminate : 1; /* bit position: 27 */
     }; /* bitfield */
   };
   long DeviceAsid;
@@ -2052,6 +2057,18 @@ typedef struct _EPROCESS
         unsigned long UserCetSetContextIpValidation : 1; /* bit position: 17 */
         unsigned long AuditUserCetSetContextIpValidation : 1; /* bit position: 18 */
         unsigned long AuditUserCetSetContextIpValidationLogged : 1; /* bit position: 19 */
+        unsigned long CetUserShadowStacksStrictMode : 1; /* bit position: 20 */
+        unsigned long BlockNonCetBinaries : 1; /* bit position: 21 */
+        unsigned long BlockNonCetBinariesNonEhcont : 1; /* bit position: 22 */
+        unsigned long AuditBlockNonCetBinaries : 1; /* bit position: 23 */
+        unsigned long AuditBlockNonCetBinariesLogged : 1; /* bit position: 24 */
+        unsigned long Reserved1 : 1; /* bit position: 25 */
+        unsigned long Reserved2 : 1; /* bit position: 26 */
+        unsigned long Reserved3 : 1; /* bit position: 27 */
+        unsigned long Reserved4 : 1; /* bit position: 28 */
+        unsigned long Reserved5 : 1; /* bit position: 29 */
+        unsigned long CetDynamicApisOutOfProcOnly : 1; /* bit position: 30 */
+        unsigned long UserCetSetContextIpValidationRelaxedMode : 1; /* bit position: 31 */
       }; /* bitfield */
     } MitigationFlags2Values;
   };
@@ -2062,7 +2079,8 @@ typedef struct _EPROCESS
   void* MmHotPatchContext;
   struct _RTL_AVL_TREE DynamicEHContinuationTargetsTree;
   struct _EX_PUSH_LOCK DynamicEHContinuationTargetsLock;
-  long __PADDING__[12];
+  struct _PS_DYNAMIC_ENFORCED_ADDRESS_RANGES DynamicEnforcedCetCompatibleRanges;
+  long __PADDING__[8];
 } EPROCESS, *PEPROCESS;
 
 struct _EPROCESS_QUOTA_BLOCK;
@@ -2752,7 +2770,8 @@ typedef struct _flags
     unsigned char GroupCommitted : 1; /* bit position: 2 */
     unsigned char GroupAssignmentFixed : 1; /* bit position: 3 */
     unsigned char ProcessorOnly : 1; /* bit position: 4 */
-    unsigned char Fill : 3; /* bit position: 5 */
+    unsigned char SmtSetsPresent : 1; /* bit position: 5 */
+    unsigned char Fill : 2; /* bit position: 6 */
   }; /* bitfield */
 } flags, *Pflags;
 
@@ -7225,20 +7244,7 @@ typedef struct _KUSER_SHARED_DATA
   unsigned __int64 TestRetInstruction;
   __int64 QpcFrequency;
   unsigned long SystemCall;
-  union
-  {
-    union
-    {
-      unsigned long AllFlags;
-      struct /* bitfield */
-      {
-        unsigned long Win32Process : 1; /* bit position: 0 */
-        unsigned long Sgx2Enclave : 1; /* bit position: 1 */
-        unsigned long VbsBasicEnclave : 1; /* bit position: 2 */
-        unsigned long SpareBits : 29; /* bit position: 3 */
-      }; /* bitfield */
-    };
-  } UserCetAvailableEnvironments;
+  unsigned long Reserved2;
   unsigned __int64 SystemCallPad[2];
   union
   {
@@ -9400,7 +9406,8 @@ typedef enum _PS_ATTRIBUTE_NUM
   PsAttributeBnoIsolation = 24,
   PsAttributeDesktopAppPolicy = 25,
   PsAttributeChpe = 26,
-  PsAttributeMax = 27,
+  PsAttributeMitigationAuditOptions = 27,
+  PsAttributeMax = 28,
 } PS_ATTRIBUTE_NUM, *PPS_ATTRIBUTE_NUM;
 
 typedef union _PS_CLIENT_SECURITY_CONTEXT
@@ -9428,6 +9435,12 @@ enum PS_CREATE_STATE
   PsCreateSuccess = 6,
   PsCreateMaximumStates = 7,
 };
+
+typedef struct _PS_DYNAMIC_ENFORCED_ADDRESS_RANGES
+{
+  struct _RTL_AVL_TREE Tree;
+  struct _EX_PUSH_LOCK Lock;
+} PS_DYNAMIC_ENFORCED_ADDRESS_RANGES, *PPS_DYNAMIC_ENFORCED_ADDRESS_RANGES;
 
 typedef union _PS_INTERLOCKED_TIMER_DELAY_VALUES
 {
@@ -9510,6 +9523,8 @@ typedef enum _PS_MITIGATION_OPTION
   PS_MITIGATION_OPTION_ALLOW_DOWNGRADE_DYNAMIC_CODE_POLICY = 30,
   PS_MITIGATION_OPTION_CET_USER_SHADOW_STACKS = 31,
   PS_MITIGATION_OPTION_USER_CET_SET_CONTEXT_IP_VALIDATION = 32,
+  PS_MITIGATION_OPTION_BLOCK_NON_CET_BINARIES = 33,
+  PS_MITIGATION_OPTION_CET_DYNAMIC_APIS_OUT_OF_PROC_ONLY = 36,
 } PS_MITIGATION_OPTION, *PPS_MITIGATION_OPTION;
 
 typedef struct _PS_MITIGATION_OPTIONS_MAP
@@ -9936,6 +9951,17 @@ typedef struct _RTL_DYNAMIC_HASH_TABLE_ENUMERATOR
   unsigned long BucketIndex;
   long __PADDING__[1];
 } RTL_DYNAMIC_HASH_TABLE_ENUMERATOR, *PRTL_DYNAMIC_HASH_TABLE_ENUMERATOR;
+
+typedef enum _RTL_FEATURE_CONFIGURATION_PRIORITY
+{
+  FeatureConfigurationPriorityImageDefault = 0,
+  FeatureConfigurationPriorityService = 4,
+  FeatureConfigurationPriorityUser = 8,
+  FeatureConfigurationPriorityUserPolicy = 10,
+  FeatureConfigurationPriorityTest = 12,
+  FeatureConfigurationPriorityImageOverride = 15,
+  FeatureConfigurationPriorityMax = 15,
+} RTL_FEATURE_CONFIGURATION_PRIORITY, *PRTL_FEATURE_CONFIGURATION_PRIORITY;
 
 typedef enum _RTL_GENERIC_COMPARE_RESULTS
 {
@@ -10694,6 +10720,238 @@ typedef enum _SYSTEM_FEATURE_CONFIGURATION_SECTION_TYPE
   SystemFeatureConfigurationSectionTypeUsageTriggers = 2,
   SystemFeatureConfigurationSectionTypeCount = 3,
 } SYSTEM_FEATURE_CONFIGURATION_SECTION_TYPE, *PSYSTEM_FEATURE_CONFIGURATION_SECTION_TYPE;
+
+typedef enum _SYSTEM_INFORMATION_CLASS
+{
+  SystemBasicInformation = 0,
+  SystemProcessorInformation = 1,
+  SystemPerformanceInformation = 2,
+  SystemTimeOfDayInformation = 3,
+  SystemPathInformation = 4,
+  SystemProcessInformation = 5,
+  SystemCallCountInformation = 6,
+  SystemDeviceInformation = 7,
+  SystemProcessorPerformanceInformation = 8,
+  SystemFlagsInformation = 9,
+  SystemCallTimeInformation = 10,
+  SystemModuleInformation = 11,
+  SystemLocksInformation = 12,
+  SystemStackTraceInformation = 13,
+  SystemPagedPoolInformation = 14,
+  SystemNonPagedPoolInformation = 15,
+  SystemHandleInformation = 16,
+  SystemObjectInformation = 17,
+  SystemPageFileInformation = 18,
+  SystemVdmInstemulInformation = 19,
+  SystemVdmBopInformation = 20,
+  SystemFileCacheInformation = 21,
+  SystemPoolTagInformation = 22,
+  SystemInterruptInformation = 23,
+  SystemDpcBehaviorInformation = 24,
+  SystemFullMemoryInformation = 25,
+  SystemLoadGdiDriverInformation = 26,
+  SystemUnloadGdiDriverInformation = 27,
+  SystemTimeAdjustmentInformation = 28,
+  SystemSummaryMemoryInformation = 29,
+  SystemMirrorMemoryInformation = 30,
+  SystemPerformanceTraceInformation = 31,
+  SystemObsolete0 = 32,
+  SystemExceptionInformation = 33,
+  SystemCrashDumpStateInformation = 34,
+  SystemKernelDebuggerInformation = 35,
+  SystemContextSwitchInformation = 36,
+  SystemRegistryQuotaInformation = 37,
+  SystemExtendServiceTableInformation = 38,
+  SystemPrioritySeperation = 39,
+  SystemVerifierAddDriverInformation = 40,
+  SystemVerifierRemoveDriverInformation = 41,
+  SystemProcessorIdleInformation = 42,
+  SystemLegacyDriverInformation = 43,
+  SystemCurrentTimeZoneInformation = 44,
+  SystemLookasideInformation = 45,
+  SystemTimeSlipNotification = 46,
+  SystemSessionCreate = 47,
+  SystemSessionDetach = 48,
+  SystemSessionInformation = 49,
+  SystemRangeStartInformation = 50,
+  SystemVerifierInformation = 51,
+  SystemVerifierThunkExtend = 52,
+  SystemSessionProcessInformation = 53,
+  SystemLoadGdiDriverInSystemSpace = 54,
+  SystemNumaProcessorMap = 55,
+  SystemPrefetcherInformation = 56,
+  SystemExtendedProcessInformation = 57,
+  SystemRecommendedSharedDataAlignment = 58,
+  SystemComPlusPackage = 59,
+  SystemNumaAvailableMemory = 60,
+  SystemProcessorPowerInformation = 61,
+  SystemEmulationBasicInformation = 62,
+  SystemEmulationProcessorInformation = 63,
+  SystemExtendedHandleInformation = 64,
+  SystemLostDelayedWriteInformation = 65,
+  SystemBigPoolInformation = 66,
+  SystemSessionPoolTagInformation = 67,
+  SystemSessionMappedViewInformation = 68,
+  SystemHotpatchInformation = 69,
+  SystemObjectSecurityMode = 70,
+  SystemWatchdogTimerHandler = 71,
+  SystemWatchdogTimerInformation = 72,
+  SystemLogicalProcessorInformation = 73,
+  SystemWow64SharedInformationObsolete = 74,
+  SystemRegisterFirmwareTableInformationHandler = 75,
+  SystemFirmwareTableInformation = 76,
+  SystemModuleInformationEx = 77,
+  SystemVerifierTriageInformation = 78,
+  SystemSuperfetchInformation = 79,
+  SystemMemoryListInformation = 80,
+  SystemFileCacheInformationEx = 81,
+  SystemThreadPriorityClientIdInformation = 82,
+  SystemProcessorIdleCycleTimeInformation = 83,
+  SystemVerifierCancellationInformation = 84,
+  SystemProcessorPowerInformationEx = 85,
+  SystemRefTraceInformation = 86,
+  SystemSpecialPoolInformation = 87,
+  SystemProcessIdInformation = 88,
+  SystemErrorPortInformation = 89,
+  SystemBootEnvironmentInformation = 90,
+  SystemHypervisorInformation = 91,
+  SystemVerifierInformationEx = 92,
+  SystemTimeZoneInformation = 93,
+  SystemImageFileExecutionOptionsInformation = 94,
+  SystemCoverageInformation = 95,
+  SystemPrefetchPatchInformation = 96,
+  SystemVerifierFaultsInformation = 97,
+  SystemSystemPartitionInformation = 98,
+  SystemSystemDiskInformation = 99,
+  SystemProcessorPerformanceDistribution = 100,
+  SystemNumaProximityNodeInformation = 101,
+  SystemDynamicTimeZoneInformation = 102,
+  SystemCodeIntegrityInformation = 103,
+  SystemProcessorMicrocodeUpdateInformation = 104,
+  SystemProcessorBrandString = 105,
+  SystemVirtualAddressInformation = 106,
+  SystemLogicalProcessorAndGroupInformation = 107,
+  SystemProcessorCycleTimeInformation = 108,
+  SystemStoreInformation = 109,
+  SystemRegistryAppendString = 110,
+  SystemAitSamplingValue = 111,
+  SystemVhdBootInformation = 112,
+  SystemCpuQuotaInformation = 113,
+  SystemNativeBasicInformation = 114,
+  SystemErrorPortTimeouts = 115,
+  SystemLowPriorityIoInformation = 116,
+  SystemBootEntropyInformation = 117,
+  SystemVerifierCountersInformation = 118,
+  SystemPagedPoolInformationEx = 119,
+  SystemSystemPtesInformationEx = 120,
+  SystemNodeDistanceInformation = 121,
+  SystemAcpiAuditInformation = 122,
+  SystemBasicPerformanceInformation = 123,
+  SystemQueryPerformanceCounterInformation = 124,
+  SystemSessionBigPoolInformation = 125,
+  SystemBootGraphicsInformation = 126,
+  SystemScrubPhysicalMemoryInformation = 127,
+  SystemBadPageInformation = 128,
+  SystemProcessorProfileControlArea = 129,
+  SystemCombinePhysicalMemoryInformation = 130,
+  SystemEntropyInterruptTimingInformation = 131,
+  SystemConsoleInformation = 132,
+  SystemPlatformBinaryInformation = 133,
+  SystemPolicyInformation = 134,
+  SystemHypervisorProcessorCountInformation = 135,
+  SystemDeviceDataInformation = 136,
+  SystemDeviceDataEnumerationInformation = 137,
+  SystemMemoryTopologyInformation = 138,
+  SystemMemoryChannelInformation = 139,
+  SystemBootLogoInformation = 140,
+  SystemProcessorPerformanceInformationEx = 141,
+  SystemCriticalProcessErrorLogInformation = 142,
+  SystemSecureBootPolicyInformation = 143,
+  SystemPageFileInformationEx = 144,
+  SystemSecureBootInformation = 145,
+  SystemEntropyInterruptTimingRawInformation = 146,
+  SystemPortableWorkspaceEfiLauncherInformation = 147,
+  SystemFullProcessInformation = 148,
+  SystemKernelDebuggerInformationEx = 149,
+  SystemBootMetadataInformation = 150,
+  SystemSoftRebootInformation = 151,
+  SystemElamCertificateInformation = 152,
+  SystemOfflineDumpConfigInformation = 153,
+  SystemProcessorFeaturesInformation = 154,
+  SystemRegistryReconciliationInformation = 155,
+  SystemEdidInformation = 156,
+  SystemManufacturingInformation = 157,
+  SystemEnergyEstimationConfigInformation = 158,
+  SystemHypervisorDetailInformation = 159,
+  SystemProcessorCycleStatsInformation = 160,
+  SystemVmGenerationCountInformation = 161,
+  SystemTrustedPlatformModuleInformation = 162,
+  SystemKernelDebuggerFlags = 163,
+  SystemCodeIntegrityPolicyInformation = 164,
+  SystemIsolatedUserModeInformation = 165,
+  SystemHardwareSecurityTestInterfaceResultsInformation = 166,
+  SystemSingleModuleInformation = 167,
+  SystemAllowedCpuSetsInformation = 168,
+  SystemVsmProtectionInformation = 169,
+  SystemInterruptCpuSetsInformation = 170,
+  SystemSecureBootPolicyFullInformation = 171,
+  SystemCodeIntegrityPolicyFullInformation = 172,
+  SystemAffinitizedInterruptProcessorInformation = 173,
+  SystemRootSiloInformation = 174,
+  SystemCpuSetInformation = 175,
+  SystemCpuSetTagInformation = 176,
+  SystemWin32WerStartCallout = 177,
+  SystemSecureKernelProfileInformation = 178,
+  SystemCodeIntegrityPlatformManifestInformation = 179,
+  SystemInterruptSteeringInformation = 180,
+  SystemSupportedProcessorArchitectures = 181,
+  SystemMemoryUsageInformation = 182,
+  SystemCodeIntegrityCertificateInformation = 183,
+  SystemPhysicalMemoryInformation = 184,
+  SystemControlFlowTransition = 185,
+  SystemKernelDebuggingAllowed = 186,
+  SystemActivityModerationExeState = 187,
+  SystemActivityModerationUserSettings = 188,
+  SystemCodeIntegrityPoliciesFullInformation = 189,
+  SystemCodeIntegrityUnlockInformation = 190,
+  SystemIntegrityQuotaInformation = 191,
+  SystemFlushInformation = 192,
+  SystemProcessorIdleMaskInformation = 193,
+  SystemSecureDumpEncryptionInformation = 194,
+  SystemWriteConstraintInformation = 195,
+  SystemKernelVaShadowInformation = 196,
+  SystemHypervisorSharedPageInformation = 197,
+  SystemFirmwareBootPerformanceInformation = 198,
+  SystemCodeIntegrityVerificationInformation = 199,
+  SystemFirmwarePartitionInformation = 200,
+  SystemSpeculationControlInformation = 201,
+  SystemDmaGuardPolicyInformation = 202,
+  SystemEnclaveLaunchControlInformation = 203,
+  SystemWorkloadAllowedCpuSetsInformation = 204,
+  SystemCodeIntegrityUnlockModeInformation = 205,
+  SystemLeapSecondInformation = 206,
+  SystemFlags2Information = 207,
+  SystemSecurityModelInformation = 208,
+  SystemCodeIntegritySyntheticCacheInformation = 209,
+  SystemFeatureConfigurationInformation = 210,
+  SystemFeatureConfigurationSectionInformation = 211,
+  SystemFeatureUsageSubscriptionInformation = 212,
+  SystemSecureSpeculationControlInformation = 213,
+  SystemSpacesBootInformation = 214,
+  SystemFwRamdiskInformation = 215,
+  SystemWheaIpmiHardwareInformation = 216,
+  SystemDifSetRuleClassInformation = 217,
+  SystemDifClearRuleClassInformation = 218,
+  SystemDifApplyPluginVerificationOnDriver = 219,
+  SystemDifRemovePluginVerificationOnDriver = 220,
+  SystemShadowStackInformation = 221,
+  SystemBuildVersionInformation = 222,
+  SystemPoolLimitInformation = 223,
+  SystemCodeIntegrityAddDynamicStore = 224,
+  SystemCodeIntegrityClearDynamicStores = 225,
+  SystemPoolZeroingInformation = 227,
+  MaxSystemInfoClass = 228,
+} SYSTEM_INFORMATION_CLASS, *PSYSTEM_INFORMATION_CLASS;
 
 struct SYSTEM_POWER_CAPABILITIES
 {
@@ -12695,12 +12953,8 @@ ExpInterlockedPopEntrySListResume();
 ExpInterlockedPushEntrySList();
 fabs();
 _fclrf();
-Feature_20H2_Enablement__private_areDependenciesEnabled();
-? Feature_20H2_Enablement__private_IsEnabledWithReporting;
-Feature_20H2_Rollback__private_areDependenciesEnabled();
-? Feature_20H2_Rollback__private_IsEnabledWithReporting;
-Feature_SearchPackagePaths__private_areDependenciesEnabled();
 Feature_SearchPackagePaths__private_IsEnabled();
+Feature_Servicing_EHCONT_Checks_28208890__private_IsEnabled();
 _fgetwc_nolock();
 _filbuf();
 _filbuf_s();
@@ -12911,7 +13165,7 @@ LdrpCnvrtShortToLongFileName();
 ? LdrpCodeAuthzInitialize;
 LdrpCompareModuleName();
 LdrpCompareRedirectedFunction();
-LdrpCompareResourceNames_U();
+LdrpCompareResourceNamesWithValidation();
 LdrpCompareServiceChecksum();
 ? LdrpCompleteMapModule;
 LdrpCompleteProcessCloning();
@@ -12944,7 +13198,7 @@ LdrpDoDebuggerBreak();
 ? LdrpDrainWorkQueue;
 LdrpDropLastInProgressCount();
 ? LdrpDynamicShimModule;
-? LdrpEnableParallelLoading;
+LdrpEnableParallelLoading();
 LdrpEnclaveAddDelayloadModules();
 LdrpEnclaveAddDependentModule();
 LdrpEnclaveAddForwarderModules();
@@ -13020,7 +13274,7 @@ LdrpHashUnicodeString();
 LdrpICallHandler();
 ? LdrpIncrementModuleLoadCount;
 LdrpInitializationFailure();
-? _LdrpInitialize;
+_LdrpInitialize();
 LdrpInitialize();
 ? _LdrpInitialize$filt$0;
 LdrpInitializeApplicationVerifierPackage();
@@ -13178,6 +13432,7 @@ LdrProcessRelocationBlock();
 LdrProcessRelocationBlockEx();
 ? LdrProcessRelocationBlockLongLong;
 ? LdrProtectMrdata;
+? LdrProtectMrdataHeap;
 ? LdrpSearchPath;
 LdrpSearchResourceSection_U();
 LdrpSectionTableFromVirtualAddress();
@@ -13968,7 +14223,6 @@ RtlAcquirePebLock();
 ? RtlAcquireResourceShared;
 ? RtlAcquireSRWLockExclusive;
 ? RtlAcquireSRWLockShared;
-? RtlAcquireSwapReference;
 RtlActivateActivationContext();
 ? RtlActivateActivationContextEx;
 ? RtlActivateActivationContextUnsafeFast;
@@ -13988,8 +14242,8 @@ RtlAddAuditAccessAce();
 RtlAddAuditAccessAceEx();
 RtlAddAuditAccessObjectAce();
 RtlAddCompoundAce();
-? RtlAddFunctionTable;
-? RtlAddGrowableFunctionTable;
+RtlAddFunctionTable();
+RtlAddGrowableFunctionTable();
 RtlAddIntegrityLabelToBoundaryDescriptor();
 ? RtlAddMandatoryAce;
 ? RtlAddProcessTrustLabelAce;
@@ -14248,8 +14502,8 @@ RtlDeleteBoundaryDescriptor();
 RtlDeleteElementGenericTable();
 RtlDeleteElementGenericTableAvl();
 RtlDeleteElementGenericTableAvlEx();
-? RtlDeleteFunctionTable;
-? RtlDeleteGrowableFunctionTable;
+RtlDeleteFunctionTable();
+RtlDeleteGrowableFunctionTable();
 RtlDeleteHashTable();
 RtlDeleteNoSplay();
 RtlDeleteRegistryValue();
@@ -14506,7 +14760,7 @@ RtlGetUnloadEventTraceEx();
 ? RtlGetUserPreferredUILanguages;
 ? RtlGetVersion;
 RtlGrowFunctionTable();
-? RtlGuardCheckExceptionHandler;
+RtlGuardCheckExceptionHandler();
 ? RtlGuardCheckImageBase;
 ? RtlGuardCheckLongJumpTarget;
 ? RtlGuardGrantSuppressedCallAccess;
@@ -14564,7 +14818,6 @@ RtlInitializeSid();
 RtlInitializeSidEx();
 ? RtlInitializeSListHead;
 RtlInitializeSRWLock();
-RtlInitializeSwapReference();
 RtlInitMemoryStream();
 RtlInitNlsTables();
 RtlInitOutOfProcessMemoryStream();
@@ -14582,7 +14835,7 @@ RtlInsertElementGenericTableAvl();
 ? RtlInsertElementGenericTableFullAvl;
 ? RtlInsertEntryHashTable;
 RtlInsertInvertedFunctionTable();
-? RtlInstallFunctionTableCallback;
+RtlInstallFunctionTableCallback();
 RtlInt64ToUnicodeString();
 ? RtlIntegerToChar;
 ? RtlIntegerToUnicode;
@@ -14746,7 +14999,7 @@ RtlpAllocateDirPrefixBlock();
 RtlpAllocateEnvBlock();
 RtlpAllocateHeap();
 ? RtlpAllocateHeap$fin$0;
-? RtlpAllocateHeapInternal;
+RtlpAllocateHeapInternal();
 RtlpAllocateHeapRaiseException();
 RtlpAllocateSecondLevelDir();
 RtlpAllocateTags();
@@ -14895,17 +15148,13 @@ RtlpExtendFrontEndUsageArray();
 ? RtlpExtendHeap;
 RtlpExtendListLookup();
 ? RtlpExtendLowFragHeapSegment;
-RtlpFcAllocate();
 ? RtlpFcAllocateChangeRegistration;
-RtlpFcBufferManagerDereferenceBuffers();
-RtlpFcBufferManagerGetConfigurationChangeStamp();
-RtlpFcBufferManagerReferenceBuffers();
+? RtlpFcBufferManagerDereferenceBuffers;
+? RtlpFcBufferManagerReferenceBuffers;
 ? RtlpFcBufferManagerUpdateBuffers;
 RtlpFcChangeRegistrationCallback();
 RtlpFcEnsureSubscriptionManagerStarted();
-RtlpFcFree();
 RtlpFcFreeChangeRegistration();
-RtlpFcInitializeBuffers();
 ? RtlpFcInsertChangeRegistration;
 RtlpFcLinearSearchInSortedArray();
 RtlpFcLowerBounds();
@@ -14923,7 +15172,7 @@ RtlpFcRemoveChangeRegistration();
 RtlpFcSectionTypeToBufferType();
 RtlpFcSendFeatureUsageNotifications();
 RtlpFcStartSubscriptionManager();
-? RtlpFcUpdateLocalConfiguration;
+RtlpFcUpdateLocalConfiguration();
 RtlpFcUpdateUsageSubscriptions();
 RtlpFcValidateFeatureConfigurationType();
 RtlpFcWnfCallback();
@@ -14952,9 +15201,10 @@ RtlpFreeActivationContext();
 RtlpFreeAllAtom();
 RtlpFreeDebugInfo();
 RtlpFreeHandleForAtom();
-? RtlpFreeHeap;
+RtlpFreeHeap();
 ? RtlpFreeHeap$fin$0;
 ? RtlpFreeHeapInternal;
+RtlpFreeReadOnlyHeap();
 RtlpFreeTebLanguageList();
 RtlpFreeTraverseNodes();
 ? RtlpFreeUserBlock;
@@ -15400,7 +15650,7 @@ RtlpLogHeapUnlockEvent();
 RtlpLogHeapValidateEvent();
 RtlpLogHeapWalkEvent();
 ? RtlpLookupCurDirSetting;
-? RtlpLookupDynamicFunctionEntry;
+RtlpLookupDynamicFunctionEntry();
 RtlpLookupFunctionEntryForStackWalks();
 ? RtlpLookupFunctionEntryForStackWalks$filt$0;
 ? RtlpLookupPrimaryFunctionEntry;
@@ -15527,6 +15777,8 @@ RtlpProbeUserBufferSafe();
 ? RtlpProcessIFEOKeyFilter;
 RtlpProcessReflectionStartup();
 ? RtlpProtectHeap;
+RtlpProtectInvertedFunctionTable();
+RtlpProtectReadOnlyHeap();
 RtlpPushPageDescriptor();
 RtlpQueryAssemblyInformationActivationContextDetailedInformation();
 RtlpQueryCriticalSectionOwnerInformation();
@@ -15563,13 +15815,13 @@ RtlpQuerySecurityDescriptor();
 RtlpQueryTimeZoneKeyNameRoutine();
 ? RtlpQueueWaitBlockToSRWLock;
 RtlpReadProcessHeaps();
-? RtlpReAllocateHeap;
+RtlpReAllocateHeap();
 ? RtlpReAllocateHeap$filt$0;
 ? RtlpReAllocateHeap$filt$1;
 ? RtlpReAllocateHeap$filt$2;
 ? RtlpReAllocateHeap$filt$3;
-? RtlpReAllocateHeap$filt$5;
-? RtlpReAllocateHeap$fin$4;
+? RtlpReAllocateHeap$filt$4;
+? RtlpReAllocateHeap$fin$5;
 ? RtlpReAllocateHeapInternal;
 RtlpRecordBootStatusData();
 ? RtlpReferenceCurrentDirectory;
@@ -15746,6 +15998,7 @@ RtlpValidTrustSubjectContext();
 ? RtlpVerCompare;
 RtlpVerGetConditionMask();
 ? RtlpVerifyAndCommitUILanguageSettings;
+RtlpVirtualUnwind();
 RtlpWaitCouldDeadlock();
 RtlpWaitForCriticalSection();
 ? RtlpWaitOnAddress;
@@ -15888,7 +16141,6 @@ RtlReleaseResource();
 RtlReleaseSRWLockExclusive();
 ? RtlReleaseSRWLockShared;
 RtlReleaseStackTrace();
-? RtlReleaseSwapReference;
 RtlRemoteCall();
 ? RtlRemoveEntryHashTable;
 RtlRemoveInvertedFunctionTable();
@@ -16120,7 +16372,7 @@ RtlUnsubscribeWnfNotificationWaitForCompletion();
 RtlUnsubscribeWnfNotificationWithCompletionCallback();
 RtlUnsubscribeWnfStateChangeNotification();
 RtlUnwind();
-? RtlUnwindEx;
+RtlUnwindEx();
 ? RtlUpcaseUnicodeChar;
 ? RtlUpcaseUnicodeString;
 ? RtlUpcaseUnicodeString$fin$0;
@@ -16715,7 +16967,7 @@ wil_details_FeatureReporting_IncrementUsageInCache();
 wil_details_FeatureReporting_RecordUsageInCache();
 wil_details_FeatureReporting_ReportUsageToService();
 wil_details_FeatureReporting_ReportUsageToServiceDirect();
-wil_details_FeatureStateCache_GetCachedFeatureEnabledState();
+wil_details_FeatureStateCache_ReevaluateCachedFeatureEnabledState();
 wil_details_GetCurrentFeatureEnabledState();
 wil_details_MapReportingKind();
 wil_details_StagingConfig_Load();
@@ -17333,15 +17585,20 @@ EtwpRegistrationTable;
 EtwpReplySend;
 FastPebLock;
 FatalUserCallbackException;
+Feature_20H2_Enablement__private_descriptor;
 Feature_20H2_Enablement__private_featureState;
-Feature_20H2_Enablement__private_reporting;
-Feature_20H2_Enablement_logged_traits;
+Feature_20H2_Enablement__private_requiresFeatures;
+Feature_20H2_Rollback__private_descriptor;
 Feature_20H2_Rollback__private_featureState;
-Feature_20H2_Rollback__private_reporting;
-Feature_20H2_Rollback_logged_traits;
+Feature_SearchPackagePaths__private_descriptor;
 Feature_SearchPackagePaths__private_featureState;
 Feature_SearchPackagePaths__private_reporting;
+Feature_SearchPackagePaths__private_requiresFeatures;
 Feature_SearchPackagePaths_logged_traits;
+Feature_Servicing_EHCONT_Checks_28208890__private_descriptor;
+Feature_Servicing_EHCONT_Checks_28208890__private_featureState;
+Feature_Servicing_EHCONT_Checks_28208890__private_reporting;
+Feature_Servicing_EHCONT_Checks_28208890_logged_traits;
 _fltused;
 g_disableEscalation;
 g_dwLastErrorToBreakOn;
@@ -17394,6 +17651,8 @@ gMUICacheType;
 gSystemLocale;
 __guard_check_icall_fptr;
 __guard_dispatch_icall_fptr;
+__guard_eh_cont_count;
+__guard_eh_cont_table;
 __guard_fids_count;
 __guard_fids_table;
 __guard_flags;
@@ -17659,9 +17918,12 @@ RtlpDosLPTDevice;
 RtlpDosNULDevice;
 RtlpDosPRNDevice;
 RtlpDphInitFailureFlags;
+RtlpDynamicCallbackTableTreeMax;
+RtlpDynamicCallbackTableTreeMin;
 RtlpDynamicFunctionTable;
 RtlpDynamicFunctionTableLock;
-RtlpDynamicFunctionTableTree;
+RtlpDynamicFunctionTableTreeMax;
+RtlpDynamicFunctionTableTreeMin;
 RtlpEmptyString;
 RtlpEnvironLookupTable;
 RtlpExceptionLog2;

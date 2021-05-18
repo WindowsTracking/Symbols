@@ -1,5 +1,5 @@
 /*
- * PDB file: ntkrnlmp.pdb\641F55C592201DCC4F59FACC72EA54DA1\ntkrnlmp.pdb
+ * PDB file: ntkrnlmp.pdb\769C521E4833ECF72E21F02BF33691A51\ntkrnlmp.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -777,6 +777,8 @@ struct LIST_ENTRY32;
 struct LIST_ENTRY64;
 struct _LIST_ENTRY;
 struct _LOADER_BUGCHECK_PARAMETERS;
+struct _LOADER_FEATURE_CONFIGURATION_DIAGNOSTIC_INFORMATION;
+struct _LOADER_FEATURE_CONFIGURATION_INFORMATION;
 struct _LOADER_HIVE_RECOVERY_INFO;
 struct _LOADER_PARAMETER_BLOCK;
 struct _LOADER_PARAMETER_CI_EXTENSION;
@@ -1314,6 +1316,7 @@ enum PROFILE_STATUS;
 enum _PS_ATTRIBUTE_NUM;
 union _PS_CLIENT_SECURITY_CONTEXT;
 enum PS_CREATE_STATE;
+struct _PS_DYNAMIC_ENFORCED_ADDRESS_RANGES;
 union _PS_INTERLOCKED_TIMER_DELAY_VALUES;
 struct _PS_IO_CONTROL_ENTRY;
 struct _PS_JOB_WAKE_INFORMATION;
@@ -1479,6 +1482,7 @@ struct _SYNCH_COUNTERS;
 struct _SYSPTES_HEADER;
 enum _SYSTEM_DLL_TYPE;
 enum _SYSTEM_FEATURE_CONFIGURATION_SECTION_TYPE;
+enum _SYSTEM_INFORMATION_CLASS;
 struct SYSTEM_POWER_CAPABILITIES;
 enum SYSTEM_POWER_CONDITION;
 struct SYSTEM_POWER_LEVEL;
@@ -1650,6 +1654,7 @@ struct _WHEAP_WORK_QUEUE;
 struct __WIL__WNF_STATE_NAME;
 struct __WIL__WNF_TYPE_ID;
 struct __WIL__WNF_USER_SUBSCRIPTION;
+struct wil_details_FeatureDescriptor;
 struct wil_details_FeatureReportingCache;
 union wil_details_FeatureStateCache;
 struct wil_details_FeatureTestState;
@@ -5642,7 +5647,8 @@ typedef struct _DYNAMIC_FUNCTION_TABLE
   wchar_t* OutOfProcessCallbackDll;
   enum _FUNCTION_TABLE_TYPE Type;
   unsigned long EntryCount;
-  struct _RTL_BALANCED_NODE TreeNode;
+  struct _RTL_BALANCED_NODE TreeNodeMin;
+  struct _RTL_BALANCED_NODE TreeNodeMax;
 } DYNAMIC_FUNCTION_TABLE, *PDYNAMIC_FUNCTION_TABLE;
 
 typedef struct _ECP_LIST
@@ -6094,6 +6100,7 @@ typedef struct _EPROCESS
       unsigned long VmProcessorHostTransition : 1; /* bit position: 24 */
       unsigned long AltSyscall : 1; /* bit position: 25 */
       unsigned long TimerResolutionIgnore : 1; /* bit position: 26 */
+      unsigned long DisallowUserTerminate : 1; /* bit position: 27 */
     }; /* bitfield */
   };
   long DeviceAsid;
@@ -6219,6 +6226,18 @@ typedef struct _EPROCESS
         unsigned long UserCetSetContextIpValidation : 1; /* bit position: 17 */
         unsigned long AuditUserCetSetContextIpValidation : 1; /* bit position: 18 */
         unsigned long AuditUserCetSetContextIpValidationLogged : 1; /* bit position: 19 */
+        unsigned long CetUserShadowStacksStrictMode : 1; /* bit position: 20 */
+        unsigned long BlockNonCetBinaries : 1; /* bit position: 21 */
+        unsigned long BlockNonCetBinariesNonEhcont : 1; /* bit position: 22 */
+        unsigned long AuditBlockNonCetBinaries : 1; /* bit position: 23 */
+        unsigned long AuditBlockNonCetBinariesLogged : 1; /* bit position: 24 */
+        unsigned long Reserved1 : 1; /* bit position: 25 */
+        unsigned long Reserved2 : 1; /* bit position: 26 */
+        unsigned long Reserved3 : 1; /* bit position: 27 */
+        unsigned long Reserved4 : 1; /* bit position: 28 */
+        unsigned long Reserved5 : 1; /* bit position: 29 */
+        unsigned long CetDynamicApisOutOfProcOnly : 1; /* bit position: 30 */
+        unsigned long UserCetSetContextIpValidationRelaxedMode : 1; /* bit position: 31 */
       }; /* bitfield */
     } MitigationFlags2Values;
   };
@@ -6229,7 +6248,8 @@ typedef struct _EPROCESS
   void* MmHotPatchContext;
   struct _RTL_AVL_TREE DynamicEHContinuationTargetsTree;
   struct _EX_PUSH_LOCK DynamicEHContinuationTargetsLock;
-  long __PADDING__[12];
+  struct _PS_DYNAMIC_ENFORCED_ADDRESS_RANGES DynamicEnforcedCetCompatibleRanges;
+  long __PADDING__[8];
 } EPROCESS, *PEPROCESS;
 
 struct _EPROCESS_QUOTA_BLOCK;
@@ -8051,7 +8071,8 @@ typedef struct _flags
     unsigned char GroupCommitted : 1; /* bit position: 2 */
     unsigned char GroupAssignmentFixed : 1; /* bit position: 3 */
     unsigned char ProcessorOnly : 1; /* bit position: 4 */
-    unsigned char Fill : 3; /* bit position: 5 */
+    unsigned char SmtSetsPresent : 1; /* bit position: 5 */
+    unsigned char Fill : 2; /* bit position: 6 */
   }; /* bitfield */
 } flags, *Pflags;
 
@@ -14918,20 +14939,7 @@ typedef struct _KUSER_SHARED_DATA
   unsigned __int64 TestRetInstruction;
   __int64 QpcFrequency;
   unsigned long SystemCall;
-  union
-  {
-    union
-    {
-      unsigned long AllFlags;
-      struct /* bitfield */
-      {
-        unsigned long Win32Process : 1; /* bit position: 0 */
-        unsigned long Sgx2Enclave : 1; /* bit position: 1 */
-        unsigned long VbsBasicEnclave : 1; /* bit position: 2 */
-        unsigned long SpareBits : 29; /* bit position: 3 */
-      }; /* bitfield */
-    };
-  } UserCetAvailableEnvironments;
+  unsigned long Reserved2;
   unsigned __int64 SystemCallPad[2];
   union
   {
@@ -15310,6 +15318,46 @@ typedef struct _LOADER_BUGCHECK_PARAMETERS
   unsigned __int64 BugcheckParameter4;
 } LOADER_BUGCHECK_PARAMETERS, *PLOADER_BUGCHECK_PARAMETERS;
 
+typedef struct _LOADER_FEATURE_CONFIGURATION_DIAGNOSTIC_INFORMATION
+{
+  unsigned char OriginalBootStatus;
+  unsigned char NewBootStatus;
+  unsigned char ConfigurationLoaded;
+  unsigned char Spare;
+  union
+  {
+    union
+    {
+      unsigned long AllFlags;
+      struct /* bitfield */
+      {
+        unsigned long LkgSupported : 1; /* bit position: 0 */
+        unsigned long FinalBootBeforeRecovery : 1; /* bit position: 1 */
+        unsigned long ConfigurationComparisonAttempted : 1; /* bit position: 2 */
+        unsigned long CurrentConfigurationLoadAttempted : 1; /* bit position: 3 */
+        unsigned long LkgConfigurationLoadAttempted : 1; /* bit position: 4 */
+        unsigned long UsageSubscriptionLoadAttempted : 1; /* bit position: 5 */
+        unsigned long Spare : 26; /* bit position: 6 */
+      }; /* bitfield */
+    };
+  } Flags;
+  long ConfigurationComparisonStatus;
+  long CurrentConfigurationLoadStatus;
+  long LkgConfigurationLoadStatus;
+  long UsageSubscriptionLoadStatus;
+} LOADER_FEATURE_CONFIGURATION_DIAGNOSTIC_INFORMATION, *PLOADER_FEATURE_CONFIGURATION_DIAGNOSTIC_INFORMATION;
+
+typedef struct _LOADER_FEATURE_CONFIGURATION_INFORMATION
+{
+  void* FeatureConfigurationBuffer;
+  unsigned __int64 FeatureConfigurationBufferSize;
+  void* UsageSubscriptionBuffer;
+  unsigned __int64 UsageSubscriptionBufferSize;
+  void* DelayedUsageReportBuffer;
+  unsigned __int64 DelayedUsageReportBufferSize;
+  struct _LOADER_FEATURE_CONFIGURATION_DIAGNOSTIC_INFORMATION DiagnosticInformation;
+} LOADER_FEATURE_CONFIGURATION_INFORMATION, *PLOADER_FEATURE_CONFIGURATION_INFORMATION;
+
 typedef struct _LOADER_HIVE_RECOVERY_INFO
 {
   struct /* bitfield */
@@ -15528,6 +15576,7 @@ typedef struct _LOADER_PARAMETER_EXTENSION
   struct _NUMA_MEMORY_RANGE* NumaMemoryRanges;
   unsigned long NumaMemoryRangeCount;
   unsigned long IommuFaultPolicy;
+  struct _LOADER_FEATURE_CONFIGURATION_INFORMATION FeatureConfigurationInformation;
 } LOADER_PARAMETER_EXTENSION, *PLOADER_PARAMETER_EXTENSION;
 
 typedef struct _LOADER_PARAMETER_HYPERVISOR_EXTENSION
@@ -15990,6 +16039,8 @@ typedef struct _MDL
   struct _MDL* Next;
   short Size;
   short MdlFlags;
+  unsigned short AllocationProcessorNumber;
+  unsigned short Reserved;
   struct _EPROCESS* Process;
   void* MappedSystemVa;
   void* StartVa;
@@ -16367,6 +16418,16 @@ typedef struct _MI_EXTRA_IMAGE_INFORMATION
   unsigned long SizeOfHeaders;
   unsigned long SizeOfImage;
   unsigned long TimeDateStamp;
+  struct /* bitfield */
+  {
+    unsigned long ImageCetShadowStacksReady : 1; /* bit position: 0 */
+    unsigned long ImageCetShadowStacksStrictMode : 1; /* bit position: 1 */
+    unsigned long ImageCetSetContextIpValidationRelaxedMode : 1; /* bit position: 2 */
+    unsigned long ImageCetDynamicApisAllowInProc : 1; /* bit position: 3 */
+    unsigned long ImageCetDowngradeReserved1 : 1; /* bit position: 4 */
+    unsigned long ImageCetDowngradeReserved2 : 1; /* bit position: 5 */
+    unsigned long Spare : 26; /* bit position: 6 */
+  }; /* bitfield */
 } MI_EXTRA_IMAGE_INFORMATION, *PMI_EXTRA_IMAGE_INFORMATION;
 
 typedef union _MI_FLAGS
@@ -17300,7 +17361,6 @@ typedef struct _MI_SECTION_IMAGE_INFORMATION
 {
   struct _SECTION_IMAGE_INFORMATION ExportedImageInformation;
   struct _MI_EXTRA_IMAGE_INFORMATION InternalImageInformation;
-  long __PADDING__[1];
 } MI_SECTION_IMAGE_INFORMATION, *PMI_SECTION_IMAGE_INFORMATION;
 
 typedef struct _MI_SECTION_STATE
@@ -21934,6 +21994,7 @@ typedef struct _POP_FX_DEVICE
   void* DriverContext;
   struct _LIST_ENTRY AcpiLink;
   struct _UNICODE_STRING DeviceId;
+  volatile long CommonReferenceFlags;
   struct _IO_REMOVE_LOCK RemoveLock;
   struct _IO_REMOVE_LOCK AcpiRemoveLock;
   struct _POP_FX_WORK_ORDER WorkOrder;
@@ -23960,7 +24021,8 @@ typedef enum _PS_ATTRIBUTE_NUM
   PsAttributeBnoIsolation = 24,
   PsAttributeDesktopAppPolicy = 25,
   PsAttributeChpe = 26,
-  PsAttributeMax = 27,
+  PsAttributeMitigationAuditOptions = 27,
+  PsAttributeMax = 28,
 } PS_ATTRIBUTE_NUM, *PPS_ATTRIBUTE_NUM;
 
 typedef union _PS_CLIENT_SECURITY_CONTEXT
@@ -23988,6 +24050,12 @@ enum PS_CREATE_STATE
   PsCreateSuccess = 6,
   PsCreateMaximumStates = 7,
 };
+
+typedef struct _PS_DYNAMIC_ENFORCED_ADDRESS_RANGES
+{
+  struct _RTL_AVL_TREE Tree;
+  struct _EX_PUSH_LOCK Lock;
+} PS_DYNAMIC_ENFORCED_ADDRESS_RANGES, *PPS_DYNAMIC_ENFORCED_ADDRESS_RANGES;
 
 typedef union _PS_INTERLOCKED_TIMER_DELAY_VALUES
 {
@@ -24070,6 +24138,8 @@ typedef enum _PS_MITIGATION_OPTION
   PS_MITIGATION_OPTION_ALLOW_DOWNGRADE_DYNAMIC_CODE_POLICY = 30,
   PS_MITIGATION_OPTION_CET_USER_SHADOW_STACKS = 31,
   PS_MITIGATION_OPTION_USER_CET_SET_CONTEXT_IP_VALIDATION = 32,
+  PS_MITIGATION_OPTION_BLOCK_NON_CET_BINARIES = 33,
+  PS_MITIGATION_OPTION_CET_DYNAMIC_APIS_OUT_OF_PROC_ONLY = 36,
 } PS_MITIGATION_OPTION, *PPS_MITIGATION_OPTION;
 
 typedef struct _PS_MITIGATION_OPTIONS_MAP
@@ -24671,10 +24741,12 @@ typedef struct _RTL_FEATURE_CONFIGURATION
 
 typedef enum _RTL_FEATURE_CONFIGURATION_PRIORITY
 {
-  FeatureConfigurationPriorityAll = 0,
+  FeatureConfigurationPriorityImageDefault = 0,
   FeatureConfigurationPriorityService = 4,
   FeatureConfigurationPriorityUser = 8,
+  FeatureConfigurationPriorityUserPolicy = 10,
   FeatureConfigurationPriorityTest = 12,
+  FeatureConfigurationPriorityImageOverride = 15,
   FeatureConfigurationPriorityMax = 15,
 } RTL_FEATURE_CONFIGURATION_PRIORITY, *PRTL_FEATURE_CONFIGURATION_PRIORITY;
 
@@ -25404,7 +25476,7 @@ typedef struct _SEGMENT_FLAGS
   {
     struct /* bitfield */
     {
-      unsigned char ImageCetShadowStacksReady : 1; /* bit position: 0 */
+      unsigned char Spare : 1; /* bit position: 0 */
       unsigned char DefaultProtectionMask : 5; /* bit position: 1 */
       unsigned char Binary32 : 1; /* bit position: 6 */
       unsigned char ContainsDebug : 1; /* bit position: 7 */
@@ -26120,6 +26192,238 @@ typedef enum _SYSTEM_FEATURE_CONFIGURATION_SECTION_TYPE
   SystemFeatureConfigurationSectionTypeUsageTriggers = 2,
   SystemFeatureConfigurationSectionTypeCount = 3,
 } SYSTEM_FEATURE_CONFIGURATION_SECTION_TYPE, *PSYSTEM_FEATURE_CONFIGURATION_SECTION_TYPE;
+
+typedef enum _SYSTEM_INFORMATION_CLASS
+{
+  SystemBasicInformation = 0,
+  SystemProcessorInformation = 1,
+  SystemPerformanceInformation = 2,
+  SystemTimeOfDayInformation = 3,
+  SystemPathInformation = 4,
+  SystemProcessInformation = 5,
+  SystemCallCountInformation = 6,
+  SystemDeviceInformation = 7,
+  SystemProcessorPerformanceInformation = 8,
+  SystemFlagsInformation = 9,
+  SystemCallTimeInformation = 10,
+  SystemModuleInformation = 11,
+  SystemLocksInformation = 12,
+  SystemStackTraceInformation = 13,
+  SystemPagedPoolInformation = 14,
+  SystemNonPagedPoolInformation = 15,
+  SystemHandleInformation = 16,
+  SystemObjectInformation = 17,
+  SystemPageFileInformation = 18,
+  SystemVdmInstemulInformation = 19,
+  SystemVdmBopInformation = 20,
+  SystemFileCacheInformation = 21,
+  SystemPoolTagInformation = 22,
+  SystemInterruptInformation = 23,
+  SystemDpcBehaviorInformation = 24,
+  SystemFullMemoryInformation = 25,
+  SystemLoadGdiDriverInformation = 26,
+  SystemUnloadGdiDriverInformation = 27,
+  SystemTimeAdjustmentInformation = 28,
+  SystemSummaryMemoryInformation = 29,
+  SystemMirrorMemoryInformation = 30,
+  SystemPerformanceTraceInformation = 31,
+  SystemObsolete0 = 32,
+  SystemExceptionInformation = 33,
+  SystemCrashDumpStateInformation = 34,
+  SystemKernelDebuggerInformation = 35,
+  SystemContextSwitchInformation = 36,
+  SystemRegistryQuotaInformation = 37,
+  SystemExtendServiceTableInformation = 38,
+  SystemPrioritySeperation = 39,
+  SystemVerifierAddDriverInformation = 40,
+  SystemVerifierRemoveDriverInformation = 41,
+  SystemProcessorIdleInformation = 42,
+  SystemLegacyDriverInformation = 43,
+  SystemCurrentTimeZoneInformation = 44,
+  SystemLookasideInformation = 45,
+  SystemTimeSlipNotification = 46,
+  SystemSessionCreate = 47,
+  SystemSessionDetach = 48,
+  SystemSessionInformation = 49,
+  SystemRangeStartInformation = 50,
+  SystemVerifierInformation = 51,
+  SystemVerifierThunkExtend = 52,
+  SystemSessionProcessInformation = 53,
+  SystemLoadGdiDriverInSystemSpace = 54,
+  SystemNumaProcessorMap = 55,
+  SystemPrefetcherInformation = 56,
+  SystemExtendedProcessInformation = 57,
+  SystemRecommendedSharedDataAlignment = 58,
+  SystemComPlusPackage = 59,
+  SystemNumaAvailableMemory = 60,
+  SystemProcessorPowerInformation = 61,
+  SystemEmulationBasicInformation = 62,
+  SystemEmulationProcessorInformation = 63,
+  SystemExtendedHandleInformation = 64,
+  SystemLostDelayedWriteInformation = 65,
+  SystemBigPoolInformation = 66,
+  SystemSessionPoolTagInformation = 67,
+  SystemSessionMappedViewInformation = 68,
+  SystemHotpatchInformation = 69,
+  SystemObjectSecurityMode = 70,
+  SystemWatchdogTimerHandler = 71,
+  SystemWatchdogTimerInformation = 72,
+  SystemLogicalProcessorInformation = 73,
+  SystemWow64SharedInformationObsolete = 74,
+  SystemRegisterFirmwareTableInformationHandler = 75,
+  SystemFirmwareTableInformation = 76,
+  SystemModuleInformationEx = 77,
+  SystemVerifierTriageInformation = 78,
+  SystemSuperfetchInformation = 79,
+  SystemMemoryListInformation = 80,
+  SystemFileCacheInformationEx = 81,
+  SystemThreadPriorityClientIdInformation = 82,
+  SystemProcessorIdleCycleTimeInformation = 83,
+  SystemVerifierCancellationInformation = 84,
+  SystemProcessorPowerInformationEx = 85,
+  SystemRefTraceInformation = 86,
+  SystemSpecialPoolInformation = 87,
+  SystemProcessIdInformation = 88,
+  SystemErrorPortInformation = 89,
+  SystemBootEnvironmentInformation = 90,
+  SystemHypervisorInformation = 91,
+  SystemVerifierInformationEx = 92,
+  SystemTimeZoneInformation = 93,
+  SystemImageFileExecutionOptionsInformation = 94,
+  SystemCoverageInformation = 95,
+  SystemPrefetchPatchInformation = 96,
+  SystemVerifierFaultsInformation = 97,
+  SystemSystemPartitionInformation = 98,
+  SystemSystemDiskInformation = 99,
+  SystemProcessorPerformanceDistribution = 100,
+  SystemNumaProximityNodeInformation = 101,
+  SystemDynamicTimeZoneInformation = 102,
+  SystemCodeIntegrityInformation = 103,
+  SystemProcessorMicrocodeUpdateInformation = 104,
+  SystemProcessorBrandString = 105,
+  SystemVirtualAddressInformation = 106,
+  SystemLogicalProcessorAndGroupInformation = 107,
+  SystemProcessorCycleTimeInformation = 108,
+  SystemStoreInformation = 109,
+  SystemRegistryAppendString = 110,
+  SystemAitSamplingValue = 111,
+  SystemVhdBootInformation = 112,
+  SystemCpuQuotaInformation = 113,
+  SystemNativeBasicInformation = 114,
+  SystemErrorPortTimeouts = 115,
+  SystemLowPriorityIoInformation = 116,
+  SystemBootEntropyInformation = 117,
+  SystemVerifierCountersInformation = 118,
+  SystemPagedPoolInformationEx = 119,
+  SystemSystemPtesInformationEx = 120,
+  SystemNodeDistanceInformation = 121,
+  SystemAcpiAuditInformation = 122,
+  SystemBasicPerformanceInformation = 123,
+  SystemQueryPerformanceCounterInformation = 124,
+  SystemSessionBigPoolInformation = 125,
+  SystemBootGraphicsInformation = 126,
+  SystemScrubPhysicalMemoryInformation = 127,
+  SystemBadPageInformation = 128,
+  SystemProcessorProfileControlArea = 129,
+  SystemCombinePhysicalMemoryInformation = 130,
+  SystemEntropyInterruptTimingInformation = 131,
+  SystemConsoleInformation = 132,
+  SystemPlatformBinaryInformation = 133,
+  SystemPolicyInformation = 134,
+  SystemHypervisorProcessorCountInformation = 135,
+  SystemDeviceDataInformation = 136,
+  SystemDeviceDataEnumerationInformation = 137,
+  SystemMemoryTopologyInformation = 138,
+  SystemMemoryChannelInformation = 139,
+  SystemBootLogoInformation = 140,
+  SystemProcessorPerformanceInformationEx = 141,
+  SystemCriticalProcessErrorLogInformation = 142,
+  SystemSecureBootPolicyInformation = 143,
+  SystemPageFileInformationEx = 144,
+  SystemSecureBootInformation = 145,
+  SystemEntropyInterruptTimingRawInformation = 146,
+  SystemPortableWorkspaceEfiLauncherInformation = 147,
+  SystemFullProcessInformation = 148,
+  SystemKernelDebuggerInformationEx = 149,
+  SystemBootMetadataInformation = 150,
+  SystemSoftRebootInformation = 151,
+  SystemElamCertificateInformation = 152,
+  SystemOfflineDumpConfigInformation = 153,
+  SystemProcessorFeaturesInformation = 154,
+  SystemRegistryReconciliationInformation = 155,
+  SystemEdidInformation = 156,
+  SystemManufacturingInformation = 157,
+  SystemEnergyEstimationConfigInformation = 158,
+  SystemHypervisorDetailInformation = 159,
+  SystemProcessorCycleStatsInformation = 160,
+  SystemVmGenerationCountInformation = 161,
+  SystemTrustedPlatformModuleInformation = 162,
+  SystemKernelDebuggerFlags = 163,
+  SystemCodeIntegrityPolicyInformation = 164,
+  SystemIsolatedUserModeInformation = 165,
+  SystemHardwareSecurityTestInterfaceResultsInformation = 166,
+  SystemSingleModuleInformation = 167,
+  SystemAllowedCpuSetsInformation = 168,
+  SystemVsmProtectionInformation = 169,
+  SystemInterruptCpuSetsInformation = 170,
+  SystemSecureBootPolicyFullInformation = 171,
+  SystemCodeIntegrityPolicyFullInformation = 172,
+  SystemAffinitizedInterruptProcessorInformation = 173,
+  SystemRootSiloInformation = 174,
+  SystemCpuSetInformation = 175,
+  SystemCpuSetTagInformation = 176,
+  SystemWin32WerStartCallout = 177,
+  SystemSecureKernelProfileInformation = 178,
+  SystemCodeIntegrityPlatformManifestInformation = 179,
+  SystemInterruptSteeringInformation = 180,
+  SystemSupportedProcessorArchitectures = 181,
+  SystemMemoryUsageInformation = 182,
+  SystemCodeIntegrityCertificateInformation = 183,
+  SystemPhysicalMemoryInformation = 184,
+  SystemControlFlowTransition = 185,
+  SystemKernelDebuggingAllowed = 186,
+  SystemActivityModerationExeState = 187,
+  SystemActivityModerationUserSettings = 188,
+  SystemCodeIntegrityPoliciesFullInformation = 189,
+  SystemCodeIntegrityUnlockInformation = 190,
+  SystemIntegrityQuotaInformation = 191,
+  SystemFlushInformation = 192,
+  SystemProcessorIdleMaskInformation = 193,
+  SystemSecureDumpEncryptionInformation = 194,
+  SystemWriteConstraintInformation = 195,
+  SystemKernelVaShadowInformation = 196,
+  SystemHypervisorSharedPageInformation = 197,
+  SystemFirmwareBootPerformanceInformation = 198,
+  SystemCodeIntegrityVerificationInformation = 199,
+  SystemFirmwarePartitionInformation = 200,
+  SystemSpeculationControlInformation = 201,
+  SystemDmaGuardPolicyInformation = 202,
+  SystemEnclaveLaunchControlInformation = 203,
+  SystemWorkloadAllowedCpuSetsInformation = 204,
+  SystemCodeIntegrityUnlockModeInformation = 205,
+  SystemLeapSecondInformation = 206,
+  SystemFlags2Information = 207,
+  SystemSecurityModelInformation = 208,
+  SystemCodeIntegritySyntheticCacheInformation = 209,
+  SystemFeatureConfigurationInformation = 210,
+  SystemFeatureConfigurationSectionInformation = 211,
+  SystemFeatureUsageSubscriptionInformation = 212,
+  SystemSecureSpeculationControlInformation = 213,
+  SystemSpacesBootInformation = 214,
+  SystemFwRamdiskInformation = 215,
+  SystemWheaIpmiHardwareInformation = 216,
+  SystemDifSetRuleClassInformation = 217,
+  SystemDifClearRuleClassInformation = 218,
+  SystemDifApplyPluginVerificationOnDriver = 219,
+  SystemDifRemovePluginVerificationOnDriver = 220,
+  SystemShadowStackInformation = 221,
+  SystemBuildVersionInformation = 222,
+  SystemPoolLimitInformation = 223,
+  SystemCodeIntegrityAddDynamicStore = 224,
+  SystemCodeIntegrityClearDynamicStores = 225,
+  SystemPoolZeroingInformation = 227,
+  MaxSystemInfoClass = 228,
+} SYSTEM_INFORMATION_CLASS, *PSYSTEM_INFORMATION_CLASS;
 
 struct SYSTEM_POWER_CAPABILITIES
 {
@@ -29011,6 +29315,17 @@ typedef struct __WIL__WNF_TYPE_ID
 
 struct __WIL__WNF_USER_SUBSCRIPTION;
 
+struct wil_details_FeatureDescriptor
+{
+  union wil_details_FeatureStateCache* featureStateCache;
+  unsigned int featureId;
+  unsigned char changeTime;
+  unsigned char isAlwaysDisabled;
+  unsigned char isAlwaysEnabled;
+  unsigned char isEnabledByDefault;
+  const struct wil_details_FeatureDescriptor* const* requiresFeatures;
+};
+
 struct wil_details_FeatureReportingCache
 {
   union wil_details_ReportedState reported;
@@ -29031,11 +29346,12 @@ union wil_details_FeatureStateCache
         unsigned int variantCached : 1; /* bit position: 2 */
         unsigned int effectiveState : 1; /* bit position: 3 */
         unsigned int desiredState : 1; /* bit position: 4 */
-        unsigned int reservedForKernelModeSupport : 2; /* bit position: 5 */
-        unsigned int hasNotification : 1; /* bit position: 7 */
-        unsigned int isVariant : 1; /* bit position: 8 */
-        unsigned int variant : 6; /* bit position: 9 */
-        unsigned int unused : 17; /* bit position: 15 */
+        unsigned int configuredState : 2; /* bit position: 5 */
+        unsigned int needsRefresh : 1; /* bit position: 7 */
+        unsigned int hasNotification : 1; /* bit position: 8 */
+        unsigned int isVariant : 1; /* bit position: 9 */
+        unsigned int variant : 6; /* bit position: 10 */
+        unsigned int unused : 16; /* bit position: 16 */
       }; /* bitfield */
       unsigned int payloadId;
     };
@@ -29249,7 +29565,6 @@ enum wil_FeatureEnabledState
 
 enum wil_FeatureEnabledStateKind
 {
-  wil_FeatureEnabledStateKind_All = 0,
   wil_FeatureEnabledStateKind_Service = 1,
   wil_FeatureEnabledStateKind_User = 2,
   wil_FeatureEnabledStateKind_Test = 3,
@@ -30072,12 +30387,11 @@ AdtpLookupKnownPrivilegeNameQuickly();
 ? AdtpObjsInitialize;
 ? AdtpPackageParameters;
 AdtpSubstituteDriveLetter();
-? AdtpWriteToEtw;
+AdtpWriteToEtw();
 AdtpWriteToEtwEx();
 AhcCacheQueryHwId();
 _alloca_probe();
 ? AllocateMemory;
-? AllocateZeroMemory;
 AlpcAddHandleTableEntry();
 AlpcConnectionCleanupProcedure();
 AlpcConnectionDeleteProcedure();
@@ -30484,7 +30798,7 @@ AslpFileLargeGetCrcChecksum();
 AslpFileLargeMapCreate();
 AslpFileLargeMapDelete();
 ? AslpFileMakeBinVersionAttributes;
-? AslpFileMakeStringVersionAttributes;
+AslpFileMakeStringVersionAttributes();
 ? AslpFileMappingGetFileKind;
 ? AslpFileMappingGetFileKind$filt$0;
 AslpFilePartialViewFree();
@@ -31436,21 +31750,24 @@ CmEnumerateValueKeyFromMergedView();
 CmEtwRunDown();
 CMFAllocFn();
 CMFCheckAccess();
-? CmFcInitSystem1;
+CmFcInitSystem1();
+CmFcInitSystem2();
+CmFcInitSystem3();
 CmFcManagerDrainAllFeatureUsageNotifications();
 CmFcManagerInitialize();
 CmFcManagerNotifyFeatureUsage();
 ? CmFcManagerQueryFeatureConfigurationSectionInformation;
 CmFcManagerRegisterFeatureConfigurationChangeNotification();
-? CmFcManagerStart;
+CmFcManagerStartBootPhase();
+CmFcManagerStartRuntimePhase();
 CmFcManagerUnregisterFeatureConfigurationChangeNotification();
 CmFcManagerUpdateFeatureConfigurations();
 CmFcManagerUpdateFeatureUsageSubscriptions();
-? CmFcpBuildFeatureConfigurationBuffers;
 CmFcpChangeSubscriptionWrapper();
 CmFcpCleanupSectionState();
 CmFcpCopySectionState();
 CmFcpIncrementChangeStamp();
+CmFcpInitializeChangeSubscription();
 CmFcpInitializeSectionState();
 CmFcpManagerAllocateChangeSubscription();
 CmFcpManagerArmFeatureUsageRetryTimer();
@@ -31470,6 +31787,7 @@ CmFcpWorkItemInitialize();
 CmFcpWorkItemQueueWork();
 CmFcpWorkItemWrapper();
 CMFCreateSecurityDescriptor();
+CmFcShutdownSystem();
 CMFFlushHitsFile();
 CMFFreeFn();
 CMFGetFileSizeEx();
@@ -31574,11 +31892,12 @@ _CmGetMatchingFilteredDeviceListWorker();
 ? CmGetVisibleMaxValueNameLenAndDataLen;
 CmGetVisibleSubkeyCount();
 ? CmGetVisibleValueCount;
+CmInitBootFeatureConfigurations();
 CmInitializeProcessor();
 CmInitServerSiloState();
-? CmInitSystem0;
+CmInitSystem0();
 ? CmInitSystem1;
-? CmInitSystem2;
+CmInitSystem2();
 ? _CmIsDeviceInContainer;
 _CmIsDeviceInterfaceEnabled();
 _CmIsDevicePresent();
@@ -31942,6 +32261,7 @@ CmpFlushNotifiesOnAllUnbackedHigherLayerKcbs();
 CmpFlushNotifiesPostCallback();
 CmpFlushNotifiesPreCallback();
 ? CmpFlushNotify;
+CmpFlushTraceLoggingProvider();
 CmpFlushUnsupportedOperationTelemetry();
 CmpForceFlushForCoalescing();
 CmpForceFlushWorker();
@@ -32233,7 +32553,7 @@ CmpNameSize();
 ? CmpNotifyChangeKey;
 CmpNotifyMachineHiveLoaded();
 CmpNotifyTriggerCheck();
-? CmpOKToFollowLink;
+CmpOKToFollowLink();
 ? CmpOpenDevicesControlSet;
 CmpOpenFileWithExtremePrejudice();
 ? CmpOpenHiveFile;
@@ -32382,6 +32702,7 @@ CmpSetSystemRegistryString();
 CmpSetValueKeyTombstone();
 ? CmpSetVersionData;
 ? CmpSetVideoBiosInformation;
+CmpShutdownWorkers();
 ? CmpSignalDeferredPosts;
 CmpSnapshotKcbStackSecurity();
 CmpSnapshotTxOwnerArray();
@@ -32442,8 +32763,11 @@ CmpTraceHiveSaveFileCopied();
 ? CmpTraceHiveSaveStop;
 ? CmpTraceHiveSaveTreeCopied;
 ? CmpTraceSecurityChanging;
+CmpTraceShutdownFlushStart();
+CmpTraceShutdownFlushStop();
 CmpTraceShutdownRundownComplete();
 CmpTraceShutdownStart();
+CmpTraceShutdownStop();
 CmpTransAllocateTrans();
 CmpTransDereferenceTransaction();
 ? CmpTransEnlistUowInCmTrans;
@@ -32548,6 +32872,7 @@ CmpVolumeManagerLockContextListExclusive();
 ? CmpVolumeManagerUnlockContextListExclusive;
 ? CmpWaitForHiveMount;
 CmpWaitForLateUnloadWorker();
+CmpWaitForShutdownRundownRelease();
 CmpWaitOnHiveWriteQueue();
 ? CmpWakeWriteQueueWaiters;
 ? CmpWalkOneLevel;
@@ -32667,14 +32992,12 @@ CmVirtualKCBToRealPath();
 CmWorkerEngineDequeueWorkItem();
 ? CmWorkerEngineQueueWorkItem;
 ? CompareEventEntry;
-? CompareFeaturesFn;
 CompareFileTimeType();
 int __cdecl CompareLangIDs(void const *,void const *);
 int __cdecl CompareLangName(void const *,void const *);
 CompareNamesCaseSensitive();
 CompareObjectTypes();
 compareRequestSize();
-? CompareSubscriptionFn;
 ? CompareUnicodeStrings;
 ? CompareVersions;
 ComposeHangulLV();
@@ -33285,7 +33608,7 @@ EtwpEnqueueOverflowBuffer();
 ? EtwpEnumerateAddressSpace;
 ? EtwpEnumerateAutologgerPath;
 ? EtwpEnumerateKeyProviders;
-? EtwpEnumerateTraceGuids;
+EtwpEnumerateTraceGuids();
 EtwpEnumerateWorkingSet();
 EtwpEventNameFilterSearch();
 EtwpEventTracingCounterSetCallback();
@@ -33373,7 +33696,7 @@ EtwpGetSystemMaximumBufferCount();
 EtwpGetTimeStampAndQpcDelta();
 EtwpGetTraceGroupInfo();
 EtwpGetTraceGroupList();
-? EtwpGetTraceGuidInfo;
+EtwpGetTraceGuidInfo();
 EtwpGetTraceGuidList();
 EtwpGetTrackingLockSlotForThread();
 EtwpIncrementTraceFile();
@@ -33422,7 +33745,7 @@ EtwpLoadMicroarchitecturalProfileSource();
 ? EtwpLogAlwaysPresentRundown;
 ? EtwpLogContextSwapEvent;
 EtwpLogFileNameRundown();
-? EtwpLogger;
+EtwpLogger();
 EtwpLoggerDpc();
 EtwpLogGroupMask();
 ? EtwpLogKernelEvent;
@@ -33526,6 +33849,7 @@ EtwpReferenceStackLookasideList();
 EtwpRegisterPartitionPages();
 EtwpRegisterPrivateSession();
 ? EtwpRegisterProvider;
+EtwpRegisterSecurityProvider();
 ? EtwpRegisterUMGuid;
 EtwpRegTraceCallback();
 EtwpRegTraceEnableCallback();
@@ -33639,6 +33963,7 @@ EtwpTrackDecodeGuidForSession();
 EtwpTrackGuidEntryRegistrations();
 ? EtwpTrackProviderBinary;
 ? EtwpTrackProviderRegistration;
+EtwpTransitionToRealtime();
 EtwpUMGLEnabled();
 ? EtwpUnlockBufferList;
 EtwpUnreferenceDataBlock();
@@ -33684,6 +34009,7 @@ EtwpValidateFilterDescriptors();
 EtwpValidateLoggerInfo();
 EtwpValidatePayloadFilter();
 EtwpValidateTraceControlFilterDescriptors();
+EtwpValidateUserModeLoggerInfo();
 EtwpWaitForBufferReferenceCount();
 ? EtwpWriteAppStateChange;
 ? EtwpWriteAppStateChangeSummary;
@@ -33722,11 +34048,14 @@ EtwTiLogReadWriteVm();
 ? EtwTiLogSetContextThread;
 EtwTiLogSuspendResumeProcess();
 EtwTiLogSuspendResumeThread();
+EtwTimLogBlockNonCetBinaries();
+EtwTimLogControlProtectionUserModeReturnMismatch();
 ? EtwTimLogProhibitChildProcessCreation;
 EtwTimLogProhibitDynamicCode();
 EtwTimLogProhibitLowILImageMap();
 EtwTimLogProhibitNonMicrosoftBinaries();
 EtwTimLogProhibitWin32kSystemCalls();
+EtwTimLogUserCetSetContextIpValidationFailure();
 EtwTraceAdminlessAccessFailure();
 EtwTraceAntiStarvationBoost();
 ? EtwTraceAppStateChange;
@@ -34340,7 +34669,7 @@ ExpQueryPortableWorkspaceEfiLauncherInformation();
 ? ExpQueryProcessorInformationCounters;
 ExpQueryRegistryRoutine();
 ExpQuerySingleModuleInformation();
-? ExpQuerySystemInformation;
+ExpQuerySystemInformation();
 ? ExpQuerySystemInformation$filt$0;
 ? ExpQuerySystemInformation$filt$1;
 ? ExpQuerySystemInformation$filt$10;
@@ -34379,6 +34708,10 @@ ExpQuerySingleModuleInformation();
 ? ExpQuerySystemInformation$filt$13;
 ? ExpQuerySystemInformation$filt$130;
 ? ExpQuerySystemInformation$filt$131;
+? ExpQuerySystemInformation$filt$132;
+? ExpQuerySystemInformation$filt$133;
+? ExpQuerySystemInformation$filt$134;
+? ExpQuerySystemInformation$filt$135;
 ? ExpQuerySystemInformation$filt$14;
 ? ExpQuerySystemInformation$filt$15;
 ? ExpQuerySystemInformation$filt$16;
@@ -34722,10 +35055,12 @@ ExpWorkQueueManagerStart();
 ExQueryBigPoolTag();
 ExQueryBootEntropyInformation();
 ExQueryDepthSList();
+ExQueryHandleExceptions();
 ? ExQueryHandleExceptionsPermanency;
 ? ExQueryPoolBlockSize;
 ExQueryPoolUsage();
 ExQueryProcessHandleInformation();
+ExQueryRaiseUMExceptionOnInvalidHandleClose();
 ExQuerySystemLockInformation();
 ExQueryTimerResolution();
 ExQueryWnfStateData();
@@ -34998,8 +35333,15 @@ ExWnfExitProcess();
 FadePalette();
 _fclrf();
 ? FContainCallBackAce;
-FcPalOpenKey();
-Feature_SleepReliabilityDetailedDiagnostics__private_areDependenciesEnabled();
+Feature_Servicing_2011c_29270241__private_IsEnabled();
+Feature_Servicing_2102c_29269619__private_IsEnabled();
+Feature_Servicing_25906437__private_IsEnabled();
+Feature_Servicing_27169067__private_IsEnabled();
+Feature_Servicing_29814886__private_IsEnabled();
+Feature_Servicing_30140909__private_IsEnabled();
+Feature_Servicing_30141497__private_IsEnabled();
+Feature_Servicing_EHCONT_Checks_28208890__private_IsEnabled();
+Feature_Servicing_User_CET_25433400__private_IsEnabled();
 Feature_SleepReliabilityDetailedDiagnostics__private_IsEnabled();
 _fgetwc_nolock();
 _filbuf_s();
@@ -35038,18 +35380,6 @@ FopReadNameRecord();
 _fputwc_nolock();
 FreeOperandValue();
 _frnd();
-? FseInitializeFeatureConfigurationTable;
-? FseInitializeFeatureUsageSubscriptionTable;
-FsepEnumerateKey();
-FsepEnumerateValueKey();
-FsepGetFeatureOverrideCount();
-FsepGetFeatureUsageSubscriptionCount();
-FsepInitializeFeatureOverrides();
-FsepInitializeFeatureUsageSubscriptions();
-FsepPopulateFeatureConfiguration();
-FsepPopulateFeatureConfigurationsForPriorityKey();
-FsepPopulateFeatureUsageSubscription();
-FsepPopulateSubscriptionsForFeatureId();
 FsFilterAllocateCompletionStack();
 FsFilterCtrlFree();
 ? FsFilterCtrlInit;
@@ -35457,8 +35787,6 @@ GetBinaryOperandLen();
 GetConditionToken();
 GetDigitFromChar();
 GetDigitFromChar2();
-GetFeatureConfigurationTableSize();
-GetFeatureUsageSubscriptionTableSize();
 GetFlags();
 GetNextNoneWhiteSpace();
 ? GetNextWchar;
@@ -37245,11 +37573,9 @@ HvlHvDebuggerPowerHandler();
 ? HvlInitializeProcessor;
 HvlInvokeHypervisorDebugger();
 HvlInvokeWheaErrorNotificationCallback();
-HvlIsAnyHypervisorPresent();
 HvlIsCoreSharingPossible();
 HvlIsHypercallOverlayLocked();
 HvlIsHypervisorPresent();
-HvlIsPartitionCpuManager();
 HvlIsRootPowerSchedulerQosPresent();
 HvlIsStibpPairingRecommended();
 HvlIterateSecurePagesForHibernation();
@@ -37293,7 +37619,6 @@ HvlpConfigureLegacyPowerPolicySetting();
 ? HvlpCreateRootVirtualProcessor;
 HvlpDepositPages();
 HvlpDetachRootSvmDevice();
-HvlpDetectHypervisorSchedulerType();
 HvlpDetermineEnlightenments();
 HvlpDiscoverTopologyAmd();
 HvlpDiscoverTopologyComplete();
@@ -37330,7 +37655,7 @@ HvlpGetVtlCallVa();
 HvlpHandleInsufficientMemory();
 HvlpHandleIommuFaultMessage();
 ? HvlPhase0Initialize;
-? HvlPhase2Initialize;
+HvlPhase2Initialize();
 HvlpHvIdentityInfoCallback();
 HvlpHvStatusIsInsufficientMemory();
 HvlpHvToNtStatus();
@@ -37364,6 +37689,7 @@ HvlpProcessIommu();
 HvlpProcessIommuPrq();
 ? HvlpQueryApicIdAndNumaNode;
 HvlpQueryExtendedCapabilities();
+HvlpQueryHypervisorSchedulerType();
 ? HvlpReadPerfRegister;
 HvlpRegisterPowerPolicyCallbacks();
 HvlpReleaseHypercallPage();
@@ -37521,7 +37847,7 @@ HvpGetCellMap();
 HvpGetCellPaged();
 ? HvpGetHiveHeader;
 ? HvpGrowDirtyVectors;
-? HvpHeaderCheckSum;
+HvpHeaderCheckSum();
 ? HvpInitMap;
 HvpInpageErrorFilter();
 HvpIsFreeNeighbor();
@@ -38105,7 +38431,7 @@ IopCreatePassiveInterruptRealtimeThreads();
 IopCreateRootDirectories();
 IopCreateRootEnumeratedDeviceObject();
 ? IopCreateSecureDeviceClassSettings;
-? IopCreateSecurityCheck;
+IopCreateSecurityCheck();
 ? IopCreateSecurityDescriptorPerType;
 ? IopCreateUmdfDirectory;
 IopCreateUnicodeFromAnsiBuffer();
@@ -38147,6 +38473,7 @@ IopDmaScoreRequirement();
 IopDmaUnpackRequirement();
 IopDmaUnpackResource();
 IopDoDeferredSetInterfaceState();
+IopDoFullTraverseCheck();
 ? IopDropIrp;
 IopDumpCallAddPagesCallbacks();
 IopDumpCallRemovePagesCallbacks();
@@ -38432,7 +38759,7 @@ IopMountInitializeVpb();
 IopOpenRegistryKeyEx();
 IopOpenSystemVariableDevice();
 IopParentToRawTranslation();
-? IopParseDevice;
+IopParseDevice();
 ? IopParseDevice$fin$0;
 IopParseFile();
 IopPassiveInterruptDpc();
@@ -39144,7 +39471,7 @@ KeCleanupThreadState();
 KeClearForceIdle();
 ? KeClearSystemPriority;
 KeClearUmsThreadKernelLock();
-? KeClockInterruptNotify;
+KeClockInterruptNotify();
 KeClockTimerPowerChange();
 KeCommitSmtState();
 KeCompactServiceTable();
@@ -39346,10 +39673,12 @@ KeInvalidateRangeAllCaches();
 ? KeIpiGenericCall;
 KeIsApcRunningThread();
 KeIsAttachedProcess();
+KeIsCetCapable();
 KeIsEmptyAffinityEx();
 ? KeIsEqualAffinityEx;
 KeIsExecutingDpc();
 KeIsForceIdleEngaged();
+KeIsKernelCetEnabled();
 KeIsNmiCallbackRegistered();
 KeIsRetpolineEnabled();
 ? KeIsSingleGroupAffinityEx;
@@ -39545,6 +39874,7 @@ KeSetCheckStackExtentsProcess();
 ? KeSetCoalescableTimer;
 ? KeSetCpuSetsProcess;
 KeSetCurrentUmsTeb();
+? KeSetDisableBoostProcess;
 KeSetDisableBoostThread();
 ? KeSetDisableQuantumProcess;
 KeSetDmaIoCoherency();
@@ -39597,6 +39927,7 @@ KeSetTimer();
 ? KeSetTimerEx;
 KeSetTracepoint();
 KeSetUmsThreadKernelLock();
+KeSetUserCetAppcompatOptions();
 KeSetUserHeteroCpuPolicyThread();
 ? KeShouldYieldProcessor;
 KeSignalCallDpcDone();
@@ -39798,9 +40129,10 @@ KiCheckForSListAddress();
 KiCheckKeepAlive();
 ? KiCheckMaxOverQuotaTransition;
 ? KiCheckMicrocode;
-? KiCheckPreferredHeteroProcessor;
+KiCheckPreferredHeteroProcessor();
 KiCheckStall();
 KiCheckThreadAffinity();
+KiCheckUserAddressCetCompat();
 ? KiCheckVpBackingLongSpinWaitHypercall;
 ? KiCheckWaitNext;
 ? KiChooseLowestRankedThread;
@@ -39827,7 +40159,7 @@ KiConfigureAllSchedulingInformation();
 KiConfigureDynamicProcessor();
 KiConfigureHeteroProcessorsTarget();
 KiConfigureInitialNodes();
-? KiConfigureNodeSchedulingInformation;
+KiConfigureNodeSchedulingInformation();
 KiConfigureProcessorBlock();
 KiConfigureSchedulingInformation();
 ? KiConnectInterrupt;
@@ -39977,6 +40309,7 @@ KiFindBiasedProcessorIndex();
 ? KiFindNextTimerDueTime;
 KiFindRankBiasedIdleSmtSet();
 ? KiFindReadyThread;
+KiFixupControlProtectionUserModeReturnMismatch();
 KiFloatingErrorFault();
 KiFloatingErrorFaultShadow();
 ? KiFlushAddressSpaceTb;
@@ -40066,7 +40399,7 @@ KiIdleLoop();
 KiIncrementConcurrencyCount();
 KiInitDynamicProcessorIpi();
 ? KiInitDynamicTraceSupport;
-? KiInitializeBootStructures;
+KiInitializeBootStructures();
 KiInitializeCacheErrataSupport();
 ? KiInitializeContextThread;
 KiInitializeDescriptorIst();
@@ -40080,6 +40413,7 @@ KiInitializeDynamicProcessorDpc();
 ? KiInitializeKernel$filt$0;
 ? KiInitializeMTRR;
 ? KiInitializeMutant;
+KiInitializeNXSupport();
 ? KiInitializeNxSupportDiscard;
 ? KiInitializePrcbContext;
 ? KiInitializeProcessor;
@@ -40123,6 +40457,7 @@ KiInterruptSubDispatch();
 KiInterruptSubDispatchNoLock();
 KiInterruptSubDispatchNoLockNoEtw();
 KiInterruptThunk();
+KiIntersectFeaturesWithLoader();
 ? KiIntersectFeaturesWithPolicy;
 KiIntRedirectConnnect();
 ? KiIntRedirectQueueRequestOnProcessor;
@@ -40202,8 +40537,9 @@ KiLockExtendedServiceTable();
 KiLockServiceTable();
 ? KiLockServiceTable$filt$0;
 KiLockStepExecution();
-KiLogControlProtectionUserModeAudit();
-KiLogUserCetSetContextIpValidationAudit();
+KiLogControlProtectionUserModeReturnMismatch();
+KiLogUserCetSetContextIpValidationFailure();
+KiLogUserCetSetContextIpValidationFailureWorker();
 KiMachineCheckControl();
 KiMarkBugCheckRegions();
 KiMaskInterruptDpc();
@@ -40282,7 +40618,6 @@ KiPrepareReadyThreadForRescheduling();
 ? KiPreprocessFlushTb;
 ? KiPriQueueThreadPriorityChanged;
 KiProcessControlProtection();
-KiProcessControlProtectionUserModeAudit();
 ? KiProcessDeferredReadyList;
 KiProcessDisconnectList();
 ? KiProcessExpiredTimerList;
@@ -40413,6 +40748,7 @@ KiSetCacheInformationIntel();
 ? KiSetClockInterval;
 KiSetClockIntervalToMinimumRequested();
 ? KiSetClockTickRate;
+KiSetControlEnforcement();
 KiSetDebuggerOwner();
 KiSetDpcRequestFlag();
 ? KiSetFeatureBits;
@@ -40887,6 +41223,8 @@ KseSkipDriverUnloadHookDriverTargeted();
 KseSkipDriverUnloadHookDriverUntargeted();
 ? KseSkipDriverUnloadInitialize;
 KseUnregisterShim();
+KseUserCetBasicModeAllowRetTargetNotCetCompatHookDriverTargeted();
+KseUserCetInitialize();
 ? KseVersionLieInitialize;
 ? KseZeroPoolInitialize;
 ? KvfCommitFeatureStates;
@@ -40943,7 +41281,7 @@ LdrIsResItemExist();
 ? LdrpAccessResourceData;
 LdrpAccessResourceDataNoMultipleLanguage();
 LdrpArmProcessRelocation();
-LdrpCompareResourceNames_U();
+LdrpCompareResourceNamesWithValidation();
 ? LdrpFetchAddressOfSecurityCookie;
 ? LdrpFindMessageInAlternateModule;
 LdrpGenericProcessRelocation();
@@ -40968,7 +41306,7 @@ LdrpOpenKey();
 ? LdrpResSearchResourceInsideDirectory;
 ? LdrpResSearchResourceMappedFile;
 LdrProcessRelocationBlockLongLong();
-? LdrpSearchResourceSection_U;
+LdrpSearchResourceSection_U();
 LdrpSectionTableFromVirtualAddress();
 LdrpSetAlternateResourceModuleHandle();
 ? LdrpSetAlternateResourceModuleHandle$fin$0;
@@ -41028,6 +41366,7 @@ LookupAceTypeInTable();
 ? LookUpTableFlushComplete;
 ? LookUpTableFlushPartial;
 LpcExitProcess();
+LpcInitializeProcess();
 LpcpCopyRequestData();
 LpcpRequestWaitReplyPort();
 LpcReplyWaitReplyPort();
@@ -41230,7 +41569,7 @@ MiAllocateWorkingSetSwapSupport();
 MiAllocateWsle();
 MiAllocateZeroPageDecisionTraceBuffer();
 ? MiAllowGuardFault;
-? MiAllowImageMap;
+MiAllowImageMap();
 MiAllowProtectionChange();
 ? MiAllowWorkingSetExpansion;
 MiAnyPagesRemovalPending();
@@ -41313,7 +41652,7 @@ MiCaptureBootDriverRetpolineInfo();
 ? MiCaptureDeleteHierarchy;
 MiCaptureDirtyBitToPfn();
 ? MiCaptureDynamicRelocationTableRva;
-? MiCaptureImageCfgContext;
+MiCaptureImageCfgContext();
 ? MiCaptureImageExceptionValues;
 MiCapturePageFileInfoInline();
 ? MiCapturePfnVm;
@@ -42853,7 +43192,7 @@ MiPageTablesNeeded();
 MiPageTableStillExists();
 ? MiPageToChannel;
 MiPageToNode();
-? MiParseComAndCetHeaders;
+MiParseComAndCetHeaders();
 ? MiParseImageLoadConfig;
 ? MiParseImageSectionHeaders;
 MiPartitionIdToPointer();
@@ -43871,9 +44210,10 @@ MmGetFileNameForAddress();
 MmGetFileNameForSection();
 MmGetFileObjectForSection();
 MmGetHighestPhysicalPage();
-? MmGetImageBase;
 ? MmGetImageFileSignatureInformation;
+MmGetImageInformation();
 ? MmGetImageRetpolineCodePage;
+MmGetImageSectionBasedAddress();
 MmGetIoSessionState();
 MmGetLowestPhysicalPage();
 MmGetMaximumFileSectionSize();
@@ -43898,7 +44238,7 @@ MmGetPhysicalMemoryRangesEx();
 ? MmGetPhysicalMemoryRangesEx2;
 MmGetProcessPartitionId();
 MmGetResidentAvailablePages();
-? MmGetSectionInformation;
+MmGetSectionInformation();
 MmGetSectionRange();
 MmGetSectionStrongImageReference();
 ? MmGetSessionById;
@@ -44376,7 +44716,7 @@ NtCreateToken();
 ? NtCreateTokenEx;
 NtCreateTransaction();
 NtCreateTransactionManager();
-? NtCreateUserProcess;
+NtCreateUserProcess();
 ? NtCreateUserProcess$filt$0;
 NtCreateWaitablePort();
 NtCreateWaitCompletionPacket();
@@ -44602,7 +44942,7 @@ NtQueryInformationEnlistment();
 ? NtQueryInformationFile$fin$0;
 ? NtQueryInformationJobObject;
 NtQueryInformationPort();
-? NtQueryInformationProcess;
+NtQueryInformationProcess();
 ? NtQueryInformationProcess$filt$0;
 ? NtQueryInformationProcess$filt$1;
 ? NtQueryInformationProcess$filt$10;
@@ -44769,10 +45109,14 @@ NtSetInformationEnlistment();
 ? NtSetInformationKey;
 ? NtSetInformationObject;
 ? NtSetInformationObject$filt$0;
-? NtSetInformationProcess;
+NtSetInformationProcess();
 ? NtSetInformationProcess$filt$0;
 ? NtSetInformationProcess$filt$1;
 ? NtSetInformationProcess$filt$10;
+? NtSetInformationProcess$filt$11;
+? NtSetInformationProcess$filt$12;
+? NtSetInformationProcess$filt$13;
+? NtSetInformationProcess$filt$14;
 ? NtSetInformationProcess$filt$2;
 ? NtSetInformationProcess$filt$3;
 ? NtSetInformationProcess$filt$4;
@@ -44875,7 +45219,7 @@ NtTerminateEnclave();
 NtTestAlert();
 NtThawRegistry();
 NtThawTransactions();
-? NtTraceControl;
+NtTraceControl();
 ? NtTraceEvent;
 NtTranslateFilePath();
 ? NtTranslateFilePath$filt$0;
@@ -46798,7 +47142,7 @@ PoEnergyContextStart();
 PoEnergyEstimationEnabled();
 ? PoExecuteIdleCheck;
 PoExecutePerfCheck();
-? PoFxAbandonDevice;
+PoFxAbandonDevice();
 ? PoFxActivateComponent;
 PoFxActivateDevice();
 PoFxActivateDeviceForSystemTransition();
@@ -46816,7 +47160,7 @@ PoFxIssueComponentPerfStateChangeMultiple();
 ? PoFxPlatformRequestHandler;
 ? PoFxPowerControl;
 PoFxPowerOnCrashdumpDevice();
-? PoFxPrepareDevice;
+PoFxPrepareDevice();
 ? PoFxProcessorNotification;
 PoFxQueryCurrentComponentPerfState();
 PoFxRegisterComponentPerfStates();
@@ -46851,11 +47195,10 @@ PoGetThermalRequestSupport();
 PoInitDriverServices();
 ? PoInitHiberServices;
 ? PoInitializeBroadcast;
-PoInitializePdc();
 ? PoInitializePrcb;
 ? PoInitializeStopWatch;
 PoInitiateProcessorWake();
-PoInitSystem();
+? PoInitSystem;
 PoIsArmedStopWatchCollection();
 PoIsInitializedStopWatch();
 PoIsRunningStopWatch();
@@ -46928,7 +47271,6 @@ PopBatteryQueryEstimatedTime();
 PopBatteryQueryStatus();
 PopBatteryQueueWork();
 PopBatteryReadTag();
-PopBatteryRefreshStatus();
 PopBatteryReleaseLock();
 PopBatteryRemove();
 PopBatteryTracePercentageRemaining();
@@ -46986,11 +47328,9 @@ PopChangeCapability();
 PopCheckConsoleTimeouts();
 PopCheckDisabledReason();
 PopCheckDisabledState();
-? PopCheckForAbnormalReset;
 ? PopCheckForIdleness;
 ? PopCheckForUpgradeInProgress;
 ? PopCheckForWork;
-PopCheckpointDetermineEfiRuntimeRedirection();
 ? PopCheckpointSystemSleep;
 PopCheckpointSystemSleepUnsafe();
 ? PopCheckPowerSourceAfterRtcWakeCancel;
@@ -47043,8 +47383,6 @@ PopConsoleSessionActiveInput();
 PopConsoleSessionPassiveInput();
 ? PopControlMonitor;
 PopCoolingExtensionPnpNotification();
-PopCoolingInit();
-PopCoolingInitializeWnfEvents();
 PopCoolingSxTransition();
 PopCoolingTelemetryWorker();
 PopCopyWakeSource();
@@ -47351,7 +47689,6 @@ PopDripsWatchdogCallbackWorker();
 PopDripsWatchdogCheckHwDivergence();
 PopDripsWatchdogDiagnosticWorker();
 PopDripsWatchdogGetDeviceActiveTime();
-? PopDripsWatchdogInitialize;
 PopDripsWatchdogInitializeActions();
 PopDripsWatchdogInitializeCallbackTimer();
 PopDripsWatchdogInitializeDiagnosticTimer();
@@ -47365,7 +47702,6 @@ PopDripsWatchdogTakeAction();
 PopDripsWatchdogTimerCallback();
 PopDripsWatchdogUpdateMetrics();
 PopEmModuleAddressMatchCallback();
-PopEmRegister();
 PopEmUpdateDeviceConstraintCallback();
 ? PopEnableExecutionRequiredPowerRequests;
 ? PopEnableHiberFile;
@@ -47443,7 +47779,6 @@ PopEtStringIntern();
 ? PopEtStringSet;
 ? PopEvaluateGlobalUserStatus;
 PopEvaluateInputSuppressionAction();
-? PopEvaluateInputSuppressionRequired;
 ? PopEventCalloutDispatch;
 PopExecuteOnTargetProcessors();
 ? PopExecutePowerAction;
@@ -47457,7 +47792,6 @@ PopExecutionRequiredTimeoutWorkerRoutine();
 ? PopExternalMonitorUpdatedWorker;
 PopFanAdd();
 PopFanEndCsFanPeriod();
-PopFanInit();
 PopFanIrpComplete();
 PopFanRemove();
 PopFanReportBootStartDevices();
@@ -47511,13 +47845,13 @@ PopFxCompleteDirectedPowerTransition();
 PopFxComponentPerfWork();
 ? PopFxComponentWork;
 ? PopFxConvertV1Components;
-? PopFxCreateDeviceCommon;
+PopFxCreateDeviceCommon();
 PopFxCreateEmergencyWorkerThread();
 PopFxDebuggerPowerCriticalTransitionCallback();
 PopFxDeliverDevicePowerRequired();
 PopFxDerefAndCompleteDirectedPowerTransition();
 PopFxDestroyDeviceCommon();
-? PopFxDestroyDeviceDpm;
+PopFxDestroyDeviceDpm();
 PopFxDestroyDirectedDripsCandidateDeviceList();
 PopFxDestroyDripsBlockingDeviceList();
 PopFxDeviceWork();
@@ -47534,7 +47868,7 @@ PopFxEndDeviceIRPhaseAccounting();
 PopFxEnforceDirectedPowerTransition();
 ? PopFxFindAcpiDeviceByUniqueId;
 PopFxFindAndReferenceAcpiDevice();
-? PopFxFindDeviceAndAllocateUniqueId;
+PopFxFindDeviceAndAllocateUniqueId();
 PopFxFreeUniqueId();
 PopFxGetDeviceDStateReason();
 PopFxGetLatencyLimitWithoutResiliency();
@@ -47581,7 +47915,7 @@ PopFxQueryCurrentComponentPerfState();
 PopFxRegisterComponentPerfStates();
 ? PopFxRegisterDevice;
 ? PopFxRegisterDeviceWithPep;
-? PopFxRegisterDeviceWorker;
+PopFxRegisterDeviceWorker();
 PopFxRegisterPluginEx();
 PopFxReleaseAcpiRefDevice();
 PopFxReleaseDevice();
@@ -47603,7 +47937,7 @@ PopFxStopDeviceAccounting();
 ? PopFxTraceDeviceRegistration;
 PopFxTracePerfRegistration();
 PopFxTransitionCriticalResource();
-? PopFxUnregisterDevice;
+PopFxUnregisterDevice();
 PopFxUnregisterDeviceOrWait();
 PopFxUpdateAccountingActiveTime();
 ? PopFxUpdateComponentAccountingEnhanced;
@@ -47713,7 +48047,6 @@ PopInitializeSystemIdleDetection();
 PopInitializeTimer();
 PopInitializeWorkItem();
 ? PopInitilizeAcDcSettings;
-PopInitModernSleepEnabledActions();
 ? PopInitPlatformSettings;
 PopInitShutdownList();
 ? PopInitSIdle;
@@ -47756,7 +48089,6 @@ PopIsSystemIdle();
 PopIsWakeTimerImmanent();
 PopKsrCallback();
 PopLazySensorActiveInput();
-PopLidClosedSleepStudyWorker();
 PopLidSwitchChangeCallback();
 ? PopLoadResumeContext;
 PopLockGetDoDevicePowerState();
@@ -47957,7 +48289,6 @@ PopPluginUnregisterDevice();
 PopPlUnlockPowerPlane();
 PopPlUnregisterComponent();
 PopPoCoalescingCallback();
-PopPolicyDeviceInit();
 PopPolicyDeviceRemove();
 PopPolicyDeviceTargetChange();
 ? PopPolicySystemIdle;
@@ -48081,8 +48412,6 @@ PopQueuePowerRequestCallback();
 ? PopQueueQuerySetIrp;
 PopQueueTargetDpc();
 PopQueueWorkItem();
-PopReadErrataDisablePrimaryDeviceFastResume();
-? PopReadErrataForIncorrectLidNotification;
 PopReadErrataSkipMemoryOverwriteRequestControlLockAction();
 PopReadHiberbootGroupPolicy();
 ? PopReadHiberbootPolicy;
@@ -48099,7 +48428,6 @@ PopRecalculateCBTriggerLevels();
 PopRecordAcDcState();
 PopRecordDisplayState();
 PopRecorderInit();
-? PopRecordFirmwareResetReason;
 PopRecordHibernateDiagnosticInfo();
 PopRecordLidStateWorker();
 PopRecordLongPowerButtonPressDetected();
@@ -48308,7 +48636,6 @@ PopTraceThermalStandbyInitiated();
 PopTraceZoneCr3Mitigated();
 PopTraceZoneCr3Tripped();
 ? PopTransitionCheckpoint;
-PopTransitionCheckpointInit();
 ? PopTransitionSystemPowerStateEx;
 ? PopTransitionTelemetryOsState;
 ? PopTransitionToSleep;
@@ -48515,7 +48842,6 @@ PpmCheckComputeHeteroResponse();
 PpmCheckCoordinatedStateInitiator();
 ? PpmCheckCustomRun;
 PpmCheckIdleVeto();
-PpmCheckInit();
 ? PpmCheckInitProcessors;
 ? PpmCheckMaintainArtificialDomain;
 ? PpmCheckMakeupSkippedChecks;
@@ -48567,7 +48893,6 @@ PpmEventHiddenProcessorPerformance();
 PpmEventHiddenProcessorThermalCapChange();
 PpmEventIdleDurationExpiration();
 ? PpmEventIdleStateChange;
-PpmEventInitialize();
 ? PpmEventLegacyProcessorPerfStateChange;
 PpmEventLPICoreParking();
 PpmEventParkNodeCapChange();
@@ -48608,6 +48933,7 @@ PpmEventTraceProfileChange();
 PpmEventTraceSoftCoreParkingSelection();
 PpmEventVetoReasonRundown();
 PpmEventVpQosChange();
+? PpmExitCoordinatedIdle;
 PpmExitCoordinatedIdleState();
 PpmFireWmiEvent();
 PpmGetDeepSleepPlatformStateIndex();
@@ -48652,7 +48978,7 @@ PpmIdleDefaultComplete();
 PpmIdleDefaultInitiateWake();
 PpmIdleDefaultIsHalted();
 PpmIdleEnableIdleDurationExpirationTimeout();
-? PpmIdleExecuteTransition;
+PpmIdleExecuteTransition();
 PpmIdleGuestComplete();
 PpmIdleGuestExecute();
 ? PpmIdleGuestPreExecute;
@@ -48852,7 +49178,6 @@ PpmWmiFireIdleAccountingEvent();
 PpmWmiGetAllData();
 PpmWmiIdleAccountingProcedure();
 PpmWmiIdleAccountingWork();
-PpmWmiInit();
 ? PpmWmiRegisterInfo;
 PpPagePathAssign();
 PpPagePathRelease();
@@ -48892,6 +49217,7 @@ PsAltSystemCallDispatch();
 ? PsAssignImpersonationToken;
 ? PsAssignProcessToJobObject;
 PsAttachSiloToCurrentThread();
+PsBlockNonCetBinaries();
 PsBoostThreadIo();
 ? PsBoostThreadIoEx;
 PsBoostThreadIoQoS();
@@ -48970,6 +49296,7 @@ PsGetJobProperty();
 PsGetJobSessionId();
 PsGetJobSilo();
 PsGetJobUIRestrictionsClass();
+PsGetKeepAliveCountProcess();
 PsGetNextPartition();
 ? PsGetNextPartitionUnsafe;
 PsGetNextProcess();
@@ -49046,6 +49373,7 @@ PsInsertSiloContext();
 PsIsCurrentThreadInServerSilo();
 PsIsCurrentThreadPrefetching();
 PsIsDiskCountersEnabled();
+PsIsGuiThread();
 PsIsHostSilo();
 PsIsJobParentImmutable();
 PsIsProcessAppContainer();
@@ -49061,6 +49389,7 @@ PsIsServerSilo();
 PsIsServiceSession();
 PsIsSystemProcess();
 PsIsSystemThread();
+PsIsSystemWideMitigationOptionSet();
 PsIsThreadImpersonating();
 ? PsIsThreadInSilo;
 PsIsThreadTerminating();
@@ -49082,7 +49411,7 @@ PsLoadVsmEnclaveData();
 ? PsMapSystemDlls;
 ? PsNotifyCoreDriversInitialized;
 PsNotifyWriteToExecutableMemory();
-? PsOpenProcess;
+PsOpenProcess();
 ? PsOpenThread;
 PspAddAccountingValues();
 ? PspAddPartitionToGlobalList;
@@ -49092,9 +49421,9 @@ PspAdjustKeepAliveCountProcess();
 ? PspAllocateAndQueryNotificationChannel;
 ? PspAllocateAndQueryProcessNotificationChannel;
 ? PspAllocatePartition;
-? PspAllocateProcess;
+PspAllocateProcess();
 ? PspAllocateRateControl;
-? PspAllocateThread;
+PspAllocateThread();
 PspAllocStorage();
 PspApiSetCopyToSystemSpace();
 ? PspApplyIFEOPerfOptions;
@@ -49116,7 +49445,7 @@ PspAttachThreadToUmsCompletionList();
 PspBeginSiloTeardown();
 ? PspBindProcessSessionToJob;
 PspBoostJobIoPriorityCallback();
-? PspBuildCreateProcessContext;
+PspBuildCreateProcessContext();
 PspCallJobHierarchyCallbacks();
 ? PspCallProcessNotifyRoutines;
 ? PspCallThreadNotifyRoutines;
@@ -49156,7 +49485,7 @@ PspCreatePicoThread();
 ? PspCreateProcess;
 ? PspCreateProcess$filt$0;
 PspCreateSecureThread();
-? PspCreateSilo;
+PspCreateSilo();
 ? PspCreateThread;
 PspCreateUserContext();
 ? PspCreateUserProcessEcp;
@@ -49262,7 +49591,7 @@ PsPicoAltSystemCallDispatch();
 PsPicoSystemCallDispatch();
 PsPicoWalkUserStack();
 PspIdentityBasedJobBreakaway();
-? PspImplicitAssignProcessToJob;
+PspImplicitAssignProcessToJob();
 PspIncrementJobChainProcessCounts();
 ? PspInheritMitigationAuditOptions;
 PspInheritMitigationOptions();
@@ -49275,6 +49604,7 @@ PspInitializeHwTraceCallouts();
 PspInitializeMMCSSCallouts();
 ? PspInitializeNetRateControl;
 ? PspInitializeOctagonExtensionHost;
+PspInitializeProcessLock();
 ? PspInitializeProcessSecurity;
 ? PspInitializeProtectedProcessParameters;
 ? PspInitializeQuotaBlock;
@@ -49291,7 +49621,7 @@ PspInitializeServerSiloDeferred();
 ? PspInsertExpansionEntry;
 ? PspInsertProcess;
 ? PspInsertProperty;
-? PspInsertThread;
+PspInsertThread();
 ? PspInsertThread$filt$0;
 ? PspInsertThread$filt$1;
 PspInvokeCreateCallback();
@@ -49391,7 +49721,8 @@ PspPrepareEnclaveThreadWait();
 ? PspProcessClose;
 ? PspProcessDelete;
 PspProcessDynamicEHContinuationTargets();
-? PspProcessOpen;
+PspProcessDynamicEnforcedAddressRanges();
+PspProcessOpen();
 PspProcessorCallbackNop();
 PspProcessRundownWorker();
 PspProcessRundownWorkerSingle();
@@ -49425,6 +49756,7 @@ PspReadIFEOMitigationOptions();
 ? PspReadIFEONodeOptions;
 ? PspReadIFEOPerfOptions;
 PspReadOptionsMapFromIFEO();
+PspReadProcessSecurityDomain();
 ? PspReadUserQuotaLimits;
 ? PspReaper;
 PspRecordCrashedProcessIntoBlackbox();
@@ -49450,7 +49782,7 @@ PspReserveAndCommitUserShadowStack();
 ? PspReturnResourceQuota;
 ? PspRevertContainerImpersonation;
 PspRundownProcess();
-? PspRundownSingleProcess;
+PspRundownSingleProcess();
 PspRundownUmsThreadForApcDelivery();
 PspSafeReferenceQuotaBlock();
 ? PspSanitizeResourceLimits;
@@ -49623,6 +49955,7 @@ PspWow64SetupCpuArea();
 PspWow64SetupUserStack();
 ? PspWow64ThunkProcessParameters;
 ? PspWritePebAffinityInfo;
+PspWriteProcessSecurityDomain();
 ? PspWriteTebIdealProcessor;
 ? PspWriteTebImpersonationInfo;
 PsQueryActivityModerationUserSettings();
@@ -49637,6 +49970,7 @@ PsQueryProcessAttributesByToken();
 ? PsQueryProcessCommandLine;
 ? PsQueryProcessEnergyValues;
 PsQueryProcessExceptionFlags();
+PsQueryProcessQuotaCounters();
 PsQueryProcessSignatureMitigationPolicy();
 PsQueryRuntimeProcess();
 PsQuerySectionSignatureInformation();
@@ -49652,6 +49986,7 @@ PsQuitNextProcessThread();
 PsReferenceImpersonationToken();
 PsReferenceImpersonationTokenEx();
 PsReferenceKernelStack();
+PsReferencePartition();
 ? PsReferencePartitionByHandle;
 ? PsReferencePartitionSafe;
 PsReferencePartitionSystemProcess();
@@ -49745,6 +50080,7 @@ PsWow64GetSupportedArchitectures();
 ? PsWow64GetSupportedArchitectures$filt$0;
 PsWow64IsMachineSupported();
 PsWrapApcWow64Thread();
+PtrToUlong();
 punycode_decode();
 punycode_encode();
 _purecall();
@@ -49888,6 +50224,7 @@ RtlAddAuditAccessAce();
 RtlAddAuditAccessAceEx();
 RtlAddAuditAccessObjectAce();
 RtlAddDynamicEHContinuationTarget();
+RtlAddDynamicEnforcedAddressRange();
 ? RtlAddMandatoryAce;
 ? RtlAddProcessTrustLabelAce;
 ? RtlAddRange;
@@ -50040,6 +50377,7 @@ RtlDelete();
 ? RtlDeleteAce;
 ? RtlDeleteAtomFromAtomTable;
 RtlDeleteDynamicEHContinuationTargetTreeNode();
+RtlDeleteDynamicEnforcedAddressRangeTreeNode();
 RtlDeleteElementGenericTable();
 RtlDeleteElementGenericTableAvl();
 ? RtlDeleteElementGenericTableAvlEx;
@@ -50099,6 +50437,7 @@ RtlExtractBitMapEx();
 RtlFailFast2();
 RtlFcpCompareFeatureIdToFeature();
 RtlFcpCompareFeatureIdToFeatureUsageSubscription();
+RtlFcpCompareFeatureToFeature();
 RtlFileMapFree();
 RtlFileMapInitializeByNtPath();
 ? RtlFileMapMapView;
@@ -50114,6 +50453,7 @@ RtlFindAceByType();
 ? RtlFindClearRuns;
 ? RtlFindClearRunsEx;
 RtlFindClosestEncodableLength();
+RtlFindDynamicEnforcedAddressInRanges();
 RtlFindExportedRoutineByName();
 RtlFindFirstRunClear();
 RtlFindHotPatchBase();
@@ -50178,6 +50518,7 @@ RtlGetFirstRange();
 RtlGetGroupSecurityDescriptor();
 RtlGetHostNtSystemRoot();
 RtlGetHotPatchSize();
+RtlGetImageBaseAndLoadConfig();
 ? RtlGetIntegerAtom;
 RtlGetInterruptTimePrecise();
 RtlGetLastRange();
@@ -50204,6 +50545,7 @@ RtlGetSystemTimePrecise();
 RtlGetTokenNamedObjectPath();
 RtlGetUmsContextExtendedSize();
 ? RtlGetVersion;
+RtlGuardCheckExceptionHandler();
 RtlGuardCheckLongJumpTarget();
 ? RtlGuardIsValidStackPointer;
 ? RtlGuardIsValidWow64StackPointer;
@@ -50496,6 +50838,7 @@ RtlpDestroyHeapSegment();
 RtlpDetermineHotPatchExtent();
 ? RtlpDidUnicodeToOemWork;
 RtlpDynamicEHContinuationTargetsTreeCompare();
+RtlpDynamicEnforcedAddressRangesTreeCompare();
 RtlpDynamicLookasideBucketCompare();
 RtlpDynamicLookasideInitialize();
 RtlpDynamicLookasideRebalance();
@@ -50509,6 +50852,7 @@ RtlpExtendHeap();
 RtlpFcAddDelayedUsageReportToBuffer();
 RtlpFcAddUsageSubscriptionFromUpdate();
 RtlpFcApplyUpdateAndAddFeature();
+RtlpFcAreSortedFeatureUpdatesValid();
 RtlpFcBufferManagerDereferenceBuffers();
 RtlpFcBufferManagerReferenceBuffers();
 ? RtlpFcBufferManagerUpdateBuffers;
@@ -50516,13 +50860,15 @@ RtlpFcCalculateRequiredSizeForNewFeatureTable();
 RtlpFcCalculateRequiredSizeForNewUsageSubscriptionTable();
 RtlpFcCompareFeatureToUpdate();
 RtlpFcCompareUpdates();
-RtlpFcCompareUsageSubscriptionToUsageSubscriptionUpdate();
+RtlpFcCompareUsageSubscriptionToUsageSubscription();
 RtlpFcCompareUsageSubscriptionUpdates();
 RtlpFcCreateAndAddFeatureFromUpdate();
 RtlpFcDoesFeatureHaveUniqueState();
+RtlpFcEnterRegion();
 RtlpFcInitializeBuffers();
 RtlpFcInitializeDelayedUsageReportBuffer();
 RtlpFcIsUpdateModifyingOrAddingFeature();
+RtlpFcLeaveRegion();
 RtlpFcLinearSearchInSortedArray();
 RtlpFcLowerBounds();
 RtlpFcNotifyFeatureUsageTarget();
@@ -50534,7 +50880,9 @@ RtlpFcSendFeatureUsageNotifications();
 RtlpFcUpdateFeature();
 RtlpFcUpdateFeatureConfiguration();
 RtlpFcUpdateUsageTriggers();
+RtlpFcValidateFeatureConfigurationBuffer();
 RtlpFcValidateFeatureConfigurationType();
+RtlpFcValidateFeatureUsageSubscriptionBuffer();
 RtlpFcWriteHighLowHigh();
 RtlpFillMemoryRandomUp();
 RtlpFillMemoryWithInverseStride();
@@ -50800,9 +51148,15 @@ RtlpIsAppContainer();
 ? RtlpIsDuplicateAce;
 RtlpIsFrameInBounds();
 ? RtlpIsFrameInBoundsEx;
+RtlpIsImmutableFeatureConfigurationPriority();
 ? RtlpIsNameInExpressionPrivate;
 ? RtlpIsRangeAvailable;
 RtlpIsUtf8Process();
+RtlpIsValidFeatureConfigurationPriority();
+RtlpIsValidFeatureEnabledState();
+RtlpIsValidFeatureEnabledStateOptions();
+RtlpIsValidFeatureVariant();
+RtlpIsValidFeatureVariantPayloadKind();
 ? RtlpLangNameInMultiSzString;
 RtlpLfhBlockBitmapAllocate();
 RtlpLfhBucketUsageUpdate();
@@ -51015,6 +51369,7 @@ RtlRealSuccessor();
 RtlRegisterFeatureConfigurationChangeNotification();
 RtlReleasePrivilege();
 ? RtlReleaseSwapReference;
+RtlRemoveDynamicEnforcedAddressRange();
 ? RtlRemoveDynamicFunctionTable;
 ? RtlRemoveEntryHashTable;
 ? RtlRemoveInvertedFunctionTable;
@@ -51245,10 +51600,8 @@ RtlZeroMemory();
 RunLengthEncode();
 ? RunningHash;
 ? _SafeAllocBlob;
-? SafeCloseRegHandle;
 _safecrt_mbtowc();
 _safecrt_wctomb_s();
-? SafeFree;
 ? _SafeReallocBlob;
 SANITIZE_DRADDR();
 SANITIZE_EFLAGS();
@@ -51471,7 +51824,7 @@ SeAuditingHardLinkEventsWithContext();
 SeAuditingPlugAndPlayEvents();
 ? SeAuditingWithTokenForSubcategory;
 SeAuditPlugAndPlay();
-? SeAuditProcessCreation;
+SeAuditProcessCreation();
 SeAuditProcessExit();
 SeAuditSystemTimeChange();
 SeAuditTransactionStateChange();
@@ -52348,6 +52701,7 @@ SmPrepareForFatalHeapCorruption();
 SmPrepareForFatalPageError();
 ? SmProcessCompressionInfoRequest;
 ? SmProcessConfigRequest;
+SmProcessCreateNotification();
 ? SmProcessCreateRequest;
 SmProcessDeleteNotification();
 SmProcessDeleteRequest();
@@ -52692,6 +53046,7 @@ void __cdecl TlgAggregateInternalProviderCallback(struct _GUID const *,unsigned 
 ? _tlgCreate1Sz_char;
 _tlgCreate1Sz_wchar_t();
 _tlgDefineProvider_annotation__TlgBootProviderProv();
+_tlgDefineProvider_annotation__TlgCmFcpTraceLoggingHandleProv();
 _tlgDefineProvider_annotation__TlgCmpTraceLoggingHandleProv();
 _tlgDefineProvider_annotation__TlgExpTraceLoggingProviderProv();
 _tlgDefineProvider_annotation__TlgHalTraceLoggingProviderProv();
@@ -52971,6 +53326,7 @@ UartpSetAccess();
 _ui64toa_s();
 _ui64tow_s();
 ULongAddStringSize();
+ULongToPtr();
 _ultoa_s();
 _ultow();
 _ultow_s();
@@ -54361,7 +54717,7 @@ VrpInitializeLoadedDifferencingHives();
 VrpInitializeNamespaceNodeList();
 ? VrpIoctlDeviceDispatch;
 VrpJobContextDelete();
-? VrpLoadDifferencingHive;
+VrpLoadDifferencingHive();
 VrpLockDiffHiveEntry();
 VrpLockJobContextExclusive();
 VrpOriginalKeyNameParameterCleanup();
@@ -54864,6 +55220,11 @@ WheaUnregisterInUsePageOfflineNotification();
 ? WheaWmiDispatch;
 WheaWmiInit();
 ? _whiteout;
+wil_details_BuildFeatureStateCacheFromQueryResults();
+wil_details_EvaluateFeatureDependencies();
+wil_details_EvaluateFeatureDependencies_GetCachedFeatureEnabledState();
+wil_details_EvaluateFeatureDependencies_ReevaluateCachedFeatureEnabledState();
+wil_details_FeatureDescriptors_SkipPadding();
 void __cdecl wil_details_FeatureReporting_IncrementOpportunityInCache(struct wil_details_FeatureReportingCache *,enum wil_details_ServiceReportingKind,unsigned int,struct wil_details_RecordUsageResult *);
 wil_details_FeatureReporting_IncrementOpportunityInCache();
 void __cdecl wil_details_FeatureReporting_IncrementUsageInCache(struct wil_details_FeatureReportingCache *,enum wil_details_ServiceReportingKind,unsigned int,struct wil_details_RecordUsageResult *);
@@ -54871,12 +55232,17 @@ wil_details_FeatureReporting_IncrementUsageInCache();
 ? wil_details_FeatureReporting_RecordUsageInCache;
 ? wil_details_FeatureReporting_ReportUsageToService;
 ? wil_details_FeatureReporting_ReportUsageToServiceDirect;
-? wil_details_FeatureStateCache_GetCachedFeatureEnabledState;
-? wil_details_GetCurrentFeatureEnabledState;
+wil_details_FeatureStateCache_GetCachedFeatureEnabledState();
+wil_details_FeatureStateCache_ReevaluateCachedFeatureEnabledState();
+wil_details_GetCurrentFeatureEnabledState();
+wil_details_OnFeatureConfigurationChange();
+wil_details_PopulateInitialConfiguredFeatureStatesFromBuffers();
 wil_details_StagingConfig_AreAnyFeaturesConfigured();
 ? wil_details_StagingConfig_Load;
 ? wil_details_StagingConfig_QueryFeatureState;
 wil_details_StagingConfigFeature_HasUniqueState();
+wil_InitializeFeatureStagingFromBuffers();
+wil_RegisterFeatureStagingChangeNotification();
 ? wil_StagingConfig_QueryFeatureState;
 Win7PsGetVersion();
 Win7RtlGetVersion();
@@ -57022,7 +57388,6 @@ EmpTargetRuleListHead;
 EmptyUnicodeString;
 EmptyValue;
 EmpWorkerBusy;
-EnabledStateValueName;
 EnableProcessTracingCallbacks;
 End;
 ErrorLogSessionOpened;
@@ -57487,6 +57852,8 @@ False;
 FastIoDispatch;
 Feature_BamQosGrouping__private_reporting;
 Feature_BamQosGrouping_logged_traits;
+Feature_CET_User_Audit_Livedump__private_reporting;
+Feature_CET_User_Audit_Livedump_logged_traits;
 Feature_DirectedFx__private_reporting;
 Feature_DirectedFx_logged_traits;
 Feature_DisableLowQosTimerResolution__private_reporting;
@@ -57529,6 +57896,43 @@ Feature_SchedulerFavoredCoreRotation__private_reporting;
 Feature_SchedulerFavoredCoreRotation_logged_traits;
 Feature_SchedulerQosPreemption__private_reporting;
 Feature_SchedulerQosPreemption_logged_traits;
+Feature_Servicing_2011c_29270241__private_descriptor;
+Feature_Servicing_2011c_29270241__private_featureState;
+Feature_Servicing_2011c_29270241__private_reporting;
+Feature_Servicing_2011c_29270241_logged_traits;
+Feature_Servicing_2102c_29269619__private_descriptor;
+Feature_Servicing_2102c_29269619__private_featureState;
+Feature_Servicing_2102c_29269619__private_reporting;
+Feature_Servicing_2102c_29269619_logged_traits;
+Feature_Servicing_25906437__private_descriptor;
+Feature_Servicing_25906437__private_featureState;
+Feature_Servicing_25906437__private_reporting;
+Feature_Servicing_25906437_logged_traits;
+Feature_Servicing_27169067__private_descriptor;
+Feature_Servicing_27169067__private_featureState;
+Feature_Servicing_27169067__private_reporting;
+Feature_Servicing_27169067_logged_traits;
+Feature_Servicing_29814886__private_descriptor;
+Feature_Servicing_29814886__private_featureState;
+Feature_Servicing_29814886__private_reporting;
+Feature_Servicing_29814886_logged_traits;
+Feature_Servicing_30140909__private_descriptor;
+Feature_Servicing_30140909__private_featureState;
+Feature_Servicing_30140909__private_reporting;
+Feature_Servicing_30140909_logged_traits;
+Feature_Servicing_30141497__private_descriptor;
+Feature_Servicing_30141497__private_featureState;
+Feature_Servicing_30141497__private_reporting;
+Feature_Servicing_30141497_logged_traits;
+Feature_Servicing_EHCONT_Checks_28208890__private_descriptor;
+Feature_Servicing_EHCONT_Checks_28208890__private_featureState;
+Feature_Servicing_EHCONT_Checks_28208890__private_reporting;
+Feature_Servicing_EHCONT_Checks_28208890_logged_traits;
+Feature_Servicing_User_CET_25433400__private_descriptor;
+Feature_Servicing_User_CET_25433400__private_featureState;
+Feature_Servicing_User_CET_25433400__private_reporting;
+Feature_Servicing_User_CET_25433400_logged_traits;
+Feature_SleepReliabilityDetailedDiagnostics__private_descriptor;
 Feature_SleepReliabilityDetailedDiagnostics__private_featureState;
 Feature_SleepReliabilityDetailedDiagnostics__private_reporting;
 Feature_SleepReliabilityDetailedDiagnostics_logged_traits;
@@ -57614,6 +58018,8 @@ GlobalLoggerGuid;
 GlobalSaclKeyPrefix;
 __guard_check_icall_fptr;
 __guard_dispatch_icall_fptr;
+__guard_eh_cont_count;
+__guard_eh_cont_table;
 __guard_fids_count;
 __guard_fids_table;
 __guard_flags;
@@ -58817,6 +59223,7 @@ IopQuerySetAlignmentRequirement;
 IopQuerySetFsAlignmentRequirement;
 IopRegistryRegisteredCallbacks;
 IopReportBugCheckProgress;
+IopRequireDeviceAccessCheck;
 IopReserveIrps;
 IopRevocationExtension;
 IopRootBusNumberArbiter;
@@ -58897,7 +59304,6 @@ IoWriteTransferCount;
 IptInterface;
 IrpHandlingTable;
 IrpMajorNames;
-IsEnabledStateOptionsValueName;
 IumBugCheckVariables;
 IvtBlockedPageTable;
 IvtBlockedPageTablePhysical;
@@ -59318,6 +59724,7 @@ KiCacheAwareScheduling;
 KiCacheErrataMonitor;
 KiCacheFlushTimeStamp;
 KiCacheIsoBitmap;
+KiCetCapable;
 KiClockCheckPending;
 KiClockCheckReady;
 KiClockCheckSlot;
@@ -59482,6 +59889,7 @@ KiIptSaveAreaLength;
 KiIrqlFlags;
 KiIsKvaShadowConfigDisabled;
 KiIstStackSize;
+KiKernelCetEnabled;
 KiKvaLeakage;
 KiKvaLeakageSimulate;
 KiKvaShadow;
@@ -59646,6 +60054,7 @@ KiUpdateVpThreadPriorityDpc;
 KiUpdateVpThreadPriorityListHead;
 KiUpdateVpThreadPriorityLock;
 KiUserCetAllowed;
+KiUserCetAppcompatOptions;
 KiUserCodePatchMutex;
 KiVelocityFlags;
 KiVerifyPass;
@@ -59851,6 +60260,9 @@ KseSkipDriverUnloadShim;
 KseSkipDriverUnloadShimGuid;
 KseSkipDriverUnloadShimHookCollections;
 KseSkipDriverUnloadShimIrpHooks;
+KseUserCetBasicModeAllowRetTargetNotCetCompatShim;
+KseUserCetBasicModeAllowRetTargetNotCetCompatShimGuid;
+KseUserCetBasicModeAllowRetTargetNotCetCompatShimHookCollections;
 KseUseVtHardware;
 KseZeroPoolKernelHooks;
 KseZeroPoolShim;
@@ -59989,18 +60401,24 @@ MiShortTime;
 MiSlabProtectionToPageProtection;
 MiState;
 MiSystemPartition;
+MITIGATION_AUDIT_BLOCK_NON_CET_BINARIES;
+MITIGATION_AUDIT_CONTROL_PROTECTION_USER_MODE_RETURN_MISMATCH;
 MITIGATION_AUDIT_PROHIBIT_CHILD_PROCESS_CREATION;
 MITIGATION_AUDIT_PROHIBIT_DYNAMIC_CODE;
 MITIGATION_AUDIT_PROHIBIT_LOWIL_IMAGE_MAP;
 MITIGATION_AUDIT_PROHIBIT_NON_MICROSOFT_BINARIES;
 MITIGATION_AUDIT_PROHIBIT_REMOTE_IMAGE_MAP;
 MITIGATION_AUDIT_PROHIBIT_WIN32K_SYSTEM_CALLS;
+MITIGATION_AUDIT_USER_CET_SET_CONTEXT_IP_VALIDATION_FAILURE;
+MITIGATION_ENFORCE_BLOCK_NON_CET_BINARIES;
+MITIGATION_ENFORCE_CONTROL_PROTECTION_USER_MODE_RETURN_MISMATCH;
 MITIGATION_ENFORCE_PROHIBIT_CHILD_PROCESS_CREATION;
 MITIGATION_ENFORCE_PROHIBIT_DYNAMIC_CODE;
 MITIGATION_ENFORCE_PROHIBIT_LOWIL_IMAGE_MAP;
 MITIGATION_ENFORCE_PROHIBIT_NON_MICROSOFT_BINARIES;
 MITIGATION_ENFORCE_PROHIBIT_REMOTE_IMAGE_MAP;
 MITIGATION_ENFORCE_PROHIBIT_WIN32K_SYSTEM_CALLS;
+MITIGATION_ENFORCE_USER_CET_SET_CONTEXT_IP_VALIDATION_FAILURE;
 MiTriageDumpData;
 MiTrimPassToAge;
 MiUltraMapSizes;
@@ -60230,7 +60648,6 @@ OemTransUniDefaultChar;
 OfflineDumpEnabled;
 Operators;
 OsStateChangeEnergyCounter;
-OverridesKeyName;
 Palette;
 PaletteBmp;
 PaletteNum;
@@ -61129,8 +61546,6 @@ PopKsrPrepared;
 PopLastBootSucceeded;
 PopLastStandbyExitScenarioId;
 PopLazyContext;
-PopLidClosedSleepStudyWorkItem;
-PopLidClosedSleepStudyWorkItemQueued;
 PopLidOpened;
 PopLidStateForInputSuppressionOverride;
 PopLogFxDefaultPepWorkerOrphaned;
@@ -62688,9 +63103,6 @@ REGISTRY_PERF_EVENT_SHUTDOWN_STOP;
 RegistryProvGuid;
 ReleaseOpsEvent;
 ReleaseOpsReservePool;
-ReportingKindValueName;
-ReportingOptionsValueName;
-ReportingTargetValueName;
 ResourceCount;
 ResourceList;
 ResourceSize;
@@ -63311,11 +63723,7 @@ UmsTraceGuid;
 unconfiguredConfigFlags;
 UNIDENTIFIED_DRIVER;
 UNIDENTIFIED_PROCESS;
-UsageSubscriptionsKeyName;
 UsifHardwareDriver;
-VariantPayloadKindValueName;
-VariantPayloadValueName;
-VariantValueName;
 VerifierDdiDriverName;
 VerifierFaultApplicationsBuffer;
 VerifierFaultApplicationsBufferSize;
@@ -63637,6 +64045,7 @@ VrpHardCodedSdBlob;
 VrpHostLoadedHives;
 VrpHostLoadedHivesLock;
 VrpJobContextType;
+VrpMachineHivePath;
 VrpMachineString;
 VrpNumActiveSilos;
 VrpRegistryString;
@@ -63794,6 +64203,9 @@ WheaRegPolicyMemPfaThreshold;
 WheaRegPolicyMemPfaTimeout;
 WheaRegPolicyTable;
 WheaRegPolicyTableChanged;
+wil_details_featureChangeNotification;
+wil_details_featureDescriptors_a;
+wil_details_featureDescriptors_z;
 __WIL_WNF_WIL_MACHINE_FEATURE_STORE;
 __WIL_WNF_WIL_MACHINE_FEATURE_STORE_MODIFIED;
 __WIL_WNF_WIL_USER_FEATURE_STORE;

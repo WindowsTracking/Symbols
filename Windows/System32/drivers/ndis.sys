@@ -1,5 +1,5 @@
 /*
- * PDB file: ndis.pdb\5926728945FA9DDAC33D33F98AE9D1331\ndis.pdb
+ * PDB file: ndis.pdb\7DCB10C0C5EE952E326BE4C2E6E914F61\ndis.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -1080,6 +1080,7 @@ struct _STACK_INDEX;
 struct std::nothrow_t;
 struct _STRING;
 enum _SYSTEM_FEATURE_CONFIGURATION_SECTION_TYPE;
+enum _SYSTEM_INFORMATION_CLASS;
 enum _SYSTEM_POWER_STATE;
 struct _SYSTEM_POWER_STATE_CONTEXT;
 enum _SYSTEM_PROCESS_CLASSIFICATION;
@@ -1229,6 +1230,7 @@ class wil::unique_any_t<wil::details::unique_storage<wil::details::resource_poli
 struct __WIL__WNF_STATE_NAME;
 struct __WIL__WNF_TYPE_ID;
 struct __WIL__WNF_USER_SUBSCRIPTION;
+struct wil_details_FeatureDescriptor;
 struct wil_details_FeatureReportingCache;
 union wil_details_FeatureStateCache;
 struct wil_details_FeatureTestState;
@@ -5307,20 +5309,7 @@ typedef struct _KUSER_SHARED_DATA
   unsigned __int64 TestRetInstruction;
   __int64 QpcFrequency;
   unsigned long SystemCall;
-  union
-  {
-    union
-    {
-      unsigned long AllFlags;
-      struct /* bitfield */
-      {
-        unsigned long Win32Process : 1; /* bit position: 0 */
-        unsigned long Sgx2Enclave : 1; /* bit position: 1 */
-        unsigned long VbsBasicEnclave : 1; /* bit position: 2 */
-        unsigned long SpareBits : 29; /* bit position: 3 */
-      }; /* bitfield */
-    };
-  } UserCetAvailableEnvironments;
+  unsigned long Reserved2;
   unsigned __int64 SystemCallPad[2];
   union
   {
@@ -15371,8 +15360,15 @@ typedef enum _PKTMON_PACKET_TYPE
   PktMonPayload_Unknown = 0,
   PktMonPayload_Ethernet = 1,
   PktMonPayload_WiFi = 2,
-  PktMonPayload_MBB = 3,
+  PktMonPayload_IP = 3,
   PktMonPayload_HTTP = 4,
+  PktMonPayload_TCP = 5,
+  PktMonPayload_UDP = 6,
+  PktMonPayload_ARP = 7,
+  PktMonPayload_ICMP = 8,
+  PktMonPayload_ESP = 9,
+  PktMonPayload_AH = 10,
+  PktMonPayload_L4Payload = 11,
 } PKTMON_PACKET_TYPE, *PPKTMON_PACKET_TYPE;
 
 typedef struct _PMKID_CANDIDATE
@@ -15520,7 +15516,8 @@ typedef enum _PS_ATTRIBUTE_NUM
   PsAttributeBnoIsolation = 24,
   PsAttributeDesktopAppPolicy = 25,
   PsAttributeChpe = 26,
-  PsAttributeMax = 27,
+  PsAttributeMitigationAuditOptions = 27,
+  PsAttributeMax = 28,
 } PS_ATTRIBUTE_NUM, *PPS_ATTRIBUTE_NUM;
 
 enum PS_CREATE_STATE
@@ -15575,6 +15572,8 @@ typedef enum _PS_MITIGATION_OPTION
   PS_MITIGATION_OPTION_ALLOW_DOWNGRADE_DYNAMIC_CODE_POLICY = 30,
   PS_MITIGATION_OPTION_CET_USER_SHADOW_STACKS = 31,
   PS_MITIGATION_OPTION_USER_CET_SET_CONTEXT_IP_VALIDATION = 32,
+  PS_MITIGATION_OPTION_BLOCK_NON_CET_BINARIES = 33,
+  PS_MITIGATION_OPTION_CET_DYNAMIC_APIS_OUT_OF_PROC_ONLY = 36,
 } PS_MITIGATION_OPTION, *PPS_MITIGATION_OPTION;
 
 typedef struct _PS_MITIGATION_OPTIONS_MAP
@@ -15947,10 +15946,12 @@ typedef enum _RTL_FEATURE_CONFIGURATION_OPERATION
 
 typedef enum _RTL_FEATURE_CONFIGURATION_PRIORITY
 {
-  FeatureConfigurationPriorityAll = 0,
+  FeatureConfigurationPriorityImageDefault = 0,
   FeatureConfigurationPriorityService = 4,
   FeatureConfigurationPriorityUser = 8,
+  FeatureConfigurationPriorityUserPolicy = 10,
   FeatureConfigurationPriorityTest = 12,
+  FeatureConfigurationPriorityImageOverride = 15,
   FeatureConfigurationPriorityMax = 15,
 } RTL_FEATURE_CONFIGURATION_PRIORITY, *PRTL_FEATURE_CONFIGURATION_PRIORITY;
 
@@ -16240,6 +16241,238 @@ typedef enum _SYSTEM_FEATURE_CONFIGURATION_SECTION_TYPE
   SystemFeatureConfigurationSectionTypeUsageTriggers = 2,
   SystemFeatureConfigurationSectionTypeCount = 3,
 } SYSTEM_FEATURE_CONFIGURATION_SECTION_TYPE, *PSYSTEM_FEATURE_CONFIGURATION_SECTION_TYPE;
+
+typedef enum _SYSTEM_INFORMATION_CLASS
+{
+  SystemBasicInformation = 0,
+  SystemProcessorInformation = 1,
+  SystemPerformanceInformation = 2,
+  SystemTimeOfDayInformation = 3,
+  SystemPathInformation = 4,
+  SystemProcessInformation = 5,
+  SystemCallCountInformation = 6,
+  SystemDeviceInformation = 7,
+  SystemProcessorPerformanceInformation = 8,
+  SystemFlagsInformation = 9,
+  SystemCallTimeInformation = 10,
+  SystemModuleInformation = 11,
+  SystemLocksInformation = 12,
+  SystemStackTraceInformation = 13,
+  SystemPagedPoolInformation = 14,
+  SystemNonPagedPoolInformation = 15,
+  SystemHandleInformation = 16,
+  SystemObjectInformation = 17,
+  SystemPageFileInformation = 18,
+  SystemVdmInstemulInformation = 19,
+  SystemVdmBopInformation = 20,
+  SystemFileCacheInformation = 21,
+  SystemPoolTagInformation = 22,
+  SystemInterruptInformation = 23,
+  SystemDpcBehaviorInformation = 24,
+  SystemFullMemoryInformation = 25,
+  SystemLoadGdiDriverInformation = 26,
+  SystemUnloadGdiDriverInformation = 27,
+  SystemTimeAdjustmentInformation = 28,
+  SystemSummaryMemoryInformation = 29,
+  SystemMirrorMemoryInformation = 30,
+  SystemPerformanceTraceInformation = 31,
+  SystemObsolete0 = 32,
+  SystemExceptionInformation = 33,
+  SystemCrashDumpStateInformation = 34,
+  SystemKernelDebuggerInformation = 35,
+  SystemContextSwitchInformation = 36,
+  SystemRegistryQuotaInformation = 37,
+  SystemExtendServiceTableInformation = 38,
+  SystemPrioritySeperation = 39,
+  SystemVerifierAddDriverInformation = 40,
+  SystemVerifierRemoveDriverInformation = 41,
+  SystemProcessorIdleInformation = 42,
+  SystemLegacyDriverInformation = 43,
+  SystemCurrentTimeZoneInformation = 44,
+  SystemLookasideInformation = 45,
+  SystemTimeSlipNotification = 46,
+  SystemSessionCreate = 47,
+  SystemSessionDetach = 48,
+  SystemSessionInformation = 49,
+  SystemRangeStartInformation = 50,
+  SystemVerifierInformation = 51,
+  SystemVerifierThunkExtend = 52,
+  SystemSessionProcessInformation = 53,
+  SystemLoadGdiDriverInSystemSpace = 54,
+  SystemNumaProcessorMap = 55,
+  SystemPrefetcherInformation = 56,
+  SystemExtendedProcessInformation = 57,
+  SystemRecommendedSharedDataAlignment = 58,
+  SystemComPlusPackage = 59,
+  SystemNumaAvailableMemory = 60,
+  SystemProcessorPowerInformation = 61,
+  SystemEmulationBasicInformation = 62,
+  SystemEmulationProcessorInformation = 63,
+  SystemExtendedHandleInformation = 64,
+  SystemLostDelayedWriteInformation = 65,
+  SystemBigPoolInformation = 66,
+  SystemSessionPoolTagInformation = 67,
+  SystemSessionMappedViewInformation = 68,
+  SystemHotpatchInformation = 69,
+  SystemObjectSecurityMode = 70,
+  SystemWatchdogTimerHandler = 71,
+  SystemWatchdogTimerInformation = 72,
+  SystemLogicalProcessorInformation = 73,
+  SystemWow64SharedInformationObsolete = 74,
+  SystemRegisterFirmwareTableInformationHandler = 75,
+  SystemFirmwareTableInformation = 76,
+  SystemModuleInformationEx = 77,
+  SystemVerifierTriageInformation = 78,
+  SystemSuperfetchInformation = 79,
+  SystemMemoryListInformation = 80,
+  SystemFileCacheInformationEx = 81,
+  SystemThreadPriorityClientIdInformation = 82,
+  SystemProcessorIdleCycleTimeInformation = 83,
+  SystemVerifierCancellationInformation = 84,
+  SystemProcessorPowerInformationEx = 85,
+  SystemRefTraceInformation = 86,
+  SystemSpecialPoolInformation = 87,
+  SystemProcessIdInformation = 88,
+  SystemErrorPortInformation = 89,
+  SystemBootEnvironmentInformation = 90,
+  SystemHypervisorInformation = 91,
+  SystemVerifierInformationEx = 92,
+  SystemTimeZoneInformation = 93,
+  SystemImageFileExecutionOptionsInformation = 94,
+  SystemCoverageInformation = 95,
+  SystemPrefetchPatchInformation = 96,
+  SystemVerifierFaultsInformation = 97,
+  SystemSystemPartitionInformation = 98,
+  SystemSystemDiskInformation = 99,
+  SystemProcessorPerformanceDistribution = 100,
+  SystemNumaProximityNodeInformation = 101,
+  SystemDynamicTimeZoneInformation = 102,
+  SystemCodeIntegrityInformation = 103,
+  SystemProcessorMicrocodeUpdateInformation = 104,
+  SystemProcessorBrandString = 105,
+  SystemVirtualAddressInformation = 106,
+  SystemLogicalProcessorAndGroupInformation = 107,
+  SystemProcessorCycleTimeInformation = 108,
+  SystemStoreInformation = 109,
+  SystemRegistryAppendString = 110,
+  SystemAitSamplingValue = 111,
+  SystemVhdBootInformation = 112,
+  SystemCpuQuotaInformation = 113,
+  SystemNativeBasicInformation = 114,
+  SystemErrorPortTimeouts = 115,
+  SystemLowPriorityIoInformation = 116,
+  SystemBootEntropyInformation = 117,
+  SystemVerifierCountersInformation = 118,
+  SystemPagedPoolInformationEx = 119,
+  SystemSystemPtesInformationEx = 120,
+  SystemNodeDistanceInformation = 121,
+  SystemAcpiAuditInformation = 122,
+  SystemBasicPerformanceInformation = 123,
+  SystemQueryPerformanceCounterInformation = 124,
+  SystemSessionBigPoolInformation = 125,
+  SystemBootGraphicsInformation = 126,
+  SystemScrubPhysicalMemoryInformation = 127,
+  SystemBadPageInformation = 128,
+  SystemProcessorProfileControlArea = 129,
+  SystemCombinePhysicalMemoryInformation = 130,
+  SystemEntropyInterruptTimingInformation = 131,
+  SystemConsoleInformation = 132,
+  SystemPlatformBinaryInformation = 133,
+  SystemPolicyInformation = 134,
+  SystemHypervisorProcessorCountInformation = 135,
+  SystemDeviceDataInformation = 136,
+  SystemDeviceDataEnumerationInformation = 137,
+  SystemMemoryTopologyInformation = 138,
+  SystemMemoryChannelInformation = 139,
+  SystemBootLogoInformation = 140,
+  SystemProcessorPerformanceInformationEx = 141,
+  SystemCriticalProcessErrorLogInformation = 142,
+  SystemSecureBootPolicyInformation = 143,
+  SystemPageFileInformationEx = 144,
+  SystemSecureBootInformation = 145,
+  SystemEntropyInterruptTimingRawInformation = 146,
+  SystemPortableWorkspaceEfiLauncherInformation = 147,
+  SystemFullProcessInformation = 148,
+  SystemKernelDebuggerInformationEx = 149,
+  SystemBootMetadataInformation = 150,
+  SystemSoftRebootInformation = 151,
+  SystemElamCertificateInformation = 152,
+  SystemOfflineDumpConfigInformation = 153,
+  SystemProcessorFeaturesInformation = 154,
+  SystemRegistryReconciliationInformation = 155,
+  SystemEdidInformation = 156,
+  SystemManufacturingInformation = 157,
+  SystemEnergyEstimationConfigInformation = 158,
+  SystemHypervisorDetailInformation = 159,
+  SystemProcessorCycleStatsInformation = 160,
+  SystemVmGenerationCountInformation = 161,
+  SystemTrustedPlatformModuleInformation = 162,
+  SystemKernelDebuggerFlags = 163,
+  SystemCodeIntegrityPolicyInformation = 164,
+  SystemIsolatedUserModeInformation = 165,
+  SystemHardwareSecurityTestInterfaceResultsInformation = 166,
+  SystemSingleModuleInformation = 167,
+  SystemAllowedCpuSetsInformation = 168,
+  SystemVsmProtectionInformation = 169,
+  SystemInterruptCpuSetsInformation = 170,
+  SystemSecureBootPolicyFullInformation = 171,
+  SystemCodeIntegrityPolicyFullInformation = 172,
+  SystemAffinitizedInterruptProcessorInformation = 173,
+  SystemRootSiloInformation = 174,
+  SystemCpuSetInformation = 175,
+  SystemCpuSetTagInformation = 176,
+  SystemWin32WerStartCallout = 177,
+  SystemSecureKernelProfileInformation = 178,
+  SystemCodeIntegrityPlatformManifestInformation = 179,
+  SystemInterruptSteeringInformation = 180,
+  SystemSupportedProcessorArchitectures = 181,
+  SystemMemoryUsageInformation = 182,
+  SystemCodeIntegrityCertificateInformation = 183,
+  SystemPhysicalMemoryInformation = 184,
+  SystemControlFlowTransition = 185,
+  SystemKernelDebuggingAllowed = 186,
+  SystemActivityModerationExeState = 187,
+  SystemActivityModerationUserSettings = 188,
+  SystemCodeIntegrityPoliciesFullInformation = 189,
+  SystemCodeIntegrityUnlockInformation = 190,
+  SystemIntegrityQuotaInformation = 191,
+  SystemFlushInformation = 192,
+  SystemProcessorIdleMaskInformation = 193,
+  SystemSecureDumpEncryptionInformation = 194,
+  SystemWriteConstraintInformation = 195,
+  SystemKernelVaShadowInformation = 196,
+  SystemHypervisorSharedPageInformation = 197,
+  SystemFirmwareBootPerformanceInformation = 198,
+  SystemCodeIntegrityVerificationInformation = 199,
+  SystemFirmwarePartitionInformation = 200,
+  SystemSpeculationControlInformation = 201,
+  SystemDmaGuardPolicyInformation = 202,
+  SystemEnclaveLaunchControlInformation = 203,
+  SystemWorkloadAllowedCpuSetsInformation = 204,
+  SystemCodeIntegrityUnlockModeInformation = 205,
+  SystemLeapSecondInformation = 206,
+  SystemFlags2Information = 207,
+  SystemSecurityModelInformation = 208,
+  SystemCodeIntegritySyntheticCacheInformation = 209,
+  SystemFeatureConfigurationInformation = 210,
+  SystemFeatureConfigurationSectionInformation = 211,
+  SystemFeatureUsageSubscriptionInformation = 212,
+  SystemSecureSpeculationControlInformation = 213,
+  SystemSpacesBootInformation = 214,
+  SystemFwRamdiskInformation = 215,
+  SystemWheaIpmiHardwareInformation = 216,
+  SystemDifSetRuleClassInformation = 217,
+  SystemDifClearRuleClassInformation = 218,
+  SystemDifApplyPluginVerificationOnDriver = 219,
+  SystemDifRemovePluginVerificationOnDriver = 220,
+  SystemShadowStackInformation = 221,
+  SystemBuildVersionInformation = 222,
+  SystemPoolLimitInformation = 223,
+  SystemCodeIntegrityAddDynamicStore = 224,
+  SystemCodeIntegrityClearDynamicStores = 225,
+  SystemPoolZeroingInformation = 227,
+  MaxSystemInfoClass = 228,
+} SYSTEM_INFORMATION_CLASS, *PSYSTEM_INFORMATION_CLASS;
 
 typedef enum _SYSTEM_POWER_STATE
 {
@@ -18186,6 +18419,17 @@ typedef struct __WIL__WNF_TYPE_ID
 
 struct __WIL__WNF_USER_SUBSCRIPTION;
 
+struct wil_details_FeatureDescriptor
+{
+  union wil_details_FeatureStateCache* featureStateCache;
+  unsigned int featureId;
+  unsigned char changeTime;
+  unsigned char isAlwaysDisabled;
+  unsigned char isAlwaysEnabled;
+  unsigned char isEnabledByDefault;
+  const struct wil_details_FeatureDescriptor* const* requiresFeatures;
+};
+
 struct wil_details_FeatureReportingCache
 {
   union wil_details_ReportedState reported;
@@ -18206,11 +18450,12 @@ union wil_details_FeatureStateCache
         unsigned int variantCached : 1; /* bit position: 2 */
         unsigned int effectiveState : 1; /* bit position: 3 */
         unsigned int desiredState : 1; /* bit position: 4 */
-        unsigned int reservedForKernelModeSupport : 2; /* bit position: 5 */
-        unsigned int hasNotification : 1; /* bit position: 7 */
-        unsigned int isVariant : 1; /* bit position: 8 */
-        unsigned int variant : 6; /* bit position: 9 */
-        unsigned int unused : 17; /* bit position: 15 */
+        unsigned int configuredState : 2; /* bit position: 5 */
+        unsigned int needsRefresh : 1; /* bit position: 7 */
+        unsigned int hasNotification : 1; /* bit position: 8 */
+        unsigned int isVariant : 1; /* bit position: 9 */
+        unsigned int variant : 6; /* bit position: 10 */
+        unsigned int unused : 16; /* bit position: 16 */
       }; /* bitfield */
       unsigned int payloadId;
     };
@@ -18424,7 +18669,6 @@ enum wil_FeatureEnabledState
 
 enum wil_FeatureEnabledStateKind
 {
-  wil_FeatureEnabledStateKind_All = 0,
   wil_FeatureEnabledStateKind_Service = 1,
   wil_FeatureEnabledStateKind_User = 2,
   wil_FeatureEnabledStateKind_Test = 3,
@@ -19282,7 +19526,7 @@ unsigned __int64 __cdecl ComputeRoundedAverage(unsigned __int64,unsigned __int64
 void __cdecl DecrementReadConcurrency(struct NDIS_VERIFY_RW_LOCK_EX *);
 void __cdecl DereferenceWdi(void);
 void __cdecl DisableMagicPacketKeyword(struct _NDIS_MINIPORT_BLOCK *);
-? DriverEntry;
+DriverEntry();
 Duplicate802_11AttachAttributesCommon();
 ? ethAddOneOpenMulticastAddress;
 ? ethAllocateOpenMulticastBuffer;
@@ -20345,7 +20589,6 @@ void __cdecl ndisInitializeStackTraces(void);
 NdisInitializeString();
 NdisInitializeTimer();
 void __cdecl ndisInitializeULongRef(struct _ULONG_REFERENCE *);
-void __cdecl ndisInitializeWatchdogSubsystem(void);
 NdisInitializeWrapper();
 void __cdecl ndisInitializeZeroBasedRef(struct _REFERENCE_EX *,unsigned char);
 NdisInitiateOffload();
@@ -20659,7 +20902,7 @@ int __cdecl ndisMiniportPreRemoveWOLPattern(struct _NDIS_MINIPORT_BLOCK *,struct
 ? ndisMiniportQueryDevicePropertyData;
 ? ndisMiniportQueryInterfaceProperty;
 unsigned char __cdecl ndisMiniportXStateClearFlag(struct _NDIS_MINIPORT_BLOCK *,unsigned char);
-? ndisMInitializeAdapter;
+int __cdecl ndisMInitializeAdapter(struct _NDIS_M_DRIVER_BLOCK *,struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_WRAPPER_CONFIGURATION_HANDLE *,struct _UNICODE_STRING *,void *);
 void __cdecl ndisMInitializeInitMode(struct _NDIS_MINIPORT_BLOCK *);
 ? ndisMInitializeMiniportBlock;
 ? ndisMInitializeMiniportBlockFront;
@@ -20942,6 +21185,7 @@ void __cdecl ndisNotifyBindFailure(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_PR
 ? ndisNotifyBindFailureOnUnboundProtocols;
 ? ndisNotifyDevicePowerStateChange;
 ? ndisNotifyMiniports;
+void __cdecl ndisNotifyWmiAdapterArrival(struct _NDIS_MINIPORT_BLOCK *);
 ? ndisNotifyWmiBindUnbind;
 long __cdecl ndisNsiChangeInterfaceInfo(struct _NDIS_IF_BLOCK *,struct _NDIS_NSI_INTERFACE_INFORMATION_RW *,unsigned long,unsigned long,unsigned long *);
 ? ndisNsiChangeNetworkInfo;
@@ -21925,6 +22169,7 @@ NdisWdfMiniportTryReference();
 ? ndisWdfMiniportUpdatePowerState;
 void __cdecl ndisWdfNotifyDevicePower(struct _NDIS_MINIPORT_BLOCK *,enum POWER_ACTION,enum _DEVICE_POWER_STATE);
 void __cdecl ndisWdfNotifySystemPower(struct _NDIS_MINIPORT_BLOCK *,enum POWER_ACTION,enum _DEVICE_POWER_STATE);
+NdisWdfNotifyWmiAdapterArrival();
 ? ndisWdfOpenConfigurationKey;
 NdisWdfPnPAddDevice();
 NdisWdfPnpPowerEventHandler();
@@ -21939,9 +22184,9 @@ NdisWdfRegisterMiniportDriver();
 long __cdecl ndisWdfRequestNicActive(struct _NDIS_MINIPORT_BLOCK *,enum CallRunMode,enum _NDIS_TMP_REF_REASON);
 long __cdecl ndisWdfRequestNicQuiet(struct _NDIS_MINIPORT_BLOCK *);
 void __cdecl ndisWdfSelectiveSuspendResumeOperations(struct _NDIS_MINIPORT_BLOCK *,unsigned char,unsigned char);
-? ndisWdfSendPmParametersForAoAc;
+void __cdecl ndisWdfSendPmParametersForAoAc(struct _NDIS_MINIPORT_BLOCK *);
 void __cdecl ndisWdfSendPmParametersForSuspend(struct _NDIS_MINIPORT_BLOCK *);
-? ndisWdfSendPmParametersForSx;
+void __cdecl ndisWdfSendPmParametersForSx(struct _NDIS_MINIPORT_BLOCK *);
 unsigned char __cdecl ndisWdfSetBusyAsync(struct _NDIS_MINIPORT_BLOCK *,unsigned long,enum _NDIS_SS_BUSY_REASON,void *,unsigned long);
 void __cdecl ndisWdfSetBusySync(struct _NDIS_MINIPORT_BLOCK *,enum _NDIS_SS_BUSY_REASON,unsigned long);
 long __cdecl ndisWdfUpdateAddDeviceParameters(class KRegKey &,struct NDIS_MINIPORT_CREATION_CONFIG &);
@@ -22053,6 +22298,7 @@ PktMonClientAddEdgeEx();
 PktMonClientEnableCallback();
 PktMonClientNblDrop();
 PktMonClientNblDropNdis();
+PktMonClientNblLog();
 PktMonClientNblLogNdis();
 PktMonClientSetCompProperty();
 PktMonCompCloseCallback();
@@ -22192,11 +22438,22 @@ public: void __cdecl wil::details::unique_storage<struct wil::details::resource_
 class wistd::unique_ptr<struct NDIS_BIND_FILTER_LINK,struct wistd::default_delete<struct NDIS_BIND_FILTER_LINK> > __cdecl wil::make_unique_nothrow<struct NDIS_BIND_FILTER_LINK>(void);
 struct wil::details::out_param_t<class wistd::unique_ptr<struct _UNICODE_STRING,struct KFreePool<struct _UNICODE_STRING> > > __cdecl wil::out_param<class wistd::unique_ptr<struct _UNICODE_STRING,struct KFreePool<struct _UNICODE_STRING> > >(class wistd::unique_ptr<struct _UNICODE_STRING,struct KFreePool<struct _UNICODE_STRING> > &);
 struct wil::details::out_param_t<class wistd::unique_ptr<wchar_t,struct KFreePool<wchar_t> > > __cdecl wil::out_param<class wistd::unique_ptr<wchar_t,struct KFreePool<wchar_t> > >(class wistd::unique_ptr<wchar_t,struct KFreePool<wchar_t> > &);
+long __cdecl wil_details_BuildFeatureStateCacheFromQueryResults(long,struct _RTL_FEATURE_CONFIGURATION const *,union wil_details_FeatureStateCache *);
+void __cdecl wil_details_EvaluateFeatureDependencies(void);
+union wil_details_FeatureStateCache __cdecl wil_details_EvaluateFeatureDependencies_GetCachedFeatureEnabledState(union wil_details_FeatureStateCache *,struct wil_details_FeatureDescriptor const *);
+union wil_details_FeatureStateCache __cdecl wil_details_EvaluateFeatureDependencies_ReevaluateCachedFeatureEnabledState(union wil_details_FeatureStateCache *,union wil_details_FeatureStateCache,struct wil_details_FeatureDescriptor const *);
+struct wil_details_FeatureDescriptor const * __cdecl wil_details_FeatureDescriptors_SkipPadding(unsigned __int64);
 void __cdecl wil_details_FeatureReporting_IncrementOpportunityInCache(struct wil_details_FeatureReportingCache *,enum wil_details_ServiceReportingKind,unsigned int,struct wil_details_RecordUsageResult *);
 void __cdecl wil_details_FeatureReporting_IncrementUsageInCache(struct wil_details_FeatureReportingCache *,enum wil_details_ServiceReportingKind,unsigned int,struct wil_details_RecordUsageResult *);
 struct wil_details_RecordUsageResult __cdecl wil_details_FeatureReporting_RecordUsageInCache(struct wil_details_FeatureReportingCache *,enum wil_details_ServiceReportingKind,unsigned int,unsigned int);
 void __cdecl wil_details_FeatureReporting_ReportUsageToService(struct wil_details_FeatureReportingCache *,unsigned int,int,int,struct FEATURE_LOGGED_TRAITS const *,int,enum wil_ReportingKind,unsigned __int64);
 int __cdecl wil_details_FeatureReporting_ReportUsageToServiceDirect(struct wil_details_FeatureReportingCache *,unsigned int,int,int,enum wil_details_ServiceReportingKind,unsigned int,unsigned __int64);
+void __cdecl wil_details_OnFeatureConfigurationChange(void *);
+long __cdecl wil_details_PopulateInitialConfiguredFeatureStates(void);
+long __cdecl wil_details_RegisterFeatureStagingChangeNotification(unsigned __int64 *);
+void __cdecl wil_details_UpdateFeatureConfiguredStates(void);
+long __cdecl wil_InitializeFeatureStaging(void);
+void __cdecl wil_UninitializeFeatureStaging(void);
 long __cdecl wistd::invoke<long (__cdecl*)(void *),void * &>(long (__cdecl*&&)(void *),void * &);
 void __cdecl wistd::invoke<void (__cdecl*)(struct NDISWATCHDOG__ *),struct NDISWATCHDOG__ * &>(void (__cdecl*&&)(struct NDISWATCHDOG__ *),struct NDISWATCHDOG__ * &);
 void __cdecl wistd::invoke<void (__cdecl*)(void *),void * &>(void (__cdecl*&&)(void *),void * &);
@@ -22477,7 +22734,9 @@ struct _GUID EtwGuidNdisReceive;
 ExecuteMethodFailed;
 ExitingConnectedStandby;
 Feature_NdisDatapathVerifier__private_reporting;
+Feature_NdisDatapathVerifier_logged_traits;
 Feature_ScreenON_NAPS__private_reporting;
+Feature_ScreenON_NAPS_logged_traits;
 FilterArrivalIndicationFailed;
 FilterChangedMediaType;
 FilterRegistrationFailed;
@@ -22502,6 +22761,8 @@ void (__cdecl* g_wil_details_pfnFeatureLoggingHook)(unsigned int,struct FEATURE_
 void (__cdecl* g_wil_details_recordFeatureUsage)(unsigned int,enum wil_details_ServiceReportingKind,unsigned int,struct wil_details_FeatureReportingCache *,struct wil_details_RecordUsageResult *);
 __guard_check_icall_fptr;
 __guard_dispatch_icall_fptr;
+__guard_eh_cont_count;
+__guard_eh_cont_table;
 __guard_fids_count;
 __guard_fids_table;
 __guard_flags;
@@ -22961,6 +23222,9 @@ WakeByMiniport;
 struct _UNICODE_STRING WakeOnMagicPacketStr;
 struct _UNICODE_STRING WakeOnPatternStr;
 WdmlibInitialized;
+wil_details_featureChangeNotification;
+wil_details_featureDescriptors_a;
+wil_details_featureDescriptors_z;
 WNF_NDIS_ADAPTER_ARRIVAL;
 WNF_PO_SCENARIO_CHANGE;
 WPP_03205896d2953af44399314f6c3788db_Traceguids;
@@ -22975,12 +23239,14 @@ WPP_0ecf9acc3b5b3994cffcc6b83765ca21_Traceguids;
 WPP_0f98fe4372f03ccdb8622e820a1a6bac_Traceguids;
 WPP_0fef68400514361fc2e9d0d9865d24cd_Traceguids;
 WPP_109404c3ad973fe8418a3e268c0230ea_Traceguids;
-WPP_19facbb1749132dad232fcc5b7c3bab9_Traceguids;
+WPP_1ab7b613ea553d9b6dd62b5a5ec9d1cb_Traceguids;
+WPP_1d2f501033ad3f3cde38d2a103fcd59f_Traceguids;
 WPP_225861cab2d5393449c0e8d0bcddebbb_Traceguids;
 WPP_25837d708393386fa8b5b40a61d84122_Traceguids;
 WPP_25e5797846033f51a7e0c7e9f4ac6ec9_Traceguids;
 WPP_26c79ab3a5fb310107e5718cdb1d7c6d_Traceguids;
 WPP_26d5752112ac3cd786e6296fc2fada98_Traceguids;
+WPP_2a2dccd345f53e67cf9f0e5760ed0100_Traceguids;
 WPP_2b6dc9e966c73597afb2fba6430b9cb1_Traceguids;
 WPP_2d0f3856248e3e6edb94cd34e8d3ee6a_Traceguids;
 WPP_30239a6b3a81372789f4559effab0913_Traceguids;
@@ -22994,29 +23260,25 @@ WPP_3bbfe1de014a323815521749d409ee95_Traceguids;
 WPP_3ecb09451b79381299710a0782e8cc63_Traceguids;
 WPP_3fc6b276cd8231b73bc2bba727581b13_Traceguids;
 WPP_40794e22ea4b3ffbe11f0bfca6bec0f0_Traceguids;
-WPP_40f58ef12bab3047751827b71ecba9d2_Traceguids;
 WPP_420890ab0fee3194af5139e684bd4f64_Traceguids;
 WPP_43e0b26b30053098bc4fdc70ee8af55c_Traceguids;
 WPP_441f45cc6c5d3fbfa3640add00eb4c2b_Traceguids;
 WPP_4a4075fe2f1e38e8e9e04cbdaa520e6d_Traceguids;
+WPP_51efd63ed52c3a002f03851f2f400cea_Traceguids;
 WPP_55eab71d2273366299e40de7bd26ba8a_Traceguids;
-WPP_5a4210cb464d3e0532542fbd8ed6a5e9_Traceguids;
-WPP_5d0a74e641e532a387df09eeebd933fa_Traceguids;
 WPP_5e110f494fc33fedd56e6eda5750fecd_Traceguids;
 WPP_5f235f4f575e31f0149e7e439a696049_Traceguids;
-WPP_60b0f1ca75a73c11e4a4346036ee9044_Traceguids;
+WPP_60844eb21a8f3cfcca037c14d27ddc90_Traceguids;
 WPP_60f1718a360437c4e49774f56675e7c4_Traceguids;
 WPP_62180bbb655c3d4e7eec745561e288ca_Traceguids;
 WPP_65e9e77539343ef7812b37eb9b149dbe_Traceguids;
-WPP_66177aa4d6dd3618c9f004938ff6b2f7_Traceguids;
 WPP_6862260e284e3ae1ae68988a51ed4b07_Traceguids;
 WPP_6ddb316d784933c58b4801ad2d08aa04_Traceguids;
 WPP_6f7d012dac193bebbc3298f2a25f6805_Traceguids;
 WPP_70ccdfc7c82d34b36d81d4813b341409_Traceguids;
+WPP_7186f6cd088f325f5824ac053472a623_Traceguids;
 WPP_71cb36f29d0f388e109f8982bee03d4b_Traceguids;
 WPP_74ec276d98723cbe160982132dfec1f3_Traceguids;
-WPP_75d48ce2b21f3d63b421d3e1805a7620_Traceguids;
-WPP_779cd58f85ff3fd8449c9ddc33479859_Traceguids;
 WPP_7920440e7c0337b75cf6bec3de4b863a_Traceguids;
 WPP_7dc92789ba843694ac8581f7eed663c4_Traceguids;
 WPP_7eb625e829df31d5ca7cc7c4bda9cbf4_Traceguids;
@@ -23026,17 +23288,16 @@ WPP_8b0ab799cd8539b5ce5df5ce3671a55c_Traceguids;
 WPP_8c005ce258853466be6c7a213c919bd7_Traceguids;
 WPP_8f0f9622f1783245f7c6c1685f8f81bf_Traceguids;
 WPP_9362f263e6813479e894f2fd9189f8d6_Traceguids;
+WPP_93ff7000ef23321ff506bf3726c88bdb_Traceguids;
 WPP_97b9fb6a84ce353ae77a2fb1f333ded7_Traceguids;
 WPP_9a5444f4cbe933672d71b12f0399237b_Traceguids;
 WPP_9dce56da390c33c6d21cbd31c5ab688d_Traceguids;
-WPP_9e776cc541b131844b483de7bdef5f08_Traceguids;
 WPP_9ed74d096aed3ee112c1892102beae86_Traceguids;
 WPP_a2c7eab80dac31484115c857ecd41b7b_Traceguids;
 WPP_a3b719bb2b623bfc7123f0e495d6b1e1_Traceguids;
 WPP_a8d5194ea1de362605f2f80c2705a132_Traceguids;
 WPP_a8f48a69e2ab36ff9f4854b6437fd0df_Traceguids;
 WPP_aa66c5b77aef37206a2c806e5c5446f1_Traceguids;
-WPP_af8424f6effa3e7f57a6a0bc87c815b9_Traceguids;
 WPP_b09f245bd6e23c8183163ab44c15c118_Traceguids;
 WPP_b1856828329f351dacd8075aad833f95_Traceguids;
 WPP_b4ded7699c0d348bfd391eb0aa005077_Traceguids;
@@ -23046,6 +23307,7 @@ WPP_ba9d28aa62533678c00453c015d6f224_Traceguids;
 WPP_bc716cac3d1e3fa5665a69984d631f86_Traceguids;
 WPP_bd5fc03a90003c7ac8db2d6b419e23f9_Traceguids;
 WPP_c0a815a5a1e837f23c65c3f22de35f07_Traceguids;
+WPP_c1b31223335c304c22f5aac6e772b23d_Traceguids;
 WPP_c2584e1588463362f2edfb380f11746e_Traceguids;
 WPP_c4716b819868398b6e02b217b574dae0_Traceguids;
 WPP_c4a891a1b36a37a62238584369967b6d_Traceguids;
@@ -23055,6 +23317,8 @@ WPP_d0b1dc830796367683bcada1b083b794_Traceguids;
 WPP_d3463f6b73bf32dd4c2bbb7d32504344_Traceguids;
 WPP_d7f1c5bdf7553eacbb4cc3ace18bcede_Traceguids;
 WPP_d9cd2507b37b370d30083b2d3aaa2c43_Traceguids;
+WPP_dab0da38b1e3331efa7a05b6175d8ddc_Traceguids;
+WPP_dafd92df180233d1e8f46c99921014e6_Traceguids;
 WPP_e896fbf1b9df31be12d1917bc0fe0b78_Traceguids;
 WPP_eeb71838b50e3a51e19c5b48ce25db7d_Traceguids;
 WPP_eedb22cfce4b35869e6cfcd0b1c979d6_Traceguids;
