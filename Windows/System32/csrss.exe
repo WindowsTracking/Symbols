@@ -1,5 +1,5 @@
 /*
- * PDB file: csrss.pdb\7346DA318278BB2CC17500CCEFB9A1461\csrss.pdb
+ * PDB file: csrss.pdb\6A696BF94289F74F65479350AFB9F8651\csrss.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -14,9 +14,14 @@ union _AER_BRIDGE_DESCRIPTOR_FLAGS;
 union _AER_ENDPOINT_DESCRIPTOR_FLAGS;
 union _AER_ROOTPORT_DESCRIPTOR_FLAGS;
 enum _ALTERNATIVE_ARCHITECTURE_TYPE;
+union _AMD64_MXCSR_REG;
+union _ARM64_FPCR_REG;
+union _ARM64_FPSR_REG;
 struct _ASSEMBLY_STORAGE_MAP;
 struct _AUX_ACCESS_DATA;
 enum BUS_QUERY_ID_TYPE;
+struct _CHPEV2_CPUAREA_INFO;
+struct _CHPEV2_PROCESS_INFO;
 struct _CLIENT_ID;
 struct _CM_FULL_RESOURCE_DESCRIPTOR;
 struct _CM_PARTIAL_RESOURCE_DESCRIPTOR;
@@ -43,6 +48,9 @@ struct _DISPATCHER_HEADER;
 struct _DMA_ADAPTER;
 struct _DMA_ADAPTER_INFO;
 struct _DMA_ADAPTER_INFO_V1;
+struct _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION;
+enum _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_ACCESS_TYPE;
+enum _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_TYPE;
 struct _DMA_COMMON_BUFFER_VECTOR;
 enum DMA_COMPLETION_STATUS;
 struct _DMA_OPERATIONS;
@@ -101,11 +109,13 @@ struct _IO_SECURITY_CONTEXT;
 struct _IO_STACK_LOCATION;
 struct _IO_STATUS_BLOCK;
 struct _IO_TIMER;
+struct _IORING_OBJECT;
 struct _IRP;
 enum _IRQ_PRIORITY;
 enum JOB_OBJECT_IO_RATE_CONTROL_FLAGS;
 enum JOB_OBJECT_NET_RATE_CONTROL_FLAGS;
 enum _JOBOBJECTINFOCLASS;
+struct _KAFFINITY_EX;
 struct _KAPC;
 enum _KCONTINUE_TYPE;
 struct _KDESCRIPTOR;
@@ -117,11 +127,12 @@ struct _KFLOATING_SAVE;
 union _KGDTENTRY64;
 union _KIDTENTRY64;
 enum _KINTERRUPT_POLARITY;
-struct _KNODE;
 struct _KPCR;
 struct _KPRCB;
+union _KPRIORITY_STATE;
 struct _KPROCESS;
 struct _KPROCESSOR_STATE;
+struct _KSCHEDULER_SUBNODE;
 struct _KSPECIAL_REGISTERS;
 struct _KSPIN_LOCK_QUEUE;
 struct _KSYSTEM_TIME;
@@ -129,6 +140,7 @@ struct _KTHREAD;
 struct _KTSS64;
 struct _KUSER_SHARED_DATA;
 union _LARGE_INTEGER;
+struct _LDR_HOT_PATCH_DATA;
 struct _LEAP_SECOND_DATA;
 struct LIST_ENTRY32;
 struct LIST_ENTRY64;
@@ -139,6 +151,7 @@ struct _LUID_AND_ATTRIBUTES;
 struct _M128A;
 struct _MAILSLOT_CREATE_PARAMETERS;
 struct _MDL;
+enum _MEM_DEDICATED_ATTRIBUTE_TYPE;
 enum _MEMORY_CACHING_TYPE;
 enum _MEMORY_CACHING_TYPE_ORIG;
 enum _MEMORY_PHYSICAL_CONTIGUITY_UNIT_STATE;
@@ -175,6 +188,7 @@ enum _PS_PROTECTED_TYPE;
 enum _PS_STD_HANDLE_STATE;
 enum _PS_WAKE_REASON;
 struct _QUAD;
+enum _REFS_STREAM_SNAPSHOT_OPERATION;
 enum _REG_NOTIFY_CLASS;
 enum ReplacesCorHdrNumericDefines;
 struct _RTL_ACTIVATION_CONTEXT_STACK_FRAME;
@@ -207,6 +221,7 @@ union _SLIST_HEADER;
 struct _STRING;
 enum _SYSTEM_FEATURE_CONFIGURATION_SECTION_TYPE;
 enum _SYSTEM_INFORMATION_CLASS;
+enum _SYSTEM_POOL_LIMIT_MEM_TYPE;
 enum _SYSTEM_POWER_STATE;
 struct _SYSTEM_POWER_STATE_CONTEXT;
 enum _SYSTEM_PROCESS_CLASSIFICATION;
@@ -381,6 +396,84 @@ typedef enum _ALTERNATIVE_ARCHITECTURE_TYPE
   EndAlternatives = 2,
 } ALTERNATIVE_ARCHITECTURE_TYPE, *PALTERNATIVE_ARCHITECTURE_TYPE;
 
+typedef union _AMD64_MXCSR_REG
+{
+  union
+  {
+    unsigned long Value;
+    struct /* bitfield */
+    {
+      unsigned long IE : 1; /* bit position: 0 */
+      unsigned long DE : 1; /* bit position: 1 */
+      unsigned long ZE : 1; /* bit position: 2 */
+      unsigned long OE : 1; /* bit position: 3 */
+      unsigned long UE : 1; /* bit position: 4 */
+      unsigned long PE : 1; /* bit position: 5 */
+      unsigned long DAZ : 1; /* bit position: 6 */
+      unsigned long IM : 1; /* bit position: 7 */
+      unsigned long DM : 1; /* bit position: 8 */
+      unsigned long ZM : 1; /* bit position: 9 */
+      unsigned long OM : 1; /* bit position: 10 */
+      unsigned long UM : 1; /* bit position: 11 */
+      unsigned long PM : 1; /* bit position: 12 */
+      unsigned long RC : 2; /* bit position: 13 */
+      unsigned long FZ : 1; /* bit position: 15 */
+      unsigned long res : 16; /* bit position: 16 */
+    }; /* bitfield */
+  };
+} AMD64_MXCSR_REG, *PAMD64_MXCSR_REG;
+
+typedef union _ARM64_FPCR_REG
+{
+  union
+  {
+    unsigned long Value;
+    struct /* bitfield */
+    {
+      unsigned long res0_1 : 8; /* bit position: 0 */
+      unsigned long IOE : 1; /* bit position: 8 */
+      unsigned long DZE : 1; /* bit position: 9 */
+      unsigned long OFE : 1; /* bit position: 10 */
+      unsigned long UFE : 1; /* bit position: 11 */
+      unsigned long IXE : 1; /* bit position: 12 */
+      unsigned long res0_2 : 2; /* bit position: 13 */
+      unsigned long IDE : 1; /* bit position: 15 */
+      unsigned long Len : 3; /* bit position: 16 */
+      unsigned long FZ16 : 1; /* bit position: 19 */
+      unsigned long Stride : 2; /* bit position: 20 */
+      unsigned long RMode : 2; /* bit position: 22 */
+      unsigned long FZ : 1; /* bit position: 24 */
+      unsigned long DN : 1; /* bit position: 25 */
+      unsigned long AHP : 1; /* bit position: 26 */
+      unsigned long res0_3 : 5; /* bit position: 27 */
+    }; /* bitfield */
+  };
+} ARM64_FPCR_REG, *PARM64_FPCR_REG;
+
+typedef union _ARM64_FPSR_REG
+{
+  union
+  {
+    unsigned long Value;
+    struct /* bitfield */
+    {
+      unsigned long IOC : 1; /* bit position: 0 */
+      unsigned long DZC : 1; /* bit position: 1 */
+      unsigned long OFC : 1; /* bit position: 2 */
+      unsigned long UFC : 1; /* bit position: 3 */
+      unsigned long IXC : 1; /* bit position: 4 */
+      unsigned long res0_1 : 2; /* bit position: 5 */
+      unsigned long IDC : 1; /* bit position: 7 */
+      unsigned long res0_2 : 19; /* bit position: 8 */
+      unsigned long QC : 1; /* bit position: 27 */
+      unsigned long V : 1; /* bit position: 28 */
+      unsigned long C : 1; /* bit position: 29 */
+      unsigned long Z : 1; /* bit position: 30 */
+      unsigned long N : 1; /* bit position: 31 */
+    }; /* bitfield */
+  };
+} ARM64_FPSR_REG, *PARM64_FPSR_REG;
+
 struct _ASSEMBLY_STORAGE_MAP;
 
 typedef struct _AUX_ACCESS_DATA
@@ -409,6 +502,10 @@ enum BUS_QUERY_ID_TYPE
   BusQueryDeviceSerialNumber = 4,
   BusQueryContainerID = 5,
 };
+
+struct _CHPEV2_CPUAREA_INFO;
+
+struct _CHPEV2_PROCESS_INFO;
 
 typedef struct _CLIENT_ID
 {
@@ -958,8 +1055,8 @@ typedef struct _DISPATCHER_HEADER
               unsigned char Minimal : 1; /* bit position: 2 */
               unsigned char Reserved4 : 2; /* bit position: 3 */
               unsigned char AltSyscall : 1; /* bit position: 5 */
-              unsigned char UmsScheduled : 1; /* bit position: 6 */
-              unsigned char UmsPrimary : 1; /* bit position: 7 */
+              unsigned char Emulation : 1; /* bit position: 6 */
+              unsigned char Reserved5 : 1; /* bit position: 7 */
             }; /* bitfield */
           };
         };
@@ -998,6 +1095,43 @@ typedef struct _DMA_ADAPTER_INFO_V1
   unsigned long Flags;
   unsigned long MinimumTransferUnit;
 } DMA_ADAPTER_INFO_V1, *PDMA_ADAPTER_INFO_V1;
+
+typedef struct _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION
+{
+  enum _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_TYPE ConfigType;
+  union
+  {
+    struct
+    {
+      union _LARGE_INTEGER MinimumAddress;
+      union _LARGE_INTEGER MaximumAddress;
+    } LogicalAddressLimits;
+    struct
+    {
+      unsigned __int64 Offset;
+      unsigned long Length;
+      long __PADDING__[1];
+    } SubSection;
+    enum _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_ACCESS_TYPE HardwareAccessType;
+    unsigned __int64 Reserved[4];
+  };
+} DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION, *PDMA_COMMON_BUFFER_EXTENDED_CONFIGURATION;
+
+typedef enum _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_ACCESS_TYPE
+{
+  CommonBufferHardwareAccessReadOnly = 0,
+  CommonBufferHardwareAccessWriteOnly = 1,
+  CommonBufferHardwareAccessReadWrite = 2,
+  CommonBufferHardwareAccessMax = 3,
+} DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_ACCESS_TYPE, *PDMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_ACCESS_TYPE;
+
+typedef enum _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_TYPE
+{
+  CommonBufferConfigTypeLogicalAddressLimits = 0,
+  CommonBufferConfigTypeSubSection = 1,
+  CommonBufferConfigTypeHardwareAccessPermissions = 2,
+  CommonBufferConfigTypeMax = 3,
+} DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_TYPE, *PDMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_TYPE;
 
 struct _DMA_COMMON_BUFFER_VECTOR;
 
@@ -1050,6 +1184,7 @@ typedef struct _DMA_OPERATIONS
   void* GetCommonBufferFromVectorByIndex /* function */;
   void* FreeCommonBufferFromVector /* function */;
   void* FreeCommonBufferVector /* function */;
+  void* CreateCommonBufferFromMdl /* function */;
 } DMA_OPERATIONS, *PDMA_OPERATIONS;
 
 typedef struct _DMA_TRANSFER_INFO
@@ -1373,7 +1508,8 @@ typedef enum _FILE_INFORMATION_CLASS
   FileLinkInformationExBypassAccessCheck = 73,
   FileStorageReserveIdInformation = 74,
   FileCaseSensitiveInformationForceAccessCheck = 75,
-  FileMaximumInformation = 76,
+  FileKnownFolderInformation = 76,
+  FileMaximumInformation = 77,
 } FILE_INFORMATION_CLASS, *PFILE_INFORMATION_CLASS;
 
 typedef struct _FILE_NETWORK_OPEN_INFORMATION
@@ -2148,6 +2284,8 @@ typedef struct _IO_STATUS_BLOCK
 
 struct _IO_TIMER;
 
+struct _IORING_OBJECT;
+
 typedef struct _IRP
 {
   short Type;
@@ -2175,7 +2313,11 @@ typedef struct _IRP
   unsigned char CancelIrql;
   char ApcEnvironment;
   unsigned char AllocationFlags;
-  struct _IO_STATUS_BLOCK* UserIosb;
+  union
+  {
+    struct _IO_STATUS_BLOCK* UserIosb;
+    void* IoRingContext;
+  };
   struct _KEVENT* UserEvent;
   union
   {
@@ -2188,7 +2330,11 @@ typedef struct _IRP
           void* UserApcRoutine /* function */;
           void* IssuingProcess;
         };
-        void* UserApcContext;
+        union
+        {
+          void* UserApcContext;
+          struct _IORING_OBJECT* IoRing;
+        };
       } AsynchronousParameters;
       union _LARGE_INTEGER AllocationSize;
     };
@@ -2325,6 +2471,18 @@ typedef enum _JOBOBJECTINFOCLASS
   MaxJobObjectInfoClass = 48,
 } JOBOBJECTINFOCLASS, *PJOBOBJECTINFOCLASS;
 
+typedef struct _KAFFINITY_EX
+{
+  unsigned short Count;
+  unsigned short Size;
+  unsigned long Reserved;
+  union
+  {
+    unsigned __int64 Bitmap[1];
+    unsigned __int64 StaticBitmap[32];
+  };
+} KAFFINITY_EX, *PKAFFINITY_EX;
+
 typedef struct _KAPC
 {
   unsigned char Type;
@@ -2360,6 +2518,7 @@ typedef enum _KCONTINUE_TYPE
   KCONTINUE_LONGJUMP = 2,
   KCONTINUE_SET = 3,
   KCONTINUE_LAST = 4,
+  KCONTINUE_INVALID = 4,
 } KCONTINUE_TYPE, *PKCONTINUE_TYPE;
 
 typedef struct _KDESCRIPTOR
@@ -2509,8 +2668,6 @@ typedef enum _KINTERRUPT_POLARITY
   InterruptActiveBothTriggerHigh = 4,
 } KINTERRUPT_POLARITY, *PKINTERRUPT_POLARITY;
 
-struct _KNODE;
-
 typedef struct _KPCR
 {
   union
@@ -2573,7 +2730,7 @@ typedef struct _KPRCB
   unsigned long Number;
   unsigned __int64 RspBase;
   unsigned __int64 PrcbLock;
-  char* PriorityState;
+  union _KPRIORITY_STATE* PriorityState;
   char CpuType;
   char CpuID;
   union
@@ -2595,7 +2752,7 @@ typedef struct _KPRCB
   unsigned char LogicalProcessorsPerCore;
   unsigned __int64 TscFrequency;
   unsigned __int64 PrcbPad04[5];
-  struct _KNODE* ParentNode;
+  struct _KSCHEDULER_SUBNODE* SchedulerSubNode;
   unsigned __int64 GroupSetMember;
   unsigned char Group;
   unsigned char GroupIndex;
@@ -2657,6 +2814,8 @@ typedef struct _KPRCB
   long __PADDING__[4];
 } KPRCB, *PKPRCB;
 
+union _KPRIORITY_STATE;
+
 struct _KPROCESS;
 
 typedef struct _KPROCESSOR_STATE
@@ -2664,6 +2823,8 @@ typedef struct _KPROCESSOR_STATE
   struct _KSPECIAL_REGISTERS SpecialRegisters;
   struct _CONTEXT ContextFrame;
 } KPROCESSOR_STATE, *PKPROCESSOR_STATE;
+
+struct _KSCHEDULER_SUBNODE;
 
 typedef struct _KSPECIAL_REGISTERS
 {
@@ -2869,6 +3030,13 @@ typedef union _LARGE_INTEGER
   };
 } LARGE_INTEGER, *PLARGE_INTEGER;
 
+typedef struct _LDR_HOT_PATCH_DATA
+{
+  unsigned long Version;
+  void* PatchLoadLibrary /* function */;
+  void* PatchGetProcAddress /* function */;
+} LDR_HOT_PATCH_DATA, *PLDR_HOT_PATCH_DATA;
+
 struct _LEAP_SECOND_DATA;
 
 typedef struct _LIST_ENTRY
@@ -2934,6 +3102,15 @@ typedef struct _MDL
   unsigned long ByteCount;
   unsigned long ByteOffset;
 } MDL, *PMDL;
+
+typedef enum _MEM_DEDICATED_ATTRIBUTE_TYPE
+{
+  MemDedicatedAttributeReadBandwidth = 0,
+  MemDedicatedAttributeReadLatency = 1,
+  MemDedicatedAttributeWriteBandwidth = 2,
+  MemDedicatedAttributeWriteLatency = 3,
+  MemDedicatedAttributeMax = 4,
+} MEM_DEDICATED_ATTRIBUTE_TYPE, *PMEM_DEDICATED_ATTRIBUTE_TYPE;
 
 typedef enum _MEMORY_CACHING_TYPE
 {
@@ -3188,7 +3365,7 @@ typedef struct _PEB
   void* ApiSetMap;
   unsigned long TlsExpansionCounter;
   unsigned char Padding2[4];
-  void* TlsBitmap;
+  struct _RTL_BITMAP* TlsBitmap;
   unsigned long TlsBitmapBits[2];
   void* ReadOnlySharedMemoryBase;
   void* SharedData;
@@ -3223,7 +3400,7 @@ typedef struct _PEB
   unsigned __int64 ActiveProcessAffinityMask;
   unsigned long GdiHandleBuffer[60];
   void* PostProcessInitRoutine /* function */;
-  void* TlsExpansionBitmap;
+  struct _RTL_BITMAP* TlsExpansionBitmap;
   unsigned long TlsExpansionBitmapBits[32];
   unsigned long SessionId;
   unsigned char Padding5[4];
@@ -3237,11 +3414,17 @@ typedef struct _PEB
   const struct _ACTIVATION_CONTEXT_DATA* SystemDefaultActivationContextData;
   struct _ASSEMBLY_STORAGE_MAP* SystemAssemblyStorageMap;
   unsigned __int64 MinimumStackCommit;
-  void* SparePointers[4];
-  unsigned long SpareUlongs[5];
+  void* SparePointers[2];
+  void* PatchLoaderData;
+  struct _CHPEV2_PROCESS_INFO* ChpeV2ProcessInfo;
+  unsigned long SpareUlongs[3];
+  unsigned short ActiveCodePage;
+  unsigned short OemCodePage;
+  unsigned short UseCaseMapping;
+  unsigned short UnusedNlsField;
   void* WerRegistrationData;
   void* WerShipAssertPtr;
-  void* pUnused;
+  void* EcCodeBitMap;
   void* pImageHeaderHash;
   union
   {
@@ -3275,6 +3458,7 @@ typedef struct _PEB
     }; /* bitfield */
   };
   unsigned long NtGlobalFlag2;
+  unsigned __int64 ExtendedFeatureDisableMask;
 } PEB, *PPEB;
 
 typedef struct _PEB_LDR_DATA
@@ -3396,7 +3580,10 @@ typedef enum _PS_ATTRIBUTE_NUM
   PsAttributeDesktopAppPolicy = 25,
   PsAttributeChpe = 26,
   PsAttributeMitigationAuditOptions = 27,
-  PsAttributeMax = 28,
+  PsAttributeMachineType = 28,
+  PsAttributeComponentFilter = 29,
+  PsAttributeEnableOptionalXStateFeatures = 30,
+  PsAttributeMax = 31,
 } PS_ATTRIBUTE_NUM, *PPS_ATTRIBUTE_NUM;
 
 enum PS_CREATE_STATE
@@ -3452,7 +3639,10 @@ typedef enum _PS_MITIGATION_OPTION
   PS_MITIGATION_OPTION_CET_USER_SHADOW_STACKS = 31,
   PS_MITIGATION_OPTION_USER_CET_SET_CONTEXT_IP_VALIDATION = 32,
   PS_MITIGATION_OPTION_BLOCK_NON_CET_BINARIES = 33,
+  PS_MITIGATION_OPTION_XTENDED_CONTROL_FLOW_GUARD = 34,
+  PS_MITIGATION_OPTION_POINTER_AUTH_USER_IP = 35,
   PS_MITIGATION_OPTION_CET_DYNAMIC_APIS_OUT_OF_PROC_ONLY = 36,
+  PS_MITIGATION_OPTION_REDIRECTION_TRUST = 37,
 } PS_MITIGATION_OPTION, *PPS_MITIGATION_OPTION;
 
 typedef struct _PS_MITIGATION_OPTIONS_MAP
@@ -3510,6 +3700,18 @@ typedef struct _QUAD
     double DoNotUseThisField;
   };
 } QUAD, *PQUAD;
+
+typedef enum _REFS_STREAM_SNAPSHOT_OPERATION
+{
+  REFS_STREAM_SNAPSHOT_OPERATION_INVALID = 0,
+  REFS_STREAM_SNAPSHOT_OPERATION_CREATE = 1,
+  REFS_STREAM_SNAPSHOT_OPERATION_LIST = 2,
+  REFS_STREAM_SNAPSHOT_OPERATION_QUERY_DELTAS = 3,
+  REFS_STREAM_SNAPSHOT_OPERATION_REVERT = 4,
+  REFS_STREAM_SNAPSHOT_OPERATION_SET_SHADOW_BTREE = 5,
+  REFS_STREAM_SNAPSHOT_OPERATION_CLEAR_SHADOW_BTREE = 6,
+  REFS_STREAM_SNAPSHOT_OPERATION_MAX = 6,
+} REFS_STREAM_SNAPSHOT_OPERATION, *PREFS_STREAM_SNAPSHOT_OPERATION;
 
 typedef enum _REG_NOTIFY_CLASS
 {
@@ -3573,7 +3775,9 @@ typedef enum _REG_NOTIFY_CLASS
   RegNtPostReplaceKey = 46,
   RegNtPreQueryKeyName = 47,
   RegNtPostQueryKeyName = 48,
-  MaxRegNtNotifyClass = 49,
+  RegNtPreSaveMergedKey = 49,
+  RegNtPostSaveMergedKey = 50,
+  MaxRegNtNotifyClass = 51,
 } REG_NOTIFY_CLASS, *PREG_NOTIFY_CLASS;
 
 enum ReplacesCorHdrNumericDefines
@@ -3715,6 +3919,7 @@ typedef struct _RTL_DYNAMIC_HASH_TABLE_ENUMERATOR
 typedef enum _RTL_FEATURE_CONFIGURATION_PRIORITY
 {
   FeatureConfigurationPriorityImageDefault = 0,
+  FeatureConfigurationPriorityEnrollment = 2,
   FeatureConfigurationPriorityService = 4,
   FeatureConfigurationPriorityUser = 8,
   FeatureConfigurationPriorityUserPolicy = 10,
@@ -4126,9 +4331,22 @@ typedef enum _SYSTEM_INFORMATION_CLASS
   SystemPoolLimitInformation = 223,
   SystemCodeIntegrityAddDynamicStore = 224,
   SystemCodeIntegrityClearDynamicStores = 225,
+  SystemDifPoolTrackingInformation = 226,
   SystemPoolZeroingInformation = 227,
-  MaxSystemInfoClass = 228,
+  SystemDpcWatchdogInformation = 228,
+  SystemDpcWatchdogInformation2 = 229,
+  SystemSupportedProcessorArchitectures2 = 230,
+  SystemSingleProcessorRelationshipInformation = 231,
+  SystemXfgCheckFailureInformation = 232,
+  MaxSystemInfoClass = 233,
 } SYSTEM_INFORMATION_CLASS, *PSYSTEM_INFORMATION_CLASS;
+
+typedef enum _SYSTEM_POOL_LIMIT_MEM_TYPE
+{
+  SysPlMemPaged = 0,
+  SysPlMemNonPaged = 1,
+  SysPlMemTypeMax = 2,
+} SYSTEM_POOL_LIMIT_MEM_TYPE, *PSYSTEM_POOL_LIMIT_MEM_TYPE;
 
 typedef enum _SYSTEM_POWER_STATE
 {
@@ -4264,8 +4482,8 @@ typedef struct _TEB
   unsigned __int64 ReservedForCodeCoverage;
   void* ThreadPoolData;
   void** TlsExpansionSlots;
-  void* DeallocationBStore;
-  void* BStoreLimit;
+  struct _CHPEV2_CPUAREA_INFO* ChpeV2CpuAreaInfo;
+  void* Unused;
   unsigned long MuiGeneration;
   unsigned long IsImpersonating;
   void* NlsCache;
@@ -4304,7 +4522,7 @@ typedef struct _TEB
       unsigned short LoadOwner : 1; /* bit position: 12 */
       unsigned short LoaderWorker : 1; /* bit position: 13 */
       unsigned short SkipLoaderInit : 1; /* bit position: 14 */
-      unsigned short SpareSameTebBits : 1; /* bit position: 15 */
+      unsigned short SkipFileAPIBrokering : 1; /* bit position: 15 */
     }; /* bitfield */
   };
   void* TxnScopeEnterCallback;
@@ -4316,6 +4534,10 @@ typedef struct _TEB
   void* ReservedForWdf;
   unsigned __int64 ReservedForCrt;
   struct _GUID EffectiveContainerId;
+  unsigned __int64 LastSleepCounter;
+  unsigned long SpinCallCount;
+  unsigned char Padding8[4];
+  unsigned __int64 ExtendedFeatureDisableMask;
 } TEB, *PTEB;
 
 typedef struct _TEB_ACTIVE_FRAME
@@ -4458,10 +4680,11 @@ typedef enum _VRF_TRIAGE_CONTEXT
   VRF_TRIAGE_CONTEXT_DEFAULT = 1,
   VRF_TRIAGE_CONTEXT_DEVELOPMENT = 1,
   VRF_TRIAGE_CONTEXT_CERTIFICATION = 2,
-  VRF_TRIAGE_CONTEXT_FLIGHT_TARGETED = 3,
-  VRF_TRIAGE_CONTEXT_FLIGHT_DIAGNOSTICS = 4,
-  VRF_TRIAGE_CONTEXT_FLIGHT_MONITORING = 5,
-  NUM_VRF_TRIAGE_CONTEXTS = 6,
+  VRF_TRIAGE_CONTEXT_CERTIFICATION_STRICT = 3,
+  VRF_TRIAGE_CONTEXT_FLIGHT_TARGETED = 4,
+  VRF_TRIAGE_CONTEXT_FLIGHT_DIAGNOSTICS = 5,
+  VRF_TRIAGE_CONTEXT_FLIGHT_MONITORING = 6,
+  NUM_VRF_TRIAGE_CONTEXTS = 7,
 } VRF_TRIAGE_CONTEXT, *PVRF_TRIAGE_CONTEXT;
 
 typedef struct _WAIT_CONTEXT_BLOCK
@@ -4587,7 +4810,8 @@ typedef union _WHEA_ERROR_PACKET_FLAGS
       unsigned long PlatformDirectedOffline : 1; /* bit position: 5 */
       unsigned long AddressTranslationRequired : 1; /* bit position: 6 */
       unsigned long AddressTranslationCompleted : 1; /* bit position: 7 */
-      unsigned long Reserved2 : 24; /* bit position: 8 */
+      unsigned long RecoveryOptional : 1; /* bit position: 8 */
+      unsigned long Reserved2 : 23; /* bit position: 9 */
     }; /* bitfield */
     unsigned long AsULONG;
   };
@@ -4636,7 +4860,15 @@ typedef struct _WHEA_ERROR_RECORD_HEADER
   unsigned __int64 RecordId;
   union _WHEA_ERROR_RECORD_HEADER_FLAGS Flags;
   union _WHEA_PERSISTENCE_INFO PersistenceInfo;
-  unsigned char Reserved[12];
+  union
+  {
+    struct
+    {
+      unsigned long OsBuildNumber;
+      unsigned char Reserved2[8];
+    };
+    unsigned char Reserved[12];
+  };
 } WHEA_ERROR_RECORD_HEADER, *PWHEA_ERROR_RECORD_HEADER;
 
 typedef union _WHEA_ERROR_RECORD_HEADER_FLAGS
@@ -4651,7 +4883,10 @@ typedef union _WHEA_ERROR_RECORD_HEADER_FLAGS
       unsigned long DeviceDriver : 1; /* bit position: 3 */
       unsigned long CriticalEvent : 1; /* bit position: 4 */
       unsigned long PersistPfn : 1; /* bit position: 5 */
-      unsigned long Reserved : 26; /* bit position: 6 */
+      unsigned long SectionsTruncated : 1; /* bit position: 6 */
+      unsigned long RecoveryInProgress : 1; /* bit position: 7 */
+      unsigned long Throttle : 1; /* bit position: 8 */
+      unsigned long Reserved : 23; /* bit position: 9 */
     }; /* bitfield */
     unsigned long AsULONG;
   };
@@ -4699,7 +4934,8 @@ typedef union _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR_FLAGS
       unsigned long ResourceNotAvailable : 1; /* bit position: 4 */
       unsigned long LatentError : 1; /* bit position: 5 */
       unsigned long Propagated : 1; /* bit position: 6 */
-      unsigned long Reserved : 25; /* bit position: 7 */
+      unsigned long FruTextByPlugin : 1; /* bit position: 7 */
+      unsigned long Reserved : 24; /* bit position: 8 */
     }; /* bitfield */
     unsigned long AsULONG;
   };
@@ -4869,6 +5105,7 @@ typedef enum _WHEA_EVENT_LOG_ENTRY_ID
   WheaEventLogEntryIdCreateGenericRecord = -2147483627,
   WheaEventLogEntryIdErrorRecord = -2147483626,
   WheaEventLogEntryIdErrorRecordLimit = -2147483625,
+  WheaEventLogEntryIdAerNotGrantedToOs = -2147483624,
   WheaEventLogEntryIdErrSrcArrayInvalid = -2147483623,
   WheaEventLogEntryIdAcpiTimeOut = -2147483622,
   WheaEventLogCmciRestart = -2147483621,
@@ -4894,6 +5131,27 @@ typedef enum _WHEA_EVENT_LOG_ENTRY_ID
   WheaEventLogEntryIdSELBugCheckInfo = -2147483601,
   WheaEventLogEntryIdErrDimmInfoMismatch = -2147483600,
   WheaEventLogEntryIdeDpcEnabled = -2147483599,
+  WheaEventLogEntryPageOfflineDone = -2147483598,
+  WheaEventLogEntryPageOfflinePendMax = -2147483597,
+  WheaEventLogEntryIdBadPageLimitReached = -2147483596,
+  WheaEventLogEntrySrarDetail = -2147483595,
+  WheaEventLogEntryEarlyError = -2147483594,
+  WheaEventLogEntryIdPcieOverrideInfo = -2147483593,
+  WheaEventLogEntryIdReadPcieOverridesErr = -2147483592,
+  WheaEventLogEntryIdPcieConfigInfo = -2147483591,
+  WheaEventLogEntryIdPcieSummaryFailed = -2147483584,
+  WheaEventLogEntryIdThrottleRegCorrupt = -2147483583,
+  WheaEventLogEntryIdThrottleAddErrSrcFailed = -2147483582,
+  WheaEventLogEntryIdThrottleRegDataIgnored = -2147483581,
+  WheaEventLogEntryIdEnableKeyNotifFailed = -2147483580,
+  WheaEventLogEntryIdKeyNotificationFailed = -2147483579,
+  WheaEventLogEntryIdPcieRemoveDevice = -2147483578,
+  WheaEventLogEntryIdPcieAddDevice = -2147483577,
+  WheaEventLogEntryIdPcieSpuriousErrSource = -2147483576,
+  WheaEventLogEntryIdMemoryAddDevice = -2147483575,
+  WheaEventLogEntryIdMemoryRemoveDevice = -2147483574,
+  WheaEventLogEntryIdMemorySummaryFailed = -2147483573,
+  WheaEventLogEntryIdPshedPiTraceLog = -2147221488,
 } WHEA_EVENT_LOG_ENTRY_ID, *PWHEA_EVENT_LOG_ENTRY_ID;
 
 typedef enum _WHEA_EVENT_LOG_ENTRY_TYPE
@@ -5242,6 +5500,7 @@ typedef struct _XSTATE_CONFIGURATION
     {
       unsigned long OptimizedSave : 1; /* bit position: 0 */
       unsigned long CompactionEnabled : 1; /* bit position: 1 */
+      unsigned long ExtendedFeatureDisable : 1; /* bit position: 2 */
     }; /* bitfield */
   };
   struct _XSTATE_FEATURE Features[64];
@@ -5250,6 +5509,9 @@ typedef struct _XSTATE_CONFIGURATION
   unsigned long AllFeatureSize;
   unsigned long AllFeatures[64];
   unsigned __int64 EnabledUserVisibleSupervisorFeatures;
+  unsigned __int64 ExtendedFeatureDisableFeatures;
+  unsigned long AllNonLargeFeatureSize;
+  unsigned long Spare;
 } XSTATE_CONFIGURATION, *PXSTATE_CONFIGURATION;
 
 typedef struct _XSTATE_FEATURE
@@ -5264,6 +5526,7 @@ typedef struct _XSTATE_FEATURE
 
 _guard_check_icall_nop();
 _guard_dispatch_icall_nop();
+_guard_xfg_dispatch_icall_nop();
 ? main;
 NtProcessStartup();
 ? NtProcessStartup_AfterSecurityCookieInitialized;
@@ -5291,22 +5554,10 @@ __guard_iat_count;
 __guard_iat_table;
 __guard_longjmp_count;
 __guard_longjmp_table;
-HotPatchSpareGlobal1;
-HotPatchSpareGlobal10;
-HotPatchSpareGlobal11;
-HotPatchSpareGlobal12;
-HotPatchSpareGlobal13;
-HotPatchSpareGlobal14;
-HotPatchSpareGlobal15;
-HotPatchSpareGlobal16;
-HotPatchSpareGlobal2;
-HotPatchSpareGlobal3;
-HotPatchSpareGlobal4;
-HotPatchSpareGlobal5;
-HotPatchSpareGlobal6;
-HotPatchSpareGlobal7;
-HotPatchSpareGlobal8;
-HotPatchSpareGlobal9;
+__guard_xfg_check_icall_fptr;
+__guard_xfg_dispatch_icall_fptr;
+__guard_xfg_table_dispatch_icall_fptr;
+HotPatchSpareGlobals;
 __IMPORT_DESCRIPTOR_CSRSRV;
 __IMPORT_DESCRIPTOR_ntdll;
 _load_config_used;

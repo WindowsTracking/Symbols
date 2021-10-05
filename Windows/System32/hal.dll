@@ -1,19 +1,4 @@
 
 // Globals
 
-HotPatchSpareGlobal1;
-HotPatchSpareGlobal10;
-HotPatchSpareGlobal11;
-HotPatchSpareGlobal12;
-HotPatchSpareGlobal13;
-HotPatchSpareGlobal14;
-HotPatchSpareGlobal15;
-HotPatchSpareGlobal16;
-HotPatchSpareGlobal2;
-HotPatchSpareGlobal3;
-HotPatchSpareGlobal4;
-HotPatchSpareGlobal5;
-HotPatchSpareGlobal6;
-HotPatchSpareGlobal7;
-HotPatchSpareGlobal8;
-HotPatchSpareGlobal9;
+HotPatchSpareGlobals;

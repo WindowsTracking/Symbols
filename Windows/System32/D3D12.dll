@@ -1,5 +1,5 @@
 /*
- * PDB file: d3d12.pdb\9405CB12B59DAFEDA8AAE856A9677BF21\d3d12.pdb
+ * PDB file: d3d12.pdb\9235A0F828B1417E00DD560F7883A33A1\d3d12.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -38,6 +38,7 @@ enum D3D12_DESCRIPTOR_RANGE_FLAGS;
 enum D3D12_DESCRIPTOR_RANGE_TYPE;
 struct D3D12_DEVICE_REMOVED_EXTENDED_DATA1;
 struct D3D12_DEVICE_REMOVED_EXTENDED_DATA2;
+struct D3D12_DEVICE_REMOVED_EXTENDED_DATA3;
 struct D3D12_DEVICE_REMOVED_EXTENDED_DATA;
 struct D3D12_DISCARD_REGION;
 struct D3D12_DRED_ALLOCATION_NODE1;
@@ -46,8 +47,11 @@ enum D3D12_DRED_ALLOCATION_TYPE;
 struct D3D12_DRED_AUTO_BREADCRUMBS_OUTPUT1;
 struct D3D12_DRED_AUTO_BREADCRUMBS_OUTPUT;
 struct D3D12_DRED_BREADCRUMB_CONTEXT;
+enum D3D12_DRED_DEVICE_STATE;
 enum D3D12_DRED_FLAGS;
+enum D3D12_DRED_PAGE_FAULT_FLAGS;
 struct D3D12_DRED_PAGE_FAULT_OUTPUT1;
+struct D3D12_DRED_PAGE_FAULT_OUTPUT2;
 struct D3D12_DRED_PAGE_FAULT_OUTPUT;
 enum D3D12_DRED_VERSION;
 enum D3D12_DSV_FLAGS;
@@ -70,6 +74,7 @@ enum D3D12_LIFETIME_STATE;
 enum D3D12_LOGIC_OP;
 enum D3D12_MEASUREMENTS_ACTION;
 enum D3D12_MEMORY_POOL;
+enum D3D12_MESSAGE_CALLBACK_FLAGS;
 enum D3D12_MESSAGE_CATEGORY;
 enum D3D12_MESSAGE_ID;
 enum D3D12_MESSAGE_SEVERITY;
@@ -108,6 +113,10 @@ enum D3D12_RLDO_FLAGS;
 enum D3D12_ROOT_DESCRIPTOR_FLAGS;
 enum D3D12_ROOT_PARAMETER_TYPE;
 enum D3D12_ROOT_SIGNATURE_FLAGS;
+enum D3D12_SHADER_CACHE_CONTROL_FLAGS;
+enum D3D12_SHADER_CACHE_FLAGS;
+enum D3D12_SHADER_CACHE_KIND_FLAGS;
+enum D3D12_SHADER_CACHE_MODE;
 enum D3D12_SHADER_CACHE_SUPPORT_FLAGS;
 enum D3D12_SHADER_MIN_PRECISION_SUPPORT;
 enum D3D12_SHARED_RESOURCE_COMPATIBILITY_TIER;
@@ -184,6 +193,7 @@ enum JOB_OBJECT_NET_RATE_CONTROL_FLAGS;
 union _LARGE_INTEGER;
 struct _ldiv_t;
 struct _lldiv_t;
+enum _MACHINE_ATTRIBUTES;
 enum __MIDL_ICodeInstall_0001;
 enum __MIDL_IGetBindHandle_0001;
 enum __MIDL_IUri_0001;
@@ -391,6 +401,8 @@ enum D3D12_AUTO_BREADCRUMB_OP
   D3D12_AUTO_BREADCRUMB_OP_INITIALIZEEXTENSIONCOMMAND = 40,
   D3D12_AUTO_BREADCRUMB_OP_EXECUTEEXTENSIONCOMMAND = 41,
   D3D12_AUTO_BREADCRUMB_OP_DISPATCHMESH = 42,
+  D3D12_AUTO_BREADCRUMB_OP_ENCODEFRAME = 43,
+  D3D12_AUTO_BREADCRUMB_OP_RESOLVEENCODEROUTPUTMETADATA = 44,
 };
 
 enum D3D12_BACKGROUND_PROCESSING_MODE
@@ -580,6 +592,15 @@ struct D3D12_DEVICE_REMOVED_EXTENDED_DATA2
   struct D3D12_DRED_PAGE_FAULT_OUTPUT1 PageFaultOutput;
 };
 
+struct D3D12_DEVICE_REMOVED_EXTENDED_DATA3
+{
+  HRESULT DeviceRemovedReason;
+  struct D3D12_DRED_AUTO_BREADCRUMBS_OUTPUT1 AutoBreadcrumbsOutput;
+  struct D3D12_DRED_PAGE_FAULT_OUTPUT2 PageFaultOutput;
+  enum D3D12_DRED_DEVICE_STATE DeviceState;
+  long __PADDING__[1];
+};
+
 struct D3D12_DISCARD_REGION
 {
   unsigned int NumRects;
@@ -633,6 +654,8 @@ enum D3D12_DRED_ALLOCATION_TYPE
   D3D12_DRED_ALLOCATION_TYPE_VIDEO_MOTION_ESTIMATOR = 45,
   D3D12_DRED_ALLOCATION_TYPE_VIDEO_MOTION_VECTOR_HEAP = 46,
   D3D12_DRED_ALLOCATION_TYPE_VIDEO_EXTENSION_COMMAND = 47,
+  D3D12_DRED_ALLOCATION_TYPE_VIDEO_ENCODER = 48,
+  D3D12_DRED_ALLOCATION_TYPE_VIDEO_ENCODER_HEAP = 49,
   D3D12_DRED_ALLOCATION_TYPE_INVALID = -1,
 };
 
@@ -652,11 +675,24 @@ struct D3D12_DRED_BREADCRUMB_CONTEXT
   const wchar_t* pContextString;
 };
 
+enum D3D12_DRED_DEVICE_STATE
+{
+  D3D12_DRED_DEVICE_STATE_UNKNOWN = 0,
+  D3D12_DRED_DEVICE_STATE_HUNG = 3,
+  D3D12_DRED_DEVICE_STATE_FAULT = 6,
+  D3D12_DRED_DEVICE_STATE_PAGEFAULT = 7,
+};
+
 enum D3D12_DRED_FLAGS
 {
   D3D12_DRED_FLAG_NONE = 0,
   D3D12_DRED_FLAG_FORCE_ENABLE = 1,
   D3D12_DRED_FLAG_DISABLE_AUTOBREADCRUMBS = 2,
+};
+
+enum D3D12_DRED_PAGE_FAULT_FLAGS
+{
+  D3D12_DRED_PAGE_FAULT_FLAGS_NONE = 0,
 };
 
 struct D3D12_DRED_PAGE_FAULT_OUTPUT
@@ -673,11 +709,21 @@ struct D3D12_DRED_PAGE_FAULT_OUTPUT1
   const struct D3D12_DRED_ALLOCATION_NODE1* pHeadRecentFreedAllocationNode;
 };
 
+struct D3D12_DRED_PAGE_FAULT_OUTPUT2
+{
+  unsigned __int64 PageFaultVA;
+  const struct D3D12_DRED_ALLOCATION_NODE1* pHeadExistingAllocationNode;
+  const struct D3D12_DRED_ALLOCATION_NODE1* pHeadRecentFreedAllocationNode;
+  enum D3D12_DRED_PAGE_FAULT_FLAGS PageFaultFlags;
+  long __PADDING__[1];
+};
+
 enum D3D12_DRED_VERSION
 {
   D3D12_DRED_VERSION_1_0 = 1,
   D3D12_DRED_VERSION_1_1 = 2,
   D3D12_DRED_VERSION_1_2 = 3,
+  D3D12_DRED_VERSION_1_3 = 4,
 };
 
 enum D3D12_DSV_FLAGS
@@ -909,6 +955,12 @@ enum D3D12_MEMORY_POOL
   D3D12_MEMORY_POOL_UNKNOWN = 0,
   D3D12_MEMORY_POOL_L0 = 1,
   D3D12_MEMORY_POOL_L1 = 2,
+};
+
+enum D3D12_MESSAGE_CALLBACK_FLAGS
+{
+  D3D12_MESSAGE_CALLBACK_FLAG_NONE = 0,
+  D3D12_MESSAGE_CALLBACK_IGNORE_FILTERS = 1,
 };
 
 enum D3D12_MESSAGE_CATEGORY
@@ -1771,7 +1823,55 @@ enum D3D12_MESSAGE_ID
   D3D12_MESSAGE_ID_CREATE_ROOT_SIGNATURE_UNBOUNDED_STATIC_DESCRIPTORS = 1277,
   D3D12_MESSAGE_ID_CREATEAMPLIFICATIONSHADER_INVALIDSHADERBYTECODE = 1278,
   D3D12_MESSAGE_ID_CREATEAMPLIFICATIONSHADER_OUTOFMEMORY = 1279,
-  D3D12_MESSAGE_ID_D3D12_MESSAGES_END = 1280,
+  D3D12_MESSAGE_ID_CREATE_SHADERCACHESESSION = 1280,
+  D3D12_MESSAGE_ID_LIVE_SHADERCACHESESSION = 1281,
+  D3D12_MESSAGE_ID_DESTROY_SHADERCACHESESSION = 1282,
+  D3D12_MESSAGE_ID_CREATESHADERCACHESESSION_INVALIDARGS = 1283,
+  D3D12_MESSAGE_ID_CREATESHADERCACHESESSION_DISABLED = 1284,
+  D3D12_MESSAGE_ID_CREATESHADERCACHESESSION_ALREADYOPEN = 1285,
+  D3D12_MESSAGE_ID_SHADERCACHECONTROL_DEVELOPERMODE = 1286,
+  D3D12_MESSAGE_ID_SHADERCACHECONTROL_INVALIDFLAGS = 1287,
+  D3D12_MESSAGE_ID_SHADERCACHECONTROL_STATEALREADYSET = 1288,
+  D3D12_MESSAGE_ID_SHADERCACHECONTROL_IGNOREDFLAG = 1289,
+  D3D12_MESSAGE_ID_SHADERCACHESESSION_STOREVALUE_ALREADYPRESENT = 1290,
+  D3D12_MESSAGE_ID_SHADERCACHESESSION_STOREVALUE_HASHCOLLISION = 1291,
+  D3D12_MESSAGE_ID_SHADERCACHESESSION_STOREVALUE_CACHEFULL = 1292,
+  D3D12_MESSAGE_ID_SHADERCACHESESSION_FINDVALUE_NOTFOUND = 1293,
+  D3D12_MESSAGE_ID_SHADERCACHESESSION_CORRUPT = 1294,
+  D3D12_MESSAGE_ID_SHADERCACHESESSION_DISABLED = 1295,
+  D3D12_MESSAGE_ID_OVERSIZED_DISPATCH = 1296,
+  D3D12_MESSAGE_ID_CREATE_VIDEOENCODER = 1297,
+  D3D12_MESSAGE_ID_LIVE_VIDEOENCODER = 1298,
+  D3D12_MESSAGE_ID_DESTROY_VIDEOENCODER = 1299,
+  D3D12_MESSAGE_ID_CREATE_VIDEOENCODERHEAP = 1300,
+  D3D12_MESSAGE_ID_LIVE_VIDEOENCODERHEAP = 1301,
+  D3D12_MESSAGE_ID_DESTROY_VIDEOENCODERHEAP = 1302,
+  D3D12_MESSAGE_ID_COPYTEXTUREREGION_MISMATCH_ENCODE_REFERENCE_ONLY_FLAG = 1303,
+  D3D12_MESSAGE_ID_COPYRESOURCE_MISMATCH_ENCODE_REFERENCE_ONLY_FLAG = 1304,
+  D3D12_MESSAGE_ID_ENCODE_FRAME_INVALID_PARAMETERS = 1305,
+  D3D12_MESSAGE_ID_ENCODE_FRAME_UNSUPPORTED_PARAMETERS = 1306,
+  D3D12_MESSAGE_ID_RESOLVE_ENCODER_OUTPUT_METADATA_INVALID_PARAMETERS = 1307,
+  D3D12_MESSAGE_ID_RESOLVE_ENCODER_OUTPUT_METADATA_UNSUPPORTED_PARAMETERS = 1308,
+  D3D12_MESSAGE_ID_CREATE_VIDEO_ENCODER_INVALID_PARAMETERS = 1309,
+  D3D12_MESSAGE_ID_CREATE_VIDEO_ENCODER_UNSUPPORTED_PARAMETERS = 1310,
+  D3D12_MESSAGE_ID_CREATE_VIDEO_ENCODER_HEAP_INVALID_PARAMETERS = 1311,
+  D3D12_MESSAGE_ID_CREATE_VIDEO_ENCODER_HEAP_UNSUPPORTED_PARAMETERS = 1312,
+  D3D12_MESSAGE_ID_CREATECOMMANDLIST_NULL_COMMANDALLOCATOR = 1313,
+  D3D12_MESSAGE_ID_CLEAR_UNORDERED_ACCESS_VIEW_INVALID_DESCRIPTOR_HANDLE = 1314,
+  D3D12_MESSAGE_ID_DESCRIPTOR_HEAP_NOT_SHADER_VISIBLE = 1315,
+  D3D12_MESSAGE_ID_CREATEBLENDSTATE_BLENDOP_WARNING = 1316,
+  D3D12_MESSAGE_ID_CREATEBLENDSTATE_BLENDOPALPHA_WARNING = 1317,
+  D3D12_MESSAGE_ID_WRITE_COMBINE_PERFORMANCE_WARNING = 1318,
+  D3D12_MESSAGE_ID_RESOLVE_QUERY_INVALID_QUERY_STATE = 1319,
+  D3D12_MESSAGE_ID_SETPRIVATEDATA_NO_ACCESS = 1320,
+  D3D12_MESSAGE_ID_COMMAND_LIST_STATIC_DESCRIPTOR_SAMPLER_MODE_MISMATCH = 1321,
+  D3D12_MESSAGE_ID_GETCOPYABLEFOOTPRINTS_UNSUPPORTED_BUFFER_WIDTH = 1322,
+  D3D12_MESSAGE_ID_CREATEMESHSHADER_TOPOLOGY_MISMATCH = 1323,
+  D3D12_MESSAGE_ID_VRS_SUM_COMBINER_REQUIRES_CAPABILITY = 1324,
+  D3D12_MESSAGE_ID_SETTING_SHADING_RATE_FROM_MS_REQUIRES_CAPABILITY = 1325,
+  D3D12_MESSAGE_ID_SHADERCACHESESSION_SHADERCACHEDELETE_NOTSUPPORTED = 1326,
+  D3D12_MESSAGE_ID_SHADERCACHECONTROL_SHADERCACHECLEAR_NOTSUPPORTED = 1327,
+  D3D12_MESSAGE_ID_D3D12_MESSAGES_END = 1328,
 };
 
 enum D3D12_MESSAGE_SEVERITY
@@ -1873,6 +1973,7 @@ enum D3D12_QUERY_TYPE
   D3D12_QUERY_TYPE_SO_STATISTICS_STREAM2 = 6,
   D3D12_QUERY_TYPE_SO_STATISTICS_STREAM3 = 7,
   D3D12_QUERY_TYPE_VIDEO_DECODE_STATISTICS = 8,
+  D3D12_QUERY_TYPE_PIPELINE_STATISTICS1 = 10,
 };
 
 struct D3D12_RANGE
@@ -2036,6 +2137,7 @@ enum D3D12_RESOURCE_FLAGS
   D3D12_RESOURCE_FLAG_ALLOW_CROSS_ADAPTER = 16,
   D3D12_RESOURCE_FLAG_ALLOW_SIMULTANEOUS_ACCESS = 32,
   D3D12_RESOURCE_FLAG_VIDEO_DECODE_REFERENCE_ONLY = 64,
+  D3D12_RESOURCE_FLAG_VIDEO_ENCODE_REFERENCE_ONLY = 128,
 };
 
 enum D3D12_RESOURCE_STATES
@@ -2058,6 +2160,7 @@ enum D3D12_RESOURCE_STATES
   D3D12_RESOURCE_STATE_RAYTRACING_ACCELERATION_STRUCTURE = 0x400000,
   D3D12_RESOURCE_STATE_SHADING_RATE_SOURCE = 0x1000000,
   D3D12_RESOURCE_STATE_GENERIC_READ = 2755,
+  D3D12_RESOURCE_STATE_ALL_SHADER_RESOURCE = 192,
   D3D12_RESOURCE_STATE_PRESENT = 0,
   D3D12_RESOURCE_STATE_PREDICATION = 512,
   D3D12_RESOURCE_STATE_VIDEO_DECODE_READ = 0x10000,
@@ -2120,6 +2223,36 @@ enum D3D12_ROOT_SIGNATURE_FLAGS
   D3D12_ROOT_SIGNATURE_FLAG_LOCAL_ROOT_SIGNATURE = 128,
   D3D12_ROOT_SIGNATURE_FLAG_DENY_AMPLIFICATION_SHADER_ROOT_ACCESS = 256,
   D3D12_ROOT_SIGNATURE_FLAG_DENY_MESH_SHADER_ROOT_ACCESS = 512,
+  D3D12_ROOT_SIGNATURE_FLAG_CBV_SRV_UAV_HEAP_DIRECTLY_INDEXED = 1024,
+  D3D12_ROOT_SIGNATURE_FLAG_SAMPLER_HEAP_DIRECTLY_INDEXED = 2048,
+};
+
+enum D3D12_SHADER_CACHE_CONTROL_FLAGS
+{
+  D3D12_SHADER_CACHE_CONTROL_FLAG_DISABLE = 1,
+  D3D12_SHADER_CACHE_CONTROL_FLAG_ENABLE = 2,
+  D3D12_SHADER_CACHE_CONTROL_FLAG_CLEAR = 4,
+};
+
+enum D3D12_SHADER_CACHE_FLAGS
+{
+  D3D12_SHADER_CACHE_FLAG_NONE = 0,
+  D3D12_SHADER_CACHE_FLAG_DRIVER_VERSIONED = 1,
+  D3D12_SHADER_CACHE_FLAG_USE_WORKING_DIR = 2,
+};
+
+enum D3D12_SHADER_CACHE_KIND_FLAGS
+{
+  D3D12_SHADER_CACHE_KIND_FLAG_IMPLICIT_D3D_CACHE_FOR_DRIVER = 1,
+  D3D12_SHADER_CACHE_KIND_FLAG_IMPLICIT_D3D_CONVERSIONS = 2,
+  D3D12_SHADER_CACHE_KIND_FLAG_IMPLICIT_DRIVER_MANAGED = 4,
+  D3D12_SHADER_CACHE_KIND_FLAG_APPLICATION_MANAGED = 8,
+};
+
+enum D3D12_SHADER_CACHE_MODE
+{
+  D3D12_SHADER_CACHE_MODE_MEMORY = 0,
+  D3D12_SHADER_CACHE_MODE_DISK = 1,
 };
 
 enum D3D12_SHADER_CACHE_SUPPORT_FLAGS
@@ -2129,6 +2262,9 @@ enum D3D12_SHADER_CACHE_SUPPORT_FLAGS
   D3D12_SHADER_CACHE_SUPPORT_LIBRARY = 2,
   D3D12_SHADER_CACHE_SUPPORT_AUTOMATIC_INPROC_CACHE = 4,
   D3D12_SHADER_CACHE_SUPPORT_AUTOMATIC_DISK_CACHE = 8,
+  D3D12_SHADER_CACHE_SUPPORT_DRIVER_MANAGED_CACHE = 16,
+  D3D12_SHADER_CACHE_SUPPORT_SHADER_CONTROL_CLEAR = 32,
+  D3D12_SHADER_CACHE_SUPPORT_SHADER_SESSION_DELETE = 64,
 };
 
 enum D3D12_SHADER_MIN_PRECISION_SUPPORT
@@ -2269,6 +2405,7 @@ struct D3D12_VERSIONED_DEVICE_REMOVED_EXTENDED_DATA
     struct D3D12_DEVICE_REMOVED_EXTENDED_DATA Dred_1_0;
     struct D3D12_DEVICE_REMOVED_EXTENDED_DATA1 Dred_1_1;
     struct D3D12_DEVICE_REMOVED_EXTENDED_DATA2 Dred_1_2;
+    struct D3D12_DEVICE_REMOVED_EXTENDED_DATA3 Dred_1_3;
   };
 };
 
@@ -2755,6 +2892,11 @@ typedef enum _D3D_SHADER_VARIABLE_TYPE
   D3D_SVT_MIN12INT = 55,
   D3D_SVT_MIN16INT = 56,
   D3D_SVT_MIN16UINT = 57,
+  D3D_SVT_INT16 = 58,
+  D3D_SVT_UINT16 = 59,
+  D3D_SVT_FLOAT16 = 60,
+  D3D_SVT_INT64 = 61,
+  D3D_SVT_UINT64 = 62,
   D3D10_SVT_VOID = 0,
   D3D10_SVT_BOOL = 1,
   D3D10_SVT_INT = 2,
@@ -3221,6 +3363,13 @@ typedef struct _lldiv_t
   __int64 rem;
 } lldiv_t, *Plldiv_t;
 
+typedef enum _MACHINE_ATTRIBUTES
+{
+  UserEnabled = 1,
+  KernelEnabled = 2,
+  Wow64Container = 4,
+} MACHINE_ATTRIBUTES, *PMACHINE_ATTRIBUTES;
+
 typedef enum __MIDL_ICodeInstall_0001
 {
   CIP_DISK_FULL = 0,
@@ -3446,7 +3595,8 @@ enum tagBINDSTATUS
   BINDSTATUS_RESERVED_11 = 74,
   BINDSTATUS_RESERVED_12 = 75,
   BINDSTATUS_RESERVED_13 = 76,
-  BINDSTATUS_LAST_PRIVATE = 76,
+  BINDSTATUS_RESERVED_14 = 77,
+  BINDSTATUS_LAST_PRIVATE = 77,
 };
 
 enum tagBINDSTRING
@@ -4564,14 +4714,11 @@ typedef enum __vc_attributes::threadingAttribute::threading_e
 
 // Functions
 
-? <lambda_0374aa0a5d1201b2358c6bce99369c58>::<lambda_invoker_cdecl>;
-private: static long __cdecl <lambda_0ae89f7ca77040da3af7dd229dfecfb4>::<lambda_invoker_cdecl>(struct __WIL__WNF_STATE_NAME,unsigned long,struct __WIL__WNF_TYPE_ID *,void *,void const *,unsigned long);
-? <lambda_0e2afb1a5402ddc3341b3d19790d77c9>::<lambda_invoker_cdecl>;
-? <lambda_0e2afb1a5402ddc3341b3d19790d77c9>::operator();
+private: static void __cdecl <lambda_0374aa0a5d1201b2358c6bce99369c58>::<lambda_invoker_cdecl>(struct _TP_CALLBACK_INSTANCE *,void *,struct _TP_TIMER *);
 private: static void __cdecl <lambda_152aa9d2a3a0648fa2fa7fcef514b376>::<lambda_invoker_cdecl>(void *);
 private: static void __cdecl <lambda_1ad7ecfab602a777ecf020873216a663>::<lambda_invoker_cdecl>(void *);
 ? <lambda_3b4e2785cfff8fc013fb27168f2c22f4>::<lambda_invoker_cdecl>;
-? <lambda_5035b992506f4af81a770c5842624510>::<lambda_invoker_cdecl>;
+private: static void __cdecl <lambda_5035b992506f4af81a770c5842624510>::<lambda_invoker_cdecl>(struct _TP_CALLBACK_INSTANCE *,void *,struct _TP_TIMER *);
 ? <lambda_53d4fc3e4f2d9639247c59f1e80b6fe3>::<lambda_invoker_cdecl>;
 ? <lambda_592026d93b4dff494e3f6b51611d5aa8>::<lambda_invoker_cdecl>;
 ? <lambda_5b70ce7270e9591d2718a9e255a81919>::<lambda_invoker_cdecl>;
@@ -4586,29 +4733,39 @@ private: static void __cdecl <lambda_aa194dc0bf891154933407eb98fb868a>::<lambda_
 ? <lambda_b933a002b4095a0049bd4de21950d1d4>::<lambda_invoker_cdecl>;
 ? <lambda_b9d9a2dd468e4a8926358314d0490c52>::<lambda_invoker_cdecl>;
 ? <lambda_ce2fa818233d6f203a84eeec7104cce7>::<lambda_invoker_cdecl>;
-? <lambda_d51448ba32f8ef42e59400edd4566183>::<lambda_invoker_cdecl>;
+private: static void __cdecl <lambda_d51448ba32f8ef42e59400edd4566183>::<lambda_invoker_cdecl>(struct _TP_CALLBACK_INSTANCE *,void *,struct _TP_TIMER *);
+? <lambda_e6c3da85a4c11a01549e795c6dc31dbc>::<lambda_invoker_cdecl>;
+? <lambda_e6c3da85a4c11a01549e795c6dc31dbc>::operator();
 private: static void __cdecl <lambda_fee8cea507d2413a58be13acfb66740a>::<lambda_invoker_cdecl>(void *);
+? `AppmodelUnlockLoader::GetProcAddresses'::`1'::catch$1;
 ? `CDelegatingUseCountedObject<NOutermost::CDeviceChild>::CDelegatingUseCountedObject<NOutermost::CDeviceChild>'::`1'::dtor$0;
 ? `CDelegatingUseCountedObject<NOutermost::CDeviceChild>::CDelegatingUseCountedObject<NOutermost::CDeviceChild>'::`1'::dtor$1;
 ? `CDelegatingUseCountedObject<NOutermost::CDeviceChild>::CreateInstance'::`1'::dtor$0;
-? `CModule::D3DCoreLoadLibraryW'::`1'::catch$28;
+? `CModule::D3DCoreLoadLibraryW'::`1'::catch$13;
 ? `CModule::D3DCoreLoadLibraryW'::`1'::dtor$0;
-? `CModule::RedistLoadLibraryW'::`1'::catch$31;
+? `CModule::RedistLoadLibraryW'::`1'::catch$13;
 ? `CModule::RedistLoadLibraryW'::`1'::dtor$0;
-? `D3D12CreateLayeredDevice'::`1'::catch$38;
-? `D3D12CreateLayeredDevice'::`1'::catch$39;
+? `D3D12CreateLayeredDevice'::`1'::catch$27;
+? `D3D12CreateLayeredDevice'::`1'::catch$28;
 ? `D3D12CreateLayeredDevice'::`1'::dtor$0;
-? `D3D12CreateLayeredDevice'::`1'::dtor$7;
+? `D3D12CreateLayeredDevice'::`1'::dtor$10;
+? `D3D12CreateLayeredDevice'::`1'::dtor$14;
+? `D3D12CreateLayeredDevice'::`1'::dtor$3;
+? `D3D12CreateLayeredDevice'::`1'::dtor$8;
+? `D3D12CreateLayeredDevice'::`1'::dtor$9;
 ? `D3D12GetDebugInterfaceImpl'::`1'::catch$0;
 ? `D3D12GetDebugInterfaceImpl'::`1'::catch$1;
 ? `D3D12GetDependentLayers'::`1'::catch$0;
-? `D3D12GetInterfaceInternal'::`1'::catch$2;
 ? `D3D12GetInterfaceInternal'::`1'::catch$3;
+? `D3D12GetInterfaceInternal'::`1'::catch$4;
 ? `D3D12GetInterfaceInternal'::`1'::dtor$0;
 ? `D3D12GetLayeredDeviceSize'::`1'::catch$0;
 ? `dllmain_crt_process_attach'::`1'::fin$0;
 ? `dllmain_crt_process_detach'::`1'::fin$0;
+? `dllmain_crt_process_detach'::`1'::fin$1;
 ? `dllmain_dispatch'::`1'::filt$0;
+? `dynamic atexit destructor for 'AppmodelUnlockLoader::s_this'';
+? `dynamic atexit destructor for 'ExplicitDelayLoaderBase::g_loaderLock'';
 ? `dynamic atexit destructor for 'g_CS_AllocBitMap'';
 ? `dynamic atexit destructor for 'g_CS_InitService'';
 ? `dynamic atexit destructor for 'g_CS_TransportBitMap'';
@@ -4620,6 +4777,7 @@ private: static void __cdecl <lambda_fee8cea507d2413a58be13acfb66740a>::<lambda_
 ? `dynamic atexit destructor for 'g_Telemetry'';
 ? `dynamic atexit destructor for 'gBuffer'';
 ? `dynamic atexit destructor for 'ThreadList'';
+? `dynamic initializer for 'ExplicitDelayLoaderBase::g_loaderLock'';
 ? `dynamic initializer for 'g_CS_AllocBitMap'';
 ? `dynamic initializer for 'g_CS_InitService'';
 ? `dynamic initializer for 'g_CS_TransportBitMap'';
@@ -4632,26 +4790,22 @@ private: static void __cdecl <lambda_fee8cea507d2413a58be13acfb66740a>::<lambda_
 ? `dynamic initializer for 'gBuffer'';
 ? `dynamic initializer for 'ThreadList'';
 ? `DynamicBitset::DynamicBitset'::`1'::dtor$0;
-? `NOutermost::CDevice::CreateLayeredChild'::`1'::catch$63;
-? `NOutermost::CDevice::CreateLayeredChild'::`1'::catch$64;
+? `ExplicitDelayLoaderBase::LoadModule'::`1'::dtor$0;
+? `NOutermost::CDevice::CreateLayeredChild'::`1'::catch$24;
+? `NOutermost::CDevice::CreateLayeredChild'::`1'::catch$25;
 ? `NOutermost::CDevice::CreateLayeredChild'::`1'::dtor$0;
 ? `NOutermost::CDevice::CreateLayeredChild'::`1'::dtor$1;
-? `NOutermost::CDevice::CreateLayeredChild'::`1'::dtor$21;
-? `NOutermost::CDevice::CreateLayeredChild'::`1'::dtor$22;
-? `NOutermost::CDevice::CreateLayeredChild'::`1'::dtor$23;
-? `NOutermost::CDevice::CreateLayeredChild'::`1'::dtor$8;
-? `NOutermost::CDevice::FinalConstruct'::`1'::dtor$0;
-? `NOutermost::CDeviceChild::LUCCompleteLayerConstruction'::`1'::catch$0;
+? `NOutermost::CDevice::CreateLayeredChild'::`1'::dtor$10;
+? `NOutermost::CDevice::CreateLayeredChild'::`1'::dtor$11;
+? `NOutermost::CDevice::CreateLayeredChild'::`1'::dtor$4;
+? `NOutermost::CDevice::CreateLayeredChild'::`1'::dtor$9;
+? `NOutermost::CDeviceChild::LUCCompleteLayerConstruction'::`1'::catch$2;
 ? `PEvtInitService'::`1'::dtor$0;
-? `std::list<PIXEventsThreadInfo,std::allocator<PIXEventsThreadInfo> >::emplace_back<>'::`1'::dtor$4;
-? `std::vector<char,std::allocator<char> >::_Resize_reallocate<std::_Value_init_tag>'::`1'::catch$50;
-? `std::vector<unsigned int,std::allocator<unsigned int> >::_Resize_reallocate<unsigned int>'::`1'::catch$28;
-? `std::vector<unsigned short,std::allocator<unsigned short> >::_Resize_reallocate<std::_Value_init_tag>'::`1'::catch$24;
-? `TComObject<NOutermost::CDevice>::TComObject<NOutermost::CDevice>'::`1'::dtor$0;
-? `TComObject<NOutermost::CDevice>::TComObject<NOutermost::CDevice>'::`1'::dtor$1;
-? `TComObject<NOutermost::CDevice>::TComObject<NOutermost::CDevice>'::`1'::dtor$2;
-? `wil::details::FeatureStateManager::SubscribeToEnabledStateChanges'::`1'::dtor$0;
-? `wil::details::FeatureStateManager::SubscribeToUsageFlush'::`1'::dtor$0;
+? `std::vector<char,std::allocator<char> >::_Resize_reallocate<std::_Value_init_tag>'::`1'::catch$2;
+? `std::vector<unsigned int,std::allocator<unsigned int> >::_Resize_reallocate<unsigned int>'::`1'::catch$5;
+? `std::vector<unsigned short,std::allocator<unsigned short> >::_Resize_reallocate<std::_Value_init_tag>'::`1'::catch$2;
+? `wil::details::WilApiImpl_SubscribeFeatureStateChangeNotification'::`1'::dtor$0;
+? `wil::details::WilApiImpl_SubscribeFeatureStateChangeNotification'::`1'::dtor$4;
 ? `wil::details_abi::FeatureStateData::ProcessShutdown'::`1'::dtor$0;
 ? `wil::details_abi::FeatureStateData::RecordUsage'::`1'::dtor$0;
 ? `wil::details_abi::ProcessLocalStorageData<wil::details_abi::FeatureStateData>::Acquire'::`1'::dtor$0;
@@ -4670,21 +4824,25 @@ __acrt_uninitialize();
 __acrt_uninitialize_critical();
 ? AddIndexEntry;
 _alloca_probe();
+private: static long __cdecl AppmodelUnlockLoader::GetProcAddresses(struct HINSTANCE__ *);
+public: static long __cdecl AppmodelUnlockLoader::IsDeveloperModeEnabled(int *);
 atexit();
 struct IUnknown * __cdecl ATL::AtlComPtrAssign(struct IUnknown * *,struct IUnknown *);
-? ATL::AtlInternalQueryInterface;
 public: static long __cdecl ATL::CComObjectRootBase::_Delegate(void *,struct _GUID const &,void * *,unsigned __int64);
-public: __cdecl ATL::CComPtr<struct ID3D12CoreModule>::~CComPtr<struct ID3D12CoreModule>(void);
 public: __cdecl ATL::CComPtr<struct ID3D12Device>::~CComPtr<struct ID3D12Device>(void);
 public: __cdecl ATL::CComPtr<struct ID3D12SDKConfiguration>::~CComPtr<struct ID3D12SDKConfiguration>(void);
+public: __cdecl ATL::CComPtrBase<struct ID3D12Device>::~CComPtrBase<struct ID3D12Device>(void);
+public: __cdecl ATL::CComPtrBase<struct ID3D12LayeredDevice>::~CComPtrBase<struct ID3D12LayeredDevice>(void);
+public: __cdecl ATL::CComPtrBase<struct ID3D12LayeredUseCounted>::~CComPtrBase<struct ID3D12LayeredUseCounted>(void);
+public: __cdecl ATL::CComPtrBase<struct ID3D12SDKConfiguration>::~CComPtrBase<struct ID3D12SDKConfiguration>(void);
 public: __cdecl AutoLock::~AutoLock(void);
 __C_specific_handler();
 _callnewh();
 ? capture_previous_context;
 public: __cdecl CD3D12TelemetryHelper::CD3D12TelemetryHelper(void);
-public: void __cdecl CD3D12TelemetryHelper::LogD3D12CoreLoaded(unsigned int);
-public: virtual long __cdecl CD3D12TelemetryHelper::Register(void);
-public: void __cdecl CD3D12TelemetryHelper::UnRegister(void);
+? CD3D12TelemetryHelper::LogD3D12CoreLoaded;
+? CD3D12TelemetryHelper::Register;
+public: virtual void __cdecl CD3D12TelemetryHelper::UnRegister(void);
 public: virtual unsigned long __cdecl CDelegatingUseCountedObject<class NOutermost::CDeviceChild>::AddRef(void);
 public: __cdecl CDelegatingUseCountedObject<class NOutermost::CDeviceChild>::CDelegatingUseCountedObject<class NOutermost::CDeviceChild>(void *,struct NOutermost::CDeviceChild::TConstructorArgs const &,class NOutermost::CDevice *,struct _GUID const &,void * *);
 public: __cdecl CDelegatingUseCountedObject<class NOutermost::CDeviceChild>::CFinalReleaseSentinel::~CFinalReleaseSentinel(void);
@@ -4702,17 +4860,15 @@ __chkstk();
 ? CleanupPixEtwThread;
 public: void __cdecl CModule::CheckDeveloperModeEnabledState(void);
 public: __cdecl CModule::CModule(void);
-private: struct HINSTANCE__ * __cdecl CModule::D3DCoreLoadLibraryW(unsigned short const *);
-public: int __cdecl CModule::DllMain(struct HINSTANCE__ *,unsigned long,void *);
-private: void __cdecl CModule::EnsureRedistDllLoaded(void);
-public: struct D3D12Core::DllExports const & __cdecl CModule::GetCoreExports(void);
+? CModule::D3DCoreLoadLibraryW;
+? CModule::DllMain;
+? CModule::EnsureRedistDllLoaded;
 private: void __cdecl CModule::InitExports(void);
 public: void __cdecl CModule::RecordJournal(unsigned int,char const *,bool,enum RecordJournalOptions);
 private: struct HINSTANCE__ * __cdecl CModule::RedistLoadLibraryW(unsigned short const *);
 public: long __cdecl CModule::SetSDKVersion(unsigned int,char const *);
 public: __cdecl CModule::~CModule(void);
 public: __cdecl _com_error::_com_error(class _com_error const &);
-public: __cdecl _com_error::_com_error(long,struct IErrorInfo *,bool);
 public: virtual __cdecl _com_error::~_com_error(void);
 _configure_narrow_argv();
 _crt_atexit();
@@ -4721,6 +4877,7 @@ public: static void __cdecl CSDKConfigurationController::Create(struct ID3D12SDK
 public: virtual long __cdecl CSDKConfigurationController::SetSDKVersion(unsigned int,char const *);
 ? CTelemetryHelper::LogDllAttachEvent;
 public: virtual long __cdecl CTelemetryHelper::Register(void);
+public: virtual void __cdecl CTelemetryHelper::UnRegister(void);
 ? CUseCountedObject<NOutermost::CDeviceChild>::`scalar deleting destructor';
 ? CUseCountedObject<NOutermost::CDeviceChild>::AddRef;
 public: __cdecl CUseCountedObject<class NOutermost::CDeviceChild>::CFinalReleaseSentinel::~CFinalReleaseSentinel(void);
@@ -4731,7 +4888,7 @@ public: virtual long __cdecl CUseCountedObject<class NOutermost::CDeviceChild>::
 public: virtual unsigned long __cdecl CUseCountedObject<class NOutermost::CDeviceChild>::Release(void);
 public: virtual unsigned long __cdecl CUseCountedObject<class NOutermost::CDeviceChild>::UCAddUse(void);
 public: virtual void __cdecl CUseCountedObject<class NOutermost::CDeviceChild>::UCDestroy(void);
-public: virtual unsigned long __cdecl CUseCountedObject<class NOutermost::CDeviceChild>::UCReleaseUse(void);
+? CUseCountedObject<NOutermost::CDeviceChild>::UCReleaseUse;
 public: static long __cdecl CUseCountedObjectRootEx<class NOutermost::CDevice>::_Delegate(void *,struct _GUID const &,void * *,unsigned __int64);
 __CxxFrameHandler4();
 _CxxThrowException();
@@ -4740,15 +4897,15 @@ D3D12CoreGetLayeredDeviceSize();
 D3D12CoreRegisterLayers();
 long __cdecl D3D12CreateAdditionalDevice(struct IUnknown *,enum D3D_FEATURE_LEVEL,struct _GUID const &,void * *);
 long __cdecl D3D12CreateAdditionalDeviceImpl(struct IUnknown *,enum D3D_FEATURE_LEVEL,struct _GUID const &,void * *);
-D3D12CreateDevice();
+? D3D12CreateDevice;
 long __cdecl D3D12CreateDeviceImpl(struct IUnknown *,enum D3D_FEATURE_LEVEL,struct _GUID const &,void * *);
-long __cdecl D3D12CreateLayeredDevice(unsigned int,void const *,unsigned __int64,struct ID3D12LayeredDevice *,struct _GUID const &,void * *);
+? D3D12CreateLayeredDevice;
 D3D12CreateRootSignatureDeserializer();
 D3D12CreateVersionedRootSignatureDeserializer();
 D3D12EnableExperimentalFeatures();
 D3D12GetDebugInterface();
 long __cdecl D3D12GetDebugInterfaceImpl(struct _GUID const &,void * *);
-long __cdecl D3D12GetDependentLayers(unsigned int,unsigned __int64 *,unsigned int *);
+? D3D12GetDependentLayers;
 D3D12GetInterface();
 long __cdecl D3D12GetInterfaceInternal(struct _GUID const &,struct _GUID const &,void * *);
 unsigned __int64 __cdecl D3D12GetLayeredDeviceSize(unsigned int,void const *,unsigned __int64);
@@ -4760,7 +4917,6 @@ D3D12SerializeRootSignature();
 D3D12SerializeVersionedRootSignature();
 void __cdecl D3DOutputMessage(void (__cdecl*)(char const *),unsigned int,unsigned long,unsigned long,void *,char const *);
 public: void __cdecl D3DXPlat::unique_module::reset(struct HINSTANCE__ *);
-public: __cdecl D3DXPlat::unique_module::~unique_module(void);
 DllMain();
 ? dllmain_crt_dispatch;
 ? dllmain_crt_process_attach;
@@ -4769,7 +4925,6 @@ DllMain();
 _DllMainCRTStartup();
 long (__cdecl*__cdecl DXCapture::IsCaptureEnabled<long __cdecl(struct _GUID const &,void * *)>(long (__cdecl*)(struct _GUID const &,void * *),char const *,char const *))(struct _GUID const &,void * *);
 long (__cdecl*__cdecl DXCapture::IsCaptureEnabled<long __cdecl(struct IUnknown *,enum D3D_FEATURE_LEVEL,struct _GUID const &,void * *)>(long (__cdecl*)(struct IUnknown *,enum D3D_FEATURE_LEVEL,struct _GUID const &,void * *),char const *,char const *))(struct IUnknown *,enum D3D_FEATURE_LEVEL,struct _GUID const &,void * *);
-? DXCapture::IsCaptureEnabled<long __cdecl(IUnknown *,enum D3D_FEATURE_LEVEL,_GUID const &,void * *)>;
 ? DxgAppCompat::`dynamic atexit destructor for 'g_CompatStringCache'';
 ? DxgAppCompat::`dynamic atexit destructor for 'gs_critSec'';
 ? DxgAppCompat::`dynamic initializer for 'g_CompatStringCache'';
@@ -4780,6 +4935,8 @@ public: __cdecl DynamicBitset::DynamicBitset(unsigned __int64);
 public: void __cdecl DynamicBitset::flip(void);
 ? DynamicBitset::~DynamicBitset;
 _execute_onexit_table();
+protected: long __cdecl ExplicitDelayLoaderBase::LoadModule(unsigned short const *,long (__cdecl*)(struct HINSTANCE__ *));
+? ExplicitDelayLoaderBase::~ExplicitDelayLoaderBase;
 void __cdecl FlushAllThreadBuffersToETW(bool);
 free();
 _get_startup_argv_mode();
@@ -4789,42 +4946,37 @@ __GSHandlerCheck_EH4();
 __GSHandlerCheckCommon();
 _guard_check_icall_nop();
 _guard_dispatch_icall_nop();
+_guard_xfg_dispatch_icall_nop();
 ? initialize_legacy_wide_specifiers;
 ? initialize_msvcrt_compatibility;
 _initialize_narrow_environment();
 _initialize_onexit_table();
-? initialize_printf_standard_rounding;
 _initterm();
 _initterm_e();
 InlineIsEqualGUID();
 _invalid_parameter_noinfo();
 _is_c_termination_complete();
 __isa_available_init();
-public: long __cdecl IUnknown::QueryInterface<struct ID3D12Device>(struct ID3D12Device * *);
 __local_stdio_printf_options();
 __local_stdio_scanf_options();
-public: __cdecl LockOwnerLock::LockOwnerLock(struct ILockOwner *);
-public: __cdecl LockOwnerLock::~LockOwnerLock(void);
 malloc();
 McGenControlCallbackV2();
 McGenEventRegister_EventRegister();
 McGenEventUnregister_EventUnregister();
 McGenEventWrite_EventWriteTransfer();
 McTemplateU0fz_EventWriteTransfer();
-McTemplateU0qdqs64_EventWriteTransfer();
+McTemplateU0qdqs_EventWriteTransfer();
 McTemplateU0qqbr1_EventWriteTransfer();
 McTemplateU0x_EventWriteTransfer();
 memcmp();
 memcpy();
 ? memcpy_s;
 memmove();
-? memmove_s;
 memset();
 public: virtual unsigned long __cdecl MinComObject<class CSDKConfigurationController>::AddRef(void);
 public: virtual long __cdecl MinComObject<class CSDKConfigurationController>::QueryInterface(struct _GUID const &,void * *);
 public: virtual unsigned long __cdecl MinComObject<class CSDKConfigurationController>::Release(void);
-public: virtual long __cdecl NOutermost::CDevice::CreateLayeredChild(unsigned int,void const *,unsigned __int64,struct ID3D12LayeredUseCounted *,struct _GUID const &,void * *);
-public: void __cdecl NOutermost::CDevice::FinalConstruct(struct NOutermost::CDevice::TConstructorArgs const &);
+? NOutermost::CDevice::CreateLayeredChild;
 public: virtual unsigned __int64 __cdecl NOutermost::CDevice::GetLayeredChildSize(unsigned int,void const *,unsigned __int64);
 public: virtual void __cdecl NOutermost::CDevice::LLOBeginLayerDestruction(void);
 public: virtual long __cdecl NOutermost::CDevice::LLOCompleteLayerConstruction(void);
@@ -4922,12 +5074,13 @@ _seh_filter_dll();
 void __cdecl SetAllThreadInfoCaptureState(int);
 void __cdecl SetAppCompatStringPointer(unsigned __int64,char const *);
 void __cdecl SetAppCompatStringPointerInternal(unsigned __int64,char const *);
-public: __cdecl std::_Alloc_construct_ptr<class std::allocator<struct std::_List_node<struct PIXEventsThreadInfo,void *> > >::~_Alloc_construct_ptr<class std::allocator<struct std::_List_node<struct PIXEventsThreadInfo,void *> > >(void);
-? std::_Allocate<16,std::_Default_allocate_traits,0>;
+void * __cdecl std::_Allocate<16,struct std::_Default_allocate_traits,0>(unsigned __int64);
+void * __cdecl std::_Allocate_manually_vector_aligned<struct std::_Default_allocate_traits>(unsigned __int64);
+class std::_Vb_iterator<struct std::_Wrap_alloc<class std::allocator<unsigned int> > > __cdecl std::_Copy_backward_unchecked<class std::_Vb_iterator<struct std::_Wrap_alloc<class std::allocator<unsigned int> > >,class std::_Vb_iterator<struct std::_Wrap_alloc<class std::allocator<unsigned int> > > >(class std::_Vb_iterator<struct std::_Wrap_alloc<class std::allocator<unsigned int> > >,class std::_Vb_iterator<struct std::_Wrap_alloc<class std::allocator<unsigned int> > >,class std::_Vb_iterator<struct std::_Wrap_alloc<class std::allocator<unsigned int> > >);
 class std::_Vb_iterator<struct std::_Wrap_alloc<class std::allocator<unsigned int> > > __cdecl std::_Copy_unchecked<class std::_Vb_iterator<struct std::_Wrap_alloc<class std::allocator<unsigned int> > >,class std::_Vb_iterator<struct std::_Wrap_alloc<class std::allocator<unsigned int> > > >(class std::_Vb_iterator<struct std::_Wrap_alloc<class std::allocator<unsigned int> > >,class std::_Vb_iterator<struct std::_Wrap_alloc<class std::allocator<unsigned int> > >,class std::_Vb_iterator<struct std::_Wrap_alloc<class std::allocator<unsigned int> > >);
-? std::_Deallocate<16,0>;
-? std::_Mutex_base::lock;
-? std::_Mutex_base::unlock;
+void __cdecl std::_Deallocate<16,0>(void *,unsigned __int64);
+void __cdecl std::_Fill_vbool<class std::_Vb_iterator<struct std::_Wrap_alloc<class std::allocator<unsigned int> > >,bool>(class std::_Vb_iterator<struct std::_Wrap_alloc<class std::allocator<unsigned int> > >,class std::_Vb_iterator<struct std::_Wrap_alloc<class std::allocator<unsigned int> > >,bool const &);
+void __cdecl std::_Throw_bad_array_new_length(void);
 public: class std::_Vb_reference<struct std::_Wrap_alloc<class std::allocator<unsigned int> > > & __cdecl std::_Vb_reference<struct std::_Wrap_alloc<class std::allocator<unsigned int> > >::operator=(bool);
 public: __cdecl std::bad_alloc::bad_alloc(class std::bad_alloc const &);
 public: __cdecl std::bad_alloc::bad_alloc(void);
@@ -4937,16 +5090,15 @@ public: __cdecl std::bad_array_new_length::bad_array_new_length(void);
 public: virtual __cdecl std::bad_array_new_length::~bad_array_new_length(void);
 public: __cdecl std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >(void);
 ? std::basic_string<char,std::char_traits<char>,std::allocator<char> >::~basic_string<char,std::char_traits<char>,std::allocator<char> >;
-class std::_Vb_iterator<struct std::_Wrap_alloc<class std::allocator<unsigned int> > > __cdecl std::copy_backward<class std::_Vb_iterator<struct std::_Wrap_alloc<class std::allocator<unsigned int> > >,class std::_Vb_iterator<struct std::_Wrap_alloc<class std::allocator<unsigned int> > > >(class std::_Vb_iterator<struct std::_Wrap_alloc<class std::allocator<unsigned int> > >,class std::_Vb_iterator<struct std::_Wrap_alloc<class std::allocator<unsigned int> > >,class std::_Vb_iterator<struct std::_Wrap_alloc<class std::allocator<unsigned int> > >);
 class std::_Vector_iterator<class std::_Vector_val<struct std::_Simple_types<unsigned short> > > __cdecl std::copy_n<unsigned short *,unsigned __int64,class std::_Vector_iterator<class std::_Vector_val<struct std::_Simple_types<unsigned short> > > >(unsigned short *,unsigned __int64,class std::_Vector_iterator<class std::_Vector_val<struct std::_Simple_types<unsigned short> > >);
 unsigned short * __cdecl std::copy_n<unsigned short const *,unsigned __int64,unsigned short *>(unsigned short const *,unsigned __int64,unsigned short *);
 public: __cdecl std::exception::exception(class std::exception const &);
 public: virtual char const * __cdecl std::exception::what(void)const ;
 ? std::list<PIXEventsThreadInfo,std::allocator<PIXEventsThreadInfo> >::_Tidy;
-public: struct PIXEventsThreadInfo & __cdecl std::list<struct PIXEventsThreadInfo,class std::allocator<struct PIXEventsThreadInfo> >::emplace_back<>(void);
 public: __cdecl std::list<struct PIXEventsThreadInfo,class std::allocator<struct PIXEventsThreadInfo> >::list<struct PIXEventsThreadInfo,class std::allocator<struct PIXEventsThreadInfo> >(void);
+public: __cdecl std::lock_guard<class std::mutex>::~lock_guard<class std::mutex>(void);
 public: __cdecl std::mutex::mutex(void);
-public: class std::unique_ptr<unsigned char [0],struct std::default_delete<unsigned char [0]> > & __cdecl std::unique_ptr<unsigned char [0],struct std::default_delete<unsigned char [0]> >::operator=(class std::unique_ptr<unsigned char [0],struct std::default_delete<unsigned char [0]> > &&);
+public: class std::unique_ptr<unsigned char [0],struct std::default_delete<unsigned char [0]> > & __cdecl std::unique_ptr<unsigned char [0],struct std::default_delete<unsigned char [0]> >::operator=<struct std::default_delete<unsigned char [0]>,0>(class std::unique_ptr<unsigned char [0],struct std::default_delete<unsigned char [0]> > &&);
 public: __cdecl std::unique_ptr<unsigned char [0],struct std::default_delete<unsigned char [0]> >::~unique_ptr<unsigned char [0],struct std::default_delete<unsigned char [0]> >(void);
 public: class std::_Vb_iterator<struct std::_Wrap_alloc<class std::allocator<unsigned int> > > __cdecl std::vector<bool,class std::allocator<bool> >::_Insert_n(class std::_Vb_const_iterator<struct std::_Wrap_alloc<class std::allocator<unsigned int> > >,unsigned __int64,bool const &);
 public: unsigned __int64 __cdecl std::vector<bool,class std::allocator<bool> >::_Insert_x(class std::_Vb_const_iterator<struct std::_Wrap_alloc<class std::allocator<unsigned int> > >,unsigned __int64);
@@ -4957,14 +5109,10 @@ public: class std::_Vb_iterator<struct std::_Wrap_alloc<class std::allocator<uns
 public: void __cdecl std::vector<bool,class std::allocator<bool> >::resize(unsigned __int64,bool);
 public: __cdecl std::vector<bool,class std::allocator<bool> >::~vector<bool,class std::allocator<bool> >(void);
 private: void __cdecl std::vector<char,class std::allocator<char> >::_Resize_reallocate<struct std::_Value_init_tag>(unsigned __int64,struct std::_Value_init_tag const &);
-private: void __cdecl std::vector<char,class std::allocator<char> >::_Tidy(void);
-? std::vector<TD3D12LayerRegistration,std::allocator<TD3D12LayerRegistration> >::_Tidy;
 private: void __cdecl std::vector<unsigned int,class std::allocator<unsigned int> >::_Change_array(unsigned int * const,unsigned __int64,unsigned __int64);
 private: void __cdecl std::vector<unsigned int,class std::allocator<unsigned int> >::_Resize_reallocate<unsigned int>(unsigned __int64,unsigned int const &);
 private: void __cdecl std::vector<unsigned int,class std::allocator<unsigned int> >::_Tidy(void);
-private: void __cdecl std::vector<unsigned short,class std::allocator<unsigned short> >::_Change_array(unsigned short * const,unsigned __int64,unsigned __int64);
-private: void __cdecl std::vector<unsigned short,class std::allocator<unsigned short> >::_Resize_reallocate<struct std::_Value_init_tag>(unsigned __int64,struct std::_Value_init_tag const &);
-public: void __cdecl std::vector<unsigned short,class std::allocator<unsigned short> >::resize(unsigned __int64);
+? std::vector<unsigned short,std::allocator<unsigned short> >::_Resize_reallocate<std::_Value_init_tag>;
 public: __cdecl std::vector<unsigned short,class std::allocator<unsigned short> >::~vector<unsigned short,class std::allocator<unsigned short> >(void);
 __std_exception_copy();
 __std_exception_destroy();
@@ -4975,12 +5123,8 @@ __stdio_common_vsprintf();
 __stdio_common_vswprintf();
 long __cdecl StringCchCopyA(char *,unsigned __int64,char const *);
 long __cdecl StringCchPrintfA(char *,unsigned __int64,char const *,...);
-long __cdecl StringCchPrintfW(unsigned short *,unsigned __int64,unsigned short const *,...);
+? StringCchPrintfW;
 long __cdecl StringCchVPrintfW(unsigned short *,unsigned __int64,unsigned short const *,char *);
-? StringCopyWorkerA;
-? StringCopyWorkerW;
-? StringValidateDestAndLengthW;
-? StringVPrintfWorkerA;
 ? StringVPrintfWorkerW;
 ? TComObject<NOutermost::CDevice>::`scalar deleting destructor';
 public: virtual unsigned long __cdecl TComObject<class NOutermost::CDevice>::AddRef(void);
@@ -4988,13 +5132,12 @@ public: __cdecl TComObject<class NOutermost::CDevice>::CFinalReleaseSentinel::~C
 public: __cdecl TComObject<class NOutermost::CDevice>::CProtectFinalConstruct::~CProtectFinalConstruct(void);
 ? TComObject<NOutermost::CDevice>::QueryInterface;
 public: virtual unsigned long __cdecl TComObject<class NOutermost::CDevice>::Release(void);
-? TComObject<NOutermost::CDevice>::TComObject<NOutermost::CDevice>;
-? ThrowFailure;
+void __cdecl ThrowFailure(long);
 _tlgDefineProvider_annotation__Tlgg_hD3D12TraceLoggingProviderProv();
 ? _tlgEnableCallback;
 public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EventWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<4>,struct _tlgWrapSz<char>,struct _tlgWrapperByVal<4>,struct _tlgWrapSz<char>,struct _tlgWrapperByVal<4>,struct _tlgWrapSz<unsigned short>,struct _tlgWrapperByVal<4>,struct _tlgWrapSz<char>,struct _tlgWrapperByVal<4>,struct _tlgWrapSz<char>,struct _tlgWrapSz<unsigned short>,struct _tlgWrapperByVal<4>,struct _tlgWrapSz<char>,struct _tlgWrapSz<unsigned short> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapSz<char> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapSz<char> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapSz<unsigned short> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapSz<char> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapSz<char> const &,struct _tlgWrapSz<unsigned short> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapSz<char> const &,struct _tlgWrapSz<unsigned short> const &);
 _tlgWriteTransfer_EventWriteTransfer();
-? TraceLoggingRegisterEx_EventRegister_EventSetInformation;
+TraceLoggingRegisterEx_EventRegister_EventSetInformation();
 __vcrt_initialize();
 __vcrt_thread_attach();
 __vcrt_thread_detach();
@@ -5015,34 +5158,28 @@ _vsnwprintf();
 ? wil::details::`dynamic initializer for 'g_header_init_InitializeStagingSRUMFeatureReporting'';
 ? wil::details::`dynamic initializer for 'g_header_init_WilInitialize_ResultMacros_DesktopOrSystem'';
 ? wil::details::`dynamic initializer for 'g_processLocalData'';
-? wil::details::`dynamic initializer for 'g_threadFailureCallbacks'';
-? wil::details::CloseHandle;
+void __cdecl wil::details::CloseHandle(void *);
 void __cdecl wil::details::DebugBreak(void);
 public: static void __cdecl wil::details::DestroyThreadPoolTimer<struct wil::details::SystemThreadPoolMethods,0>::Destroy(struct _TP_TIMER *);
 ? wil::details::EnabledStateManager::EnsureSubscribedToFeatureConfigurationChangesImpl;
 public: void __cdecl wil::details::EnabledStateManager::OnStateChange(void);
 public: void __cdecl wil::details::EnabledStateManager::OnTimer(void);
 ? wil::details::EnabledStateManager::RecordCachedUsageUnderLock;
-public: __cdecl wil::details::EnabledStateManager::~EnabledStateManager(void);
 void __cdecl wil::details::EnsureCoalescedTimer_SetTimer(class wil::unique_any_t<class wil::details::unique_storage<struct wil::details::resource_policy<struct _TP_TIMER *,void (__cdecl*)(struct _TP_TIMER *),&public: static void __cdecl wil::details::DestroyThreadPoolTimer<struct wil::details::SystemThreadPoolMethods,0>::Destroy(struct _TP_TIMER *),struct wistd::integral_constant<unsigned __int64,0>,struct _TP_TIMER *,struct _TP_TIMER *,0,std::nullptr_t> > > &,bool &,__int64);
-? wil::details::EnsureSubscribedToFeatureConfigurationChanges;
-private: union wil_details_FeatureStateCache __cdecl wil::details::FeatureImpl<struct __WilFeatureTraits_Feature_D3D12Redist>::GetCachedFeatureEnabledState(void);
-private: union wil_details_FeatureStateCache __cdecl wil::details::FeatureImpl<struct __WilFeatureTraits_Feature_D3D12Redist>::GetCurrentFeatureEnabledState(int *);
+? wil::details::FeatureImpl<__WilFeatureTraits_Feature_D3D12Redist>::GetCachedFeatureEnabledState;
+? wil::details::FeatureImpl<__WilFeatureTraits_Feature_D3D12Redist>::GetCurrentFeatureEnabledState;
 public: void __cdecl wil::details::FeatureImpl<struct __WilFeatureTraits_Feature_D3D12Redist>::ReportUsage(bool,enum wil::ReportingKind,unsigned __int64);
 private: bool __cdecl wil::details::FeatureStateManager::EnsureStateData(void);
-private: void __cdecl wil::details::FeatureStateManager::EnsureSubscribedToProcessWideUsageFlushUnderLock(void);
-? wil::details::FeatureStateManager::EnsureSubscribedToStateChangesUnderLock;
+? wil::details::FeatureStateManager::EnsureSubscribedToProcessWideUsageFlushUnderLock;
 public: __cdecl wil::details::FeatureStateManager::FeatureStateManager(void);
-public: void __cdecl wil::details::FeatureStateManager::OnStateChange(void);
 public: void __cdecl wil::details::FeatureStateManager::QueueBackgroundSRUMUsageReporting(unsigned int,unsigned short,unsigned int);
-public: void __cdecl wil::details::FeatureStateManager::SubscribeToEnabledStateChanges(struct FEATURE_STATE_CHANGE_SUBSCRIPTION__ * *,void (__cdecl*)(void *),void *);
-public: void __cdecl wil::details::FeatureStateManager::SubscribeToUsageFlush(struct FEATURE_STATE_CHANGE_SUBSCRIPTION__ * *,void (__cdecl*)(void *));
-? wil::details::FeatureStateManager::~FeatureStateManager;
+void __cdecl wil::details::FormatNtStatusMsg(long,unsigned short *,unsigned long);
 void __cdecl wil::details::FreeProcessHeap(void *);
 void __cdecl wil::details::GetContextAndNotifyFailure(struct wil::FailureInfo *,char *,unsigned __int64);
 char const * __cdecl wil::details::GetCurrentModuleName(void);
 unsigned long __cdecl wil::details::GetLastErrorFail(void *,unsigned int,char const *,char const *,char const *,void *);
 long __cdecl wil::details::GetLastErrorFailHr(void);
+long __cdecl wil::details::HrToNtStatus(long);
 void __cdecl wil::details::in1diag3::_FailFast_GetLastError(void *,unsigned int,char const *);
 void __cdecl wil::details::in1diag3::_FailFast_Unexpected(void *,unsigned int,char const *);
 void __cdecl wil::details::in1diag3::_FailFastImmediate_Unexpected(void);
@@ -5051,8 +5188,9 @@ unsigned long __cdecl wil::details::in1diag3::Log_GetLastError(void *,unsigned i
 long __cdecl wil::details::in1diag3::Log_HrMsg(void *,unsigned int,char const *,long,char const *,...);
 long __cdecl wil::details::in1diag3::Return_GetLastError(void *,unsigned int,char const *);
 void __cdecl wil::details::in1diag3::Return_Hr(void *,unsigned int,char const *,long);
+? wil::details::IsFeatureConfigured;
 bool __cdecl wil::details::K32GetModuleInformation(void *,unsigned int *,char *,unsigned __int64);
-void __cdecl wil::details::LogFailure(void *,unsigned int,char const *,char const *,char const *,void *,enum wil::FailureType,long,unsigned short const *,bool,unsigned short *,unsigned __int64,char *,unsigned __int64,struct wil::FailureInfo *);
+void __cdecl wil::details::LogFailure(void *,unsigned int,char const *,char const *,char const *,void *,enum wil::FailureType,struct wil::details::ResultStatus const &,unsigned short const *,bool,unsigned short *,unsigned __int64,char *,unsigned __int64,struct wil::FailureInfo *);
 unsigned short * __cdecl wil::details::LogStringPrintf(unsigned short *,unsigned short const *,unsigned short const *,...);
 ? wil::details::NtStatusToHr;
 void * __cdecl wil::details::ProcessHeapAlloc(unsigned long,unsigned __int64);
@@ -5063,17 +5201,25 @@ int __cdecl wil::details::RecordLog(long);
 int __cdecl wil::details::RecordReturn(long);
 void __cdecl wil::details::RecordSRUMFeatureUsage(unsigned int,unsigned int,unsigned int);
 ? wil::details::ReleaseMutex;
-void __cdecl wil::details::ReportFailure(void *,unsigned int,char const *,char const *,char const *,void *,enum wil::FailureType,long,unsigned short const *,enum wil::details::ReportFailureOptions);
-unsigned long __cdecl wil::details::ReportFailure_GetLastError(void *,unsigned int,char const *,char const *,char const *,void *,enum wil::FailureType);
-long __cdecl wil::details::ReportFailure_GetLastErrorHr(void *,unsigned int,char const *,char const *,char const *,void *,enum wil::FailureType);
-void __cdecl wil::details::ReportFailure_Hr(void *,unsigned int,char const *,char const *,char const *,void *,enum wil::FailureType,long);
-void __cdecl wil::details::ReportFailure_HrMsg(void *,unsigned int,char const *,char const *,char const *,void *,enum wil::FailureType,long,char const *,char *);
-void __cdecl wil::details::ReportFailure_Msg(void *,unsigned int,char const *,char const *,char const *,void *,enum wil::FailureType,long,char const *,char *);
+void __cdecl wil::details::ReportFailure_Base<1,0>(void *,unsigned int,char const *,char const *,char const *,void *,struct wil::details::ResultStatus const &,unsigned short const *,enum wil::details::ReportFailureOptions);
+void __cdecl wil::details::ReportFailure_Base<2,0>(void *,unsigned int,char const *,char const *,char const *,void *,struct wil::details::ResultStatus const &,unsigned short const *,enum wil::details::ReportFailureOptions);
+void __cdecl wil::details::ReportFailure_Base<3,0>(void *,unsigned int,char const *,char const *,char const *,void *,struct wil::details::ResultStatus const &,unsigned short const *,enum wil::details::ReportFailureOptions);
+unsigned long __cdecl wil::details::ReportFailure_GetLastError<2>(void *,unsigned int,char const *,char const *,char const *,void *);
+unsigned long __cdecl wil::details::ReportFailure_GetLastError<3>(void *,unsigned int,char const *,char const *,char const *,void *);
+long __cdecl wil::details::ReportFailure_GetLastErrorHr<1>(void *,unsigned int,char const *,char const *,char const *,void *);
+void __cdecl wil::details::ReportFailure_Hr<1>(void *,unsigned int,char const *,char const *,char const *,void *,long);
+void __cdecl wil::details::ReportFailure_Hr<2>(void *,unsigned int,char const *,char const *,char const *,void *,long);
+void __cdecl wil::details::ReportFailure_Hr<3>(void *,unsigned int,char const *,char const *,char const *,void *,long);
+void __cdecl wil::details::ReportFailure_HrMsg<2>(void *,unsigned int,char const *,char const *,char const *,void *,long,char const *,char *);
+void __cdecl wil::details::ReportFailure_Msg<2>(void *,unsigned int,char const *,char const *,char const *,void *,struct wil::details::ResultStatus const &,char const *,char *);
+void __cdecl wil::details::ReportFailure_NoReturn<3>(void *,unsigned int,char const *,char const *,char const *,void *,struct wil::details::ResultStatus const &,unsigned short const *,enum wil::details::ReportFailureOptions);
+void __cdecl wil::details::ReportFailure_Return<1>(void *,unsigned int,char const *,char const *,char const *,void *,struct wil::details::ResultStatus const &,unsigned short const *,enum wil::details::ReportFailureOptions);
+void __cdecl wil::details::ReportFailure_Return<2>(void *,unsigned int,char const *,char const *,char const *,void *,struct wil::details::ResultStatus const &,unsigned short const *,enum wil::details::ReportFailureOptions);
 unsigned __int64 __cdecl wil::details::ResultStringSize(char const *);
 unsigned __int64 __cdecl wil::details::ResultStringSize(unsigned short const *);
 void __cdecl wil::details::Rethrow(void);
-long __cdecl wil::details::RtlDisownModuleHeapAllocation(void *,void *);
-unsigned char __cdecl wil::details::RtlDllShutdownInProgress(void);
+? wil::details::RtlDisownModuleHeapAllocation;
+? wil::details::RtlDllShutdownInProgress;
 unsigned long __cdecl wil::details::RtlNtStatusToDosErrorNoTeb(long);
 private: void __cdecl wil::details::shared_buffer::assign(long *,unsigned __int64);
 public: bool __cdecl wil::details::shared_buffer::create(void const *,unsigned __int64);
@@ -5082,66 +5228,73 @@ long __cdecl wil::details::StringCchPrintfA(char *,unsigned __int64,char const *
 public: static void __cdecl wil::details::ThreadFailureCallbackHolder::GetContextAndNotifyFailure(struct wil::FailureInfo *,char *,unsigned __int64);
 public: static bool __cdecl wil::details::ThreadFailureCallbackHolder::GetThreadContext(struct wil::FailureInfo *,class wil::details::ThreadFailureCallbackHolder *,char *,unsigned __int64);
 void __cdecl wil::details::ThrowResultExceptionInternal(struct wil::FailureInfo const &);
+protected: __cdecl wil::details::unique_storage<struct wil::details::resource_policy<struct _RTL_CRITICAL_SECTION *,void (__cdecl*)(struct _RTL_CRITICAL_SECTION *),&void __cdecl LeaveCriticalSection(struct _RTL_CRITICAL_SECTION *),struct wistd::integral_constant<unsigned __int64,1>,struct _RTL_CRITICAL_SECTION *,struct _RTL_CRITICAL_SECTION *,0,std::nullptr_t> >::~unique_storage<struct wil::details::resource_policy<struct _RTL_CRITICAL_SECTION *,void (__cdecl*)(struct _RTL_CRITICAL_SECTION *),&void __cdecl LeaveCriticalSection(struct _RTL_CRITICAL_SECTION *),struct wistd::integral_constant<unsigned __int64,1>,struct _RTL_CRITICAL_SECTION *,struct _RTL_CRITICAL_SECTION *,0,std::nullptr_t> >(void);
+protected: __cdecl wil::details::unique_storage<struct wil::details::resource_policy<struct _RTL_SRWLOCK *,void (__cdecl*)(struct _RTL_SRWLOCK *),&void __cdecl ReleaseSRWLockExclusive(struct _RTL_SRWLOCK *),struct wistd::integral_constant<unsigned __int64,1>,struct _RTL_SRWLOCK *,struct _RTL_SRWLOCK *,0,std::nullptr_t> >::~unique_storage<struct wil::details::resource_policy<struct _RTL_SRWLOCK *,void (__cdecl*)(struct _RTL_SRWLOCK *),&void __cdecl ReleaseSRWLockExclusive(struct _RTL_SRWLOCK *),struct wistd::integral_constant<unsigned __int64,1>,struct _RTL_SRWLOCK *,struct _RTL_SRWLOCK *,0,std::nullptr_t> >(void);
+protected: __cdecl wil::details::unique_storage<struct wil::details::resource_policy<struct _RTL_SRWLOCK *,void (__cdecl*)(struct _RTL_SRWLOCK *),&void __cdecl ReleaseSRWLockShared(struct _RTL_SRWLOCK *),struct wistd::integral_constant<unsigned __int64,1>,struct _RTL_SRWLOCK *,struct _RTL_SRWLOCK *,0,std::nullptr_t> >::~unique_storage<struct wil::details::resource_policy<struct _RTL_SRWLOCK *,void (__cdecl*)(struct _RTL_SRWLOCK *),&void __cdecl ReleaseSRWLockShared(struct _RTL_SRWLOCK *),struct wistd::integral_constant<unsigned __int64,1>,struct _RTL_SRWLOCK *,struct _RTL_SRWLOCK *,0,std::nullptr_t> >(void);
 public: void __cdecl wil::details::unique_storage<struct wil::details::resource_policy<struct _TP_TIMER *,void (__cdecl*)(struct _TP_TIMER *),&public: static void __cdecl wil::details::DestroyThreadPoolTimer<struct wil::details::SystemThreadPoolMethods,0>::Destroy(struct _TP_TIMER *),struct wistd::integral_constant<unsigned __int64,0>,struct _TP_TIMER *,struct _TP_TIMER *,0,std::nullptr_t> >::reset(struct _TP_TIMER *);
-public: void __cdecl wil::details::unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *),&void __cdecl wil::details::CloseHandle(void *),struct wistd::integral_constant<unsigned __int64,0>,void *,void *,0,std::nullptr_t> >::reset(void *);
-public: void __cdecl wil::details::unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *),&void __cdecl wil::details::ReleaseMutex(void *),struct wistd::integral_constant<unsigned __int64,2>,void *,void *,0,std::nullptr_t> >::reset(void *);
-void __cdecl wil::details::UnregisterWilFeatureConfigurationChange(void *);
+protected: __cdecl wil::details::unique_storage<struct wil::details::resource_policy<struct _TP_TIMER *,void (__cdecl*)(struct _TP_TIMER *),&public: static void __cdecl wil::details::DestroyThreadPoolTimer<struct wil::details::SystemThreadPoolMethods,0>::Destroy(struct _TP_TIMER *),struct wistd::integral_constant<unsigned __int64,0>,struct _TP_TIMER *,struct _TP_TIMER *,0,std::nullptr_t> >::~unique_storage<struct wil::details::resource_policy<struct _TP_TIMER *,void (__cdecl*)(struct _TP_TIMER *),&public: static void __cdecl wil::details::DestroyThreadPoolTimer<struct wil::details::SystemThreadPoolMethods,0>::Destroy(struct _TP_TIMER *),struct wistd::integral_constant<unsigned __int64,0>,struct _TP_TIMER *,struct _TP_TIMER *,0,std::nullptr_t> >(void);
+protected: __cdecl wil::details::unique_storage<struct wil::details::resource_policy<struct FEATURE_STATE_CHANGE_SUBSCRIPTION__ *,void (__cdecl*)(struct FEATURE_STATE_CHANGE_SUBSCRIPTION__ *),&void __cdecl wil::details::UnsubscribeProcessWideUsageFlush(struct FEATURE_STATE_CHANGE_SUBSCRIPTION__ *),struct wistd::integral_constant<unsigned __int64,0>,struct FEATURE_STATE_CHANGE_SUBSCRIPTION__ *,struct FEATURE_STATE_CHANGE_SUBSCRIPTION__ *,0,std::nullptr_t> >::~unique_storage<struct wil::details::resource_policy<struct FEATURE_STATE_CHANGE_SUBSCRIPTION__ *,void (__cdecl*)(struct FEATURE_STATE_CHANGE_SUBSCRIPTION__ *),&void __cdecl wil::details::UnsubscribeProcessWideUsageFlush(struct FEATURE_STATE_CHANGE_SUBSCRIPTION__ *),struct wistd::integral_constant<unsigned __int64,0>,struct FEATURE_STATE_CHANGE_SUBSCRIPTION__ *,struct FEATURE_STATE_CHANGE_SUBSCRIPTION__ *,0,std::nullptr_t> >(void);
+protected: __cdecl wil::details::unique_storage<struct wil::details::resource_policy<struct FEATURE_STATE_CHANGE_SUBSCRIPTION__ *,void (__cdecl*)(struct FEATURE_STATE_CHANGE_SUBSCRIPTION__ *),&void __cdecl wil::details::WilApi_UnsubscribeFeatureStateChangeNotification(struct FEATURE_STATE_CHANGE_SUBSCRIPTION__ *),struct wistd::integral_constant<unsigned __int64,0>,struct FEATURE_STATE_CHANGE_SUBSCRIPTION__ *,struct FEATURE_STATE_CHANGE_SUBSCRIPTION__ *,0,std::nullptr_t> >::~unique_storage<struct wil::details::resource_policy<struct FEATURE_STATE_CHANGE_SUBSCRIPTION__ *,void (__cdecl*)(struct FEATURE_STATE_CHANGE_SUBSCRIPTION__ *),&void __cdecl wil::details::WilApi_UnsubscribeFeatureStateChangeNotification(struct FEATURE_STATE_CHANGE_SUBSCRIPTION__ *),struct wistd::integral_constant<unsigned __int64,0>,struct FEATURE_STATE_CHANGE_SUBSCRIPTION__ *,struct FEATURE_STATE_CHANGE_SUBSCRIPTION__ *,0,std::nullptr_t> >(void);
+public: void __cdecl wil::details::unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *) noexcept,&void __cdecl wil::details::CloseHandle(void *),struct wistd::integral_constant<unsigned __int64,0>,void *,void *,0,std::nullptr_t> >::reset(void *);
+protected: __cdecl wil::details::unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *) noexcept,&void __cdecl wil::details::CloseHandle(void *),struct wistd::integral_constant<unsigned __int64,0>,void *,void *,0,std::nullptr_t> >::~unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *) noexcept,&void __cdecl wil::details::CloseHandle(void *),struct wistd::integral_constant<unsigned __int64,0>,void *,void *,0,std::nullptr_t> >(void);
+public: void __cdecl wil::details::unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *) noexcept,&void __cdecl wil::details::ReleaseMutex(void *),struct wistd::integral_constant<unsigned __int64,2>,void *,void *,0,std::nullptr_t> >::reset(void *);
+protected: __cdecl wil::details::unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *) noexcept,&void __cdecl wil::details::ReleaseMutex(void *),struct wistd::integral_constant<unsigned __int64,2>,void *,void *,0,std::nullptr_t> >::~unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *) noexcept,&void __cdecl wil::details::ReleaseMutex(void *),struct wistd::integral_constant<unsigned __int64,2>,void *,void *,0,std::nullptr_t> >(void);
+protected: __cdecl wil::details::unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *),&void __cdecl wil::details::UnregisterWilFeatureConfigurationChange(void *),struct wistd::integral_constant<unsigned __int64,0>,void *,void *,0,std::nullptr_t> >::~unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *),&void __cdecl wil::details::UnregisterWilFeatureConfigurationChange(void *),struct wistd::integral_constant<unsigned __int64,0>,void *,void *,0,std::nullptr_t> >(void);
+? wil::details::UnregisterWilFeatureConfigurationChange;
 void __cdecl wil::details::UnsubscribeProcessWideUsageFlush(struct FEATURE_STATE_CHANGE_SUBSCRIPTION__ *);
-void __cdecl wil::details::UnsubscribeWilWnf(struct __WIL__WNF_USER_SUBSCRIPTION *);
 void __cdecl wil::details::WilApi_RecordFeatureUsage(unsigned int,unsigned int,unsigned int,char const *);
 ? wil::details::WilApi_UnsubscribeFeatureStateChangeNotification;
-? wil::details::WilApiImpl_GetFeatureEnabledState;
+enum FEATURE_ENABLED_STATE __cdecl wil::details::WilApiImpl_GetFeatureEnabledState(unsigned int,enum FEATURE_CHANGE_TIME,int *);
 ? wil::details::WilApiImpl_RecordFeatureUsage;
 void __cdecl wil::details::WilApiImpl_SubscribeFeatureStateChangeNotification(struct FEATURE_STATE_CHANGE_SUBSCRIPTION__ * *,void (__cdecl*)(void *),void *);
 void __cdecl wil::details::WilApiImpl_UnsubscribeFeatureStateChangeNotification(struct FEATURE_STATE_CHANGE_SUBSCRIPTION__ *);
 void __cdecl wil::details::WilDynamicLoadRaiseFailFastException(struct _EXCEPTION_RECORD *,struct _CONTEXT *,unsigned long);
 void __cdecl wil::details::WilFailFast(struct wil::FailureInfo const &);
 void __cdecl wil::details::WilRaiseFailFastException(struct _EXCEPTION_RECORD *,struct _CONTEXT *,unsigned long);
-? wil::details::WilStringVPrintfWorkerA;
 unsigned char * __cdecl wil::details::WriteResultString<char const *>(unsigned char *,unsigned char *,char const *,char const * *);
 unsigned char * __cdecl wil::details::WriteResultString<unsigned short const *>(unsigned char *,unsigned char *,unsigned short const *,unsigned short const * *);
 public: void __cdecl wil::details_abi::FeatureStateData::ProcessShutdown(void);
-? wil::details_abi::FeatureStateData::RecordUsage;
-private: void __cdecl wil::details_abi::FeatureStateData::RetrieveUsageUnderLock(struct wil::details_abi::UsageIndexes &);
+public: void __cdecl wil::details_abi::FeatureStateData::RecordUsage(void);
+? wil::details_abi::FeatureStateData::RetrieveUsageUnderLock;
+public: __cdecl wil::details_abi::FeatureStateData::~FeatureStateData(void);
 struct wil::details_abi::ThreadLocalData * __cdecl wil::details_abi::GetThreadLocalDataCache(bool);
 public: bool __cdecl wil::details_abi::heap_buffer::ensure(unsigned __int64);
 public: bool __cdecl wil::details_abi::heap_buffer::push_back(void const *,unsigned __int64);
-public: bool __cdecl wil::details_abi::heap_buffer::reserve(unsigned __int64);
+? wil::details_abi::heap_buffer::reserve;
 public: __cdecl wil::details_abi::heap_buffer::~heap_buffer(void);
 public: struct wil::details_abi::ProcessLocalData * __cdecl wil::details_abi::ProcessLocalStorage<struct wil::details_abi::ProcessLocalData>::GetShared(void);
 public: __cdecl wil::details_abi::ProcessLocalStorage<struct wil::details_abi::ProcessLocalData>::~ProcessLocalStorage<struct wil::details_abi::ProcessLocalData>(void);
 ? wil::details_abi::ProcessLocalStorageData<wil::details_abi::FeatureStateData>::Acquire;
-private: static long __cdecl wil::details_abi::ProcessLocalStorageData<class wil::details_abi::FeatureStateData>::MakeAndInitialize(unsigned short const *,class wil::unique_any_t<class wil::mutex_t<class wil::details::unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *),&void __cdecl wil::details::CloseHandle(void *),struct wistd::integral_constant<unsigned __int64,0>,void *,void *,0,std::nullptr_t> >,struct wil::err_returncode_policy> > &&,class wil::details_abi::ProcessLocalStorageData<class wil::details_abi::FeatureStateData> * *);
-public: __cdecl wil::details_abi::ProcessLocalStorageData<class wil::details_abi::FeatureStateData>::ProcessLocalStorageData<class wil::details_abi::FeatureStateData>(class wil::unique_any_t<class wil::mutex_t<class wil::details::unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *),&void __cdecl wil::details::CloseHandle(void *),struct wistd::integral_constant<unsigned __int64,0>,void *,void *,0,std::nullptr_t> >,struct wil::err_returncode_policy> > &&,class wil::details_abi::SemaphoreValue &&);
+? wil::details_abi::ProcessLocalStorageData<wil::details_abi::FeatureStateData>::MakeAndInitialize;
 ? wil::details_abi::ProcessLocalStorageData<wil::details_abi::FeatureStateData>::Release;
 public: __cdecl wil::details_abi::ProcessLocalStorageData<class wil::details_abi::FeatureStateData>::~ProcessLocalStorageData<class wil::details_abi::FeatureStateData>(void);
 public: static long __cdecl wil::details_abi::ProcessLocalStorageData<struct wil::details_abi::ProcessLocalData>::Acquire(char const *,class wil::details_abi::ProcessLocalStorageData<struct wil::details_abi::ProcessLocalData> * *);
-private: static long __cdecl wil::details_abi::ProcessLocalStorageData<struct wil::details_abi::ProcessLocalData>::MakeAndInitialize(unsigned short const *,class wil::unique_any_t<class wil::mutex_t<class wil::details::unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *),&void __cdecl wil::details::CloseHandle(void *),struct wistd::integral_constant<unsigned __int64,0>,void *,void *,0,std::nullptr_t> >,struct wil::err_returncode_policy> > &&,class wil::details_abi::ProcessLocalStorageData<struct wil::details_abi::ProcessLocalData> * *);
+private: static long __cdecl wil::details_abi::ProcessLocalStorageData<struct wil::details_abi::ProcessLocalData>::MakeAndInitialize(unsigned short const *,class wil::unique_any_t<class wil::mutex_t<class wil::details::unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *) noexcept,&void __cdecl wil::details::CloseHandle(void *),struct wistd::integral_constant<unsigned __int64,0>,void *,void *,0,std::nullptr_t> >,struct wil::err_returncode_policy> > &&,class wil::details_abi::ProcessLocalStorageData<struct wil::details_abi::ProcessLocalData> * *);
 public: void __cdecl wil::details_abi::ProcessLocalStorageData<struct wil::details_abi::ProcessLocalData>::Release(void);
 public: __cdecl wil::details_abi::ProcessLocalStorageData<struct wil::details_abi::ProcessLocalData>::~ProcessLocalStorageData<struct wil::details_abi::ProcessLocalData>(void);
+? wil::details_abi::RawUsageIndex::FindInsertionPointOrIncrement;
 ? wil::details_abi::RawUsageIndex::Iterate;
 public: __cdecl wil::details_abi::RawUsageIndex::RawUsageIndex(unsigned short,unsigned short,enum wil::details_abi::CountSize,unsigned short,enum wil::details_abi::CountSize);
 public: bool __cdecl wil::details_abi::RawUsageIndex::RecordUsage(void *,unsigned __int64,void *,unsigned __int64,unsigned int);
-private: bool __cdecl wil::details_abi::RawUsageIndex::RecordUsageInternal(void *,unsigned __int64,void *,unsigned __int64,unsigned int);
+? wil::details_abi::RawUsageIndex::RecordUsageInternal;
 ? wil::details_abi::RawUsageIndex::SetBuffer;
 public: void __cdecl wil::details_abi::RawUsageIndex::Swap(class wil::details_abi::RawUsageIndex &);
 public: __cdecl wil::details_abi::RawUsageIndex::~RawUsageIndex(void);
 ? wil::details_abi::RecordWnfUsageIndex;
-private: long __cdecl wil::details_abi::SemaphoreValue::CreateFromValueInternal(unsigned short const *,bool,unsigned __int64);
+? wil::details_abi::SemaphoreValue::CreateFromValueInternal;
 public: void __cdecl wil::details_abi::SemaphoreValue::Destroy(void);
-? wil::details_abi::SemaphoreValue::GetValueFromSemaphore;
-? wil::details_abi::SemaphoreValue::TryGetPointer;
-private: static long __cdecl wil::details_abi::SemaphoreValue::TryGetValueInternal(unsigned short const *,bool,unsigned __int64 *,bool *);
+private: static long __cdecl wil::details_abi::SemaphoreValue::GetValueFromSemaphore(void *,long *);
+public: static long __cdecl wil::details_abi::SemaphoreValue::TryGetPointer(unsigned short const *,void * *);
+? wil::details_abi::SemaphoreValue::TryGetValueInternal;
 public: void __cdecl wil::details_abi::SubscriptionList::OnSignaled(class wil::srwlock &);
 ? wil::details_abi::SubscriptionList::SubscribeUnderLock;
-public: __cdecl wil::details_abi::SubscriptionList::SubscriptionList(void);
-public: void __cdecl wil::details_abi::SubscriptionList::Unsubscribe(class wil::srwlock &,struct FEATURE_STATE_CHANGE_SUBSCRIPTION__ *);
 public: void __cdecl wil::details_abi::ThreadLocalData::Clear(void);
 public: void __cdecl wil::details_abi::ThreadLocalData::SetLastError(struct wil::FailureInfo const &);
 public: void __cdecl wil::details_abi::ThreadLocalFailureInfo::Set(struct wil::FailureInfo const &,unsigned int);
 public: class wil::details::ThreadFailureCallbackHolder * * __cdecl wil::details_abi::ThreadLocalStorage<class wil::details::ThreadFailureCallbackHolder *>::GetLocal(bool);
 public: __cdecl wil::details_abi::ThreadLocalStorage<class wil::details::ThreadFailureCallbackHolder *>::~ThreadLocalStorage<class wil::details::ThreadFailureCallbackHolder *>(void);
 public: struct wil::details_abi::ThreadLocalData * __cdecl wil::details_abi::ThreadLocalStorage<struct wil::details_abi::ThreadLocalData>::GetLocal(bool);
+public: __cdecl wil::details_abi::ThreadLocalStorage<struct wil::details_abi::ThreadLocalData>::~ThreadLocalStorage<struct wil::details_abi::ThreadLocalData>(void);
 ? wil::details_abi::UsageIndex<enum wil_details_ServiceReportingKind,unsigned int,0>::RecordUsage;
 public: bool __cdecl wil::details_abi::UsageIndex<enum wil_details_ServiceReportingKind,unsigned int,2>::RecordUsage(enum wil_details_ServiceReportingKind,unsigned int,unsigned int);
 ? wil::details_abi::UsageIndexes::Record;
@@ -5149,44 +5302,31 @@ public: __cdecl wil::details_abi::UsageIndexes::UsageIndexes(void);
 public: __cdecl wil::details_abi::UsageIndexes::~UsageIndexes(void);
 public: int __cdecl wil::details_abi::UsageIndexProperty::Compare(void *,unsigned __int64)const ;
 ? wil::details_abi::UsageIndexProperty::GetSize;
-public: bool __cdecl wil::details_abi::UsageIndexProperty::Read(unsigned char * &,unsigned char *);
+? wil::details_abi::UsageIndexProperty::Read;
 public: void __cdecl wil::details_abi::UsageIndexProperty::UpdateCount(unsigned int);
+? wil::details_abi::UsageIndexProperty::Write;
 long __cdecl wil::GetFailureLogString(unsigned short *,unsigned __int64,struct wil::FailureInfo const &);
 public: void __cdecl wil::manually_managed_shutdown_aware_object<class wil::details::EnabledStateManager>::construct(void);
-public: void __cdecl wil::manually_managed_shutdown_aware_object<class wil::details::EnabledStateManager>::destroy(void);
-public: void __cdecl wil::manually_managed_shutdown_aware_object<class wil::details::FeatureStateManager>::destroy(void);
-public: class wil::unique_any_t<class wil::details::unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *),&void __cdecl wil::details::ReleaseMutex(void *),struct wistd::integral_constant<unsigned __int64,2>,void *,void *,0,std::nullptr_t> > > __cdecl wil::mutex_t<class wil::details::unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *),&void __cdecl wil::details::CloseHandle(void *),struct wistd::integral_constant<unsigned __int64,0>,void *,void *,0,std::nullptr_t> >,struct wil::err_returncode_policy>::acquire(unsigned long *,unsigned long,int)const ;
-? wil::mutex_t<wil::details::unique_storage<wil::details::resource_policy<void *,void (__cdecl*)(void *),&wil::details::CloseHandle,wistd::integral_constant<unsigned __int64,0>,void *,void *,0,std::nullptr_t> >,wil::err_returncode_policy>::acquire;
+? wil::manually_managed_shutdown_aware_object<wil::details::EnabledStateManager>::destroy;
+? wil::manually_managed_shutdown_aware_object<wil::details::FeatureStateManager>::destroy;
+public: class wil::unique_any_t<class wil::details::unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *) noexcept,&void __cdecl wil::details::ReleaseMutex(void *),struct wistd::integral_constant<unsigned __int64,2>,void *,void *,0,std::nullptr_t> > > __cdecl wil::mutex_t<class wil::details::unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *) noexcept,&void __cdecl wil::details::CloseHandle(void *),struct wistd::integral_constant<unsigned __int64,0>,void *,void *,0,std::nullptr_t> >,struct wil::err_returncode_policy>::acquire(unsigned long *,unsigned long,int)const ;
 bool __cdecl wil::ProcessShutdownInProgress(void);
 public: __cdecl wil::ResultException::ResultException(class wil::ResultException const &);
 public: virtual char const * __cdecl wil::ResultException::what(void)const ;
 public: virtual __cdecl wil::ResultException::~ResultException(void);
-public: class wil::unique_any_t<class wil::details::unique_storage<struct wil::details::resource_policy<struct _RTL_SRWLOCK *,void (__cdecl*)(struct _RTL_SRWLOCK *),&void __cdecl ReleaseSRWLockExclusive(struct _RTL_SRWLOCK *),struct wistd::integral_constant<unsigned __int64,1>,struct _RTL_SRWLOCK *,struct _RTL_SRWLOCK *,0,std::nullptr_t> > > __cdecl wil::srwlock::lock_exclusive(void);
 public: void __cdecl wil::StoredFailureInfo::SetFailureInfo(struct wil::FailureInfo const &);
 public: __cdecl wil::unique_any_t<class wil::details::unique_storage<struct wil::details::resource_policy<struct _RTL_SRWLOCK *,void (__cdecl*)(struct _RTL_SRWLOCK *),&void __cdecl ReleaseSRWLockExclusive(struct _RTL_SRWLOCK *),struct wistd::integral_constant<unsigned __int64,1>,struct _RTL_SRWLOCK *,struct _RTL_SRWLOCK *,0,std::nullptr_t> > >::~unique_any_t<class wil::details::unique_storage<struct wil::details::resource_policy<struct _RTL_SRWLOCK *,void (__cdecl*)(struct _RTL_SRWLOCK *),&void __cdecl ReleaseSRWLockExclusive(struct _RTL_SRWLOCK *),struct wistd::integral_constant<unsigned __int64,1>,struct _RTL_SRWLOCK *,struct _RTL_SRWLOCK *,0,std::nullptr_t> > >(void);
-public: __cdecl wil::unique_any_t<class wil::details::unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *),&void __cdecl wil::details::ReleaseMutex(void *),struct wistd::integral_constant<unsigned __int64,2>,void *,void *,0,std::nullptr_t> > >::~unique_any_t<class wil::details::unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *),&void __cdecl wil::details::ReleaseMutex(void *),struct wistd::integral_constant<unsigned __int64,2>,void *,void *,0,std::nullptr_t> > >(void);
-public: __cdecl wil::unique_any_t<class wil::mutex_t<class wil::details::unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *),&void __cdecl wil::details::CloseHandle(void *),struct wistd::integral_constant<unsigned __int64,0>,void *,void *,0,std::nullptr_t> >,struct wil::err_returncode_policy> >::~unique_any_t<class wil::mutex_t<class wil::details::unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *),&void __cdecl wil::details::CloseHandle(void *),struct wistd::integral_constant<unsigned __int64,0>,void *,void *,0,std::nullptr_t> >,struct wil::err_returncode_policy> >(void);
+public: __cdecl wil::unique_any_t<class wil::details::unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *) noexcept,&void __cdecl wil::details::ReleaseMutex(void *),struct wistd::integral_constant<unsigned __int64,2>,void *,void *,0,std::nullptr_t> > >::~unique_any_t<class wil::details::unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *) noexcept,&void __cdecl wil::details::ReleaseMutex(void *),struct wistd::integral_constant<unsigned __int64,2>,void *,void *,0,std::nullptr_t> > >(void);
+public: __cdecl wil::unique_any_t<class wil::mutex_t<class wil::details::unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *) noexcept,&void __cdecl wil::details::CloseHandle(void *),struct wistd::integral_constant<unsigned __int64,0>,void *,void *,0,std::nullptr_t> >,struct wil::err_returncode_policy> >::~unique_any_t<class wil::mutex_t<class wil::details::unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *) noexcept,&void __cdecl wil::details::CloseHandle(void *),struct wistd::integral_constant<unsigned __int64,0>,void *,void *,0,std::nullptr_t> >,struct wil::err_returncode_policy> >(void);
 void __cdecl wil_details_FeatureReporting_IncrementOpportunityInCache(struct wil_details_FeatureReportingCache *,enum wil_details_ServiceReportingKind,unsigned int,struct wil_details_RecordUsageResult *);
 void __cdecl wil_details_FeatureReporting_IncrementUsageInCache(struct wil_details_FeatureReportingCache *,enum wil_details_ServiceReportingKind,unsigned int,struct wil_details_RecordUsageResult *);
-? wil_details_FeatureReporting_RecordUsageInCache;
-? wil_details_FeatureReporting_ReportUsageToServiceDirect;
+int __cdecl wil_details_FeatureReporting_ReportUsageToServiceDirect(struct wil_details_FeatureReportingCache *,unsigned int,int,int,enum wil_details_ServiceReportingKind,unsigned int,unsigned __int64);
 struct HINSTANCE__ * __cdecl wil_details_GetNtDllModuleHandle(void);
-? wil_details_NtQueryWnfStateData;
+long __cdecl wil_details_NtQueryWnfStateData(struct __WIL__WNF_STATE_NAME const *,struct __WIL__WNF_TYPE_ID const *,void const *,unsigned long *,void *,unsigned long *);
 long __cdecl wil_details_NtUpdateWnfStateData(struct __WIL__WNF_STATE_NAME const *,void const *,unsigned long,struct __WIL__WNF_TYPE_ID const *,void const *,unsigned long,unsigned long);
-long __cdecl wil_details_RtlRegisterFeatureConfigurationChangeNotification(void (__cdecl*)(void *),void *,unsigned __int64 *,void * *);
-? wil_details_StagingConfig_AreAnyFeaturesConfigured;
-int __cdecl wil_details_StagingConfig_AreAnyFeaturesConfigured_Callback(struct wil_details_StagingConfigFeature *,void *);
-long __cdecl wil_details_StagingConfig_FireNotification(struct wil_details_StagingConfig *,unsigned int,unsigned short,int);
-? wil_details_StagingConfig_Free;
-? wil_details_StagingConfig_Load;
-? wil_details_StagingConfig_QueryFeatureState;
-int __cdecl wil_details_StagingConfigFeature_HasUniqueState(struct wil_details_StagingConfigFeature const *);
 long __cdecl wil_details_WriteSRUMWnfUsageBuffer(class wil::details_abi::heap_vector<struct wil_details_FeatureUsageSRUM> *);
-int __cdecl wil_QueryFeatureState(struct wil_FeatureState *,unsigned int,int,enum wil_FeatureStore,int *,int *);
-? wil_RtlStagingConfig_QueryFeatureState;
+int __cdecl wil_RtlStagingConfig_QueryFeatureState(struct wil_FeatureState *,unsigned int,int,int *);
 long __cdecl wil_RtlStagingConfig_RecordFeatureUsage(unsigned int,unsigned int,int);
-int __cdecl wil_StagingConfig_QueryFeatureState(enum wil_FeatureStore,struct wil_FeatureState *,unsigned int,int,int *);
-long __cdecl wil_StagingConfig_RecordFeatureUsage(unsigned int,unsigned int,int);
 public: virtual void __cdecl wistd::__function::__func<class <lambda_8db0ce862824541f40dfb767113f1e28>,bool __cdecl(void *,unsigned __int64,void *,unsigned __int64,unsigned int)>::__clone(class wistd::__function::__base<bool __cdecl(void *,unsigned __int64,void *,unsigned __int64,unsigned int)> *)const ;
 public: virtual void __cdecl wistd::__function::__func<class <lambda_8db0ce862824541f40dfb767113f1e28>,bool __cdecl(void *,unsigned __int64,void *,unsigned __int64,unsigned int)>::__move(class wistd::__function::__base<bool __cdecl(void *,unsigned __int64,void *,unsigned __int64,unsigned int)> *);
 public: virtual void __cdecl wistd::__function::__func<class <lambda_8db0ce862824541f40dfb767113f1e28>,bool __cdecl(void *,unsigned __int64,void *,unsigned __int64,unsigned int)>::destroy(void);
@@ -5197,9 +5337,12 @@ public: __cdecl wistd::function<bool __cdecl(void *,unsigned __int64,void *,unsi
 // Globals
 
 __@@_PchSym_@00@KxulyqvxgPillgKxulmvxlivfzkUdrmwldhUwrivxgcUwctUwDwBCUwDwUnlyrovxlivUlyquivUznwGEUkxsPwDwOlyq@d3d12;
-__@@_PchSym_@00@KxulyqvxgPillgKxulmvxlivfzkUdrmwldhUwrivxgcUwctUwDwBCUxlnnlmUivtrhgibUlyquivUznwGEUkxsOlyq@Registry;
+__@@_PchSym_@00@KxulyqvxgPillgKxulmvxlivfzkUdrmwldhUwrivxgcUwctUwDwBCUxlnnlmUivtrhgibUnlyrovxlivUlyquivUznwGEUkxsOlyq@Registry;
+__@@_PchSym_@00@KxulyqvxgPillgKxulmvxlivfzkUdrmwldhUwrivxgcUwctUwDwBCUxlnnlmUvckorxrgwvozbolzwviUlyquivUznwGEUkxsOlyq@ExplicitDelayLoader;
 __@@_PchSym_@00@KxulyqvxgPillgKxulmvxlivfzkUdrmwldhUwrivxgcUwctUwDwBCUxlnnlmUwctzkkxlnkzgUnlyrovxlivUlyquivUznwGEUkxsOlyq@DxgAppCompat;
 __@@_PchSym_@00@KxulyqvxgPillgKxulmvxlivfzkUdrmwldhUwrivxgcUwctUxlnnlmUdrmkrcvevmgifmgrnvUlyquivUznwGEUhgwzucOlyq@WinPixEventRuntime;
+private: static class AppmodelUnlockLoader AppmodelUnlockLoader::s_this;
+__castguard_check_failure_os_handled_fptr;
 CLSID_D3D12CoreModule;
 CLSID_D3D12Debug;
 CLSID_D3D12DeviceRemovedExtendedData;
@@ -5210,7 +5353,7 @@ _CT??_R0?AV_com_error@@@8??0_com_error@@QEAA@AEBV0@@Z32;
 _CT??_R0?AVbad_alloc@std@@@8??0bad_alloc@std@@QEAA@AEBV01@@Z24;
 _CT??_R0?AVbad_array_new_length@std@@@8??0bad_array_new_length@std@@QEAA@AEBV01@@Z24;
 _CT??_R0?AVexception@std@@@8??0exception@std@@QEAA@AEBV01@@Z24;
-_CT??_R0?AVResultException@wil@@@8??0ResultException@wil@@QEAA@AEBV01@@Z200;
+_CT??_R0?AVResultException@wil@@@8??0ResultException@wil@@QEAA@AEBV01@@Z208;
 _CTA1?AV_com_error@@;
 _CTA2?AVbad_alloc@std@@;
 _CTA2?AVResultException@wil@@;
@@ -5225,6 +5368,7 @@ class std::mutex DxgAppCompat::gs_critSec;
 __dyn_tls_init_callback;
 __enclave_config;
 EventD3D12JournalEntry;
+private: static class std::mutex ExplicitDelayLoaderBase::g_loaderLock;
 __favor;
 class CriticalSection g_CS_AllocBitMap;
 class CriticalSection g_CS_InitService;
@@ -5240,7 +5384,6 @@ class DynamicBitset g_hPEvtAllocateBitMap;
 class DynamicBitset g_hPEvtTransportMap;
 class CModule g_Module;
 g_pfnResultLoggingCallback;
-g_pfnThrowPlatformException;
 void * g_pPixEvtBuffer;
 struct PEvtCtrlBlk * g_pPixEvtCtrlBlk;
 void * g_pStartEvtBlkBuffer;
@@ -5261,16 +5404,12 @@ long (__cdecl* g_wil_details_pfnNtUpdateWnfStateData)(struct __WIL__WNF_STATE_NA
 long (__cdecl* g_wil_details_pfnRtlNotifyFeatureUsage)(struct _RTL_FEATURE_USAGE_REPORT *);
 long (__cdecl* g_wil_details_pfnRtlQueryFeatureConfiguration)(unsigned int,enum _RTL_FEATURE_CONFIGURATION_TYPE,unsigned __int64 *,struct _RTL_FEATURE_CONFIGURATION *);
 long (__cdecl* g_wil_details_pfnRtlRegisterFeatureConfigurationChangeNotification)(void (__cdecl*)(void *),void *,unsigned __int64 *,void * *);
-long (__cdecl* g_wil_details_pfnRtlSubscribeWnfStateChangeNotification)(struct __WIL__WNF_USER_SUBSCRIPTION * *,struct __WIL__WNF_STATE_NAME,unsigned long,long (__cdecl*)(struct __WIL__WNF_STATE_NAME,unsigned long,struct __WIL__WNF_TYPE_ID *,void *,void const *,unsigned long),void *,struct __WIL__WNF_TYPE_ID *,unsigned long,unsigned long);
 void (__cdecl* g_wil_details_pfnRtlUnregisterFeatureConfigurationChangeNotification)(void *);
-long (__cdecl* g_wil_details_pfnRtlUnsubscribeWnfNotificationWaitForCompletion)(struct __WIL__WNF_USER_SUBSCRIPTION *);
 void (__cdecl* g_wil_details_recordFeatureUsage)(unsigned int,enum wil_details_ServiceReportingKind,unsigned int,struct wil_details_FeatureReportingCache *,struct wil_details_RecordUsageResult *);
 void (__cdecl* g_wil_details_RecordSRUMFeatureUsage)(unsigned int,unsigned int,unsigned int);
 class std::vector<char,class std::allocator<char> > gBuffer;
 __guard_check_icall_fptr;
 __guard_dispatch_icall_fptr;
-__guard_eh_cont_count;
-__guard_eh_cont_table;
 __guard_fids_count;
 __guard_fids_table;
 __guard_flags;
@@ -5278,6 +5417,9 @@ __guard_iat_count;
 __guard_iat_table;
 __guard_longjmp_count;
 __guard_longjmp_table;
+__guard_xfg_check_icall_fptr;
+__guard_xfg_dispatch_icall_fptr;
+__guard_xfg_table_dispatch_icall_fptr;
 _GUID_0f8258d2_e908_4505_93e4_5c17a11b679c;
 _GUID_189819f1_1db6_4b57_be54_1821339b85f7;
 _GUID_7071e1f0_e84b_4b33_974f_12fa49de65c5;
@@ -5291,23 +5433,7 @@ _GUID_dfafdd2c_355f_4cb3_a8b2_ea7f9260148b;
 _GUID_e667af9f_cd56_4f46_83ce_032e595d70a8;
 _GUID_e9eb5314_33aa_42b2_a718_d77f58b1f1c7;
 _GUID_ffffffff_335a_4bc5_9de9_43d8fb7777ae;
-HotPatchSpareGlobal1;
-HotPatchSpareGlobal10;
-HotPatchSpareGlobal11;
-HotPatchSpareGlobal12;
-HotPatchSpareGlobal13;
-HotPatchSpareGlobal14;
-HotPatchSpareGlobal15;
-HotPatchSpareGlobal16;
-HotPatchSpareGlobal2;
-HotPatchSpareGlobal3;
-HotPatchSpareGlobal4;
-HotPatchSpareGlobal5;
-HotPatchSpareGlobal6;
-HotPatchSpareGlobal7;
-HotPatchSpareGlobal8;
-HotPatchSpareGlobal9;
-__IMPORT_DESCRIPTOR_api-ms-win-appmodel-unlock-l1-1-0;
+HotPatchSpareGlobals;
 __IMPORT_DESCRIPTOR_api-ms-win-core-debug-l1-1-0;
 __IMPORT_DESCRIPTOR_api-ms-win-core-errorhandling-l1-1-0;
 __IMPORT_DESCRIPTOR_api-ms-win-core-handle-l1-1-0;
@@ -5332,7 +5458,6 @@ __IMPORT_DESCRIPTOR_api-ms-win-crt-runtime-l1-1-0;
 __IMPORT_DESCRIPTOR_api-ms-win-crt-string-l1-1-0;
 __IMPORT_DESCRIPTOR_api-ms-win-eventing-provider-l1-1-0;
 __IMPORT_DESCRIPTOR_msvcp_win;
-initialize_printf_standard_rounding_fp;
 __isa_available;
 __isa_enabled;
 struct SJournalEntry * Journal;
@@ -5347,6 +5472,7 @@ Microsoft_Windows_Direct3D12Keywords;
 Microsoft_Windows_Direct3D12Levels;
 __NULL_IMPORT_DESCRIPTOR;
 _pDefaultRawDllMain;
+long (__cdecl* pfnIsDeveloperModeEnabled)(int *);
 PIX_ETW_PROVIDER;
 PIX_ETW_PROVIDER_Context;
 PIXNotifyWakeFromFenceSignalEventData;
@@ -5379,17 +5505,19 @@ _TraceLoggingMetadataEnd;
 struct __type_info_node __type_info_root_node;
 class wil::shutdown_aware_object<class wil::details::EnabledStateManager> wil::details::g_enabledStateManager;
 class wil::shutdown_aware_object<class wil::details::FeatureStateManager> wil::details::g_featureStateManager;
-void (__cdecl* wil::details::g_pfnDebugBreak)(void);
-unsigned char (__cdecl* wil::details::g_pfnDllShutdownInProgress)(void);
-void (__cdecl* wil::details::g_pfnGetContextAndNotifyFailure)(struct wil::FailureInfo *,char *,unsigned __int64);
-char const * (__cdecl* wil::details::g_pfnGetModuleName)(void);
-void (__cdecl* wil::details::g_pfnLoggingCallback)(struct wil::FailureInfo const &);
-void (__cdecl* wil::details::g_pfnOriginateCallback)(struct wil::FailureInfo const &);
+void (__cdecl* wil::details::g_pfnDebugBreak)(void) noexcept;
+unsigned char (__cdecl* wil::details::g_pfnDllShutdownInProgress)(void) noexcept;
+void (__cdecl* wil::details::g_pfnFailfastWithContextCallback)(struct wil::FailureInfo const &) noexcept;
+void (__cdecl* wil::details::g_pfnFormatNtStatusMsg)(long,unsigned short *,unsigned long);
+void (__cdecl* wil::details::g_pfnGetContextAndNotifyFailure)(struct wil::FailureInfo *,char *,unsigned __int64) noexcept;
+char const * (__cdecl* wil::details::g_pfnGetModuleName)(void) noexcept;
+void (__cdecl* wil::details::g_pfnLoggingCallback)(struct wil::FailureInfo const &) noexcept;
+void (__cdecl* wil::details::g_pfnOriginateCallback)(struct wil::FailureInfo const &) noexcept;
 void (__cdecl* wil::details::g_pfnRaiseFailFastException)(struct _EXCEPTION_RECORD *,struct _CONTEXT *,unsigned long);
 void (__cdecl* wil::details::g_pfnRethrow)(void);
-long (__cdecl* wil::details::g_pfnRtlDisownModuleHeapAllocation)(void *,void *);
-unsigned long (__cdecl* wil::details::g_pfnRtlNtStatusToDosErrorNoTeb)(long);
-void (__cdecl* wil::details::g_pfnTelemetryCallback)(bool,struct wil::FailureInfo const &);
+long (__cdecl* wil::details::g_pfnRtlDisownModuleHeapAllocation)(void *,void *) noexcept;
+unsigned long (__cdecl* wil::details::g_pfnRtlNtStatusToDosErrorNoTeb)(long) noexcept;
+void (__cdecl* wil::details::g_pfnTelemetryCallback)(bool,struct wil::FailureInfo const &) noexcept;
 void (__cdecl* wil::details::g_pfnThrowResultException)(struct wil::FailureInfo const &);
 class wil::details_abi::ProcessLocalStorage<struct wil::details_abi::ProcessLocalData> wil::details::g_processLocalData;
 bool wil::details::g_processShutdownInProgress;
@@ -5400,8 +5528,8 @@ private: static long volatile wil::details::ThreadFailureCallbackHolder::s_telem
 class wil::details_abi::ProcessLocalStorage<struct wil::details_abi::ProcessLocalData> * wil::details_abi::g_pProcessLocalData;
 bool wil::g_fBreakOnFailure;
 bool wil::g_fIsDebuggerPresent;
-bool (__cdecl* wil::g_pfnIsDebuggerPresent)(void);
-bool (__cdecl* wil::g_pfnWilFailFast)(struct wil::FailureInfo const &);
+bool (__cdecl* wil::g_pfnIsDebuggerPresent)(void) noexcept;
+bool (__cdecl* wil::g_pfnWilFailFast)(struct wil::FailureInfo const &) noexcept;
 __xc_a;
 __xc_z;
 __xi_a;

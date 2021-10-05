@@ -1,5 +1,5 @@
 /*
- * PDB file: fltMgr.pdb\C3CA0BC721B145FE4F45FF7F65B7C5AD1\fltMgr.pdb
+ * PDB file: fltMgr.pdb\B70CBDD30B1F003C91B88F3E06F244F81\fltMgr.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -47,6 +47,9 @@ struct _DISPATCHER_HEADER;
 struct _DMA_ADAPTER;
 struct _DMA_ADAPTER_INFO;
 struct _DMA_ADAPTER_INFO_V1;
+struct _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION;
+enum _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_ACCESS_TYPE;
+enum _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_TYPE;
 struct _DMA_COMMON_BUFFER_VECTOR;
 enum DMA_COMPLETION_STATUS;
 struct _DMA_OPERATIONS;
@@ -57,6 +60,7 @@ struct _DRIVER_EXTENSION;
 struct _DRIVER_OBJECT;
 struct _ECP_LIST;
 struct _EJOB;
+enum EmptyCVariant_FeatureStaging_FilterManager;
 struct _EPROCESS;
 struct _ERESOURCE;
 struct _ETW_KERNEL_TRACE_TIMESTAMP;
@@ -67,6 +71,8 @@ enum _EVENT_INFO_CLASS;
 enum _EVENT_TYPE;
 enum _EX_POOL_PRIORITY;
 struct _EX_PUSH_LOCK;
+struct _EX_PUSH_LOCK_AUTO_EXPAND;
+struct _EX_PUSH_LOCK_AUTO_EXPAND_STATE;
 struct _EX_PUSH_LOCK_CACHE_AWARE_LEGACY;
 struct _EX_RUNDOWN_REF;
 struct _EX_RUNDOWN_REF_CACHE_AWARE;
@@ -78,6 +84,11 @@ struct _EXT_DELETE_PARAMETERS;
 struct _EXT_SET_PARAMETERS_V0;
 struct _FAST_IO_DISPATCH;
 struct _FAST_MUTEX;
+enum FEATURE_CHANGE_TIME;
+enum FEATURE_ENABLED_STATE;
+struct FEATURE_ERROR;
+struct FEATURE_LOGGED_TRAITS;
+struct FEATURE_STATE_CHANGE_SUBSCRIPTION__;
 struct _FILE_BASIC_INFORMATION;
 struct _FILE_GET_QUOTA_INFORMATION;
 enum _FILE_INFORMATION_CLASS;
@@ -170,6 +181,7 @@ struct _IO_STACK_LOCATION;
 struct _IO_STATUS_BLOCK;
 struct _IO_TIMER;
 struct _IO_WORKITEM;
+struct _IORING_OBJECT;
 struct _IRP;
 struct _IRP_CALL_CTRL;
 struct _IRP_CTRL;
@@ -205,7 +217,9 @@ enum _LOCK_OPERATION;
 struct _LOOKASIDE_LIST_EX;
 struct _LUID;
 struct _LUID_AND_ATTRIBUTES;
+union __m128;
 struct _M128A;
+union __m64;
 struct _MAILSLOT_CREATE_PARAMETERS;
 struct _MANAGER_CCB;
 struct _MDL;
@@ -235,15 +249,24 @@ struct _POWER_SEQUENCE;
 union _POWER_STATE;
 enum _POWER_STATE_TYPE;
 struct _PRIVILEGE_SET;
+enum _REFS_STREAM_SNAPSHOT_OPERATION;
 enum _REG_NOTIFY_CLASS;
 enum ReplacesCorHdrNumericDefines;
 struct _RESERVE_IRPCTRL;
+struct _RTL_AVL_TREE;
+struct _RTL_BALANCED_NODE;
 struct _RTL_BITMAP;
 struct _RTL_DYNAMIC_HASH_TABLE;
 struct _RTL_DYNAMIC_HASH_TABLE_CONTEXT;
 struct _RTL_DYNAMIC_HASH_TABLE_ENTRY;
 struct _RTL_DYNAMIC_HASH_TABLE_ENUMERATOR;
+struct _RTL_FEATURE_CONFIGURATION;
+enum _RTL_FEATURE_CONFIGURATION_PRIORITY;
+enum _RTL_FEATURE_CONFIGURATION_TYPE;
+enum _RTL_FEATURE_ENABLED_STATE_OPTIONS;
+struct _RTL_FEATURE_USAGE_REPORT;
 struct _RTL_QUERY_REGISTRY_TABLE;
+struct _RTL_RB_TREE;
 struct _RTL_SPLAY_LINKS;
 struct _SCATTER_GATHER_ELEMENT;
 struct _SCATTER_GATHER_LIST;
@@ -327,6 +350,26 @@ struct _WHEA_XPF_CMC_DESCRIPTOR;
 struct _WHEA_XPF_MC_BANK_DESCRIPTOR;
 struct _WHEA_XPF_MCE_DESCRIPTOR;
 struct _WHEA_XPF_NMI_DESCRIPTOR;
+struct __WIL__WNF_STATE_NAME;
+struct __WIL__WNF_TYPE_ID;
+struct wil_details_FeatureDescriptor;
+struct wil_details_FeatureReportingCache;
+union wil_details_FeatureStateCache;
+struct wil_details_FeatureTestState;
+enum wil_details_FeatureTestStateKind;
+union wil_details_RecordedState;
+struct wil_details_RecordUsageResult;
+union wil_details_ReportedState;
+enum wil_details_ServiceReportingKind;
+enum wil_FeatureChangeTime;
+enum wil_FeatureEnabledState;
+enum wil_FeatureStage;
+struct wil_FeatureState;
+enum wil_FeatureStore;
+enum wil_FeatureVariantPayloadKind;
+enum wil_ReportingKind;
+enum wil_UsageReportingMode;
+enum wil_VariantReportingKind;
 struct _WMI_FLTIO_NOTIFY_ROUTINES;
 struct _WORK_CONTEXT;
 struct _WORK_QUEUE_ITEM;
@@ -1102,8 +1145,8 @@ typedef struct _DISPATCHER_HEADER
               unsigned char Minimal : 1; /* bit position: 2 */
               unsigned char Reserved4 : 2; /* bit position: 3 */
               unsigned char AltSyscall : 1; /* bit position: 5 */
-              unsigned char UmsScheduled : 1; /* bit position: 6 */
-              unsigned char UmsPrimary : 1; /* bit position: 7 */
+              unsigned char Emulation : 1; /* bit position: 6 */
+              unsigned char Reserved5 : 1; /* bit position: 7 */
             }; /* bitfield */
           };
         };
@@ -1142,6 +1185,43 @@ typedef struct _DMA_ADAPTER_INFO_V1
   unsigned long Flags;
   unsigned long MinimumTransferUnit;
 } DMA_ADAPTER_INFO_V1, *PDMA_ADAPTER_INFO_V1;
+
+typedef struct _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION
+{
+  enum _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_TYPE ConfigType;
+  union
+  {
+    struct
+    {
+      union _LARGE_INTEGER MinimumAddress;
+      union _LARGE_INTEGER MaximumAddress;
+    } LogicalAddressLimits;
+    struct
+    {
+      unsigned __int64 Offset;
+      unsigned long Length;
+      long __PADDING__[1];
+    } SubSection;
+    enum _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_ACCESS_TYPE HardwareAccessType;
+    unsigned __int64 Reserved[4];
+  };
+} DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION, *PDMA_COMMON_BUFFER_EXTENDED_CONFIGURATION;
+
+typedef enum _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_ACCESS_TYPE
+{
+  CommonBufferHardwareAccessReadOnly = 0,
+  CommonBufferHardwareAccessWriteOnly = 1,
+  CommonBufferHardwareAccessReadWrite = 2,
+  CommonBufferHardwareAccessMax = 3,
+} DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_ACCESS_TYPE, *PDMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_ACCESS_TYPE;
+
+typedef enum _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_TYPE
+{
+  CommonBufferConfigTypeLogicalAddressLimits = 0,
+  CommonBufferConfigTypeSubSection = 1,
+  CommonBufferConfigTypeHardwareAccessPermissions = 2,
+  CommonBufferConfigTypeMax = 3,
+} DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_TYPE, *PDMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_TYPE;
 
 struct _DMA_COMMON_BUFFER_VECTOR;
 
@@ -1194,6 +1274,7 @@ typedef struct _DMA_OPERATIONS
   void* GetCommonBufferFromVectorByIndex /* function */;
   void* FreeCommonBufferFromVector /* function */;
   void* FreeCommonBufferVector /* function */;
+  void* CreateCommonBufferFromMdl /* function */;
 } DMA_OPERATIONS, *PDMA_OPERATIONS;
 
 typedef struct _DMA_TRANSFER_INFO
@@ -1256,6 +1337,11 @@ typedef struct _ECP_LIST
 } ECP_LIST, *PECP_LIST;
 
 struct _EJOB;
+
+enum EmptyCVariant_FeatureStaging_FilterManager
+{
+  CVariant_FeatureStaging_FilterManager_Empty = 0,
+};
 
 struct _EPROCESS;
 
@@ -1373,6 +1459,27 @@ typedef struct _EX_PUSH_LOCK
   };
 } EX_PUSH_LOCK, *PEX_PUSH_LOCK;
 
+typedef struct _EX_PUSH_LOCK_AUTO_EXPAND
+{
+  struct _EX_PUSH_LOCK LocalLock;
+  struct _EX_PUSH_LOCK_AUTO_EXPAND_STATE State;
+  unsigned long Stats;
+} EX_PUSH_LOCK_AUTO_EXPAND, *PEX_PUSH_LOCK_AUTO_EXPAND;
+
+typedef struct _EX_PUSH_LOCK_AUTO_EXPAND_STATE
+{
+  union
+  {
+    struct /* bitfield */
+    {
+      unsigned long Expanded : 1; /* bit position: 0 */
+      unsigned long Transitioning : 1; /* bit position: 1 */
+      unsigned long Pageable : 1; /* bit position: 2 */
+    }; /* bitfield */
+    unsigned long Value;
+  };
+} EX_PUSH_LOCK_AUTO_EXPAND_STATE, *PEX_PUSH_LOCK_AUTO_EXPAND_STATE;
+
 typedef struct _EX_PUSH_LOCK_CACHE_AWARE_LEGACY
 {
   struct _EX_PUSH_LOCK* Locks[32];
@@ -1472,6 +1579,55 @@ typedef struct _FAST_MUTEX
   long __PADDING__[1];
 } FAST_MUTEX, *PFAST_MUTEX;
 
+enum FEATURE_CHANGE_TIME
+{
+  FEATURE_CHANGE_TIME_READ = 0,
+  FEATURE_CHANGE_TIME_MODULE_RELOAD = 1,
+  FEATURE_CHANGE_TIME_SESSION = 2,
+  FEATURE_CHANGE_TIME_REBOOT = 3,
+  FEATURE_CHANGE_TIME_USER_FLAG = 128,
+};
+
+enum FEATURE_ENABLED_STATE
+{
+  FEATURE_ENABLED_STATE_DEFAULT = 0,
+  FEATURE_ENABLED_STATE_DISABLED = 1,
+  FEATURE_ENABLED_STATE_ENABLED = 2,
+  FEATURE_ENABLED_STATE_HAS_NOTIFICATION = 128,
+  FEATURE_ENABLED_STATE_HAS_VARIANT_CONFIGURATION = 64,
+};
+
+struct FEATURE_ERROR
+{
+  HRESULT hr;
+  unsigned short lineNumber;
+  const char* file;
+  const char* process;
+  const char* modulePath;
+  unsigned int callerReturnAddressOffset;
+  const char* callerModule;
+  const char* message;
+  unsigned short originLineNumber;
+  const char* originFile;
+  const char* originModule;
+  unsigned int originCallerReturnAddressOffset;
+  const char* originCallerModule;
+  const char* originName;
+};
+
+struct FEATURE_LOGGED_TRAITS
+{
+  unsigned short version;
+  unsigned short baseVersion;
+  unsigned char stage;
+  char __PADDING__[1];
+};
+
+struct FEATURE_STATE_CHANGE_SUBSCRIPTION__
+{
+  int unused;
+};
+
 typedef struct _FILE_BASIC_INFORMATION
 {
   union _LARGE_INTEGER CreationTime;
@@ -1566,7 +1722,8 @@ typedef enum _FILE_INFORMATION_CLASS
   FileLinkInformationExBypassAccessCheck = 73,
   FileStorageReserveIdInformation = 74,
   FileCaseSensitiveInformationForceAccessCheck = 75,
-  FileMaximumInformation = 76,
+  FileKnownFolderInformation = 76,
+  FileMaximumInformation = 77,
 } FILE_INFORMATION_CLASS, *PFILE_INFORMATION_CLASS;
 
 typedef struct _FILE_LIST_CTRL
@@ -1583,7 +1740,7 @@ typedef struct _FILE_LIST_CTRL
   struct _LIST_ENTRY VolumeLink;
   enum _FILE_LIST_CTRL_FLAGS Flags;
   long UseCount;
-  struct _EX_PUSH_LOCK ContextLock;
+  struct _EX_PUSH_LOCK_AUTO_EXPAND ContextLock;
   struct _CONTEXT_LIST_CTRL FileContexts;
 } FILE_LIST_CTRL, *PFILE_LIST_CTRL;
 
@@ -1823,7 +1980,7 @@ typedef struct _FLT_FILTER
   struct _FLT_MUTEX_LIST_HEAD ActiveOpens;
   struct _FLT_MUTEX_LIST_HEAD ConnectionList;
   struct _FLT_MUTEX_LIST_HEAD PortList;
-  struct _EX_PUSH_LOCK PortLock;
+  struct _EX_PUSH_LOCK_AUTO_EXPAND PortLock;
 } FLT_FILTER, *PFLT_FILTER;
 
 typedef enum _FLT_FILTER_FLAGS
@@ -1834,6 +1991,8 @@ typedef enum _FLT_FILTER_FLAGS
   FLTFL_SUPPORTS_PIPES_MAILSLOTS = 8,
   FLTFL_BACKED_BY_PAGEFILE = 16,
   FLTFL_SUPPORTS_DAX_VOLUME = 32,
+  FLTFL_SUPPORTS_WCOS = 64,
+  FLTFL_FILTERS_READ_WRITE = 128,
 } FLT_FILTER_FLAGS, *PFLT_FILTER_FLAGS;
 
 typedef struct _FLT_GENERIC_WORKITEM
@@ -1861,7 +2020,7 @@ typedef struct _FLT_INSTANCE
   struct _UNICODE_STRING Altitude;
   struct _UNICODE_STRING Name;
   struct _LIST_ENTRY FilterLink;
-  struct _EX_PUSH_LOCK ContextLock;
+  struct _EX_PUSH_LOCK_AUTO_EXPAND ContextLock;
   struct _CONTEXT_NODE* Context;
   struct _CONTEXT_LIST_CTRL TransactionContexts;
   struct _TRACK_COMPLETION_NODES* TrackCompletionNodes;
@@ -2286,6 +2445,8 @@ typedef union _FLT_PARAMETERS
       enum _FS_FILTER_SECTION_SYNC_TYPE SyncType;
       unsigned long PageProtection;
       struct _FS_FILTER_SECTION_SYNC_OUTPUT* OutputInformation;
+      unsigned long Flags;
+      unsigned long AllocationAttributes;
     } AcquireForSectionSynchronization;
     struct
     {
@@ -2534,6 +2695,7 @@ typedef struct _FLT_VERIFIER_EXTENSION
 typedef enum _FLT_VERIFIER_EXTENSION_FLAGS
 {
   FLTVFL_ALLOCATION_FAILURE = 1,
+  FLTVFL_REGISTER_FILTER_THUNK = -2147483648,
 } FLT_VERIFIER_EXTENSION_FLAGS, *PFLT_VERIFIER_EXTENSION_FLAGS;
 
 typedef struct _FLT_VERIFIER_OBJECT
@@ -2567,17 +2729,19 @@ typedef struct _FLT_VOLUME
   struct _UNICODE_STRING CDODriverName;
   struct _FLT_RESOURCE_LIST_HEAD InstanceList;
   struct _CALLBACK_CTRL Callbacks;
-  struct _EX_PUSH_LOCK ContextLock;
+  struct _EX_PUSH_LOCK_AUTO_EXPAND ContextLock;
   struct _CONTEXT_LIST_CTRL VolumeContexts;
   struct _FLT_RESOURCE_LIST_HEAD StreamListCtrls;
   struct _FLT_RESOURCE_LIST_HEAD FileListCtrls;
   struct _NAME_CACHE_VOLUME_CTRL NameCacheCtrl;
   struct _ERESOURCE MountNotifyLock;
   long TargetedOpenActiveCount;
-  struct _EX_PUSH_LOCK TxVolContextListLock;
+  struct _EX_PUSH_LOCK_AUTO_EXPAND TxVolContextListLock;
   struct _TREE_ROOT TxVolContexts;
   long SupportedFeatures;
-  long __PADDING__[1];
+  unsigned short BypassFailingFltNameLen;
+  wchar_t BypassFailingFltName[32];
+  char __PADDING__[2];
 } FLT_VOLUME, *PFLT_VOLUME;
 
 typedef enum _FLT_VOLUME_FLAGS
@@ -2711,7 +2875,7 @@ typedef union _FS_FILTER_PARAMETERS
       unsigned long PageProtection;
       struct _FS_FILTER_SECTION_SYNC_OUTPUT* OutputInformation;
       unsigned long Flags;
-      long __PADDING__[1];
+      unsigned long AllocationAttributes;
     } AcquireForSectionSynchronization;
     struct
     {
@@ -2791,7 +2955,9 @@ typedef struct _FSRTL_ADVANCED_FCB_HEADER
     void* Oplock;
     void* ReservedForRemote;
   };
-  void* ReservedContext;
+  void* AePushLock;
+  unsigned long BypassIoOpenCount;
+  long __PADDING__[1];
 } FSRTL_ADVANCED_FCB_HEADER, *PFSRTL_ADVANCED_FCB_HEADER;
 
 typedef struct _FSRTL_PER_FILE_CONTEXT
@@ -2939,6 +3105,7 @@ typedef struct _GLOBALS
   unsigned char ManualAttachIgnoredDevices;
   unsigned char ManualAttachOnlyOnceDevices;
   unsigned char ManualAttachFastAttachDevices;
+  unsigned long CallbackStackSwapThreshold;
   struct _NPAGED_LOOKASIDE_LIST TargetedIoCtrlLookasideList;
   struct _PAGED_LOOKASIDE_LIST IoDeviceHintLookasideList;
   struct _NPAGED_LOOKASIDE_LIST StreamListCtrlLookasideList;
@@ -3521,6 +3688,8 @@ struct _IO_TIMER;
 
 struct _IO_WORKITEM;
 
+struct _IORING_OBJECT;
+
 typedef struct _IRP
 {
   short Type;
@@ -3546,7 +3715,11 @@ typedef struct _IRP
   unsigned char CancelIrql;
   char ApcEnvironment;
   unsigned char AllocationFlags;
-  struct _IO_STATUS_BLOCK* UserIosb;
+  union
+  {
+    struct _IO_STATUS_BLOCK* UserIosb;
+    void* IoRingContext;
+  };
   struct _KEVENT* UserEvent;
   union
   {
@@ -3559,7 +3732,11 @@ typedef struct _IRP
           void* UserApcRoutine /* function */;
           void* IssuingProcess;
         };
-        void* UserApcContext;
+        union
+        {
+          void* UserApcContext;
+          struct _IORING_OBJECT* IoRing;
+        };
       } AsynchronousParameters;
       union _LARGE_INTEGER AllocationSize;
     };
@@ -3931,11 +4108,43 @@ typedef struct _LUID_AND_ATTRIBUTES
   unsigned long Attributes;
 } LUID_AND_ATTRIBUTES, *PLUID_AND_ATTRIBUTES;
 
+typedef union __m128
+{
+  union
+  {
+    float m128_f32[4];
+    unsigned __int64 m128_u64[2];
+    char m128_i8[16];
+    short m128_i16[8];
+    int m128_i32[4];
+    __int64 m128_i64[2];
+    unsigned char m128_u8[16];
+    unsigned short m128_u16[8];
+    unsigned int m128_u32[4];
+  };
+} _m128, *P_m128;
+
 typedef struct _M128A
 {
   unsigned __int64 Low;
   __int64 High;
 } M128A, *PM128A;
+
+typedef union __m64
+{
+  union
+  {
+    unsigned __int64 m64_u64;
+    float m64_f32[2];
+    char m64_i8[8];
+    short m64_i16[4];
+    int m64_i32[2];
+    __int64 m64_i64;
+    unsigned char m64_u8[8];
+    unsigned short m64_u16[4];
+    unsigned int m64_u32[2];
+  };
+} _m64, *P_m64;
 
 typedef struct _MAILSLOT_CREATE_PARAMETERS
 {
@@ -4210,6 +4419,18 @@ typedef struct _PRIVILEGE_SET
   struct _LUID_AND_ATTRIBUTES Privilege[1];
 } PRIVILEGE_SET, *PPRIVILEGE_SET;
 
+typedef enum _REFS_STREAM_SNAPSHOT_OPERATION
+{
+  REFS_STREAM_SNAPSHOT_OPERATION_INVALID = 0,
+  REFS_STREAM_SNAPSHOT_OPERATION_CREATE = 1,
+  REFS_STREAM_SNAPSHOT_OPERATION_LIST = 2,
+  REFS_STREAM_SNAPSHOT_OPERATION_QUERY_DELTAS = 3,
+  REFS_STREAM_SNAPSHOT_OPERATION_REVERT = 4,
+  REFS_STREAM_SNAPSHOT_OPERATION_SET_SHADOW_BTREE = 5,
+  REFS_STREAM_SNAPSHOT_OPERATION_CLEAR_SHADOW_BTREE = 6,
+  REFS_STREAM_SNAPSHOT_OPERATION_MAX = 6,
+} REFS_STREAM_SNAPSHOT_OPERATION, *PREFS_STREAM_SNAPSHOT_OPERATION;
+
 typedef enum _REG_NOTIFY_CLASS
 {
   RegNtDeleteKey = 0,
@@ -4272,7 +4493,9 @@ typedef enum _REG_NOTIFY_CLASS
   RegNtPostReplaceKey = 46,
   RegNtPreQueryKeyName = 47,
   RegNtPostQueryKeyName = 48,
-  MaxRegNtNotifyClass = 49,
+  RegNtPreSaveMergedKey = 49,
+  RegNtPostSaveMergedKey = 50,
+  MaxRegNtNotifyClass = 51,
 } REG_NOTIFY_CLASS, *PREG_NOTIFY_CLASS;
 
 enum ReplacesCorHdrNumericDefines
@@ -4312,6 +4535,30 @@ typedef struct _RESERVE_IRPCTRL
   struct _KSEMAPHORE EntriesLock;
   struct _BACKPOCKET_THREAD_ENTRY Entries[3];
 } RESERVE_IRPCTRL, *PRESERVE_IRPCTRL;
+
+typedef struct _RTL_AVL_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+} RTL_AVL_TREE, *PRTL_AVL_TREE;
+
+typedef struct _RTL_BALANCED_NODE
+{
+  union
+  {
+    struct _RTL_BALANCED_NODE* Children[2];
+    struct
+    {
+      struct _RTL_BALANCED_NODE* Left;
+      struct _RTL_BALANCED_NODE* Right;
+    };
+  };
+  union
+  {
+    unsigned char Red : 1; /* bit position: 0 */
+    unsigned char Balance : 2; /* bit position: 0 */
+    unsigned __int64 ParentValue;
+  };
+} RTL_BALANCED_NODE, *PRTL_BALANCED_NODE;
 
 typedef struct _RTL_BITMAP
 {
@@ -4357,6 +4604,53 @@ typedef struct _RTL_DYNAMIC_HASH_TABLE_ENUMERATOR
   long __PADDING__[1];
 } RTL_DYNAMIC_HASH_TABLE_ENUMERATOR, *PRTL_DYNAMIC_HASH_TABLE_ENUMERATOR;
 
+typedef struct _RTL_FEATURE_CONFIGURATION
+{
+  unsigned int FeatureId;
+  struct /* bitfield */
+  {
+    unsigned int Priority : 4; /* bit position: 0 */
+    unsigned int EnabledState : 2; /* bit position: 4 */
+    unsigned int IsWexpConfiguration : 1; /* bit position: 6 */
+    unsigned int HasSubscriptions : 1; /* bit position: 7 */
+    unsigned int Variant : 6; /* bit position: 8 */
+    unsigned int VariantPayloadKind : 2; /* bit position: 14 */
+  }; /* bitfield */
+  unsigned int VariantPayload;
+} RTL_FEATURE_CONFIGURATION, *PRTL_FEATURE_CONFIGURATION;
+
+typedef enum _RTL_FEATURE_CONFIGURATION_PRIORITY
+{
+  FeatureConfigurationPriorityImageDefault = 0,
+  FeatureConfigurationPriorityEnrollment = 2,
+  FeatureConfigurationPriorityService = 4,
+  FeatureConfigurationPriorityUser = 8,
+  FeatureConfigurationPriorityUserPolicy = 10,
+  FeatureConfigurationPriorityTest = 12,
+  FeatureConfigurationPriorityImageOverride = 15,
+  FeatureConfigurationPriorityMax = 15,
+} RTL_FEATURE_CONFIGURATION_PRIORITY, *PRTL_FEATURE_CONFIGURATION_PRIORITY;
+
+typedef enum _RTL_FEATURE_CONFIGURATION_TYPE
+{
+  RtlFeatureConfigurationBoot = 0,
+  RtlFeatureConfigurationRuntime = 1,
+  RtlFeatureConfigurationCount = 2,
+} RTL_FEATURE_CONFIGURATION_TYPE, *PRTL_FEATURE_CONFIGURATION_TYPE;
+
+typedef enum _RTL_FEATURE_ENABLED_STATE_OPTIONS
+{
+  FeatureEnabledStateOptionsNone = 0,
+  FeatureEnabledStateOptionsWexpConfig = 1,
+} RTL_FEATURE_ENABLED_STATE_OPTIONS, *PRTL_FEATURE_ENABLED_STATE_OPTIONS;
+
+typedef struct _RTL_FEATURE_USAGE_REPORT
+{
+  unsigned int FeatureId;
+  unsigned short ReportingKind;
+  unsigned short ReportingOptions;
+} RTL_FEATURE_USAGE_REPORT, *PRTL_FEATURE_USAGE_REPORT;
+
 typedef struct _RTL_QUERY_REGISTRY_TABLE
 {
   void* QueryRoutine /* function */;
@@ -4368,6 +4662,16 @@ typedef struct _RTL_QUERY_REGISTRY_TABLE
   unsigned long DefaultLength;
   long __PADDING__[1];
 } RTL_QUERY_REGISTRY_TABLE, *PRTL_QUERY_REGISTRY_TABLE;
+
+typedef struct _RTL_RB_TREE
+{
+  struct _RTL_BALANCED_NODE* Root;
+  union
+  {
+    unsigned char Encoded : 1; /* bit position: 0 */
+    struct _RTL_BALANCED_NODE* Min;
+  };
+} RTL_RB_TREE, *PRTL_RB_TREE;
 
 typedef struct _RTL_SPLAY_LINKS
 {
@@ -4531,11 +4835,11 @@ typedef struct _STREAM_LIST_CTRL
   struct _LIST_ENTRY VolumeLink;
   unsigned long Flags;
   long UseCount;
-  struct _EX_PUSH_LOCK ContextLock;
+  struct _EX_PUSH_LOCK_AUTO_EXPAND ContextLock;
   struct _CONTEXT_LIST_CTRL StreamContexts;
   struct _CONTEXT_LIST_CTRL StreamHandleContexts;
   struct _SECTION_LIST_CTRL* SectionContexts;
-  struct _EX_PUSH_LOCK NameCacheLock;
+  struct _EX_PUSH_LOCK_AUTO_EXPAND NameCacheLock;
   union _LARGE_INTEGER LastRenameCompleted;
   struct _NAME_CACHE_LIST_CTRL NormalizedNameCache;
   struct _NAME_CACHE_LIST_CTRL ShortNameCache;
@@ -4595,7 +4899,8 @@ typedef struct _TELEMETRY_GLOBALS
   long TelemetryLegacyFiltersLastCount;
   long TelemetryMissedFilterRegistrations;
   long TelemetryMissedFilterUnregistrations;
-  long __PADDING__[14];
+  long TelemetryMissedFilterAttachOnWCOS;
+  long __PADDING__[13];
 } TELEMETRY_GLOBALS, *PTELEMETRY_GLOBALS;
 
 typedef struct _THROTTLE_ELEMENT
@@ -4949,7 +5254,8 @@ typedef union _WHEA_ERROR_PACKET_FLAGS
       unsigned long PlatformDirectedOffline : 1; /* bit position: 5 */
       unsigned long AddressTranslationRequired : 1; /* bit position: 6 */
       unsigned long AddressTranslationCompleted : 1; /* bit position: 7 */
-      unsigned long Reserved2 : 24; /* bit position: 8 */
+      unsigned long RecoveryOptional : 1; /* bit position: 8 */
+      unsigned long Reserved2 : 23; /* bit position: 9 */
     }; /* bitfield */
     unsigned long AsULONG;
   };
@@ -4998,7 +5304,15 @@ typedef struct _WHEA_ERROR_RECORD_HEADER
   unsigned __int64 RecordId;
   union _WHEA_ERROR_RECORD_HEADER_FLAGS Flags;
   union _WHEA_PERSISTENCE_INFO PersistenceInfo;
-  unsigned char Reserved[12];
+  union
+  {
+    struct
+    {
+      unsigned long OsBuildNumber;
+      unsigned char Reserved2[8];
+    };
+    unsigned char Reserved[12];
+  };
 } WHEA_ERROR_RECORD_HEADER, *PWHEA_ERROR_RECORD_HEADER;
 
 typedef union _WHEA_ERROR_RECORD_HEADER_FLAGS
@@ -5013,7 +5327,10 @@ typedef union _WHEA_ERROR_RECORD_HEADER_FLAGS
       unsigned long DeviceDriver : 1; /* bit position: 3 */
       unsigned long CriticalEvent : 1; /* bit position: 4 */
       unsigned long PersistPfn : 1; /* bit position: 5 */
-      unsigned long Reserved : 26; /* bit position: 6 */
+      unsigned long SectionsTruncated : 1; /* bit position: 6 */
+      unsigned long RecoveryInProgress : 1; /* bit position: 7 */
+      unsigned long Throttle : 1; /* bit position: 8 */
+      unsigned long Reserved : 23; /* bit position: 9 */
     }; /* bitfield */
     unsigned long AsULONG;
   };
@@ -5061,7 +5378,8 @@ typedef union _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR_FLAGS
       unsigned long ResourceNotAvailable : 1; /* bit position: 4 */
       unsigned long LatentError : 1; /* bit position: 5 */
       unsigned long Propagated : 1; /* bit position: 6 */
-      unsigned long Reserved : 25; /* bit position: 7 */
+      unsigned long FruTextByPlugin : 1; /* bit position: 7 */
+      unsigned long Reserved : 24; /* bit position: 8 */
     }; /* bitfield */
     unsigned long AsULONG;
   };
@@ -5231,6 +5549,7 @@ typedef enum _WHEA_EVENT_LOG_ENTRY_ID
   WheaEventLogEntryIdCreateGenericRecord = -2147483627,
   WheaEventLogEntryIdErrorRecord = -2147483626,
   WheaEventLogEntryIdErrorRecordLimit = -2147483625,
+  WheaEventLogEntryIdAerNotGrantedToOs = -2147483624,
   WheaEventLogEntryIdErrSrcArrayInvalid = -2147483623,
   WheaEventLogEntryIdAcpiTimeOut = -2147483622,
   WheaEventLogCmciRestart = -2147483621,
@@ -5256,6 +5575,27 @@ typedef enum _WHEA_EVENT_LOG_ENTRY_ID
   WheaEventLogEntryIdSELBugCheckInfo = -2147483601,
   WheaEventLogEntryIdErrDimmInfoMismatch = -2147483600,
   WheaEventLogEntryIdeDpcEnabled = -2147483599,
+  WheaEventLogEntryPageOfflineDone = -2147483598,
+  WheaEventLogEntryPageOfflinePendMax = -2147483597,
+  WheaEventLogEntryIdBadPageLimitReached = -2147483596,
+  WheaEventLogEntrySrarDetail = -2147483595,
+  WheaEventLogEntryEarlyError = -2147483594,
+  WheaEventLogEntryIdPcieOverrideInfo = -2147483593,
+  WheaEventLogEntryIdReadPcieOverridesErr = -2147483592,
+  WheaEventLogEntryIdPcieConfigInfo = -2147483591,
+  WheaEventLogEntryIdPcieSummaryFailed = -2147483584,
+  WheaEventLogEntryIdThrottleRegCorrupt = -2147483583,
+  WheaEventLogEntryIdThrottleAddErrSrcFailed = -2147483582,
+  WheaEventLogEntryIdThrottleRegDataIgnored = -2147483581,
+  WheaEventLogEntryIdEnableKeyNotifFailed = -2147483580,
+  WheaEventLogEntryIdKeyNotificationFailed = -2147483579,
+  WheaEventLogEntryIdPcieRemoveDevice = -2147483578,
+  WheaEventLogEntryIdPcieAddDevice = -2147483577,
+  WheaEventLogEntryIdPcieSpuriousErrSource = -2147483576,
+  WheaEventLogEntryIdMemoryAddDevice = -2147483575,
+  WheaEventLogEntryIdMemoryRemoveDevice = -2147483574,
+  WheaEventLogEntryIdMemorySummaryFailed = -2147483573,
+  WheaEventLogEntryIdPshedPiTraceLog = -2147221488,
 } WHEA_EVENT_LOG_ENTRY_ID, *PWHEA_EVENT_LOG_ENTRY_ID;
 
 typedef enum _WHEA_EVENT_LOG_ENTRY_TYPE
@@ -5530,6 +5870,226 @@ typedef struct _WHEA_XPF_NMI_DESCRIPTOR
   unsigned char Enabled;
 } WHEA_XPF_NMI_DESCRIPTOR, *PWHEA_XPF_NMI_DESCRIPTOR;
 
+typedef struct __WIL__WNF_STATE_NAME
+{
+  unsigned long Data[2];
+} _WIL__WNF_STATE_NAME, *P_WIL__WNF_STATE_NAME;
+
+typedef struct __WIL__WNF_TYPE_ID
+{
+  struct _GUID TypeId;
+} _WIL__WNF_TYPE_ID, *P_WIL__WNF_TYPE_ID;
+
+struct wil_details_FeatureDescriptor
+{
+  union wil_details_FeatureStateCache* featureStateCache;
+  unsigned int featureId;
+  unsigned char changeTime;
+  unsigned char isAlwaysDisabled;
+  unsigned char isAlwaysEnabled;
+  unsigned char isEnabledByDefault;
+  const struct wil_details_FeatureDescriptor* const* requiresFeatures;
+  unsigned char variant;
+  enum wil_FeatureVariantPayloadKind payloadKind;
+  unsigned int payload;
+  long __PADDING__[1];
+};
+
+struct wil_details_FeatureReportingCache
+{
+  union wil_details_ReportedState reported;
+  union wil_details_RecordedState recorded;
+};
+
+union wil_details_FeatureStateCache
+{
+  union
+  {
+    unsigned int exchange;
+    struct
+    {
+      struct /* bitfield */
+      {
+        unsigned int stateCached : 1; /* bit position: 0 */
+        unsigned int hasNotificationCached : 1; /* bit position: 1 */
+        unsigned int variantCached : 1; /* bit position: 2 */
+        unsigned int effectiveState : 1; /* bit position: 3 */
+        unsigned int desiredState : 1; /* bit position: 4 */
+        unsigned int configuredState : 2; /* bit position: 5 */
+        unsigned int needsRefresh : 1; /* bit position: 7 */
+        unsigned int hasNotification : 1; /* bit position: 8 */
+        unsigned int isVariant : 1; /* bit position: 9 */
+        unsigned int variant : 6; /* bit position: 10 */
+        unsigned int unused : 16; /* bit position: 16 */
+      }; /* bitfield */
+      unsigned int payloadId;
+    };
+    unsigned __int64 exchange64;
+  };
+};
+
+struct wil_details_FeatureTestState
+{
+  enum wil_details_FeatureTestStateKind kind;
+  unsigned int featureId;
+  enum wil_FeatureEnabledState state;
+  unsigned char variant;
+  unsigned int payload;
+  enum wil_FeatureVariantPayloadKind payloadKind;
+  struct wil_details_FeatureTestState* next;
+};
+
+enum wil_details_FeatureTestStateKind
+{
+  wil_details_FeatureTestStateKind_EnabledState = 0,
+  wil_details_FeatureTestStateKind_Variant = 1,
+};
+
+union wil_details_RecordedState
+{
+  union
+  {
+    unsigned int exchange;
+    struct /* bitfield */
+    {
+      unsigned int recordedDeviceUsage : 1; /* bit position: 0 */
+      unsigned int recordedDevicePotential : 1; /* bit position: 1 */
+      unsigned int recordedDeviceOpportunity : 1; /* bit position: 2 */
+      unsigned int recordedDevicePotentialOpportunity : 1; /* bit position: 3 */
+      unsigned int recordedVariantDeviceUsage : 1; /* bit position: 4 */
+      unsigned int recordedVariant : 6; /* bit position: 5 */
+      unsigned int unused : 21; /* bit position: 11 */
+    }; /* bitfield */
+  };
+};
+
+struct wil_details_RecordUsageResult
+{
+  int queueBackground;
+  unsigned int countImmediate;
+  enum wil_details_ServiceReportingKind kindImmediate;
+  unsigned int payloadId;
+  int ignoredUse;
+  int isVariantConfiguration;
+};
+
+union wil_details_ReportedState
+{
+  union
+  {
+    unsigned int exchange;
+    struct /* bitfield */
+    {
+      unsigned int queuedForReporting : 1; /* bit position: 0 */
+      unsigned int reportedDeviceUsage : 1; /* bit position: 1 */
+      unsigned int reportedDevicePotential : 1; /* bit position: 2 */
+      unsigned int reportedDeviceOpportunity : 1; /* bit position: 3 */
+      unsigned int reportedDevicePotentialOpportunity : 1; /* bit position: 4 */
+      unsigned int usageCount : 9; /* bit position: 5 */
+      unsigned int usageCountRepresentsPotential : 1; /* bit position: 14 */
+      unsigned int opportunityCount : 7; /* bit position: 15 */
+      unsigned int opportunityCountRepresentsPotential : 1; /* bit position: 22 */
+      unsigned int unused : 9; /* bit position: 23 */
+    }; /* bitfield */
+  };
+};
+
+enum wil_details_ServiceReportingKind
+{
+  wil_details_ServiceReportingKind_UniqueUsage = 0,
+  wil_details_ServiceReportingKind_UniqueOpportunity = 1,
+  wil_details_ServiceReportingKind_DeviceUsage = 2,
+  wil_details_ServiceReportingKind_DeviceOpportunity = 3,
+  wil_details_ServiceReportingKind_PotentialUniqueUsage = 4,
+  wil_details_ServiceReportingKind_PotentialUniqueOpportunity = 5,
+  wil_details_ServiceReportingKind_PotentialDeviceUsage = 6,
+  wil_details_ServiceReportingKind_PotentialDeviceOpportunity = 7,
+  wil_details_ServiceReportingKind_EnabledTotalDuration = 8,
+  wil_details_ServiceReportingKind_EnabledPausedDuration = 9,
+  wil_details_ServiceReportingKind_DisabledTotalDuration = 10,
+  wil_details_ServiceReportingKind_DisabledPausedDuration = 11,
+  wil_details_ServiceReportingKind_CustomEnabledBase = 100,
+  wil_details_ServiceReportingKind_CustomDisabledBase = 150,
+  wil_details_ServiceReportingKind_Store = 254,
+  wil_details_ServiceReportingKind_None = 255,
+  wil_details_ServiceReportingKind_VariantDevicePotentialBase = 256,
+  wil_details_ServiceReportingKind_VariantDeviceUsageBase = 320,
+  wil_details_ServiceReportingKind_VariantUniquePotentialBase = 384,
+  wil_details_ServiceReportingKind_VariantUniqueUsageBase = 448,
+};
+
+enum wil_FeatureChangeTime
+{
+  wil_FeatureChangeTime_OnRead = 0,
+  wil_FeatureChangeTime_OnReload = 1,
+  wil_FeatureChangeTime_OnSession = 2,
+  wil_FeatureChangeTime_OnReboot = 3,
+};
+
+enum wil_FeatureEnabledState
+{
+  wil_FeatureEnabledState_Default = 0,
+  wil_FeatureEnabledState_Disabled = 1,
+  wil_FeatureEnabledState_Enabled = 2,
+};
+
+enum wil_FeatureStage
+{
+  wil_FeatureStage_AlwaysDisabled = 0,
+  wil_FeatureStage_DisabledByDefault = 1,
+  wil_FeatureStage_EnabledByDefault = 2,
+  wil_FeatureStage_AlwaysEnabled = 3,
+};
+
+struct wil_FeatureState
+{
+  enum wil_FeatureEnabledState enabledState;
+  unsigned char variant;
+  enum wil_FeatureVariantPayloadKind payloadKind;
+  unsigned int payload;
+  int hasNotification;
+  int isVariantConfiguration;
+};
+
+enum wil_FeatureStore
+{
+  wil_FeatureStore_Machine = 0,
+  wil_FeatureStore_User = 1,
+  wil_FeatureStore_All = 2,
+};
+
+enum wil_FeatureVariantPayloadKind
+{
+  wil_FeatureVariantPayloadKind_None = 0,
+  wil_FeatureVariantPayloadKind_Resident = 1,
+  wil_FeatureVariantPayloadKind_External = 2,
+};
+
+enum wil_ReportingKind
+{
+  wil_ReportingKind_None = 0,
+  wil_ReportingKind_UniqueUsage = 1,
+  wil_ReportingKind_UniqueOpportunity = 2,
+  wil_ReportingKind_DeviceUsage = 3,
+  wil_ReportingKind_DeviceOpportunity = 4,
+  wil_ReportingKind_TotalDuration = 5,
+  wil_ReportingKind_PausedDuration = 6,
+};
+
+enum wil_UsageReportingMode
+{
+  wil_UsageReportingMode_Default = 0,
+  wil_UsageReportingMode_SuppressPotential = 1,
+  wil_UsageReportingMode_SuppressImplicit = 2,
+};
+
+enum wil_VariantReportingKind
+{
+  wil_VariantReportingKind_None = 0,
+  wil_VariantReportingKind_UniqueUsage = 1,
+  wil_VariantReportingKind_DeviceUsage = 2,
+};
+
 typedef struct _WMI_FLTIO_NOTIFY_ROUTINES
 {
   void* TimeStampRoutine /* function */;
@@ -5637,18 +6197,17 @@ typedef struct _XSAVE_FORMAT
 __C_specific_handler();
 ? CancelTimerCallbacksAndDeleteTimer;
 ? CBufferGetNextOffset;
-? CleanupFileListCtrl;
+CleanupFileListCtrl();
 ? CleanupStreamListCtrl;
 CleanupTargetedIo();
-? CompareEventEntry;
-? ComputeEventEntryHash;
 ? ComputeFlushPeriod;
+__cpu_features_init();
 ? CreateNewEventEntry;
 ? CreateTemporaryFileNameInformation;
 ? CreateTlgAggregateSession;
 DeleteContextFromFileList();
 ? DeleteContextFromStreamList;
-? DeleteFileListCtrlCallback;
+DeleteFileListCtrlCallback();
 ? DeleteNameCacheNodes;
 ? DeleteStreamListCtrlCallback;
 ? DestroyAggregateSession;
@@ -5737,7 +6296,7 @@ FltDeletePushLock();
 FltDeleteStreamContext();
 FltDeleteStreamHandleContext();
 FltDeleteTransactionContext();
-FltDeleteVolumeContext();
+? FltDeleteVolumeContext;
 FltDetachVolume();
 FltDeviceIoControlFile();
 FltDoCompletionProcessingWhenSafe();
@@ -5840,7 +6399,7 @@ FltLoadFilter();
 ? FltLockUserBuffer;
 ? FltMgrFsRtlAttachDeviceCallback;
 FltMgrFsRtlEcpCleanup();
-FltMgrFsRtlGetFileNameInformation();
+? FltMgrFsRtlGetFileNameInformation;
 ? FltMgrFsRtlGetSupportedFeatures;
 ? FltMgrOpenReparseEcpCleanup;
 ? FltMgrVerifierFsRtlEcpCleanup;
@@ -5908,7 +6467,7 @@ FltpCleanupContextRegistration();
 FltpCleanupFileObjectContextForCleanup();
 FltpCleanupFileObjectContextForClose();
 FltpCleanupFileObjectContextsForLastFilterRemoval();
-FltpCleanupFilterVerifier();
+? FltpCleanupFilterVerifier;
 FltpCleanupFrame();
 ? FltpCleanupLoadedLegacyFiltersList;
 ? FltpCleanupNameControl;
@@ -5931,7 +6490,7 @@ FltpCompleteCompletionNode();
 FltpCompleteLockIrpRoutine();
 FltpCompletePhase2Init();
 FltpCompleteRequest();
-FltpCompletionWorkerThread();
+? FltpCompletionWorkerThread;
 FltpComputeWaitInterval();
 ? FltpControlDispatch;
 ? FltpCopyOffloadCapable;
@@ -5947,11 +6506,11 @@ FltpCreatePostCompletion();
 ? FltpCreateVolumeDeviceObject;
 ? FltpDataScanConflictProcessing;
 FltpDataScanConflictQueuedWorkerThread();
-FltpDataScanConflictResumeCompletion();
+? FltpDataScanConflictResumeCompletion;
 FltpDataScanConflictWorkerThread();
 FltpDataScanCsqAcquireLock();
 FltpDataScanCsqCompleteCanceledIrp();
-FltpDataScanCsqInsertIrp();
+? FltpDataScanCsqInsertIrp;
 FltpDataScanCsqPeekNextIrp();
 FltpDataScanCsqReleaseLock();
 FltpDataScanCsqRemoveIrp();
@@ -5992,7 +6551,7 @@ FltpEnumerateVolumeInformationInternal();
 ? FltPerformSynchronousIo;
 ? FltpExpandFilePath;
 FltpExpandFilePathCallout();
-FltpExpandFilePathWorker();
+? FltpExpandFilePathWorker;
 ? FltpExpandShortNames;
 ? FltpExtendIrpCtrl;
 FltpFastIoCheckIfPossible();
@@ -6027,7 +6586,7 @@ FltpFindFrameForDeviceStack();
 ? FltpFindFrameForFilter;
 ? FltpFindNext;
 FltpFreeBackPocketIrpCtrl();
-FltpFreeCallbackDataMdlChain();
+? FltpFreeCallbackDataMdlChain;
 ? FltpFreeCompletionNodeTracking;
 ? FltpFreeFileNameInformation;
 FltpFreeFltCcb();
@@ -6035,7 +6594,7 @@ FltpFreeFrameLookasideLists();
 ? FltpFreeInstance;
 ? FltpFreeIrpCtrl;
 FltpFreeMdlChain();
-FltpFreeNameCacheCreateCtrl();
+? FltpFreeNameCacheCreateCtrl;
 ? FltpFreeNameGenerationContext;
 FltpFreeStaticIrpCtrl();
 FltpFreeTelemetryStringRoutine();
@@ -6052,7 +6611,7 @@ FltpFsRtlCompletionRoutine();
 ? FltpGenerateDeviceHintEcp;
 FltpGenerateUniqueIdentifierForObject();
 FltpGetActiveFilterCount();
-FltpGetAnySectionContext();
+? FltpGetAnySectionContext;
 FltpGetAutoOptInFeatures();
 FltpGetBaseDeviceObjectName();
 FltpGetBoundTransaction();
@@ -6064,9 +6623,9 @@ FltpGetContexts();
 ? FltpGetFileName;
 ? FltpGetFileNameFromFileObject;
 ? FltpGetFileNameInformation;
-FltpGetFileNameOpenById();
+? FltpGetFileNameOpenById;
 FltpGetFileNameOpenByIdCallout();
-FltpGetFileNameOpenByIdWorker();
+? FltpGetFileNameOpenByIdWorker;
 ? FltpGetFltVolumeFromAttachmentList;
 ? FltpGetFrameZeroVolume;
 FltpGetFsDeviceObjectAfterMount();
@@ -6087,15 +6646,15 @@ FltpGetNormalizedFileNameCallout();
 ? FltpGetOpenedDestinationFileName;
 ? FltpGetOpenedFileName;
 FltpGetParameterOffsets();
-? FltpGetRegDwordValue;
+FltpGetRegDwordValue();
 FltpGetServicePathFromFilter();
 ? FltpGetShortFileName;
 ? FltpGetStreamListCtrl;
 FltpGetSupportedFeaturesValue();
 ? FltpGetTargetInfo;
 ? FltpGetTxVolContext;
-FltpGetUniqueIdentifierForFilter();
-? FltpGetUniqueIdentifierForObject;
+? FltpGetUniqueIdentifierForFilter;
+FltpGetUniqueIdentifierForObject();
 ? FltpGetUniqueIdentifierForVolume;
 FltpGetUniqueIdentifierForVolumeSnapshot();
 ? FltpGetUniqueIdentifierForVolumeSnapshot$fin$0;
@@ -6131,7 +6690,7 @@ FltpIrpCtrlStackProfilerTimer();
 ? FltpIsAttachedToDevice;
 ? FltpIsCandidateForNameTunneling;
 FltpIsDaxVolume();
-FltpIsOpenByObjectId();
+? FltpIsOpenByObjectId;
 FltpIsVolumeDetached();
 ? FltpKtmNotification;
 ? FltpLegacyProcessingAfterPreCallbacksCompleted;
@@ -6175,7 +6734,7 @@ FltpPassThroughCompletion();
 ? FltpPassThroughFastIo;
 ? FltpPassThroughInternal;
 FltpPeekNextIrp();
-? FltpPerformAsynchronousIoWrapper;
+FltpPerformAsynchronousIoWrapper();
 ? FltpPerformFastIoCall;
 ? FltpPerformPostCallbacks;
 FltpPerformPostCallbacksCallout();
@@ -6198,6 +6757,7 @@ FltpProcessDirtyData();
 ? FltpProcessGenericWorkItem;
 ? FltpProcessIoCompletion;
 FltpProcessIrpCtrlStackProfiler();
+FltpProcessManageBypassIo();
 FltpProcessOperationStatusCallbacks();
 FltpProcessShutdownRequest();
 FltpPropagateCallbackDataMdl();
@@ -6208,16 +6768,17 @@ FltpPurgeVolumeNameCache();
 ? FltpQocEcpCleanupCallback;
 ? FltpQueryInformationFile;
 FltpQueryInformationFileFromInstance();
-FltpQueueDataScanSynchronization();
+? FltpQueueDataScanSynchronization;
 ? FltpQueueThrottledWorkItem;
 ? FltpReadDriverParameters;
 ? FltpReallocNameControl;
 FltpRecordLastFileRenameForVolume();
+FltpReferenceStreamForSectionConflict();
 FltpReinitStreamForSectionConflict();
 ? FltpReinstateNameCaching;
 ? FltpReinstateNameCachingAllFrames;
 ? FltpReissuePostOperationFailure;
-FltpReissuePostOperationFailureCallout();
+? FltpReissuePostOperationFailureCallout;
 ? FltpReissueSynchronousIo;
 FltpReleaseContexts();
 ? FltpReleaseFileListCtrl;
@@ -6233,7 +6794,7 @@ FltpRemoveCallbacksForInstance();
 FltpRemoveFinalComponent();
 FltpRemoveIrp();
 ? FltpRemoveMessageWaiter;
-FltpRemoveVolumeContextsForFilter();
+? FltpRemoveVolumeContextsForFilter;
 FltPrepareComplete();
 FltPrepareToReuseEcp();
 FltPrePrepareComplete();
@@ -6247,7 +6808,7 @@ FltpSafeCompletionWorker();
 FltpScanForVolumeByName();
 FltpScheduleCommitFinalize();
 FltpSendModernAppTermination();
-FltpSendModernAppTerminationWorker();
+? FltpSendModernAppTerminationWorker;
 FltpServerPortClose();
 FltpServerPortDelete();
 ? FltpSetAndEnlistTxVolContext;
@@ -6267,25 +6828,26 @@ FltpShouldSwapStacks();
 FltpStartMonitoringFrame();
 FltpSynchronizedOperationCompletion();
 ? FltpSynchronizeIoCleanup;
-FltpSynchronizeWithDatascan();
+? FltpSynchronizeWithDatascan;
 FltpSyncIoCompletion();
 FltpSyncOpWorker();
 FltpSysVolCreateSecurityDescriptor();
 ? FltpTelemetryEnumerateSerializeFilterRegistryInstances;
-FltpTelemetryFilterRegistration();
+? FltpTelemetryFilterRegistration;
 FltpTelemetryFilterStartFiltering();
-FltpTelemetryFilterUnregistration();
+? FltpTelemetryFilterUnregistration;
 ? FltpTelemetryFltSendMessage;
 FltpTelemetryFreeInstance();
+FltpTelemetryIncompatibleFilterAttachOnWCOS();
 FltpTelemetryInitInstance();
 FltpTelemetryLegacyFilters();
+FltpTelemetryLegacyFiltersSafe();
 ? FltpTelemetrySerializeFilterRegistrationInfo;
 ? FltpTelemetrySerializeFilterRegistryInstances;
 FltpTelemetrySerializeLegacyFilterInfo();
 FltpTelemetrySerializeLegacyFiltersInfo();
 FltpTelemetryUnloadFilter();
 FltpTelemetryVolumeAttach();
-FltpTerminateActiveConnections();
 FltpTraceRedirectedFileIo();
 FltpTranslateIoctlDataBuffers();
 ? FltpTxVolKtmNotification;
@@ -6311,6 +6873,7 @@ FltpvPrintErrors();
 FltpvUnlinkResourceFromFilter();
 FltpvValidateFileNameOptions();
 FltpvValidateReadWriteParameters();
+FltpvValidateVerifierState();
 FltpvVerifyIoIrqlStatus();
 FltpvVerifyPreOperationStatus();
 ? FltpWaitForCommitFinalize;
@@ -6319,7 +6882,7 @@ FltpvVerifyPreOperationStatus();
 FltQueryDirectoryFile();
 FltQueryDirectoryFileEx();
 ? FltQueryEaFile;
-? FltQueryInformationByName;
+FltQueryInformationByName();
 ? FltQueryInformationFile;
 FltQueryQuotaInformationFile();
 FltQuerySecurityObject();
@@ -6328,7 +6891,7 @@ FltQueryVolumeInformationFile();
 FltQueueDeferredIoWorkItem();
 ? FltQueueGenericWorkItem;
 FltReadFile();
-? FltReadFileEx;
+FltReadFileEx();
 ? FltReferenceContext;
 ? FltReferenceFileNameInformation;
 ? FltRegisterFilter;
@@ -6379,13 +6942,13 @@ FltSupportsFileContexts();
 ? FltSupportsFileContextsEx;
 FltSupportsStreamContexts();
 FltSupportsStreamHandleContexts();
-? FltTagFile;
+FltTagFile();
 FltTagFileEx();
 FltUninitializeFileLock();
 FltUninitializeOplock();
 FltUnloadFilter();
-FltUnregisterFilter();
-? FltUntagFile;
+? FltUnregisterFilter;
+FltUntagFile();
 FltvAddOpenReparseEntry();
 FltvAllocateCallbackData();
 FltvAllocateCallbackDataEx();
@@ -6424,6 +6987,7 @@ FltvDoCompletionProcessingWhenSafe();
 FltvEnumerateFilters();
 FltvEnumerateInstances();
 FltvEnumerateVolumes();
+FltVetoBypassIo();
 FltvFlushBuffers();
 FltvFreeCallbackData();
 FltvFreeDeferredIoWorkItem();
@@ -6484,6 +7048,7 @@ FltvReadFile();
 FltvReadFileEx();
 FltvReferenceContext();
 FltvReferenceFileNameInformation();
+FltvRegisterFilter();
 FltvReissueSynchronousIo();
 FltvReleaseContext();
 FltvReleaseContexts();
@@ -6510,7 +7075,7 @@ FltvUntagFile();
 FltvWriteFile();
 FltvWriteFileEx();
 FltWriteFile();
-? FltWriteFileEx;
+FltWriteFileEx();
 ? FlushEventEntryList;
 ? FlushLookUpTableBucket;
 ? FreeTargetedIoCtrl;
@@ -6523,6 +7088,7 @@ __GSHandlerCheck_SEH();
 __GSHandlerCheckCommon();
 _guard_check_icall_nop();
 _guard_dispatch_icall_nop();
+_guard_xfg_dispatch_icall_nop();
 ? HandleStreamListNotSupported;
 ? InsertContextEntry;
 ? InsertEventEntryInLookUpTable;
@@ -6533,10 +7099,11 @@ memcmp();
 memcpy();
 memmove();
 memset();
+__memset_query();
+__memset_repmovs();
 NameCacheListInsert();
 PurgeStreamNameCache();
-QueryStandardLinkInformation();
-? QueryStandardLinkInformationFromInstance;
+QueryStandardLinkInformationFromInstance();
 RegInfoCompare();
 __report_gsfailure();
 __report_rangecheckfailure();
@@ -6564,14 +7131,14 @@ TargetedIOCtrlAttachAsFoCtx();
 ? TlgAggregateInternalRegisteredProviderEtwCallback;
 _tlgDefineProvider_annotation__TlgFltMgrTelemetryProviderProv();
 _tlgDefineProvider_annotation__TlgTlgAggregateInternalProviderProv();
-? _tlgEnableCallback;
+_tlgEnableCallback();
 _tlgKeywordOn();
 TlgRegisterAggregateProvider();
 ? TlgRegisterAggregateProviderEx;
-_tlgWriteAgg();
+? _tlgWriteAgg;
 public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByRef<16>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByRef<16> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &);
 _tlgWriteTransfer_EtwWriteTransfer();
-TraceLoggingRegisterEx_EtwRegister_EtwSetInformation();
+? TraceLoggingRegisterEx_EtwRegister_EtwSetInformation;
 TreeFindNodeOrParent();
 TreeInsert();
 TreeLookup();
@@ -6583,6 +7150,17 @@ TreeUnlinkNextNode();
 TxVolDisableNameCachingForStream();
 ? UpdateInternalStatsOnFlush;
 ValidateIoParameters();
+wil_details_BuildFeatureStateCacheFromQueryResults();
+wil_details_EvaluateFeatureDependencies_GetCachedFeatureEnabledState();
+wil_details_EvaluateFeatureDependencies_ReevaluateCachedFeatureEnabledState();
+wil_details_FeatureReporting_IncrementOpportunityInCache();
+wil_details_FeatureReporting_IncrementUsageInCache();
+? wil_details_FeatureReporting_RecordUsageInCache;
+? wil_details_FeatureReporting_ReportUsageToService;
+? wil_details_FeatureReporting_ReportUsageToServiceDirect;
+wil_details_OnFeatureConfigurationChange();
+wil_details_UpdateFeatureConfiguredStates();
+? wil_InitializeFeatureStaging;
 WPP_SF_();
 WPP_SF_D();
 WPP_SF_d();
@@ -6637,8 +7215,13 @@ WppTraceCallback();
 // Globals
 
 __@@_PchSym_@00@KxulyqvxgPillgKxunrmpvimvoUuhUurogvintiUurogviUnkUlyquivUznwGEUkxsOlyq@fltMgr;
+BypassIoFailureReason_buffer;
 ContextTypeInfo;
 ECP_TYPE_OPEN_REPARSE_GUID;
+Feature_EnableOnlyWCOSFilters__private_reporting;
+Feature_EnableOnlyWCOSFilters_logged_traits;
+Feature_EnforceWCOSRegistration__private_reporting;
+Feature_EnforceWCOSRegistration_logged_traits;
 FileSystemRegKeyName;
 FltDynamicRegistrySettingsResource;
 FltGlobals;
@@ -6652,6 +7235,7 @@ FLTMGR_START_FILTERING_FAILED;
 FLTMGR_TIOCTRL_ECP_GUID;
 FLTMGR_VOLUME_ATTACH_FAILED;
 FltMgrDeviceName;
+FltMgrDriverName_buffer;
 FltMgrMsgDeviceName;
 FltpEmptyObject;
 FltpFilterVerifierThunks;
@@ -6681,8 +7265,12 @@ FltvMessageTable;
 FrameZeroAltitude;
 FsrtlFltMgrCallbacks;
 FsTypes;
+g_wil_details_pfnFeatureLoggingHook;
+g_wil_details_recordFeatureUsage;
 __guard_check_icall_fptr;
 __guard_dispatch_icall_fptr;
+__guard_eh_cont_count;
+__guard_eh_cont_table;
 __guard_fids_count;
 __guard_fids_table;
 __guard_flags;
@@ -6690,30 +7278,19 @@ __guard_iat_count;
 __guard_iat_table;
 __guard_longjmp_count;
 __guard_longjmp_table;
+__guard_xfg_check_icall_fptr;
+__guard_xfg_dispatch_icall_fptr;
+__guard_xfg_table_dispatch_icall_fptr;
 GUID_ECP_FLT_CREATEFILE_TARGET;
 GUID_ECP_IO_DEVICE_HINT;
 GUID_ECP_QUERY_ON_CREATE;
 GUID_NULL;
-HotPatchSpareGlobal1;
-HotPatchSpareGlobal10;
-HotPatchSpareGlobal11;
-HotPatchSpareGlobal12;
-HotPatchSpareGlobal13;
-HotPatchSpareGlobal14;
-HotPatchSpareGlobal15;
-HotPatchSpareGlobal16;
-HotPatchSpareGlobal2;
-HotPatchSpareGlobal3;
-HotPatchSpareGlobal4;
-HotPatchSpareGlobal5;
-HotPatchSpareGlobal6;
-HotPatchSpareGlobal7;
-HotPatchSpareGlobal8;
-HotPatchSpareGlobal9;
+HotPatchSpareGlobals;
 __IMPORT_DESCRIPTOR_HAL;
 __IMPORT_DESCRIPTOR_ntoskrnl;
 IoFileObjectType;
 IrpNames;
+__isa_info;
 LegacyFilterAltitdudeMap;
 _load_config_used;
 ManualDeviceAttachList;
@@ -6731,26 +7308,29 @@ _TraceLoggingMetadata;
 _TraceLoggingMetadataEnd;
 UnknownName;
 VerifierObjectTypeNames;
-WPP_016895c35479382fc6c9bd657870daaa_Traceguids;
-WPP_03ca755140ee30034192ac6beea272b2_Traceguids;
+wil_details_featureChangeNotification;
+wil_details_featureDescriptors_a;
+wil_details_featureDescriptors_z;
+WPP_1b0a126bd502351a6b33b3a1096dc435_Traceguids;
+WPP_22e413ef121237c4c1db69738cc462d5_Traceguids;
 WPP_25f8f1cc1d9b3bcfe9b8fb5ad130a4e4_Traceguids;
+WPP_2bcc255db80a381b8f07a56f774da53c_Traceguids;
 WPP_34631b1b045236e3a32c474f3298003d_Traceguids;
-WPP_3c339bfe678a31e669060d5d81a0c71e_Traceguids;
 WPP_3cdc21e9d8d13051f9b160f81f9223cb_Traceguids;
 WPP_4764c14601b732a44e833ed0ac244820_Traceguids;
-WPP_542d5f02596a3e3a1a4b1b6a524daf86_Traceguids;
-WPP_5b354330e95c306e48424f9c9d9d4974_Traceguids;
+WPP_4d212d12355e32725298de3a1046ab0f_Traceguids;
 WPP_5fe24c30b5473d398a5c9c12ebbd52ae_Traceguids;
-WPP_6136fa9fb5e334996bda81c2c8fc7448_Traceguids;
-WPP_6ba9c3f60a4a305cb4116619098bab8a_Traceguids;
-WPP_918d9d9aecdd39b2ef531648e7826595_Traceguids;
-WPP_a7e150574a803190bec07886040dcfa1_Traceguids;
+WPP_80a78fdcfe40325b4d953b627ec44969_Traceguids;
+WPP_853c49219f3737e5c84934f3a031db18_Traceguids;
+WPP_874063f5ac0a32d84c48095fb4a17f79_Traceguids;
+WPP_9c69d6c21b84300abc778c48ea7a49be_Traceguids;
+WPP_a4a2f44045e136054f87286f976f8a65_Traceguids;
+WPP_c1ef524b915735315d6a38c2900a2271_Traceguids;
 WPP_cbe3f6451e623b58885c36f6a9ed018e_Traceguids;
-WPP_dd09ccb95fd23a9fa1caf305fbd4d06f_Traceguids;
 WPP_e2a6b30a27ec33087ca3b9cf7b2a6f2d_Traceguids;
 WPP_e31c62956803364de79863b89ed01be7_Traceguids;
-WPP_e6dd300a76343ac5a328ea384f3e5f67_Traceguids;
 WPP_e8684e49308533f31143b963756be383_Traceguids;
+WPP_f4f2b71bbb6732b7d7c5e27e0705658d_Traceguids;
 WPP_ffda56d28305341add16439808a660dd_Traceguids;
 WPP_GLOBAL_Control;
 WPP_MAIN_CB;

@@ -1,5 +1,5 @@
 /*
- * PDB file: win32k.pdb\ED706A38659240A066E6FB19B994BAAA1\win32k.pdb
+ * PDB file: win32k.pdb\B1BDD27E14F0A9C00FE5EC7390A5D8911\win32k.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -10,14 +10,20 @@ struct _ACCESS_STATE;
 struct _ACTIVATION_CONTEXT;
 struct _ACTIVATION_CONTEXT_DATA;
 struct _ACTIVATION_CONTEXT_STACK;
+enum ACTIVATION_OBJECT_CONFIG_BEHAVIOR;
 enum ACTIVATION_OBJECT_STATE;
 union _AER_BRIDGE_DESCRIPTOR_FLAGS;
 union _AER_ENDPOINT_DESCRIPTOR_FLAGS;
 union _AER_ROOTPORT_DESCRIPTOR_FLAGS;
 enum _ALTERNATIVE_ARCHITECTURE_TYPE;
+union _AMD64_MXCSR_REG;
+union _ARM64_FPCR_REG;
+union _ARM64_FPSR_REG;
 struct _ASSEMBLY_STORAGE_MAP;
 struct _AUX_ACCESS_DATA;
 enum BUS_QUERY_ID_TYPE;
+struct _CHPEV2_CPUAREA_INFO;
+struct _CHPEV2_PROCESS_INFO;
 struct _CLIENT_ID;
 struct _CM_FULL_RESOURCE_DESCRIPTOR;
 struct _CM_PARTIAL_RESOURCE_DESCRIPTOR;
@@ -96,6 +102,9 @@ enum DIT_HITTESTATTRIBUTES;
 struct _DMA_ADAPTER;
 struct _DMA_ADAPTER_INFO;
 struct _DMA_ADAPTER_INFO_V1;
+struct _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION;
+enum _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_ACCESS_TYPE;
+enum _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_TYPE;
 struct _DMA_COMMON_BUFFER_VECTOR;
 enum DMA_COMPLETION_STATUS;
 struct _DMA_OPERATIONS;
@@ -123,10 +132,10 @@ struct _DMM_VIDPNPATHANDTARGETMODESET_SERIALIZATION;
 struct _DMM_VIDPNPATHSFROMSOURCE_SERIALIZATION;
 struct _DMM_VIDPNSET_SERIALIZATION;
 struct _DMM_VIDPNTARGETMODESET_SERIALIZATION;
-enum DPI_AWARENESS;
 enum DPI_HOSTING_BEHAVIOR;
 struct _DRIVER_EXTENSION;
 struct _DRIVER_OBJECT;
+struct DXGK_DIAG_BLACK_SCREEN_PACKET_AVAILABILITY;
 struct _DXGK_DIAG_CODE_POINT_ADAPTERLUID_PACKET;
 struct _DXGK_DIAG_CODE_POINT_PACKET;
 enum _DXGK_DIAG_CODE_POINT_TYPE;
@@ -137,6 +146,7 @@ enum _DXGK_DIAG_TYPE;
 enum _DXGK_RECOMMENDFUNCTIONALVIDPN_REASON;
 enum _DXGK_SCHEDULING_PRIORITY_BAND;
 enum _DXGK_TARGET_GAMMA_CAPS_VERSION;
+enum _DXGK_WDDMVERSION;
 enum _DXGKMDT_OPM_HDCP_PROTECTION_LEVEL;
 struct _ECP_LIST;
 union _EINFO;
@@ -164,6 +174,8 @@ struct _FILE_NETWORK_OPEN_INFORMATION;
 struct _FILE_OBJECT;
 struct _FILE_STANDARD_INFORMATION;
 struct _FILETIME;
+enum _FS_BPIO_INFLAGS;
+enum _FS_BPIO_OUTFLAGS;
 enum _FSINFOCLASS;
 struct _GDI_TEB_BATCH;
 struct GDIHandleBitFields;
@@ -172,8 +184,6 @@ enum GDIObjType;
 struct _GENERAL_LOOKASIDE;
 struct _GENERAL_LOOKASIDE_POOL;
 struct _GENERIC_MAPPING;
-enum GROUP_WINDOW_MANAGEMENT_POLICY;
-enum GROUP_WINDOW_ROLE;
 struct _GUID;
 struct HOBJ__;
 struct HSEMAPHORE__;
@@ -204,11 +214,13 @@ struct _IO_SECURITY_CONTEXT;
 struct _IO_STACK_LOCATION;
 struct _IO_STATUS_BLOCK;
 struct _IO_TIMER;
+struct _IORING_OBJECT;
 struct _IRP;
 enum _IRQ_PRIORITY;
 enum JOB_OBJECT_IO_RATE_CONTROL_FLAGS;
 enum JOB_OBJECT_NET_RATE_CONTROL_FLAGS;
 enum _JOBOBJECTINFOCLASS;
+struct _KAFFINITY_EX;
 struct _KAPC;
 enum _KCONTINUE_TYPE;
 struct _KDESCRIPTOR;
@@ -220,18 +232,21 @@ struct _KFLOATING_SAVE;
 union _KGDTENTRY64;
 union _KIDTENTRY64;
 enum _KINTERRUPT_POLARITY;
-struct _KNODE;
 struct _KPCR;
 struct _KPRCB;
+union _KPRIORITY_STATE;
 struct _KPROCESS;
 struct _KPROCESSOR_STATE;
+struct _KSCHEDULER_SUBNODE;
 struct _KSPECIAL_REGISTERS;
 struct _KSPIN_LOCK_QUEUE;
 struct _KSYSTEM_TIME;
 struct _KTHREAD;
+struct _KTIMER;
 struct _KTSS64;
 struct _KUSER_SHARED_DATA;
 union _LARGE_INTEGER;
+struct _LDR_HOT_PATCH_DATA;
 struct _LEAP_SECOND_DATA;
 struct LIST_ENTRY32;
 struct LIST_ENTRY64;
@@ -243,6 +258,7 @@ struct _M128A;
 struct _MAILSLOT_CREATE_PARAMETERS;
 struct _MCGEN_TRACE_CONTEXT;
 struct _MDL;
+enum _MEM_DEDICATED_ATTRIBUTE_TYPE;
 enum _MEMORY_CACHING_TYPE;
 enum _MEMORY_CACHING_TYPE_ORIG;
 enum _MEMORY_PHYSICAL_CONTIGUITY_UNIT_STATE;
@@ -288,6 +304,7 @@ enum _PS_PROTECTED_TYPE;
 enum _PS_STD_HANDLE_STATE;
 enum _PS_WAKE_REASON;
 struct _QUAD;
+enum _REFS_STREAM_SNAPSHOT_OPERATION;
 enum _REG_NOTIFY_CLASS;
 enum ReplacesCorHdrNumericDefines;
 struct _RTL_ACTIVATION_CONTEXT_STACK_FRAME;
@@ -313,13 +330,14 @@ struct _RTL_USER_PROCESS_PARAMETERS;
 struct _SCATTER_GATHER_ELEMENT;
 struct _SCATTER_GATHER_LIST;
 struct _SCSI_REQUEST_BLOCK;
+enum _SE_SAFE_OPEN_PROMPT_EXPERIENCE_RESULTS;
 enum SE_WS_APPX_SIGNATURE_ORIGIN;
 struct _SECTION_OBJECT_POINTERS;
 enum _SECURITY_IMPERSONATION_LEVEL;
 enum _SECURITY_OPERATION_CODE;
 struct _SECURITY_QUALITY_OF_SERVICE;
 struct _SECURITY_SUBJECT_CONTEXT;
-enum SET_WINDOW_GROUP_OPTIONS;
+enum _SHELLSETWINDOWPOS_OPTIONS;
 struct _SINGLE_LIST_ENTRY;
 struct _SLIST_ENTRY;
 union _SLIST_HEADER;
@@ -327,6 +345,7 @@ enum SPATIAL_INPUT_ACTIVATION_POLICY;
 struct _STRING;
 enum _SYSTEM_FEATURE_CONFIGURATION_SECTION_TYPE;
 enum _SYSTEM_INFORMATION_CLASS;
+enum _SYSTEM_POOL_LIMIT_MEM_TYPE;
 enum _SYSTEM_POWER_STATE;
 struct _SYSTEM_POWER_STATE_CONTEXT;
 enum _SYSTEM_PROCESS_CLASSIFICATION;
@@ -376,7 +395,9 @@ struct _W32PROCESS;
 struct _W32THREAD;
 struct _W32THREADNONPAGED;
 struct _WAIT_CONTEXT_BLOCK;
+class WatchdogTimeoutReport;
 enum _WD_DIAG_NOTIFY_USER_MESSAGE;
+union _WD_LIVEREPORT_FLAGS;
 enum _WD_LOGEVENT_LEVEL;
 enum _WD_LOGEVENT_SOURCE;
 struct _WHEA_AER_BRIDGE_DESCRIPTOR;
@@ -419,6 +440,8 @@ struct _WHEA_XPF_CMC_DESCRIPTOR;
 struct _WHEA_XPF_MC_BANK_DESCRIPTOR;
 struct _WHEA_XPF_MCE_DESCRIPTOR;
 struct _WHEA_XPF_NMI_DESCRIPTOR;
+enum WINDOW_ARRANGEMENT_OPTIONS;
+enum WINDOW_SIZE_PROGRESS_REQUEST;
 enum WINDOWCOMPOSITIONATTRIB;
 struct _WNF_STATE_NAME;
 struct _WORK_QUEUE_ITEM;
@@ -476,6 +499,12 @@ typedef struct _ACTIVATION_CONTEXT_STACK
   unsigned long StackId;
   long __PADDING__[1];
 } ACTIVATION_CONTEXT_STACK, *PACTIVATION_CONTEXT_STACK;
+
+enum ACTIVATION_OBJECT_CONFIG_BEHAVIOR
+{
+  AOCB_DEFAULT = 0,
+  AOCB_SETFOREGROUNDWITHINAPPPROCESS = 1,
+};
 
 enum ACTIVATION_OBJECT_STATE
 {
@@ -544,6 +573,84 @@ typedef enum _ALTERNATIVE_ARCHITECTURE_TYPE
   EndAlternatives = 2,
 } ALTERNATIVE_ARCHITECTURE_TYPE, *PALTERNATIVE_ARCHITECTURE_TYPE;
 
+typedef union _AMD64_MXCSR_REG
+{
+  union
+  {
+    unsigned long Value;
+    struct /* bitfield */
+    {
+      unsigned long IE : 1; /* bit position: 0 */
+      unsigned long DE : 1; /* bit position: 1 */
+      unsigned long ZE : 1; /* bit position: 2 */
+      unsigned long OE : 1; /* bit position: 3 */
+      unsigned long UE : 1; /* bit position: 4 */
+      unsigned long PE : 1; /* bit position: 5 */
+      unsigned long DAZ : 1; /* bit position: 6 */
+      unsigned long IM : 1; /* bit position: 7 */
+      unsigned long DM : 1; /* bit position: 8 */
+      unsigned long ZM : 1; /* bit position: 9 */
+      unsigned long OM : 1; /* bit position: 10 */
+      unsigned long UM : 1; /* bit position: 11 */
+      unsigned long PM : 1; /* bit position: 12 */
+      unsigned long RC : 2; /* bit position: 13 */
+      unsigned long FZ : 1; /* bit position: 15 */
+      unsigned long res : 16; /* bit position: 16 */
+    }; /* bitfield */
+  };
+} AMD64_MXCSR_REG, *PAMD64_MXCSR_REG;
+
+typedef union _ARM64_FPCR_REG
+{
+  union
+  {
+    unsigned long Value;
+    struct /* bitfield */
+    {
+      unsigned long res0_1 : 8; /* bit position: 0 */
+      unsigned long IOE : 1; /* bit position: 8 */
+      unsigned long DZE : 1; /* bit position: 9 */
+      unsigned long OFE : 1; /* bit position: 10 */
+      unsigned long UFE : 1; /* bit position: 11 */
+      unsigned long IXE : 1; /* bit position: 12 */
+      unsigned long res0_2 : 2; /* bit position: 13 */
+      unsigned long IDE : 1; /* bit position: 15 */
+      unsigned long Len : 3; /* bit position: 16 */
+      unsigned long FZ16 : 1; /* bit position: 19 */
+      unsigned long Stride : 2; /* bit position: 20 */
+      unsigned long RMode : 2; /* bit position: 22 */
+      unsigned long FZ : 1; /* bit position: 24 */
+      unsigned long DN : 1; /* bit position: 25 */
+      unsigned long AHP : 1; /* bit position: 26 */
+      unsigned long res0_3 : 5; /* bit position: 27 */
+    }; /* bitfield */
+  };
+} ARM64_FPCR_REG, *PARM64_FPCR_REG;
+
+typedef union _ARM64_FPSR_REG
+{
+  union
+  {
+    unsigned long Value;
+    struct /* bitfield */
+    {
+      unsigned long IOC : 1; /* bit position: 0 */
+      unsigned long DZC : 1; /* bit position: 1 */
+      unsigned long OFC : 1; /* bit position: 2 */
+      unsigned long UFC : 1; /* bit position: 3 */
+      unsigned long IXC : 1; /* bit position: 4 */
+      unsigned long res0_1 : 2; /* bit position: 5 */
+      unsigned long IDC : 1; /* bit position: 7 */
+      unsigned long res0_2 : 19; /* bit position: 8 */
+      unsigned long QC : 1; /* bit position: 27 */
+      unsigned long V : 1; /* bit position: 28 */
+      unsigned long C : 1; /* bit position: 29 */
+      unsigned long Z : 1; /* bit position: 30 */
+      unsigned long N : 1; /* bit position: 31 */
+    }; /* bitfield */
+  };
+} ARM64_FPSR_REG, *PARM64_FPSR_REG;
+
 struct _ASSEMBLY_STORAGE_MAP;
 
 typedef struct _AUX_ACCESS_DATA
@@ -572,6 +679,10 @@ enum BUS_QUERY_ID_TYPE
   BusQueryDeviceSerialNumber = 4,
   BusQueryContainerID = 5,
 };
+
+struct _CHPEV2_CPUAREA_INFO;
+
+struct _CHPEV2_PROCESS_INFO;
 
 typedef struct _CLIENT_ID
 {
@@ -1395,6 +1506,7 @@ typedef struct _D3DKMDT_VIDPN_TARGET_MODE
     union _D3DKMDT_WIRE_FORMAT_AND_PREFERENCE WireFormatAndPreference;
     enum _D3DKMDT_MODE_PREFERENCE Preference : 2; /* bit position: 0 */
   };
+  struct _D3DDDI_RATIONAL MinimumVSyncFreq;
   long __PADDING__[1];
 } D3DKMDT_VIDPN_TARGET_MODE, *PD3DKMDT_VIDPN_TARGET_MODE;
 
@@ -1770,8 +1882,8 @@ typedef struct _DISPATCHER_HEADER
               unsigned char Minimal : 1; /* bit position: 2 */
               unsigned char Reserved4 : 2; /* bit position: 3 */
               unsigned char AltSyscall : 1; /* bit position: 5 */
-              unsigned char UmsScheduled : 1; /* bit position: 6 */
-              unsigned char UmsPrimary : 1; /* bit position: 7 */
+              unsigned char Emulation : 1; /* bit position: 6 */
+              unsigned char Reserved5 : 1; /* bit position: 7 */
             }; /* bitfield */
           };
         };
@@ -1811,7 +1923,8 @@ enum DIT_HITTESTATTRIBUTES
   DIT_HITTESTATTRIBUTES_BARRELBUTTONDOWN = 64,
   DIT_HITTESTATTRIBUTES_ERASERDOWN = 128,
   DIT_HITTESTATTRIBUTES_CONTROLDOWN = 256,
-  DIT_HITTESTATTRIBUTES_VALID = 255,
+  DIT_HITTESTATTRIBUTES_HASCAPTURE = 512,
+  DIT_HITTESTATTRIBUTES_VALID = 1023,
 };
 
 typedef struct _DMA_ADAPTER
@@ -1835,6 +1948,43 @@ typedef struct _DMA_ADAPTER_INFO_V1
   unsigned long Flags;
   unsigned long MinimumTransferUnit;
 } DMA_ADAPTER_INFO_V1, *PDMA_ADAPTER_INFO_V1;
+
+typedef struct _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION
+{
+  enum _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_TYPE ConfigType;
+  union
+  {
+    struct
+    {
+      union _LARGE_INTEGER MinimumAddress;
+      union _LARGE_INTEGER MaximumAddress;
+    } LogicalAddressLimits;
+    struct
+    {
+      unsigned __int64 Offset;
+      unsigned long Length;
+      long __PADDING__[1];
+    } SubSection;
+    enum _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_ACCESS_TYPE HardwareAccessType;
+    unsigned __int64 Reserved[4];
+  };
+} DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION, *PDMA_COMMON_BUFFER_EXTENDED_CONFIGURATION;
+
+typedef enum _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_ACCESS_TYPE
+{
+  CommonBufferHardwareAccessReadOnly = 0,
+  CommonBufferHardwareAccessWriteOnly = 1,
+  CommonBufferHardwareAccessReadWrite = 2,
+  CommonBufferHardwareAccessMax = 3,
+} DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_ACCESS_TYPE, *PDMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_ACCESS_TYPE;
+
+typedef enum _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_TYPE
+{
+  CommonBufferConfigTypeLogicalAddressLimits = 0,
+  CommonBufferConfigTypeSubSection = 1,
+  CommonBufferConfigTypeHardwareAccessPermissions = 2,
+  CommonBufferConfigTypeMax = 3,
+} DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_TYPE, *PDMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_TYPE;
 
 struct _DMA_COMMON_BUFFER_VECTOR;
 
@@ -1887,6 +2037,7 @@ typedef struct _DMA_OPERATIONS
   void* GetCommonBufferFromVectorByIndex /* function */;
   void* FreeCommonBufferFromVector /* function */;
   void* FreeCommonBufferVector /* function */;
+  void* CreateCommonBufferFromMdl /* function */;
 } DMA_OPERATIONS, *PDMA_OPERATIONS;
 
 typedef struct _DMA_TRANSFER_INFO
@@ -1998,12 +2149,26 @@ typedef struct _DMM_MONITOR_SERIALIZATION
   enum _D3DKMDT_MONITOR_ORIENTATION Orientation;
   unsigned char IsSimulatedMonitor;
   unsigned char IsUsingDefaultProfile;
+  struct
+  {
+    struct /* bitfield */
+    {
+      unsigned short SyncLockIdentical : 1; /* bit position: 0 */
+      unsigned short HighColorSupport : 1; /* bit position: 1 */
+      unsigned short WideColorSupport : 1; /* bit position: 2 */
+      unsigned short DisplayPortAddressValid : 1; /* bit position: 3 */
+      unsigned short IsUsb4Monitor : 1; /* bit position: 4 */
+      unsigned short Padding : 11; /* bit position: 5 */
+    }; /* bitfield */
+  } MonitorFlags;
   enum _DMM_MODE_PRUNING_ALGORITHM ModePruningAlgorithm;
   enum _DEVICE_POWER_STATE MonitorPowerState;
   unsigned long SourceModeSetOffset;
   unsigned long FrequencyRangeSetOffset;
   unsigned long DescriptorSetOffset;
   enum _DMM_VIDPN_MONITOR_TYPE MonitorType;
+  unsigned char DisplayPortAddressLinkCount;
+  unsigned char DisplayPortAddress[15];
 } DMM_MONITOR_SERIALIZATION, *PDMM_MONITOR_SERIALIZATION;
 
 typedef struct _DMM_MONITOR_SOURCE_MODE_SERIALIZATION
@@ -2097,14 +2262,6 @@ typedef struct _DMM_VIDPNTARGETMODESET_SERIALIZATION
   struct _D3DKMDT_VIDPN_TARGET_MODE ModeSerialization[1];
 } DMM_VIDPNTARGETMODESET_SERIALIZATION, *PDMM_VIDPNTARGETMODESET_SERIALIZATION;
 
-enum DPI_AWARENESS
-{
-  DPI_AWARENESS_INVALID = -1,
-  DPI_AWARENESS_UNAWARE = 0,
-  DPI_AWARENESS_SYSTEM_AWARE = 1,
-  DPI_AWARENESS_PER_MONITOR_AWARE = 2,
-};
-
 enum DPI_HOSTING_BEHAVIOR
 {
   DPI_HOSTING_BEHAVIOR_INVALID = -1,
@@ -2138,6 +2295,46 @@ typedef struct _DRIVER_OBJECT
   void* DriverUnload /* function */;
   void* MajorFunction[28] /* function */;
 } DRIVER_OBJECT, *PDRIVER_OBJECT;
+
+struct DXGK_DIAG_BLACK_SCREEN_PACKET_AVAILABILITY
+{
+  BOOL IsBeforeDisplayResetAvailable;
+  BOOL IsNumAdaptersAvailable;
+  BOOL IsBlackScreenInstanceGUIDAvailable;
+  BOOL IsAdapterLuidAvailable;
+  BOOL IsAdapterNumOfSourcesAvailable;
+  BOOL IsAdapterNumOfTargetsAvailable;
+  BOOL IsAdapterVendorIdAvailable;
+  BOOL IsAdapterBddFallbackDriverAvailable;
+  BOOL IsAdapterDWMCrashBddFallbackAvailable;
+  BOOL IsAdapterRunningTSDDAvailable;
+  BOOL IsAdapterDriverBlackboxInfoValidAvailable;
+  BOOL IsAdapterDriverWhiteboxInfoValidAvailable;
+  BOOL IsSourceVidPnSourceIdAvailable;
+  BOOL IsSourceVidPnTargetIdAvailable;
+  BOOL IsSourcePartOfDesktopAvailable;
+  BOOL IsSourcePoweredOnAvailable;
+  BOOL IsSourceVisibleAvailable;
+  BOOL IsSourcePrimaryContentStateAvailable;
+  BOOL IsSourceHWCursorAvailable;
+  BOOL IsSourceHighColorAvailable;
+  BOOL IsSourceHWDRMAvailable;
+  BOOL IsSourceDWMAvailable;
+  BOOL IsSourceIndirectDisplayAvailable;
+  BOOL IsSourceLDAAvailable;
+  BOOL IsSourceMPOActiveAvailable;
+  BOOL IsSourceIndpendentFlipAvailable;
+  BOOL IsSourceDirectFlipAvailable;
+  BOOL IsSourceDWMOwnershipFailedAsAlreadyOwnerAvailable;
+  BOOL IsSourceEmulatedVidPnSourceOwnerAvailable;
+  BOOL IsOwnerAppNameAvailable;
+  BOOL IsTargetVidPnTargetIdAvailable;
+  BOOL IsTargetMonitorConnectedAvailable;
+  BOOL IsTargetPresentInClientVidPnAvailable;
+  BOOL IsTargetMonitorSimulatedAvailable;
+  BOOL IsTargetMonitorInternalAvailable;
+  BOOL IsTargetSampledGammaAvailable;
+};
 
 typedef struct _DXGK_DIAG_CODE_POINT_ADAPTERLUID_PACKET
 {
@@ -2270,7 +2467,18 @@ typedef enum _DXGK_DIAG_CODE_POINT_TYPE
   DXGK_DIAG_CODE_POINT_TYPE_FAILED_UPDATE_CACHED_DISPLAY_CONFIG = 113,
   DXGK_DIAG_CODE_POINT_TYPE_IDD_SET_DISPLAY_CONFIG_GDO_TIMEOUT = 114,
   DXGK_DIAG_CODE_POINT_TYPE_DWM_PROCESS_STARTSTOP = 115,
-  DXGK_DIAG_CODE_POINT_TYPE_MAX = 115,
+  DXGK_DIAG_CODE_POINT_TYPE_ADAPTER_ORDINAL_EXCEED_LIMIT = 116,
+  DXGK_DIAG_CODE_POINT_TYPE_RAPID_HPD_TRIGGER = 117,
+  DXGK_DIAG_CODE_POINT_TYPE_RAPID_HPD_EXTEND = 118,
+  DXGK_DIAG_CODE_POINT_TYPE_DRVCDS_FAILURE_STAGE = 119,
+  DXGK_DIAG_CODE_POINT_TYPE_SDC_START = 120,
+  DXGK_DIAG_CODE_POINT_TYPE_ENABLE_MONITOR_VIRTUAL_REFRESH_RATE = 121,
+  DXGK_DIAG_CODE_POINT_TYPE_HPD_MASK = 122,
+  DXGK_DIAG_CODE_POINT_TYPE_HPD_IGNORED = 123,
+  DXGK_DIAG_CODE_POINT_TYPE_USB4_ASYNC_MONITOR_POWER_ON_FAILURE = 124,
+  DXGK_DIAG_CODE_POINT_TYPE_USB4_ASYNC_MONITOR_POWER_ON_POFX_REF = 125,
+  DXGK_DIAG_CODE_POINT_TYPE_USB4_ASYNC_MONITOR_POWER_PROCESS_SKIPPED_REMOVAL = 126,
+  DXGK_DIAG_CODE_POINT_TYPE_MAX = 126,
   DXGK_DIAG_CODE_POINT_TYPE_FORCE_UINT32 = -1,
 } DXGK_DIAG_CODE_POINT_TYPE, *PDXGK_DIAG_CODE_POINT_TYPE;
 
@@ -2342,6 +2550,7 @@ typedef enum _DXGK_DIAG_MIRACAST_START_STAGE
   DXGK_DIAG_MIRACAST_START_UM_ASYNC_FAIL_OPEN_DXGK_ADAPTER = 278,
   DXGK_DIAG_MIRACAST_START_UM_ASYNC_FAIL_CREATE_DXGK_DEVICE = 279,
   DXGK_DIAG_MIRACAST_START_UM_ASYNC_FAIL_CANCELLED = 280,
+  DXGK_DIAG_MIRACAST_START_UM_ASYNC_FAIL_CONNECT_RTSP_SOCKET = 281,
   DXGK_DIAG_MIRACAST_START_KM_SYNC_UNINITALIZED = -1,
 } DXGK_DIAG_MIRACAST_START_STAGE, *PDXGK_DIAG_MIRACAST_START_STAGE;
 
@@ -2418,7 +2627,14 @@ typedef enum _DXGK_DIAG_TYPE
   DXGK_DIAG_TYPE_BLACK_SCREEN_PACKET = 42,
   DXGK_DIAG_SDC_DESKTOP_CHECK_FAIL_PACKET = 43,
   DXGK_DIAG_TYPE_BLACK_SCREEN_PACKET2 = 44,
-  DXGK_DIAG_TYPE_MAX = 44,
+  DXGK_DIAG_TYPE_SETTIMING_SOURCEMASK = 45,
+  DXGK_DIAG_TYPE_SDC4 = 46,
+  DXGK_DIAG_TYPE_SDC5 = 47,
+  DXGK_DIAG_TYPE_QDC4 = 48,
+  DXGK_DIAG_TYPE_CCD_DATABASE_ACCESS3 = 49,
+  DXGK_DIAG_TYPE_BML_PACKET4 = 50,
+  DXGK_DIAG_TYPE_BLACK_SCREEN_METADATA = 51,
+  DXGK_DIAG_TYPE_MAX = 51,
   DXGK_DIAG_TYPE_FORCE_UINT32 = -1,
 } DXGK_DIAG_TYPE, *PDXGK_DIAG_TYPE;
 
@@ -2445,6 +2661,27 @@ typedef enum _DXGK_TARGET_GAMMA_CAPS_VERSION
   DXGK_TARGET_GAMMA_CAPS_VERSION_1 = 1,
   DXGK_TARGET_GAMMA_CAPS_VERSION_NOT_SUPPORTED = 0,
 } DXGK_TARGET_GAMMA_CAPS_VERSION, *PDXGK_TARGET_GAMMA_CAPS_VERSION;
+
+typedef enum _DXGK_WDDMVERSION
+{
+  DXGKDDI_WDDMv1 = 4096,
+  DXGKDDI_WDDMv1_2 = 4608,
+  DXGKDDI_WDDMv1_3 = 4864,
+  DXGKDDI_WDDMv2 = 8192,
+  DXGKDDI_WDDMv2_1 = 8448,
+  DXGKDDI_WDDMv2_1_5 = 8453,
+  DXGKDDI_WDDMv2_1_6 = 8454,
+  DXGKDDI_WDDMv2_2 = 8704,
+  DXGKDDI_WDDMv2_3 = 8960,
+  DXGKDDI_WDDMv2_4 = 9216,
+  DXGKDDI_WDDMv2_5 = 9472,
+  DXGKDDI_WDDMv2_6 = 9728,
+  DXGKDDI_WDDMv2_7 = 9984,
+  DXGKDDI_WDDMv2_8 = 10240,
+  DXGKDDI_WDDMv2_9 = 10496,
+  DXGKDDI_WDDMv3_0 = 12288,
+  DXGKDDI_WDDM_LATEST = 12288,
+} DXGK_WDDMVERSION, *PDXGK_WDDMVERSION;
 
 typedef enum _DXGKMDT_OPM_HDCP_PROTECTION_LEVEL
 {
@@ -2755,7 +2992,8 @@ typedef enum _FILE_INFORMATION_CLASS
   FileLinkInformationExBypassAccessCheck = 73,
   FileStorageReserveIdInformation = 74,
   FileCaseSensitiveInformationForceAccessCheck = 75,
-  FileMaximumInformation = 76,
+  FileKnownFolderInformation = 76,
+  FileMaximumInformation = 77,
 } FILE_INFORMATION_CLASS, *PFILE_INFORMATION_CLASS;
 
 typedef struct _FILE_NETWORK_OPEN_INFORMATION
@@ -2819,6 +3057,21 @@ typedef struct _FILETIME
   unsigned long dwLowDateTime;
   unsigned long dwHighDateTime;
 } FILETIME, *PFILETIME;
+
+typedef enum _FS_BPIO_INFLAGS
+{
+  FSBPIO_INFL_None = 0,
+  FSBPIO_INFL_SKIP_STORAGE_STACK_QUERY = 1,
+} FS_BPIO_INFLAGS, *PFS_BPIO_INFLAGS;
+
+typedef enum _FS_BPIO_OUTFLAGS
+{
+  FSBPIO_OUTFL_None = 0,
+  FSBPIO_OUTFL_VOLUME_STACK_BYPASS_PAUSED = 1,
+  FSBPIO_OUTFL_STREAM_BYPASS_PAUSED = 2,
+  FSBPIO_OUTFL_FILTER_ATTACH_BLOCKED = 4,
+  FSBPIO_OUTFL_COMPATIBLE_STORAGE_DRIVER = 8,
+} FS_BPIO_OUTFLAGS, *PFS_BPIO_OUTFLAGS;
 
 typedef enum _FSINFOCLASS
 {
@@ -3014,20 +3267,6 @@ typedef struct _GENERIC_MAPPING
   unsigned long GenericExecute;
   unsigned long GenericAll;
 } GENERIC_MAPPING, *PGENERIC_MAPPING;
-
-enum GROUP_WINDOW_MANAGEMENT_POLICY
-{
-  GWMP_NONE = 0,
-  GWMP_DELEGATE_CLOSE_REQUEST = 1,
-};
-
-enum GROUP_WINDOW_ROLE
-{
-  GWR_DEFAULT = 0,
-  GWR_APPLICATION = 1,
-  GWR_FALLBACK = 2,
-  GWR_MAX = 2,
-};
 
 typedef struct _GUID
 {
@@ -3666,6 +3905,8 @@ typedef struct _IO_STATUS_BLOCK
 
 struct _IO_TIMER;
 
+struct _IORING_OBJECT;
+
 typedef struct _IRP
 {
   short Type;
@@ -3693,7 +3934,11 @@ typedef struct _IRP
   unsigned char CancelIrql;
   char ApcEnvironment;
   unsigned char AllocationFlags;
-  struct _IO_STATUS_BLOCK* UserIosb;
+  union
+  {
+    struct _IO_STATUS_BLOCK* UserIosb;
+    void* IoRingContext;
+  };
   struct _KEVENT* UserEvent;
   union
   {
@@ -3706,7 +3951,11 @@ typedef struct _IRP
           void* UserApcRoutine /* function */;
           void* IssuingProcess;
         };
-        void* UserApcContext;
+        union
+        {
+          void* UserApcContext;
+          struct _IORING_OBJECT* IoRing;
+        };
       } AsynchronousParameters;
       union _LARGE_INTEGER AllocationSize;
     };
@@ -3843,6 +4092,18 @@ typedef enum _JOBOBJECTINFOCLASS
   MaxJobObjectInfoClass = 48,
 } JOBOBJECTINFOCLASS, *PJOBOBJECTINFOCLASS;
 
+typedef struct _KAFFINITY_EX
+{
+  unsigned short Count;
+  unsigned short Size;
+  unsigned long Reserved;
+  union
+  {
+    unsigned __int64 Bitmap[1];
+    unsigned __int64 StaticBitmap[32];
+  };
+} KAFFINITY_EX, *PKAFFINITY_EX;
+
 typedef struct _KAPC
 {
   unsigned char Type;
@@ -3878,6 +4139,7 @@ typedef enum _KCONTINUE_TYPE
   KCONTINUE_LONGJUMP = 2,
   KCONTINUE_SET = 3,
   KCONTINUE_LAST = 4,
+  KCONTINUE_INVALID = 4,
 } KCONTINUE_TYPE, *PKCONTINUE_TYPE;
 
 typedef struct _KDESCRIPTOR
@@ -4027,8 +4289,6 @@ typedef enum _KINTERRUPT_POLARITY
   InterruptActiveBothTriggerHigh = 4,
 } KINTERRUPT_POLARITY, *PKINTERRUPT_POLARITY;
 
-struct _KNODE;
-
 typedef struct _KPCR
 {
   union
@@ -4091,7 +4351,7 @@ typedef struct _KPRCB
   unsigned long Number;
   unsigned __int64 RspBase;
   unsigned __int64 PrcbLock;
-  char* PriorityState;
+  union _KPRIORITY_STATE* PriorityState;
   char CpuType;
   char CpuID;
   union
@@ -4113,7 +4373,7 @@ typedef struct _KPRCB
   unsigned char LogicalProcessorsPerCore;
   unsigned __int64 TscFrequency;
   unsigned __int64 PrcbPad04[5];
-  struct _KNODE* ParentNode;
+  struct _KSCHEDULER_SUBNODE* SchedulerSubNode;
   unsigned __int64 GroupSetMember;
   unsigned char Group;
   unsigned char GroupIndex;
@@ -4175,6 +4435,8 @@ typedef struct _KPRCB
   long __PADDING__[4];
 } KPRCB, *PKPRCB;
 
+union _KPRIORITY_STATE;
+
 struct _KPROCESS;
 
 typedef struct _KPROCESSOR_STATE
@@ -4182,6 +4444,8 @@ typedef struct _KPROCESSOR_STATE
   struct _KSPECIAL_REGISTERS SpecialRegisters;
   struct _CONTEXT ContextFrame;
 } KPROCESSOR_STATE, *PKPROCESSOR_STATE;
+
+struct _KSCHEDULER_SUBNODE;
 
 typedef struct _KSPECIAL_REGISTERS
 {
@@ -4231,6 +4495,17 @@ typedef struct _KSYSTEM_TIME
 } KSYSTEM_TIME, *PKSYSTEM_TIME;
 
 struct _KTHREAD;
+
+typedef struct _KTIMER
+{
+  struct _DISPATCHER_HEADER Header;
+  union _ULARGE_INTEGER DueTime;
+  struct _LIST_ENTRY TimerListEntry;
+  struct _KDPC* Dpc;
+  unsigned short Processor;
+  unsigned short TimerType;
+  unsigned long Period;
+} KTIMER, *PKTIMER;
 
 typedef struct _KTSS64
 {
@@ -4387,6 +4662,13 @@ typedef union _LARGE_INTEGER
   };
 } LARGE_INTEGER, *PLARGE_INTEGER;
 
+typedef struct _LDR_HOT_PATCH_DATA
+{
+  unsigned long Version;
+  void* PatchLoadLibrary /* function */;
+  void* PatchGetProcAddress /* function */;
+} LDR_HOT_PATCH_DATA, *PLDR_HOT_PATCH_DATA;
+
 struct _LEAP_SECOND_DATA;
 
 typedef struct _LIST_ENTRY
@@ -4468,6 +4750,15 @@ typedef struct _MDL
   unsigned long ByteCount;
   unsigned long ByteOffset;
 } MDL, *PMDL;
+
+typedef enum _MEM_DEDICATED_ATTRIBUTE_TYPE
+{
+  MemDedicatedAttributeReadBandwidth = 0,
+  MemDedicatedAttributeReadLatency = 1,
+  MemDedicatedAttributeWriteBandwidth = 2,
+  MemDedicatedAttributeWriteLatency = 3,
+  MemDedicatedAttributeMax = 4,
+} MEM_DEDICATED_ATTRIBUTE_TYPE, *PMEM_DEDICATED_ATTRIBUTE_TYPE;
 
 typedef enum _MEMORY_CACHING_TYPE
 {
@@ -4809,7 +5100,7 @@ typedef struct _PEB
   void* ApiSetMap;
   unsigned long TlsExpansionCounter;
   unsigned char Padding2[4];
-  void* TlsBitmap;
+  struct _RTL_BITMAP* TlsBitmap;
   unsigned long TlsBitmapBits[2];
   void* ReadOnlySharedMemoryBase;
   void* SharedData;
@@ -4844,7 +5135,7 @@ typedef struct _PEB
   unsigned __int64 ActiveProcessAffinityMask;
   unsigned long GdiHandleBuffer[60];
   void* PostProcessInitRoutine /* function */;
-  void* TlsExpansionBitmap;
+  struct _RTL_BITMAP* TlsExpansionBitmap;
   unsigned long TlsExpansionBitmapBits[32];
   unsigned long SessionId;
   unsigned char Padding5[4];
@@ -4858,11 +5149,18 @@ typedef struct _PEB
   const struct _ACTIVATION_CONTEXT_DATA* SystemDefaultActivationContextData;
   struct _ASSEMBLY_STORAGE_MAP* SystemAssemblyStorageMap;
   unsigned __int64 MinimumStackCommit;
-  void* SparePointers[4];
-  unsigned long SpareUlongs[5];
+  void* SparePointers[2];
+  void* PatchLoaderData;
+  struct _CHPEV2_PROCESS_INFO* ChpeV2ProcessInfo;
+  unsigned long AppModelFeatureState;
+  unsigned long SpareUlongs[2];
+  unsigned short ActiveCodePage;
+  unsigned short OemCodePage;
+  unsigned short UseCaseMapping;
+  unsigned short UnusedNlsField;
   void* WerRegistrationData;
   void* WerShipAssertPtr;
-  void* pUnused;
+  void* EcCodeBitMap;
   void* pImageHeaderHash;
   union
   {
@@ -4896,6 +5194,7 @@ typedef struct _PEB
     }; /* bitfield */
   };
   unsigned long NtGlobalFlag2;
+  unsigned __int64 ExtendedFeatureDisableMask;
 } PEB, *PPEB;
 
 typedef struct _PEB_LDR_DATA
@@ -5024,7 +5323,10 @@ typedef enum _PS_ATTRIBUTE_NUM
   PsAttributeDesktopAppPolicy = 25,
   PsAttributeChpe = 26,
   PsAttributeMitigationAuditOptions = 27,
-  PsAttributeMax = 28,
+  PsAttributeMachineType = 28,
+  PsAttributeComponentFilter = 29,
+  PsAttributeEnableOptionalXStateFeatures = 30,
+  PsAttributeMax = 31,
 } PS_ATTRIBUTE_NUM, *PPS_ATTRIBUTE_NUM;
 
 enum PS_CREATE_STATE
@@ -5080,7 +5382,10 @@ typedef enum _PS_MITIGATION_OPTION
   PS_MITIGATION_OPTION_CET_USER_SHADOW_STACKS = 31,
   PS_MITIGATION_OPTION_USER_CET_SET_CONTEXT_IP_VALIDATION = 32,
   PS_MITIGATION_OPTION_BLOCK_NON_CET_BINARIES = 33,
+  PS_MITIGATION_OPTION_XTENDED_CONTROL_FLOW_GUARD = 34,
+  PS_MITIGATION_OPTION_POINTER_AUTH_USER_IP = 35,
   PS_MITIGATION_OPTION_CET_DYNAMIC_APIS_OUT_OF_PROC_ONLY = 36,
+  PS_MITIGATION_OPTION_REDIRECTION_TRUST = 37,
 } PS_MITIGATION_OPTION, *PPS_MITIGATION_OPTION;
 
 typedef struct _PS_MITIGATION_OPTIONS_MAP
@@ -5138,6 +5443,18 @@ typedef struct _QUAD
     double DoNotUseThisField;
   };
 } QUAD, *PQUAD;
+
+typedef enum _REFS_STREAM_SNAPSHOT_OPERATION
+{
+  REFS_STREAM_SNAPSHOT_OPERATION_INVALID = 0,
+  REFS_STREAM_SNAPSHOT_OPERATION_CREATE = 1,
+  REFS_STREAM_SNAPSHOT_OPERATION_LIST = 2,
+  REFS_STREAM_SNAPSHOT_OPERATION_QUERY_DELTAS = 3,
+  REFS_STREAM_SNAPSHOT_OPERATION_REVERT = 4,
+  REFS_STREAM_SNAPSHOT_OPERATION_SET_SHADOW_BTREE = 5,
+  REFS_STREAM_SNAPSHOT_OPERATION_CLEAR_SHADOW_BTREE = 6,
+  REFS_STREAM_SNAPSHOT_OPERATION_MAX = 6,
+} REFS_STREAM_SNAPSHOT_OPERATION, *PREFS_STREAM_SNAPSHOT_OPERATION;
 
 typedef enum _REG_NOTIFY_CLASS
 {
@@ -5201,7 +5518,9 @@ typedef enum _REG_NOTIFY_CLASS
   RegNtPostReplaceKey = 46,
   RegNtPreQueryKeyName = 47,
   RegNtPostQueryKeyName = 48,
-  MaxRegNtNotifyClass = 49,
+  RegNtPreSaveMergedKey = 49,
+  RegNtPostSaveMergedKey = 50,
+  MaxRegNtNotifyClass = 51,
 } REG_NOTIFY_CLASS, *PREG_NOTIFY_CLASS;
 
 enum ReplacesCorHdrNumericDefines
@@ -5349,6 +5668,7 @@ typedef enum _RTL_FEATURE_CONFIGURATION_OPERATION
 typedef enum _RTL_FEATURE_CONFIGURATION_PRIORITY
 {
   FeatureConfigurationPriorityImageDefault = 0,
+  FeatureConfigurationPriorityEnrollment = 2,
   FeatureConfigurationPriorityService = 4,
   FeatureConfigurationPriorityUser = 8,
   FeatureConfigurationPriorityUserPolicy = 10,
@@ -5450,6 +5770,19 @@ typedef struct _SCATTER_GATHER_LIST
 
 struct _SCSI_REQUEST_BLOCK;
 
+typedef enum _SE_SAFE_OPEN_PROMPT_EXPERIENCE_RESULTS
+{
+  SeSafeOpenExperienceNone = 0,
+  SeSafeOpenExperienceCalled = 1,
+  SeSafeOpenExperienceAppRepCalled = 2,
+  SeSafeOpenExperiencePromptDisplayed = 4,
+  SeSafeOpenExperienceUAC = 8,
+  SeSafeOpenExperienceUninstaller = 16,
+  SeSafeOpenExperienceIgnoreUnknownOrBad = 32,
+  SeSafeOpenExperienceDefenderTrustedInstaller = 64,
+  SeSafeOpenExperienceMOTWPresent = 128,
+} SE_SAFE_OPEN_PROMPT_EXPERIENCE_RESULTS, *PSE_SAFE_OPEN_PROMPT_EXPERIENCE_RESULTS;
+
 enum SE_WS_APPX_SIGNATURE_ORIGIN
 {
   SE_WS_APPX_SIGNATURE_ORIGIN_NOT_VALIDATED = 0,
@@ -5499,14 +5832,16 @@ typedef struct _SECURITY_SUBJECT_CONTEXT
   void* ProcessAuditId;
 } SECURITY_SUBJECT_CONTEXT, *PSECURITY_SUBJECT_CONTEXT;
 
-enum SET_WINDOW_GROUP_OPTIONS
+typedef enum _SHELLSETWINDOWPOS_OPTIONS
 {
-  SWGO_NONE = 0,
-  SWGO_TEMPLATE = 1,
-  SWGO_NOZORDER = 2,
-  SWGO_RESPECT_MINIMIZE = 4,
-  SWGO_ALL = 3,
-};
+  SSWP_OPTION_DEFAULT = 0,
+  SSWP_OPTION_NOACTIVATE = 1,
+  SSWP_OPTION_NOZORDER = 2,
+  SSWP_OPTION_MONITOR_FROM_POSITION = 4,
+  SSWP_OPTION_EXPLICIT_RCNORMAL = 8,
+  SSWP_OPTION_FOREGROUND = 16,
+  SSWP_OPTION_NONOTIFY = 32,
+} SHELLSETWINDOWPOS_OPTIONS, *PSHELLSETWINDOWPOS_OPTIONS;
 
 typedef struct _SINGLE_LIST_ENTRY
 {
@@ -5795,9 +6130,22 @@ typedef enum _SYSTEM_INFORMATION_CLASS
   SystemPoolLimitInformation = 223,
   SystemCodeIntegrityAddDynamicStore = 224,
   SystemCodeIntegrityClearDynamicStores = 225,
+  SystemDifPoolTrackingInformation = 226,
   SystemPoolZeroingInformation = 227,
-  MaxSystemInfoClass = 228,
+  SystemDpcWatchdogInformation = 228,
+  SystemDpcWatchdogInformation2 = 229,
+  SystemSupportedProcessorArchitectures2 = 230,
+  SystemSingleProcessorRelationshipInformation = 231,
+  SystemXfgCheckFailureInformation = 232,
+  MaxSystemInfoClass = 233,
 } SYSTEM_INFORMATION_CLASS, *PSYSTEM_INFORMATION_CLASS;
+
+typedef enum _SYSTEM_POOL_LIMIT_MEM_TYPE
+{
+  SysPlMemPaged = 0,
+  SysPlMemNonPaged = 1,
+  SysPlMemTypeMax = 2,
+} SYSTEM_POOL_LIMIT_MEM_TYPE, *PSYSTEM_POOL_LIMIT_MEM_TYPE;
 
 typedef enum _SYSTEM_POWER_STATE
 {
@@ -5851,7 +6199,9 @@ typedef enum _TAG_UNNAMED_1
   DMM_DIAG_INFO_WIN8_M1_VERSION = 12288,
   DMM_DIAG_INFO_BLUE_M1_VERSION = 16384,
   DMM_DIAG_INFO_BLUE_MP_VERSION = 20480,
-  DMM_DIAG_INFO_VERSION = 20480,
+  DMM_DIAG_INFO_WIN10_MG_VERSION = 24576,
+  DMM_DIAG_INFO_WIN10_CO_VERSION = 24577,
+  DMM_DIAG_INFO_VERSION = 24577,
 } TAG_UNNAMED_1, *PTAG_UNNAMED_1;
 
 typedef enum _TAG_UNNAMED_2
@@ -6011,8 +6361,8 @@ typedef struct _TEB
   unsigned __int64 ReservedForCodeCoverage;
   void* ThreadPoolData;
   void** TlsExpansionSlots;
-  void* DeallocationBStore;
-  void* BStoreLimit;
+  struct _CHPEV2_CPUAREA_INFO* ChpeV2CpuAreaInfo;
+  void* Unused;
   unsigned long MuiGeneration;
   unsigned long IsImpersonating;
   void* NlsCache;
@@ -6051,7 +6401,7 @@ typedef struct _TEB
       unsigned short LoadOwner : 1; /* bit position: 12 */
       unsigned short LoaderWorker : 1; /* bit position: 13 */
       unsigned short SkipLoaderInit : 1; /* bit position: 14 */
-      unsigned short SpareSameTebBits : 1; /* bit position: 15 */
+      unsigned short SkipFileAPIBrokering : 1; /* bit position: 15 */
     }; /* bitfield */
   };
   void* TxnScopeEnterCallback;
@@ -6063,6 +6413,10 @@ typedef struct _TEB
   void* ReservedForWdf;
   unsigned __int64 ReservedForCrt;
   struct _GUID EffectiveContainerId;
+  unsigned __int64 LastSleepCounter;
+  unsigned long SpinCallCount;
+  unsigned char Padding8[4];
+  unsigned __int64 ExtendedFeatureDisableMask;
 } TEB, *PTEB;
 
 typedef struct _TEB_ACTIVE_FRAME
@@ -6402,10 +6756,11 @@ typedef enum _VRF_TRIAGE_CONTEXT
   VRF_TRIAGE_CONTEXT_DEFAULT = 1,
   VRF_TRIAGE_CONTEXT_DEVELOPMENT = 1,
   VRF_TRIAGE_CONTEXT_CERTIFICATION = 2,
-  VRF_TRIAGE_CONTEXT_FLIGHT_TARGETED = 3,
-  VRF_TRIAGE_CONTEXT_FLIGHT_DIAGNOSTICS = 4,
-  VRF_TRIAGE_CONTEXT_FLIGHT_MONITORING = 5,
-  NUM_VRF_TRIAGE_CONTEXTS = 6,
+  VRF_TRIAGE_CONTEXT_CERTIFICATION_STRICT = 3,
+  VRF_TRIAGE_CONTEXT_FLIGHT_TARGETED = 4,
+  VRF_TRIAGE_CONTEXT_FLIGHT_DIAGNOSTICS = 5,
+  VRF_TRIAGE_CONTEXT_FLIGHT_MONITORING = 6,
+  NUM_VRF_TRIAGE_CONTEXTS = 7,
 } VRF_TRIAGE_CONTEXT, *PVRF_TRIAGE_CONTEXT;
 
 typedef struct _W32PROCESS
@@ -6437,11 +6792,11 @@ typedef struct _W32PROCESS
   unsigned short Dpi;
   struct /* bitfield */
   {
-    int bChangedGdiGammaRamp : 1; /* bit position: 0 */
-    int bReadScreenBits : 1; /* bit position: 1 */
-    int bWroteScreenBits : 1; /* bit position: 2 */
+    unsigned int bChangedGdiGammaRamp : 1; /* bit position: 0 */
+    unsigned int bReadScreenBits : 1; /* bit position: 1 */
+    unsigned int bWroteScreenBits : 1; /* bit position: 2 */
   }; /* bitfield */
-  long __PADDING__[1];
+  unsigned long Cookie;
 } W32PROCESS, *PW32PROCESS;
 
 typedef struct _W32THREAD
@@ -6468,12 +6823,11 @@ typedef struct _W32THREAD
   void* pdcoSrc;
   struct /* bitfield */
   {
-    int bEnableEngUpdateDeviceSurface : 1; /* bit position: 0 */
-    int bIncludeSprites : 1; /* bit position: 1 */
-    int bPerMonAwareVirtualized : 1; /* bit position: 2 */
-    int bEnableAppContainerRendering : 1; /* bit position: 3 */
-    int bSnapWindowScreenAccess : 1; /* bit position: 4 */
-    int bGdiEngMode : 1; /* bit position: 5 */
+    unsigned int bEnableEngUpdateDeviceSurface : 1; /* bit position: 0 */
+    unsigned int bIncludeSprites : 1; /* bit position: 1 */
+    unsigned int bEnableAppContainerRendering : 1; /* bit position: 2 */
+    unsigned int bSnapWindowScreenAccess : 1; /* bit position: 3 */
+    unsigned int bGdiEngMode : 1; /* bit position: 4 */
   }; /* bitfield */
   unsigned long ulWindowSystemRendering;
   unsigned long iVisRgnUniqueness;
@@ -6525,6 +6879,26 @@ typedef struct _WAIT_CONTEXT_BLOCK
   struct _KDPC* BufferChainingDpc;
 } WAIT_CONTEXT_BLOCK, *PWAIT_CONTEXT_BLOCK;
 
+class WatchdogTimeoutReport
+{
+  union
+  {
+    volatile long ReportCount;
+    volatile BOOL m_bIsActive;
+  };
+  struct _KTIMER m_TimeoutTimer;
+  struct _KDPC m_TimeoutDpc;
+  struct _WORK_QUEUE_ITEM m_LiveDumpWorkItem;
+  struct _KEVENT m_LiveDumpWorkItemEvent;
+  unsigned long m_Code;
+  unsigned __int64 m_pArg1;
+  unsigned __int64 m_pArg2;
+  unsigned __int64 m_pArg3;
+  unsigned __int64 m_pArg4;
+  union _WD_LIVEREPORT_FLAGS m_Flags;
+  void* m_Callback /* function */;
+};
+
 typedef enum _WD_DIAG_NOTIFY_USER_MESSAGE
 {
   WD_DIAG_NOTIFY_USER_MESSAGE_DBG_REPORT = 0,
@@ -6539,9 +6913,30 @@ typedef enum _WD_DIAG_NOTIFY_USER_MESSAGE
   WD_DIAG_NOTIFY_USER_PARVIRTUALIZATION_BLOCKED = 9,
   WD_DIAG_NOTIFY_USER_NEW_DISPLAY_HDR_ENABLED = 10,
   WD_DIAG_NOTIFY_USER_NEW_DISPLAY_HDR_AVAILABLE = 11,
-  WD_DIAG_NOTIFY_USER_MESSAGE_ALL = 12,
+  WD_DIAG_NOTIFY_USER_AUTOHDR_ENABLED = 12,
+  WD_DIAG_NOTIFY_USER_AUTOHDR_AVAILABLE = 13,
+  WD_DIAG_NOTIFY_USER_MESSAGE_ALL = 14,
   WD_DIAG_NOTIFY_USER_MESSAGE_FIRST = 0,
 } WD_DIAG_NOTIFY_USER_MESSAGE, *PWD_DIAG_NOTIFY_USER_MESSAGE;
+
+typedef union _WD_LIVEREPORT_FLAGS
+{
+  union
+  {
+    struct
+    {
+      struct /* bitfield */
+      {
+        unsigned char Kernel : 1; /* bit position: 0 */
+        unsigned char IncludeUserPages : 1; /* bit position: 1 */
+        unsigned char MiniFallback : 1; /* bit position: 2 */
+        unsigned char AbortIfMemoryPressure : 1; /* bit position: 3 */
+        unsigned char Reserved : 4; /* bit position: 4 */
+      }; /* bitfield */
+    } AsBits;
+    unsigned char AsByte;
+  };
+} WD_LIVEREPORT_FLAGS, *PWD_LIVEREPORT_FLAGS;
 
 typedef enum _WD_LOGEVENT_LEVEL
 {
@@ -6572,7 +6967,8 @@ typedef enum _WD_LOGEVENT_SOURCE
   WdVideoCdd = 7,
   WdGdi = 8,
   WdNtUser = 9,
-  WdLogSrcAll = 10,
+  WdVideoSmm = 10,
+  WdLogSrcAll = 11,
   WdLogSrcFirst = 1,
 } WD_LOGEVENT_SOURCE, *PWD_LOGEVENT_SOURCE;
 
@@ -6672,7 +7068,8 @@ typedef union _WHEA_ERROR_PACKET_FLAGS
       unsigned long PlatformDirectedOffline : 1; /* bit position: 5 */
       unsigned long AddressTranslationRequired : 1; /* bit position: 6 */
       unsigned long AddressTranslationCompleted : 1; /* bit position: 7 */
-      unsigned long Reserved2 : 24; /* bit position: 8 */
+      unsigned long RecoveryOptional : 1; /* bit position: 8 */
+      unsigned long Reserved2 : 23; /* bit position: 9 */
     }; /* bitfield */
     unsigned long AsULONG;
   };
@@ -6721,7 +7118,15 @@ typedef struct _WHEA_ERROR_RECORD_HEADER
   unsigned __int64 RecordId;
   union _WHEA_ERROR_RECORD_HEADER_FLAGS Flags;
   union _WHEA_PERSISTENCE_INFO PersistenceInfo;
-  unsigned char Reserved[12];
+  union
+  {
+    struct
+    {
+      unsigned long OsBuildNumber;
+      unsigned char Reserved2[8];
+    };
+    unsigned char Reserved[12];
+  };
 } WHEA_ERROR_RECORD_HEADER, *PWHEA_ERROR_RECORD_HEADER;
 
 typedef union _WHEA_ERROR_RECORD_HEADER_FLAGS
@@ -6736,7 +7141,10 @@ typedef union _WHEA_ERROR_RECORD_HEADER_FLAGS
       unsigned long DeviceDriver : 1; /* bit position: 3 */
       unsigned long CriticalEvent : 1; /* bit position: 4 */
       unsigned long PersistPfn : 1; /* bit position: 5 */
-      unsigned long Reserved : 26; /* bit position: 6 */
+      unsigned long SectionsTruncated : 1; /* bit position: 6 */
+      unsigned long RecoveryInProgress : 1; /* bit position: 7 */
+      unsigned long Throttle : 1; /* bit position: 8 */
+      unsigned long Reserved : 23; /* bit position: 9 */
     }; /* bitfield */
     unsigned long AsULONG;
   };
@@ -6784,7 +7192,8 @@ typedef union _WHEA_ERROR_RECORD_SECTION_DESCRIPTOR_FLAGS
       unsigned long ResourceNotAvailable : 1; /* bit position: 4 */
       unsigned long LatentError : 1; /* bit position: 5 */
       unsigned long Propagated : 1; /* bit position: 6 */
-      unsigned long Reserved : 25; /* bit position: 7 */
+      unsigned long FruTextByPlugin : 1; /* bit position: 7 */
+      unsigned long Reserved : 24; /* bit position: 8 */
     }; /* bitfield */
     unsigned long AsULONG;
   };
@@ -6954,6 +7363,7 @@ typedef enum _WHEA_EVENT_LOG_ENTRY_ID
   WheaEventLogEntryIdCreateGenericRecord = -2147483627,
   WheaEventLogEntryIdErrorRecord = -2147483626,
   WheaEventLogEntryIdErrorRecordLimit = -2147483625,
+  WheaEventLogEntryIdAerNotGrantedToOs = -2147483624,
   WheaEventLogEntryIdErrSrcArrayInvalid = -2147483623,
   WheaEventLogEntryIdAcpiTimeOut = -2147483622,
   WheaEventLogCmciRestart = -2147483621,
@@ -6979,6 +7389,27 @@ typedef enum _WHEA_EVENT_LOG_ENTRY_ID
   WheaEventLogEntryIdSELBugCheckInfo = -2147483601,
   WheaEventLogEntryIdErrDimmInfoMismatch = -2147483600,
   WheaEventLogEntryIdeDpcEnabled = -2147483599,
+  WheaEventLogEntryPageOfflineDone = -2147483598,
+  WheaEventLogEntryPageOfflinePendMax = -2147483597,
+  WheaEventLogEntryIdBadPageLimitReached = -2147483596,
+  WheaEventLogEntrySrarDetail = -2147483595,
+  WheaEventLogEntryEarlyError = -2147483594,
+  WheaEventLogEntryIdPcieOverrideInfo = -2147483593,
+  WheaEventLogEntryIdReadPcieOverridesErr = -2147483592,
+  WheaEventLogEntryIdPcieConfigInfo = -2147483591,
+  WheaEventLogEntryIdPcieSummaryFailed = -2147483584,
+  WheaEventLogEntryIdThrottleRegCorrupt = -2147483583,
+  WheaEventLogEntryIdThrottleAddErrSrcFailed = -2147483582,
+  WheaEventLogEntryIdThrottleRegDataIgnored = -2147483581,
+  WheaEventLogEntryIdEnableKeyNotifFailed = -2147483580,
+  WheaEventLogEntryIdKeyNotificationFailed = -2147483579,
+  WheaEventLogEntryIdPcieRemoveDevice = -2147483578,
+  WheaEventLogEntryIdPcieAddDevice = -2147483577,
+  WheaEventLogEntryIdPcieSpuriousErrSource = -2147483576,
+  WheaEventLogEntryIdMemoryAddDevice = -2147483575,
+  WheaEventLogEntryIdMemoryRemoveDevice = -2147483574,
+  WheaEventLogEntryIdMemorySummaryFailed = -2147483573,
+  WheaEventLogEntryIdPshedPiTraceLog = -2147221488,
 } WHEA_EVENT_LOG_ENTRY_ID, *PWHEA_EVENT_LOG_ENTRY_ID;
 
 typedef enum _WHEA_EVENT_LOG_ENTRY_TYPE
@@ -7253,6 +7684,20 @@ typedef struct _WHEA_XPF_NMI_DESCRIPTOR
   unsigned char Enabled;
 } WHEA_XPF_NMI_DESCRIPTOR, *PWHEA_XPF_NMI_DESCRIPTOR;
 
+enum WINDOW_ARRANGEMENT_OPTIONS
+{
+  WAI_DEFAULT = 0,
+  WAI_SAFETYZONE = 1,
+  WAI_ARRANGERECT = 2,
+};
+
+enum WINDOW_SIZE_PROGRESS_REQUEST
+{
+  WSPR_NONE = 0,
+  WSPR_UPDATE = 1,
+  WSPR_COMPLETE = 2,
+};
+
 enum WINDOWCOMPOSITIONATTRIB
 {
   WCA_UNDEFINED = 0,
@@ -7282,7 +7727,11 @@ enum WINDOWCOMPOSITIONATTRIB
   WCA_EXCLUDED_FROM_DDA = 24,
   WCA_PASSIVEUPDATEMODE = 25,
   WCA_USEDARKMODECOLORS = 26,
-  WCA_LAST = 27,
+  WCA_CORNER_STYLE = 27,
+  WCA_PART_COLOR = 28,
+  WCA_DISABLE_MOVESIZE_FEEDBACK = 29,
+  WCA_SYSTEMBACKDROP_TYPE = 30,
+  WCA_LAST = 31,
 };
 
 typedef struct _WNF_STATE_NAME
@@ -7364,6 +7813,7 @@ typedef struct _XSTATE_CONFIGURATION
     {
       unsigned long OptimizedSave : 1; /* bit position: 0 */
       unsigned long CompactionEnabled : 1; /* bit position: 1 */
+      unsigned long ExtendedFeatureDisable : 1; /* bit position: 2 */
     }; /* bitfield */
   };
   struct _XSTATE_FEATURE Features[64];
@@ -7372,6 +7822,9 @@ typedef struct _XSTATE_CONFIGURATION
   unsigned long AllFeatureSize;
   unsigned long AllFeatures[64];
   unsigned __int64 EnabledUserVisibleSupervisorFeatures;
+  unsigned __int64 ExtendedFeatureDisableFeatures;
+  unsigned long AllNonLargeFeatureSize;
+  unsigned long Spare;
 } XSTATE_CONFIGURATION, *PXSTATE_CONFIGURATION;
 
 typedef struct _XSTATE_FEATURE
@@ -7393,6 +7846,7 @@ CLIPOBJ_bEnum();
 CLIPOBJ_cEnumStart();
 CLIPOBJ_GetRgn();
 CLIPOBJ_ppoGetPath();
+__cpu_features_init();
 DlpGetServiceNameInSystemSpace();
 DlpLoadDxgkrnl();
 DlpUnloadDxgkrnl();
@@ -7555,6 +8009,8 @@ EngWaitForSingleObject();
 EngWideCharToMultiByte();
 EngWritePrinter();
 EngXorRgn();
+ext_ms_win_core_win32k_dxgk_l1_1_0_NtDxgkCancelPresents();
+ext_ms_win_core_win32k_dxgk_l1_1_0_NtDxgkCheckSinglePlaneForMultiPlaneOverlaySupport();
 ext_ms_win_core_win32k_dxgk_l1_1_0_NtDxgkCreateTrackedWorkload();
 ext_ms_win_core_win32k_dxgk_l1_1_0_NtDxgkDestroyTrackedWorkload();
 ext_ms_win_core_win32k_dxgk_l1_1_0_NtDxgkDisplayPortOperation();
@@ -7563,11 +8019,13 @@ ext_ms_win_core_win32k_dxgk_l1_1_0_NtDxgkDuplicateHandle();
 ext_ms_win_core_win32k_dxgk_l1_1_0_NtDxgkEnumAdapters3();
 ext_ms_win_core_win32k_dxgk_l1_1_0_NtDxgkGetAvailableTrackedWorkloadIndex();
 ext_ms_win_core_win32k_dxgk_l1_1_0_NtDxgkGetProcessList();
+ext_ms_win_core_win32k_dxgk_l1_1_0_NtDxgkGetProperties();
 ext_ms_win_core_win32k_dxgk_l1_1_0_NtDxgkGetTrackedWorkloadStatistics();
 ext_ms_win_core_win32k_dxgk_l1_1_0_NtDxgkOutputDuplPresentToHwQueue();
 ext_ms_win_core_win32k_dxgk_l1_1_0_NtDxgkPinResources();
 ext_ms_win_core_win32k_dxgk_l1_1_0_NtDxgkRegisterVailProcess();
 ext_ms_win_core_win32k_dxgk_l1_1_0_NtDxgkResetTrackedWorkloadStatistics();
+ext_ms_win_core_win32k_dxgk_l1_1_0_NtDxgkSetProperties();
 ext_ms_win_core_win32k_dxgk_l1_1_0_NtDxgkSubmitPresentBltToHwQueue();
 ext_ms_win_core_win32k_dxgk_l1_1_0_NtDxgkSubmitPresentToHwQueue();
 ext_ms_win_core_win32k_dxgk_l1_1_0_NtDxgkUnpinResources();
@@ -7655,6 +8113,7 @@ ext_ms_win_core_win32k_dxgk_l1_1_0_NtGdiDdDDIGetSetSwapChainMetadata();
 ext_ms_win_core_win32k_dxgk_l1_1_0_NtGdiDdDDIGetSharedPrimaryHandle();
 ext_ms_win_core_win32k_dxgk_l1_1_0_NtGdiDdDDIGetSharedResourceAdapterLuid();
 ext_ms_win_core_win32k_dxgk_l1_1_0_NtGdiDdDDIGetSharedResourceAdapterLuidFlipManager();
+ext_ms_win_core_win32k_dxgk_l1_1_0_NtGdiDdDDIGetSwapChainSurfacePhysicalAddress();
 ext_ms_win_core_win32k_dxgk_l1_1_0_NtGdiDdDDIGetYieldPercentage();
 ext_ms_win_core_win32k_dxgk_l1_1_0_NtGdiDdDDIInvalidateActiveVidPn();
 ext_ms_win_core_win32k_dxgk_l1_1_0_NtGdiDdDDIInvalidateCache();
@@ -7760,44 +8219,45 @@ ext_ms_win_core_win32k_dxgk_l1_1_0_NtGdiDdDDIWaitForSynchronizationObjectFromCpu
 ext_ms_win_core_win32k_dxgk_l1_1_0_NtGdiDdDDIWaitForSynchronizationObjectFromGpu();
 ext_ms_win_core_win32k_dxgk_l1_1_0_NtGdiDdDDIWaitForVerticalBlankEvent();
 ext_ms_win_core_win32k_dxgk_l1_1_0_NtGdiDdDDIWaitForVerticalBlankEvent2();
-ext_ms_win_core_win32k_flipmgr_l1_1_0_NtFlipObjectAddContent();
-ext_ms_win_core_win32k_flipmgr_l1_1_0_NtFlipObjectAddPoolBuffer();
-ext_ms_win_core_win32k_flipmgr_l1_1_0_NtFlipObjectConsumerAcquirePresent();
-ext_ms_win_core_win32k_flipmgr_l1_1_0_NtFlipObjectConsumerAdjustUsageReference();
-ext_ms_win_core_win32k_flipmgr_l1_1_0_NtFlipObjectConsumerBeginProcessPresent();
-ext_ms_win_core_win32k_flipmgr_l1_1_0_NtFlipObjectConsumerEndProcessPresent();
-ext_ms_win_core_win32k_flipmgr_l1_1_0_NtFlipObjectConsumerPostMessage();
-ext_ms_win_core_win32k_flipmgr_l1_1_0_NtFlipObjectConsumerQueryBufferInfo();
-ext_ms_win_core_win32k_flipmgr_l1_1_0_NtFlipObjectCreate();
-ext_ms_win_core_win32k_flipmgr_l1_1_0_NtFlipObjectDisconnectEndpoint();
-ext_ms_win_core_win32k_flipmgr_l1_1_0_NtFlipObjectEnablePresentStatisticsType();
-ext_ms_win_core_win32k_flipmgr_l1_1_0_NtFlipObjectOpen();
-ext_ms_win_core_win32k_flipmgr_l1_1_0_NtFlipObjectPresentCancel();
-ext_ms_win_core_win32k_flipmgr_l1_1_0_NtFlipObjectQueryBufferAvailableEvent();
-ext_ms_win_core_win32k_flipmgr_l1_1_0_NtFlipObjectQueryEndpointConnected();
-ext_ms_win_core_win32k_flipmgr_l1_1_0_NtFlipObjectQueryNextMessageToProducer();
-ext_ms_win_core_win32k_flipmgr_l1_1_0_NtFlipObjectReadNextMessageToProducer();
-ext_ms_win_core_win32k_flipmgr_l1_1_0_NtFlipObjectRemoveContent();
-ext_ms_win_core_win32k_flipmgr_l1_1_0_NtFlipObjectRemovePoolBuffer();
-ext_ms_win_core_win32k_flipmgr_l1_1_0_NtFlipObjectSetContent();
-ext_ms_win_core_win32k_flipmgr_l1_1_0_NtFlipObjectSetMaximumBackchannelQueueDepth();
-ext_ms_win_core_win32k_surfmgr_l1_1_0_NtBindCompositionSurface();
-ext_ms_win_core_win32k_surfmgr_l1_1_0_NtCreateCompositionSurfaceHandle();
-ext_ms_win_core_win32k_surfmgr_l1_1_0_NtNotifyPresentToCompositionSurface();
-ext_ms_win_core_win32k_surfmgr_l1_1_0_NtOpenCompositionSurfaceDirtyRegion();
-ext_ms_win_core_win32k_surfmgr_l1_1_0_NtOpenCompositionSurfaceSectionInfo();
-ext_ms_win_core_win32k_surfmgr_l1_1_0_NtOpenCompositionSurfaceSwapChainHandleInfo();
-ext_ms_win_core_win32k_surfmgr_l1_1_0_NtQueryCompositionSurfaceBinding();
-ext_ms_win_core_win32k_surfmgr_l1_1_0_NtQueryCompositionSurfaceHDRMetaData();
-ext_ms_win_core_win32k_surfmgr_l1_1_0_NtQueryCompositionSurfaceRenderingRealization();
-ext_ms_win_core_win32k_surfmgr_l1_1_0_NtQueryCompositionSurfaceStatistics();
-ext_ms_win_core_win32k_surfmgr_l1_1_0_NtSetCompositionSurfaceAnalogExclusive();
-ext_ms_win_core_win32k_surfmgr_l1_1_0_NtSetCompositionSurfaceBufferUsage();
-ext_ms_win_core_win32k_surfmgr_l1_1_0_NtSetCompositionSurfaceDirectFlipState();
-ext_ms_win_core_win32k_surfmgr_l1_1_0_NtSetCompositionSurfaceIndependentFlipInfo();
-ext_ms_win_core_win32k_surfmgr_l1_1_0_NtSetCompositionSurfaceStatistics();
-ext_ms_win_core_win32k_surfmgr_l1_1_0_NtUnBindCompositionSurface();
-ext_ms_win_core_win32k_surfmgr_l1_1_0_NtValidateCompositionSurfaceHandle();
+ext_ms_win_core_win32k_flipmgr_l1_1_1_NtFlipObjectAddContent();
+ext_ms_win_core_win32k_flipmgr_l1_1_1_NtFlipObjectAddPoolBuffer();
+ext_ms_win_core_win32k_flipmgr_l1_1_1_NtFlipObjectConsumerAcquirePresent();
+ext_ms_win_core_win32k_flipmgr_l1_1_1_NtFlipObjectConsumerAdjustUsageReference();
+ext_ms_win_core_win32k_flipmgr_l1_1_1_NtFlipObjectConsumerBeginProcessPresent();
+ext_ms_win_core_win32k_flipmgr_l1_1_1_NtFlipObjectConsumerEndProcessPresent();
+ext_ms_win_core_win32k_flipmgr_l1_1_1_NtFlipObjectConsumerPostMessage();
+ext_ms_win_core_win32k_flipmgr_l1_1_1_NtFlipObjectConsumerQueryBufferInfo();
+ext_ms_win_core_win32k_flipmgr_l1_1_1_NtFlipObjectCreate();
+ext_ms_win_core_win32k_flipmgr_l1_1_1_NtFlipObjectDisconnectEndpoint();
+ext_ms_win_core_win32k_flipmgr_l1_1_1_NtFlipObjectEnablePresentStatisticsType();
+ext_ms_win_core_win32k_flipmgr_l1_1_1_NtFlipObjectOpen();
+ext_ms_win_core_win32k_flipmgr_l1_1_1_NtFlipObjectPresentCancel();
+ext_ms_win_core_win32k_flipmgr_l1_1_1_NtFlipObjectQueryBufferAvailableEvent();
+ext_ms_win_core_win32k_flipmgr_l1_1_1_NtFlipObjectQueryEndpointConnected();
+ext_ms_win_core_win32k_flipmgr_l1_1_1_NtFlipObjectQueryLostEvent();
+ext_ms_win_core_win32k_flipmgr_l1_1_1_NtFlipObjectQueryNextMessageToProducer();
+ext_ms_win_core_win32k_flipmgr_l1_1_1_NtFlipObjectReadNextMessageToProducer();
+ext_ms_win_core_win32k_flipmgr_l1_1_1_NtFlipObjectRemoveContent();
+ext_ms_win_core_win32k_flipmgr_l1_1_1_NtFlipObjectRemovePoolBuffer();
+ext_ms_win_core_win32k_flipmgr_l1_1_1_NtFlipObjectSetContent();
+ext_ms_win_core_win32k_surfmgr_l1_1_1_NtBindCompositionSurface();
+ext_ms_win_core_win32k_surfmgr_l1_1_1_NtCreateCompositionSurfaceHandle();
+ext_ms_win_core_win32k_surfmgr_l1_1_1_NtNotifyPresentToCompositionSurface();
+ext_ms_win_core_win32k_surfmgr_l1_1_1_NtOpenCompositionSurfaceDirtyRegion();
+ext_ms_win_core_win32k_surfmgr_l1_1_1_NtOpenCompositionSurfaceRealizationInfo();
+ext_ms_win_core_win32k_surfmgr_l1_1_1_NtOpenCompositionSurfaceSectionInfo();
+ext_ms_win_core_win32k_surfmgr_l1_1_1_NtQueryCompositionSurfaceBinding();
+ext_ms_win_core_win32k_surfmgr_l1_1_1_NtQueryCompositionSurfaceFrameRate();
+ext_ms_win_core_win32k_surfmgr_l1_1_1_NtQueryCompositionSurfaceHDRMetaData();
+ext_ms_win_core_win32k_surfmgr_l1_1_1_NtQueryCompositionSurfaceRenderingRealization();
+ext_ms_win_core_win32k_surfmgr_l1_1_1_NtQueryCompositionSurfaceStatistics();
+ext_ms_win_core_win32k_surfmgr_l1_1_1_NtSetCompositionSurfaceAnalogExclusive();
+ext_ms_win_core_win32k_surfmgr_l1_1_1_NtSetCompositionSurfaceBufferUsage();
+ext_ms_win_core_win32k_surfmgr_l1_1_1_NtSetCompositionSurfaceDirectFlipState();
+ext_ms_win_core_win32k_surfmgr_l1_1_1_NtSetCompositionSurfaceIndependentFlipInfo();
+ext_ms_win_core_win32k_surfmgr_l1_1_1_NtSetCompositionSurfaceStatistics();
+ext_ms_win_core_win32k_surfmgr_l1_1_1_NtUnBindCompositionSurface();
+ext_ms_win_core_win32k_surfmgr_l1_1_1_NtValidateCompositionSurfaceHandle();
 ext_ms_win_core_win32k_tokenmgr_l1_1_0_NtTokenManagerConfirmOutstandingAnalogToken();
 ext_ms_win_core_win32k_tokenmgr_l1_1_0_NtTokenManagerCreateCompositionTokenHandle();
 ext_ms_win_core_win32k_tokenmgr_l1_1_0_NtTokenManagerCreateFlipObjectReturnTokenHandle();
@@ -7820,6 +8280,7 @@ unsigned long __cdecl FormFullImageName(struct _UNICODE_STRING const *,struct _U
 GsDriverEntry();
 _guard_check_icall_nop();
 _guard_dispatch_icall_nop();
+_guard_xfg_dispatch_icall_nop();
 HeapVidMemAllocAligned();
 HT_ComputeRGBGammaTable();
 HT_Get8BPPFormatPalette();
@@ -7832,19 +8293,20 @@ memcmp();
 memcpy();
 memmove();
 memset();
+__memset_query();
+__memset_repmovs();
 NtBindCompositionSurface();
 NtCloseCompositionInputSink();
 NtCompositionInputThread();
 NtCompositionSetDropTarget();
 NtCompositorNotifyExitWindows();
-NtCompositorNotifyForegroundChanged();
-NtCompositorUpdateLastInputTime();
 NtConfigureInputSpace();
 NtCreateCompositionInputSink();
 NtCreateCompositionSurfaceHandle();
 NtCreateImplicitCompositionInputSink();
 NtDCompositionAddCrossDeviceVisualChild();
 NtDCompositionBeginFrame();
+NtDCompositionBoostCompositorClock();
 NtDCompositionCommitChannel();
 NtDCompositionCommitSynchronizationObject();
 NtDCompositionConfirmFrame();
@@ -7857,7 +8319,6 @@ NtDCompositionCreateSharedResourceHandle();
 NtDCompositionCreateSynchronizationObject();
 NtDCompositionDestroyChannel();
 NtDCompositionDestroyConnection();
-NtDCompositionDiscardFrame();
 NtDCompositionDuplicateHandleToProcess();
 NtDCompositionDuplicateSwapchainHandleToDwm();
 NtDCompositionEnableMMCSS();
@@ -7865,17 +8326,22 @@ NtDCompositionGetBatchId();
 NtDCompositionGetChannels();
 NtDCompositionGetConnectionBatch();
 NtDCompositionGetDeletedResources();
+NtDCompositionGetFrameId();
+NtDCompositionGetFrameIdFromBatchId();
 NtDCompositionGetFrameLegacyTokens();
 NtDCompositionGetFrameStatistics();
 NtDCompositionGetFrameSurfaceUpdates();
 NtDCompositionGetMaterialProperty();
+NtDCompositionGetStatistics();
+NtDCompositionGetTargetStatistics();
+NtDCompositionNotifySuperWetInkWork();
 NtDCompositionProcessChannelBatchBuffer();
 NtDCompositionReferenceSharedResourceOnDwmChannel();
 NtDCompositionRegisterThumbnailVisual();
 NtDCompositionRegisterVirtualDesktopVisual();
 NtDCompositionReleaseAllResources();
 NtDCompositionRemoveCrossDeviceVisualChild();
-NtDCompositionRetireFrame();
+NtDCompositionSetBlurredWallpaperSurface();
 NtDCompositionSetChannelCommitCompletionEvent();
 NtDCompositionSetChannelConnectionId();
 NtDCompositionSetChildRootVisual();
@@ -7893,8 +8359,11 @@ NtDCompositionTelemetryTouchInteractionEnd();
 NtDCompositionTelemetryTouchInteractionUpdate();
 NtDCompositionUpdatePointerCapture();
 NtDCompositionWaitForChannel();
+NtDCompositionWaitForCompositorClock();
 NtDesktopCaptureBits();
 NtDuplicateCompositionInputSink();
+NtDxgkCancelPresents();
+NtDxgkCheckSinglePlaneForMultiPlaneOverlaySupport();
 NtDxgkCreateTrackedWorkload();
 NtDxgkDestroyTrackedWorkload();
 NtDxgkDisplayPortOperation();
@@ -7903,11 +8372,13 @@ NtDxgkDuplicateHandle();
 NtDxgkEnumAdapters3();
 NtDxgkGetAvailableTrackedWorkloadIndex();
 NtDxgkGetProcessList();
+NtDxgkGetProperties();
 NtDxgkGetTrackedWorkloadStatistics();
 NtDxgkOutputDuplPresentToHwQueue();
 NtDxgkPinResources();
 NtDxgkRegisterVailProcess();
 NtDxgkResetTrackedWorkloadStatistics();
+NtDxgkSetProperties();
 NtDxgkSubmitPresentBltToHwQueue();
 NtDxgkSubmitPresentToHwQueue();
 NtDxgkUnpinResources();
@@ -7931,12 +8402,12 @@ NtFlipObjectOpen();
 NtFlipObjectPresentCancel();
 NtFlipObjectQueryBufferAvailableEvent();
 NtFlipObjectQueryEndpointConnected();
+NtFlipObjectQueryLostEvent();
 NtFlipObjectQueryNextMessageToProducer();
 NtFlipObjectReadNextMessageToProducer();
 NtFlipObjectRemoveContent();
 NtFlipObjectRemovePoolBuffer();
 NtFlipObjectSetContent();
-NtFlipObjectSetMaximumBackchannelQueueDepth();
 NtGdiAbortDoc();
 NtGdiAbortPath();
 NtGdiAddEmbFontToDC();
@@ -8087,6 +8558,7 @@ NtGdiDdDDIGetSetSwapChainMetadata();
 NtGdiDdDDIGetSharedPrimaryHandle();
 NtGdiDdDDIGetSharedResourceAdapterLuid();
 NtGdiDdDDIGetSharedResourceAdapterLuidFlipManager();
+NtGdiDdDDIGetSwapChainSurfacePhysicalAddress();
 NtGdiDdDDIGetYieldPercentage();
 NtGdiDdDDIInvalidateActiveVidPn();
 NtGdiDdDDIInvalidateCache();
@@ -8276,7 +8748,6 @@ NtGdiFrameRgn();
 NtGdiFullscreenControl();
 NtGdiGetAndSetDCDword();
 NtGdiGetAppClipBox();
-NtGdiGetAppliedDeviceGammaRamp();
 NtGdiGetBitmapBits();
 NtGdiGetBitmapDimension();
 NtGdiGetBitmapDpiScaleValue();
@@ -8301,7 +8772,6 @@ NtGdiGetDCObject();
 NtGdiGetDCPoint();
 NtGdiGetDeviceCaps();
 NtGdiGetDeviceCapsAll();
-NtGdiGetDeviceGammaRamp();
 NtGdiGetDeviceWidth();
 NtGdiGetDhpdev();
 NtGdiGetDIBitsInternal();
@@ -8315,7 +8785,6 @@ NtGdiGetFontFileData();
 NtGdiGetFontFileInfo();
 NtGdiGetFontResourceInfoInternalW();
 NtGdiGetFontUnicodeRanges();
-NtGdiGetGammaRampCapability();
 NtGdiGetGlyphIndicesW();
 NtGdiGetGlyphIndicesWInternal();
 NtGdiGetGlyphOutline();
@@ -8425,7 +8894,6 @@ NtGdiSetBrushAttributes();
 NtGdiSetBrushOrg();
 NtGdiSetColorAdjustment();
 NtGdiSetColorSpace();
-NtGdiSetDeviceGammaRamp();
 NtGdiSetDIBitsToDeviceInternal();
 NtGdiSetFontEnumeration();
 NtGdiSetFontXform();
@@ -8438,7 +8906,6 @@ NtGdiSetMiterLimit();
 NtGdiSetOPMSigningKeyAndSequenceNumbers();
 NtGdiSetPixel();
 NtGdiSetPixelFormat();
-NtGdiSetPrivateDeviceGammaRamp();
 NtGdiSetPUMPDOBJ();
 NtGdiSetRectRgn();
 NtGdiSetSizeDevice();
@@ -8475,6 +8942,8 @@ NtGdiXLATEOBJ_iXlate();
 NtHWCursorUpdatePointer();
 NtInputSpaceRegionFromPoint();
 NtIsOneCoreTransformMode();
+NtKSTInitialize();
+NtKSTWait();
 NtMapVisualRelativePoints();
 NtMinGetInputTransform();
 NtMinInteropCoreMessagingWithInput();
@@ -8483,6 +8952,7 @@ NtMinQSuspendInputProcessing();
 NtMinQUpdateWakeMask();
 NtMITAccessibilityTimerNotification();
 NtMITActivateInputProcessing();
+NtMITConfigureVirtualTouchpad();
 NtMITCoreMsgKOpenConnectionTo();
 NtMITDeactivateInputProcessing();
 NtMITDisableMouseIntercept();
@@ -8491,7 +8961,6 @@ NtMITEnableMouseIntercept();
 NtMITGetCursorUpdateHandle();
 NtMITInitMinuserThread();
 NtMITMinuserSetInputTransformOffset();
-NtMITMinuserWindowCreated();
 NtMITMinuserWindowDestroyed();
 NtMITPostMouseInputMessage();
 NtMITPostThreadEventMessage();
@@ -8499,7 +8968,6 @@ NtMITPostWindowEventMessage();
 NtMITPrepareReceiveInputMessage();
 NtMITPrepareSendInputMessage();
 NtMITProcessDelegateCapturedPointers();
-NtMITSetForegroundRoutingInfo();
 NtMITSetInputCallbacks();
 NtMITSetInputDelegationMode();
 NtMITSetInputObservationState();
@@ -8529,14 +8997,15 @@ NtModerncoreSetNavigationServiceSid();
 NtModerncoreUnregisterNavigationWindowHandle();
 NtNotifyPresentToCompositionSurface();
 NtOpenCompositionSurfaceDirtyRegion();
+NtOpenCompositionSurfaceRealizationInfo();
 NtOpenCompositionSurfaceSectionInfo();
-NtOpenCompositionSurfaceSwapChainHandleInfo();
 NtQueryCompositionInputIsImplicit();
 NtQueryCompositionInputQueueAndTransform();
 NtQueryCompositionInputSink();
 NtQueryCompositionInputSinkLuid();
 NtQueryCompositionInputSinkViewId();
 NtQueryCompositionSurfaceBinding();
+NtQueryCompositionSurfaceFrameRate();
 NtQueryCompositionSurfaceHDRMetaData();
 NtQueryCompositionSurfaceRenderingRealization();
 NtQueryCompositionSurfaceStatistics();
@@ -8552,12 +9021,14 @@ NtRIMGetDevicePropertiesLockfree();
 NtRIMGetPhysicalDeviceRect();
 NtRIMGetSourceProcessId();
 NtRIMObserveNextInput();
+NtRIMOnAsyncPnpWorkNotification();
 NtRIMOnPnpNotification();
 NtRIMOnTimerNotification();
 NtRIMQueryDevicePath();
 NtRIMReadInput();
-NtRIMRegisterForInput();
+NtRIMRegisterForInputEx();
 NtRIMRemoveInputObserver();
+NtRIMSetDeadzoneRotation();
 NtRIMSetExtendedDeviceProperty();
 NtRIMSetTestModeStatus();
 NtRIMUnregisterForInput();
@@ -8585,15 +9056,20 @@ NtUserAcquireInteractiveControlBackgroundAccess();
 NtUserActivateKeyboardLayout();
 NtUserAddClipboardFormatListener();
 NtUserAddVisualIdentifier();
+NtUserAllowForegroundActivation();
+NtUserAllowSetForegroundWindow();
 NtUserAlterWindowStyle();
+NtUserArrangeIconicWindows();
 NtUserAssociateInputContext();
 NtUserAttachThreadInput();
 NtUserAutoPromoteMouseInPointer();
 NtUserAutoRotateScreen();
+NtUserBeginDeferWindowPos();
 NtUserBeginLayoutUpdate();
 NtUserBeginPaint();
 NtUserBitBltSysBmp();
 NtUserBlockInput();
+NtUserBroadcastImeShowStatusChange();
 NtUserBroadcastThemeChangeEvent();
 NtUserBuildHimcList();
 NtUserBuildHwndList();
@@ -8601,30 +9077,26 @@ NtUserBuildNameList();
 NtUserBuildPropList();
 NtUserCalcMenuBar();
 NtUserCalculatePopupWindowPosition();
-NtUserCallHwnd();
-NtUserCallHwndLock();
-NtUserCallHwndLockSafe();
-NtUserCallHwndOpt();
-NtUserCallHwndParam();
-NtUserCallHwndParamLock();
-NtUserCallHwndParamLockSafe();
-NtUserCallHwndSafe();
 NtUserCallMsgFilter();
 NtUserCallNextHookEx();
-NtUserCallNoParam();
-NtUserCallOneParam();
-NtUserCallTwoParam();
 NtUserCanBrokerForceForeground();
+NtUserCancelQueueEventCompletionPacket();
 NtUserChangeClipboardChain();
 NtUserChangeDisplaySettings();
+NtUserChangeWindowMessageFilter();
 NtUserChangeWindowMessageFilterEx();
 NtUserCheckAccessForIntegrityLevel();
+NtUserCheckImeShowStatusInThread();
 NtUserCheckMenuItem();
 NtUserCheckProcessForClipboardAccess();
 NtUserCheckProcessSession();
 NtUserCheckWindowThreadDesktop();
 NtUserChildWindowFromPointEx();
+NtUserCitSetInfo();
 NtUserClearForeground();
+NtUserClearRunWakeBit();
+NtUserClearWakeMask();
+NtUserClearWindowState();
 NtUserClipCursor();
 NtUserCloseClipboard();
 NtUserCloseDesktop();
@@ -8638,76 +9110,94 @@ NtUserConvertMemHandle();
 NtUserCopyAcceleratorTable();
 NtUserCountClipboardFormats();
 NtUserCreateAcceleratorTable();
-NtUserCreateActivationGroup();
 NtUserCreateActivationObject();
+NtUserCreateBaseWindow();
 NtUserCreateCaret();
 NtUserCreateDCompositionHwndTarget();
 NtUserCreateDesktopEx();
 NtUserCreateEmptyCursorObject();
 NtUserCreateInputContext();
 NtUserCreateLocalMemHandle();
+NtUserCreateMenu();
 NtUserCreatePalmRejectionDelayZone();
+NtUserCreatePopupMenu();
+NtUserCreateSystemThreads();
 NtUserCreateWindowEx();
-NtUserCreateWindowGroup();
 NtUserCreateWindowStation();
+NtUserCsDdeUninitialize();
 NtUserCtxDisplayIOCtl();
 NtUserDdeInitialize();
+NtUserDeferredDesktopRotation();
 NtUserDeferWindowDpiChanges();
 NtUserDeferWindowPosAndBand();
 NtUserDefSetText();
 NtUserDelegateCapturePointers();
 NtUserDelegateInput();
 NtUserDeleteMenu();
-NtUserDeleteWindowGroup();
+NtUserDeregisterShellHookWindow();
 NtUserDestroyAcceleratorTable();
-NtUserDestroyActivationGroup();
 NtUserDestroyActivationObject();
+NtUserDestroyCaret();
 NtUserDestroyCursor();
 NtUserDestroyDCompositionHwndTarget();
 NtUserDestroyInputContext();
 NtUserDestroyMenu();
 NtUserDestroyPalmRejectionDelayZone();
 NtUserDestroyWindow();
+NtUserDirectedYield();
 NtUserDisableImmersiveOwner();
 NtUserDisableProcessWindowFiltering();
+NtUserDisableProcessWindowsGhosting();
 NtUserDisableThreadIme();
 NtUserDiscardPointerFrameMessages();
 NtUserDispatchMessage();
 NtUserDisplayConfigGetDeviceInfo();
 NtUserDisplayConfigSetDeviceInfo();
+NtUserDoInitMessagePumpHook();
 NtUserDoSoundConnect();
 NtUserDoSoundDisconnect();
+NtUserDoUninitMessagePumpHook();
 NtUserDownlevelTouchpad();
 NtUserDragDetect();
 NtUserDragObject();
+NtUserDrainThreadCoreMessagingCompletions();
 NtUserDrawAnimatedRects();
 NtUserDrawCaption();
 NtUserDrawCaptionTemp();
 NtUserDrawIconEx();
+NtUserDrawMenuBar();
 NtUserDrawMenuBarTemp();
 NtUserDwmGetRemoteSessionOcclusionEvent();
 NtUserDwmGetRemoteSessionOcclusionState();
 NtUserDwmKernelShutdown();
 NtUserDwmKernelStartup();
+NtUserDwmLockScreenUpdates();
 NtUserDwmValidateWindow();
+NtUserDWP_GetEnabledPopupOffset();
 NtUserEmptyClipboard();
 NtUserEnableChildWindowDpiMessage();
 NtUserEnableIAMAccess();
 NtUserEnableMenuItem();
+NtUserEnableModernAppWindowKeyboardIntercept();
 NtUserEnableMouseInPointer();
+NtUserEnableMouseInPointerForThread();
 NtUserEnableMouseInPointerForWindow();
 NtUserEnableMouseInputForCursorSuppression();
 NtUserEnableNonClientDpiScaling();
 NtUserEnableResizeLayoutSynchronization();
 NtUserEnableScrollBar();
+NtUserEnableSessionForMMCSS();
+NtUserEnableShellWindowManagementBehavior();
 NtUserEnableSoftwareCursorForScreenCapture();
 NtUserEnableTouchPad();
+NtUserEnableWindow();
 NtUserEnableWindowGDIScaledDpiMessage();
-NtUserEnableWindowGroupPolicy();
 NtUserEnableWindowResizeOptimization();
 NtUserEndDeferWindowPosEx();
 NtUserEndMenu();
 NtUserEndPaint();
+NtUserEnsureDpiDepSysMetCacheForPlateau();
+NtUserEnumClipboardFormats();
 NtUserEnumDisplayDevices();
 NtUserEnumDisplayMonitors();
 NtUserEnumDisplaySettings();
@@ -8717,6 +9207,7 @@ NtUserFillWindow();
 NtUserFindExistingCursorIcon();
 NtUserFindWindowEx();
 NtUserFlashWindowEx();
+NtUserForceEnableNumpadTranslation();
 NtUserForceWindowToDpiForTest();
 NtUserFrostCrashedWindow();
 NtUserFunctionalizeDisplayConfig();
@@ -8730,6 +9221,7 @@ NtUserGetAutoRotationState();
 NtUserGetCaretBlinkTime();
 NtUserGetCaretPos();
 NtUserGetCIMSSM();
+NtUserGetClassIcoCur();
 NtUserGetClassInfoEx();
 NtUserGetClassName();
 NtUserGetClipboardAccessToken();
@@ -8748,9 +9240,13 @@ NtUserGetCurrentInputMessageSource();
 NtUserGetCursor();
 NtUserGetCursorFrameInfo();
 NtUserGetCursorInfo();
+NtUserGetCursorPos();
 NtUserGetDC();
 NtUserGetDCEx();
+NtUserGetDCompositionHwndBitmap();
 NtUserGetDesktopID();
+NtUserGetDesktopVisualTransform();
+NtUserGetDeviceChangeInfo();
 NtUserGetDisplayAutoRotationPreferences();
 NtUserGetDisplayAutoRotationPreferencesByProcessId();
 NtUserGetDisplayConfigBufferSizes();
@@ -8771,7 +9267,10 @@ NtUserGetIconInfo();
 NtUserGetIconSize();
 NtUserGetImeHotKey();
 NtUserGetImeInfoEx();
+NtUserGetIMEShowStatus();
 NtUserGetInputContainerId();
+NtUserGetInputDesktop();
+NtUserGetInputEvent();
 NtUserGetInputLocaleInfo();
 NtUserGetInteractiveControlDeviceInfo();
 NtUserGetInteractiveControlInfo();
@@ -8781,6 +9280,7 @@ NtUserGetKeyboardLayout();
 NtUserGetKeyboardLayoutList();
 NtUserGetKeyboardLayoutName();
 NtUserGetKeyboardState();
+NtUserGetKeyboardType();
 NtUserGetKeyNameText();
 NtUserGetKeyState();
 NtUserGetLayeredWindowAttributes();
@@ -8789,6 +9289,9 @@ NtUserGetMenuBarInfo();
 NtUserGetMenuIndex();
 NtUserGetMenuItemRect();
 NtUserGetMessage();
+NtUserGetMessagePos();
+NtUserGetMinuserIdForBaseWindow();
+NtUserGetModernAppWindow();
 NtUserGetMouseMovePointsEx();
 NtUserGetObjectInformation();
 NtUserGetOemBitmapSize();
@@ -8810,10 +9313,12 @@ NtUserGetPointerProprietaryId();
 NtUserGetPointerType();
 NtUserGetPrecisionTouchPadConfiguration();
 NtUserGetPriorityClipboardFormat();
+NtUserGetProcessDefaultLayout();
 NtUserGetProcessDpiAwarenessContext();
 NtUserGetProcessUIContextInformation();
 NtUserGetProcessWindowStation();
 NtUserGetProp();
+NtUserGetQueueIocp();
 NtUserGetQueueStatus();
 NtUserGetQueueStatusReadonly();
 NtUserGetRawInputBuffer();
@@ -8825,7 +9330,10 @@ NtUserGetRegisteredRawInputDevices();
 NtUserGetRequiredCursorSizes();
 NtUserGetResizeDCompositionSynchronizationObject();
 NtUserGetScrollBarInfo();
+NtUserGetSendMessageReceiver();
 NtUserGetSharedWindowData();
+NtUserGetSysMenuOffset();
+NtUserGetSystemContentRects();
 NtUserGetSystemDpiForProcess();
 NtUserGetSystemMenu();
 NtUserGetThreadDesktop();
@@ -8835,25 +9343,31 @@ NtUserGetTopLevelWindow();
 NtUserGetTouchInputInfo();
 NtUserGetTouchValidationStatus();
 NtUserGetUniformSpaceMapping();
+NtUserGetUnpredictedMessagePos();
 NtUserGetUpdatedClipboardFormats();
 NtUserGetUpdateRect();
 NtUserGetUpdateRgn();
 NtUserGetWindowBand();
 NtUserGetWindowCompositionAttribute();
 NtUserGetWindowCompositionInfo();
+NtUserGetWindowContextHelpId();
 NtUserGetWindowDC();
 NtUserGetWindowDisplayAffinity();
 NtUserGetWindowFeedbackSetting();
-NtUserGetWindowGroupId();
 NtUserGetWindowMinimizeRect();
 NtUserGetWindowPlacement();
 NtUserGetWindowProcessHandle();
 NtUserGetWindowRgnEx();
+NtUserGetWindowThreadProcessId();
+NtUserGetWindowTrackInfoAsync();
+NtUserGetWinStationInfo();
 NtUserGetWOWClass();
 NtUserGhostWindowFromHungWindow();
 NtUserHandleDelegatedInput();
+NtUserHandleSystemThreadCreationFailure();
 NtUserHardErrorControl();
 NtUserHideCaret();
+NtUserHideCursorNoCapture();
 NtUserHidePointerContactVisualization();
 NtUserHiliteMenuItem();
 NtUserHungWindowFromGhostWindow();
@@ -8861,6 +9375,7 @@ NtUserHwndQueryRedirectionInfo();
 NtUserHwndSetRedirectionInfo();
 NtUserImpersonateDdeClientWindow();
 NtUserInheritWindowMonitor();
+NtUserInitAnsiOem();
 NtUserInitialize();
 NtUserInitializeClientPfnArrays();
 NtUserInitializeGenericHidInjection();
@@ -8868,7 +9383,9 @@ NtUserInitializeInputDeviceInjection();
 NtUserInitializePointerDeviceInjection();
 NtUserInitializePointerDeviceInjectionEx();
 NtUserInitializeTouchInjection();
+NtUserInitRunThread();
 NtUserInitTask();
+NtUserInitThreadCoreMessagingIocp();
 NtUserInjectDeviceInput();
 NtUserInjectGenericHidInput();
 NtUserInjectGesture();
@@ -8892,24 +9409,31 @@ NtUserIsTopLevelWindow();
 NtUserIsTouchWindow();
 NtUserIsWindowBroadcastingDpiToChildren();
 NtUserIsWindowGDIScaledDpiMessageEnabled();
+NtUserKillSystemTimer();
 NtUserKillTimer();
 NtUserLayoutCompleted();
 NtUserLinkDpiCursor();
+NtUserLoadCursorsAndIcons();
 NtUserLoadKeyboardLayoutEx();
+NtUserLoadUserApiHook();
 NtUserLockCursor();
+NtUserLockSetForegroundWindow();
 NtUserLockWindowStation();
 NtUserLockWindowUpdate();
 NtUserLockWorkStation();
 NtUserLogicalToPerMonitorDPIPhysicalPoint();
 NtUserLogicalToPhysicalDpiPointForWindow();
 NtUserLogicalToPhysicalPoint();
+NtUserLW_LoadFonts();
 NtUserMagControl();
 NtUserMagGetContextInformation();
 NtUserMagSetContextInformation();
+NtUserMapDesktopObject();
 NtUserMapPointsByVisualIdentifier();
 NtUserMapVirtualKeyEx();
 NtUserMarkWindowForRawMouse();
 NtUserMenuItemFromPoint();
+NtUserMessageBeep();
 NtUserMessageCall();
 NtUserMinInitialize();
 NtUserMinMaximize();
@@ -8920,7 +9444,9 @@ NtUserModifyWindowTouchCapability();
 NtUserMoveWindow();
 NtUserMsgWaitForMultipleObjectsEx();
 NtUserNavigateFocus();
+NtUserNlsKbdSendIMENotification();
 NtUserNotifyIMEStatus();
+NtUserNotifyOverlayWindow();
 NtUserNotifyProcessCreate();
 NtUserNotifyWinEvent();
 NtUserOpenClipboard();
@@ -8935,15 +9461,17 @@ NtUserPeekMessage();
 NtUserPerMonitorDPIPhysicalToLogicalPoint();
 NtUserPhysicalToLogicalDpiPointForWindow();
 NtUserPhysicalToLogicalPoint();
+NtUserPlayEventSound();
 NtUserPostKeyboardInputMessage();
 NtUserPostMessage();
+NtUserPostQuitMessage();
 NtUserPostThreadMessage();
+NtUserPrepareForLogoff();
 NtUserPrintWindow();
 NtUserProcessConnect();
 NtUserProcessInkFeedbackCommand();
 NtUserPromoteMouseInPointer();
 NtUserPromotePointer();
-NtUserQueryActivationObject();
 NtUserQueryBSDRWindow();
 NtUserQueryDisplayConfig();
 NtUserQueryInformationThread();
@@ -8952,42 +9480,72 @@ NtUserQuerySendMessage();
 NtUserQueryWindow();
 NtUserRealChildWindowFromPoint();
 NtUserRealInternalGetMessage();
+NtUserRealizePalette();
 NtUserRealWaitMessageEx();
+NtUserReassociateQueueEventCompletionPacket();
+NtUserRedrawFrame();
+NtUserRedrawFrameAndHook();
+NtUserRedrawTitle();
 NtUserRedrawWindow();
 NtUserRegisterBSDRWindow();
 NtUserRegisterClassExWOW();
 NtUserRegisterDManipHook();
 NtUserRegisterEdgy();
 NtUserRegisterErrorReportingDialog();
+NtUserRegisterGhostWindow();
 NtUserRegisterHotKey();
+NtUserRegisterLogonProcess();
+NtUserRegisterLPK();
 NtUserRegisterManipulationThread();
 NtUserRegisterPointerDeviceNotifications();
 NtUserRegisterPointerInputTarget();
 NtUserRegisterRawInputDevices();
 NtUserRegisterServicesProcess();
 NtUserRegisterSessionPort();
+NtUserRegisterShellHookWindow();
 NtUserRegisterShellPTPListener();
+NtUserRegisterSiblingFrostWindow();
+NtUserRegisterSystemThread();
 NtUserRegisterTasklist();
 NtUserRegisterTouchHitTestingWindow();
 NtUserRegisterTouchPadCapable();
 NtUserRegisterUserApiHook();
+NtUserRegisterUserHungAppHandlers();
+NtUserRegisterWindowArrangementCallout();
 NtUserRegisterWindowMessage();
+NtUserReleaseCapture();
 NtUserReleaseDC();
 NtUserReleaseDwmHitTestWaiters();
 NtUserRemoteConnect();
+NtUserRemoteConnectState();
+NtUserRemoteConsoleShadowStop();
+NtUserRemoteDisconnect();
+NtUserRemoteNotify();
+NtUserRemotePassthruDisable();
+NtUserRemotePassthruEnable();
+NtUserRemoteReconnect();
 NtUserRemoteRedrawRectangle();
 NtUserRemoteRedrawScreen();
+NtUserRemoteShadowCleanup();
+NtUserRemoteShadowSetup();
+NtUserRemoteShadowStart();
+NtUserRemoteShadowStop();
 NtUserRemoteStopScreenUpdates();
+NtUserRemoteThinwireStats();
 NtUserRemoveClipboardFormatListener();
 NtUserRemoveInjectionDevice();
 NtUserRemoveMenu();
 NtUserRemoveProp();
+NtUserRemoveQueueCompletion();
 NtUserRemoveVisualIdentifier();
+NtUserReplyMessage();
 NtUserReportInertia();
-NtUserRequestMoveSizeOperation();
+NtUserResetDblClk();
 NtUserResolveDesktopForWOW();
 NtUserRestoreWindowDpiChanges();
 NtUserSBGetParms();
+NtUserScaleSystemMetricForDPIWithoutCache();
+NtUserScheduleDispatchNotification();
 NtUserScrollDC();
 NtUserScrollWindowEx();
 NtUserSelectPalette();
@@ -8997,12 +9555,16 @@ NtUserSendInteractiveControlHapticsReport();
 NtUserSetActivationFilter();
 NtUserSetActiveProcessForMonitor();
 NtUserSetActiveWindow();
+NtUserSetAdditionalForegroundBoostProcesses();
 NtUserSetAppImeLevel();
 NtUserSetAutoRotation();
 NtUserSetBridgeWindowChild();
 NtUserSetBrokeredForeground();
 NtUserSetCalibrationData();
+NtUserSetCancelRotationDelayHintWindow();
 NtUserSetCapture();
+NtUserSetCaretBlinkTime();
+NtUserSetCaretPos();
 NtUserSetChildWindowNoActivate();
 NtUserSetClassLong();
 NtUserSetClassLongPtr();
@@ -9014,16 +9576,23 @@ NtUserSetCoreWindowPartner();
 NtUserSetCursor();
 NtUserSetCursorContents();
 NtUserSetCursorIconData();
+NtUserSetCursorIconDataEx();
 NtUserSetCursorPos();
 NtUserSetDesktopColorTransform();
 NtUserSetDesktopVisualInputSink();
 NtUserSetDialogControlDpiChangeBehavior();
+NtUserSetDialogPointer();
+NtUserSetDialogSystemMenu();
 NtUserSetDisplayAutoRotationPreferences();
 NtUserSetDisplayConfig();
 NtUserSetDisplayMapping();
+NtUserSetDoubleClickTime();
+NtUserSetDpiForWindow();
 NtUserSetFallbackForeground();
 NtUserSetFeatureReportResponse();
 NtUserSetFocus();
+NtUserSetForegroundRedirectionForActivationObject();
+NtUserSetForegroundWindow();
 NtUserSetForegroundWindowForApplication();
 NtUserSetFullscreenMagnifierOffsetsDWMUpdated();
 NtUserSetGestureConfig();
@@ -9043,41 +9612,55 @@ NtUserSetMenu();
 NtUserSetMenuContextHelpId();
 NtUserSetMenuDefaultItem();
 NtUserSetMenuFlagRtoL();
+NtUserSetMessageExtraInfo();
 NtUserSetMirrorRendering();
+NtUserSetModernAppWindow();
 NtUserSetMonitorWorkArea();
 NtUserSetMouseInputRateLimitingTimer();
+NtUserSetMsgBox();
 NtUserSetObjectInformation();
 NtUserSetParent();
 NtUserSetPrecisionTouchPadConfiguration();
+NtUserSetProcessDefaultLayout();
 NtUserSetProcessDpiAwarenessContext();
 NtUserSetProcessInteractionFlags();
+NtUserSetProcessLaunchForegroundPolicy();
 NtUserSetProcessMousewheelRoutingMode();
 NtUserSetProcessRestrictionExemption();
 NtUserSetProcessUIAccessZorder();
 NtUserSetProcessWindowStation();
+NtUserSetProgmanWindow();
 NtUserSetProp();
 NtUserSetScrollInfo();
 NtUserSetSensorPresence();
 NtUserSetSharedWindowData();
+NtUserSetShellChangeNotifyHWND();
 NtUserSetShellWindowEx();
 NtUserSetSysColors();
+NtUserSetSysMenu();
+NtUserSetSystemContentRects();
 NtUserSetSystemCursor();
 NtUserSetSystemMenu();
 NtUserSetSystemTimer();
 NtUserSetTargetForResourceBrokering();
+NtUserSetTaskmanWindow();
 NtUserSetThreadDesktop();
 NtUserSetThreadInputBlocked();
 NtUserSetThreadLayoutHandles();
+NtUserSetThreadQueueMergeSetting();
 NtUserSetThreadState();
 NtUserSetTimer();
-NtUserSetWindowArrangement();
+NtUserSetTSFEventState();
+NtUserSetVisible();
+NtUserSetWaitForQueueAttach();
+NtUserSetWatermarkStrings();
 NtUserSetWindowBand();
 NtUserSetWindowCompositionAttribute();
 NtUserSetWindowCompositionTransition();
+NtUserSetWindowContextHelpId();
 NtUserSetWindowDisplayAffinity();
 NtUserSetWindowFeedbackSetting();
 NtUserSetWindowFNID();
-NtUserSetWindowGroup();
 NtUserSetWindowLong();
 NtUserSetWindowLongPtr();
 NtUserSetWindowPlacement();
@@ -9087,12 +9670,17 @@ NtUserSetWindowRgnEx();
 NtUserSetWindowsHookAW();
 NtUserSetWindowsHookEx();
 NtUserSetWindowShowState();
+NtUserSetWindowState();
 NtUserSetWindowStationUser();
 NtUserSetWindowWord();
 NtUserSetWinEventHook();
+NtUserShellMigrateWindow();
+NtUserShellSetWindowPos();
 NtUserShowCaret();
 NtUserShowCursor();
+NtUserShowOwnedPopups();
 NtUserShowScrollBar();
+NtUserShowStartGlass();
 NtUserShowSystemCursor();
 NtUserShowWindow();
 NtUserShowWindowAsync();
@@ -9103,13 +9691,17 @@ NtUserSignalRedirectionStartComplete();
 NtUserSlicerControl();
 NtUserSoundSentry();
 NtUserStopAndEndInertia();
+NtUserSwapMouseButton();
 NtUserSwitchDesktop();
+NtUserSwitchToThisWindow();
 NtUserSystemParametersInfo();
 NtUserSystemParametersInfoForDpi();
 NtUserTestForInteractiveUser();
+NtUserThreadMessageQueueAttached();
 NtUserThunkedMenuInfo();
 NtUserThunkedMenuItemInfo();
 NtUserToUnicodeEx();
+NtUserTraceLoggingSendMixedModeTelemetry();
 NtUserTrackMouseEvent();
 NtUserTrackPopupMenuEx();
 NtUserTransformPoint();
@@ -9117,6 +9709,7 @@ NtUserTransformRect();
 NtUserTranslateAccelerator();
 NtUserTranslateMessage();
 NtUserUndelegateInput();
+NtUserUnhookWindowsHook();
 NtUserUnhookWindowsHookEx();
 NtUserUnhookWinEvent();
 NtUserUnloadKeyboardLayout();
@@ -9125,15 +9718,22 @@ NtUserUnregisterClass();
 NtUserUnregisterHotKey();
 NtUserUnregisterSessionPort();
 NtUserUnregisterUserApiHook();
+NtUserUpdateClientRect();
 NtUserUpdateDefaultDesktopThumbnail();
 NtUserUpdateInputContext();
 NtUserUpdateInstance();
 NtUserUpdateLayeredWindow();
+NtUserUpdatePerUserImmEnabling();
 NtUserUpdatePerUserSystemParameters();
+NtUserUpdateWindow();
 NtUserUpdateWindowInputSinkHints();
+NtUserUpdateWindows();
 NtUserUpdateWindowTrackingInfo();
 NtUserUserHandleGrantAccess();
+NtUserUserPowerCalloutWorker();
+NtUserValidateHandleSecure();
 NtUserValidateRect();
+NtUserValidateRgn();
 NtUserValidateTimerCallback();
 NtUserVkKeyScanEx();
 NtUserWaitAvailableMessageEx();
@@ -9141,12 +9741,15 @@ NtUserWaitForInputIdle();
 NtUserWaitForMsgAndEvent();
 NtUserWaitForRedirectionStartComplete();
 NtUserWaitMessage();
+NtUserWakeRITForShutdown();
 NtUserWin32kSysCallFilterStub();
 NtUserWindowFromDC();
 NtUserWindowFromPhysicalPoint();
 NtUserWindowFromPoint();
 NtUserWOWCleanup();
+NtUserWOWModuleUnload();
 NtUserYieldTask();
+NtUserZapActiveAndFocus();
 NtValidateCompositionSurfaceHandle();
 NtVisualCaptureBits();
 PALOBJ_cGetColors();
@@ -9175,14 +9778,13 @@ _stub_CloseCompositionInputSink();
 _stub_CompositionInputThread();
 _stub_CompositionSetDropTarget();
 _stub_CompositorNotifyExitWindows();
-_stub_CompositorNotifyForegroundChanged();
-_stub_CompositorUpdateLastInputTime();
 _stub_ConfigureInputSpace();
 _stub_CreateCompositionInputSink();
 _stub_CreateCompositionSurfaceHandle();
 _stub_CreateImplicitCompositionInputSink();
 _stub_DCompositionAddCrossDeviceVisualChild();
 _stub_DCompositionBeginFrame();
+_stub_DCompositionBoostCompositorClock();
 _stub_DCompositionCommitChannel();
 _stub_DCompositionCommitSynchronizationObject();
 _stub_DCompositionConfirmFrame();
@@ -9195,7 +9797,6 @@ _stub_DCompositionCreateSharedResourceHandle();
 _stub_DCompositionCreateSynchronizationObject();
 _stub_DCompositionDestroyChannel();
 _stub_DCompositionDestroyConnection();
-_stub_DCompositionDiscardFrame();
 _stub_DCompositionDuplicateHandleToProcess();
 _stub_DCompositionDuplicateSwapchainHandleToDwm();
 _stub_DCompositionEnableMMCSS();
@@ -9203,17 +9804,22 @@ _stub_DCompositionGetBatchId();
 _stub_DCompositionGetChannels();
 _stub_DCompositionGetConnectionBatch();
 _stub_DCompositionGetDeletedResources();
+_stub_DCompositionGetFrameId();
+_stub_DCompositionGetFrameIdFromBatchId();
 _stub_DCompositionGetFrameLegacyTokens();
 _stub_DCompositionGetFrameStatistics();
 _stub_DCompositionGetFrameSurfaceUpdates();
 _stub_DCompositionGetMaterialProperty();
+_stub_DCompositionGetStatistics();
+_stub_DCompositionGetTargetStatistics();
+_stub_DCompositionNotifySuperWetInkWork();
 _stub_DCompositionProcessChannelBatchBuffer();
 _stub_DCompositionReferenceSharedResourceOnDwmChannel();
 _stub_DCompositionRegisterThumbnailVisual();
 _stub_DCompositionRegisterVirtualDesktopVisual();
 _stub_DCompositionReleaseAllResources();
 _stub_DCompositionRemoveCrossDeviceVisualChild();
-_stub_DCompositionRetireFrame();
+_stub_DCompositionSetBlurredWallpaperSurface();
 _stub_DCompositionSetChannelCommitCompletionEvent();
 _stub_DCompositionSetChannelConnectionId();
 _stub_DCompositionSetChildRootVisual();
@@ -9231,8 +9837,11 @@ _stub_DCompositionTelemetryTouchInteractionEnd();
 _stub_DCompositionTelemetryTouchInteractionUpdate();
 _stub_DCompositionUpdatePointerCapture();
 _stub_DCompositionWaitForChannel();
+_stub_DCompositionWaitForCompositorClock();
 _stub_DesktopCaptureBits();
 _stub_DuplicateCompositionInputSink();
+_stub_DxgkCancelPresents();
+_stub_DxgkCheckSinglePlaneForMultiPlaneOverlaySupport();
 _stub_DxgkCreateTrackedWorkload();
 _stub_DxgkDestroyTrackedWorkload();
 _stub_DxgkDisplayPortOperation();
@@ -9241,11 +9850,13 @@ _stub_DxgkDuplicateHandle();
 _stub_DxgkEnumAdapters3();
 _stub_DxgkGetAvailableTrackedWorkloadIndex();
 _stub_DxgkGetProcessList();
+_stub_DxgkGetProperties();
 _stub_DxgkGetTrackedWorkloadStatistics();
 _stub_DxgkOutputDuplPresentToHwQueue();
 _stub_DxgkPinResources();
 _stub_DxgkRegisterVailProcess();
 _stub_DxgkResetTrackedWorkloadStatistics();
+_stub_DxgkSetProperties();
 _stub_DxgkSubmitPresentBltToHwQueue();
 _stub_DxgkSubmitPresentToHwQueue();
 _stub_DxgkUnpinResources();
@@ -9269,12 +9880,12 @@ _stub_FlipObjectOpen();
 _stub_FlipObjectPresentCancel();
 _stub_FlipObjectQueryBufferAvailableEvent();
 _stub_FlipObjectQueryEndpointConnected();
+_stub_FlipObjectQueryLostEvent();
 _stub_FlipObjectQueryNextMessageToProducer();
 _stub_FlipObjectReadNextMessageToProducer();
 _stub_FlipObjectRemoveContent();
 _stub_FlipObjectRemovePoolBuffer();
 _stub_FlipObjectSetContent();
-_stub_FlipObjectSetMaximumBackchannelQueueDepth();
 _stub_GdiAbortDoc();
 _stub_GdiAbortPath();
 _stub_GdiAddEmbFontToDC();
@@ -9425,6 +10036,7 @@ _stub_GdiDdDDIGetSetSwapChainMetadata();
 _stub_GdiDdDDIGetSharedPrimaryHandle();
 _stub_GdiDdDDIGetSharedResourceAdapterLuid();
 _stub_GdiDdDDIGetSharedResourceAdapterLuidFlipManager();
+_stub_GdiDdDDIGetSwapChainSurfacePhysicalAddress();
 _stub_GdiDdDDIGetYieldPercentage();
 _stub_GdiDdDDIInvalidateActiveVidPn();
 _stub_GdiDdDDIInvalidateCache();
@@ -9614,7 +10226,6 @@ _stub_GdiFrameRgn();
 _stub_GdiFullscreenControl();
 _stub_GdiGetAndSetDCDword();
 _stub_GdiGetAppClipBox();
-_stub_GdiGetAppliedDeviceGammaRamp();
 _stub_GdiGetBitmapBits();
 _stub_GdiGetBitmapDimension();
 _stub_GdiGetBitmapDpiScaleValue();
@@ -9639,7 +10250,6 @@ _stub_GdiGetDCObject();
 _stub_GdiGetDCPoint();
 _stub_GdiGetDeviceCaps();
 _stub_GdiGetDeviceCapsAll();
-_stub_GdiGetDeviceGammaRamp();
 _stub_GdiGetDeviceWidth();
 _stub_GdiGetDhpdev();
 _stub_GdiGetDIBitsInternal();
@@ -9653,7 +10263,6 @@ _stub_GdiGetFontFileData();
 _stub_GdiGetFontFileInfo();
 _stub_GdiGetFontResourceInfoInternalW();
 _stub_GdiGetFontUnicodeRanges();
-_stub_GdiGetGammaRampCapability();
 _stub_GdiGetGlyphIndicesW();
 _stub_GdiGetGlyphIndicesWInternal();
 _stub_GdiGetGlyphOutline();
@@ -9763,7 +10372,6 @@ _stub_GdiSetBrushAttributes();
 _stub_GdiSetBrushOrg();
 _stub_GdiSetColorAdjustment();
 _stub_GdiSetColorSpace();
-_stub_GdiSetDeviceGammaRamp();
 _stub_GdiSetDIBitsToDeviceInternal();
 _stub_GdiSetFontEnumeration();
 _stub_GdiSetFontXform();
@@ -9776,7 +10384,6 @@ _stub_GdiSetMiterLimit();
 _stub_GdiSetOPMSigningKeyAndSequenceNumbers();
 _stub_GdiSetPixel();
 _stub_GdiSetPixelFormat();
-_stub_GdiSetPrivateDeviceGammaRamp();
 _stub_GdiSetPUMPDOBJ();
 _stub_GdiSetRectRgn();
 _stub_GdiSetSizeDevice();
@@ -9813,6 +10420,8 @@ _stub_GdiXLATEOBJ_iXlate();
 _stub_HWCursorUpdatePointer();
 _stub_InputSpaceRegionFromPoint();
 _stub_IsOneCoreTransformMode();
+_stub_KSTInitialize();
+_stub_KSTWait();
 _stub_MapVisualRelativePoints();
 _stub_MinGetInputTransform();
 _stub_MinInteropCoreMessagingWithInput();
@@ -9821,6 +10430,7 @@ _stub_MinQSuspendInputProcessing();
 _stub_MinQUpdateWakeMask();
 _stub_MITAccessibilityTimerNotification();
 _stub_MITActivateInputProcessing();
+_stub_MITConfigureVirtualTouchpad();
 _stub_MITCoreMsgKOpenConnectionTo();
 _stub_MITDeactivateInputProcessing();
 _stub_MITDisableMouseIntercept();
@@ -9829,7 +10439,6 @@ _stub_MITEnableMouseIntercept();
 _stub_MITGetCursorUpdateHandle();
 _stub_MITInitMinuserThread();
 _stub_MITMinuserSetInputTransformOffset();
-_stub_MITMinuserWindowCreated();
 _stub_MITMinuserWindowDestroyed();
 _stub_MITPostMouseInputMessage();
 _stub_MITPostThreadEventMessage();
@@ -9837,7 +10446,6 @@ _stub_MITPostWindowEventMessage();
 _stub_MITPrepareReceiveInputMessage();
 _stub_MITPrepareSendInputMessage();
 _stub_MITProcessDelegateCapturedPointers();
-_stub_MITSetForegroundRoutingInfo();
 _stub_MITSetInputCallbacks();
 _stub_MITSetInputDelegationMode();
 _stub_MITSetInputObservationState();
@@ -9867,14 +10475,15 @@ _stub_ModerncoreSetNavigationServiceSid();
 _stub_ModerncoreUnregisterNavigationWindowHandle();
 _stub_NotifyPresentToCompositionSurface();
 _stub_OpenCompositionSurfaceDirtyRegion();
+_stub_OpenCompositionSurfaceRealizationInfo();
 _stub_OpenCompositionSurfaceSectionInfo();
-_stub_OpenCompositionSurfaceSwapChainHandleInfo();
 _stub_QueryCompositionInputIsImplicit();
 _stub_QueryCompositionInputQueueAndTransform();
 _stub_QueryCompositionInputSink();
 _stub_QueryCompositionInputSinkLuid();
 _stub_QueryCompositionInputSinkViewId();
 _stub_QueryCompositionSurfaceBinding();
+_stub_QueryCompositionSurfaceFrameRate();
 _stub_QueryCompositionSurfaceHDRMetaData();
 _stub_QueryCompositionSurfaceRenderingRealization();
 _stub_QueryCompositionSurfaceStatistics();
@@ -9890,12 +10499,14 @@ _stub_RIMGetDevicePropertiesLockfree();
 _stub_RIMGetPhysicalDeviceRect();
 _stub_RIMGetSourceProcessId();
 _stub_RIMObserveNextInput();
+_stub_RIMOnAsyncPnpWorkNotification();
 _stub_RIMOnPnpNotification();
 _stub_RIMOnTimerNotification();
 _stub_RIMQueryDevicePath();
 _stub_RIMReadInput();
-_stub_RIMRegisterForInput();
+_stub_RIMRegisterForInputEx();
 _stub_RIMRemoveInputObserver();
+_stub_RIMSetDeadzoneRotation();
 _stub_RIMSetExtendedDeviceProperty();
 _stub_RIMSetTestModeStatus();
 _stub_RIMUnregisterForInput();
@@ -9923,15 +10534,20 @@ _stub_UserAcquireInteractiveControlBackgroundAccess();
 _stub_UserActivateKeyboardLayout();
 _stub_UserAddClipboardFormatListener();
 _stub_UserAddVisualIdentifier();
+_stub_UserAllowForegroundActivation();
+_stub_UserAllowSetForegroundWindow();
 _stub_UserAlterWindowStyle();
+_stub_UserArrangeIconicWindows();
 _stub_UserAssociateInputContext();
 _stub_UserAttachThreadInput();
 _stub_UserAutoPromoteMouseInPointer();
 _stub_UserAutoRotateScreen();
+_stub_UserBeginDeferWindowPos();
 _stub_UserBeginLayoutUpdate();
 _stub_UserBeginPaint();
 _stub_UserBitBltSysBmp();
 _stub_UserBlockInput();
+_stub_UserBroadcastImeShowStatusChange();
 _stub_UserBroadcastThemeChangeEvent();
 _stub_UserBuildHimcList();
 _stub_UserBuildHwndList();
@@ -9939,30 +10555,26 @@ _stub_UserBuildNameList();
 _stub_UserBuildPropList();
 _stub_UserCalcMenuBar();
 _stub_UserCalculatePopupWindowPosition();
-_stub_UserCallHwnd();
-_stub_UserCallHwndLock();
-_stub_UserCallHwndLockSafe();
-_stub_UserCallHwndOpt();
-_stub_UserCallHwndParam();
-_stub_UserCallHwndParamLock();
-_stub_UserCallHwndParamLockSafe();
-_stub_UserCallHwndSafe();
 _stub_UserCallMsgFilter();
 _stub_UserCallNextHookEx();
-_stub_UserCallNoParam();
-_stub_UserCallOneParam();
-_stub_UserCallTwoParam();
 _stub_UserCanBrokerForceForeground();
+_stub_UserCancelQueueEventCompletionPacket();
 _stub_UserChangeClipboardChain();
 _stub_UserChangeDisplaySettings();
+_stub_UserChangeWindowMessageFilter();
 _stub_UserChangeWindowMessageFilterEx();
 _stub_UserCheckAccessForIntegrityLevel();
+_stub_UserCheckImeShowStatusInThread();
 _stub_UserCheckMenuItem();
 _stub_UserCheckProcessForClipboardAccess();
 _stub_UserCheckProcessSession();
 _stub_UserCheckWindowThreadDesktop();
 _stub_UserChildWindowFromPointEx();
+_stub_UserCitSetInfo();
 _stub_UserClearForeground();
+_stub_UserClearRunWakeBit();
+_stub_UserClearWakeMask();
+_stub_UserClearWindowState();
 _stub_UserClipCursor();
 _stub_UserCloseClipboard();
 _stub_UserCloseDesktop();
@@ -9976,76 +10588,94 @@ _stub_UserConvertMemHandle();
 _stub_UserCopyAcceleratorTable();
 _stub_UserCountClipboardFormats();
 _stub_UserCreateAcceleratorTable();
-_stub_UserCreateActivationGroup();
 _stub_UserCreateActivationObject();
+_stub_UserCreateBaseWindow();
 _stub_UserCreateCaret();
 _stub_UserCreateDCompositionHwndTarget();
 _stub_UserCreateDesktopEx();
 _stub_UserCreateEmptyCursorObject();
 _stub_UserCreateInputContext();
 _stub_UserCreateLocalMemHandle();
+_stub_UserCreateMenu();
 _stub_UserCreatePalmRejectionDelayZone();
+_stub_UserCreatePopupMenu();
+_stub_UserCreateSystemThreads();
 _stub_UserCreateWindowEx();
-_stub_UserCreateWindowGroup();
 _stub_UserCreateWindowStation();
+_stub_UserCsDdeUninitialize();
 _stub_UserCtxDisplayIOCtl();
 _stub_UserDdeInitialize();
+_stub_UserDeferredDesktopRotation();
 _stub_UserDeferWindowDpiChanges();
 _stub_UserDeferWindowPosAndBand();
 _stub_UserDefSetText();
 _stub_UserDelegateCapturePointers();
 _stub_UserDelegateInput();
 _stub_UserDeleteMenu();
-_stub_UserDeleteWindowGroup();
+_stub_UserDeregisterShellHookWindow();
 _stub_UserDestroyAcceleratorTable();
-_stub_UserDestroyActivationGroup();
 _stub_UserDestroyActivationObject();
+_stub_UserDestroyCaret();
 _stub_UserDestroyCursor();
 _stub_UserDestroyDCompositionHwndTarget();
 _stub_UserDestroyInputContext();
 _stub_UserDestroyMenu();
 _stub_UserDestroyPalmRejectionDelayZone();
 _stub_UserDestroyWindow();
+_stub_UserDirectedYield();
 _stub_UserDisableImmersiveOwner();
 _stub_UserDisableProcessWindowFiltering();
+_stub_UserDisableProcessWindowsGhosting();
 _stub_UserDisableThreadIme();
 _stub_UserDiscardPointerFrameMessages();
 _stub_UserDispatchMessage();
 _stub_UserDisplayConfigGetDeviceInfo();
 _stub_UserDisplayConfigSetDeviceInfo();
+_stub_UserDoInitMessagePumpHook();
 _stub_UserDoSoundConnect();
 _stub_UserDoSoundDisconnect();
+_stub_UserDoUninitMessagePumpHook();
 _stub_UserDownlevelTouchpad();
 _stub_UserDragDetect();
 _stub_UserDragObject();
+_stub_UserDrainThreadCoreMessagingCompletions();
 _stub_UserDrawAnimatedRects();
 _stub_UserDrawCaption();
 _stub_UserDrawCaptionTemp();
 _stub_UserDrawIconEx();
+_stub_UserDrawMenuBar();
 _stub_UserDrawMenuBarTemp();
 _stub_UserDwmGetRemoteSessionOcclusionEvent();
 _stub_UserDwmGetRemoteSessionOcclusionState();
 _stub_UserDwmKernelShutdown();
 _stub_UserDwmKernelStartup();
+_stub_UserDwmLockScreenUpdates();
 _stub_UserDwmValidateWindow();
+_stub_UserDWP_GetEnabledPopupOffset();
 _stub_UserEmptyClipboard();
 _stub_UserEnableChildWindowDpiMessage();
 _stub_UserEnableIAMAccess();
 _stub_UserEnableMenuItem();
+_stub_UserEnableModernAppWindowKeyboardIntercept();
 _stub_UserEnableMouseInPointer();
+_stub_UserEnableMouseInPointerForThread();
 _stub_UserEnableMouseInPointerForWindow();
 _stub_UserEnableMouseInputForCursorSuppression();
 _stub_UserEnableNonClientDpiScaling();
 _stub_UserEnableResizeLayoutSynchronization();
 _stub_UserEnableScrollBar();
+_stub_UserEnableSessionForMMCSS();
+_stub_UserEnableShellWindowManagementBehavior();
 _stub_UserEnableSoftwareCursorForScreenCapture();
 _stub_UserEnableTouchPad();
+_stub_UserEnableWindow();
 _stub_UserEnableWindowGDIScaledDpiMessage();
-_stub_UserEnableWindowGroupPolicy();
 _stub_UserEnableWindowResizeOptimization();
 _stub_UserEndDeferWindowPosEx();
 _stub_UserEndMenu();
 _stub_UserEndPaint();
+_stub_UserEnsureDpiDepSysMetCacheForPlateau();
+_stub_UserEnumClipboardFormats();
 _stub_UserEnumDisplayDevices();
 _stub_UserEnumDisplayMonitors();
 _stub_UserEnumDisplaySettings();
@@ -10055,6 +10685,7 @@ _stub_UserFillWindow();
 _stub_UserFindExistingCursorIcon();
 _stub_UserFindWindowEx();
 _stub_UserFlashWindowEx();
+_stub_UserForceEnableNumpadTranslation();
 _stub_UserForceWindowToDpiForTest();
 _stub_UserFrostCrashedWindow();
 _stub_UserFunctionalizeDisplayConfig();
@@ -10068,6 +10699,7 @@ _stub_UserGetAutoRotationState();
 _stub_UserGetCaretBlinkTime();
 _stub_UserGetCaretPos();
 _stub_UserGetCIMSSM();
+_stub_UserGetClassIcoCur();
 _stub_UserGetClassInfoEx();
 _stub_UserGetClassName();
 _stub_UserGetClipboardAccessToken();
@@ -10086,9 +10718,13 @@ _stub_UserGetCurrentInputMessageSource();
 _stub_UserGetCursor();
 _stub_UserGetCursorFrameInfo();
 _stub_UserGetCursorInfo();
+_stub_UserGetCursorPos();
 _stub_UserGetDC();
 _stub_UserGetDCEx();
+_stub_UserGetDCompositionHwndBitmap();
 _stub_UserGetDesktopID();
+_stub_UserGetDesktopVisualTransform();
+_stub_UserGetDeviceChangeInfo();
 _stub_UserGetDisplayAutoRotationPreferences();
 _stub_UserGetDisplayAutoRotationPreferencesByProcessId();
 _stub_UserGetDisplayConfigBufferSizes();
@@ -10109,7 +10745,10 @@ _stub_UserGetIconInfo();
 _stub_UserGetIconSize();
 _stub_UserGetImeHotKey();
 _stub_UserGetImeInfoEx();
+_stub_UserGetIMEShowStatus();
 _stub_UserGetInputContainerId();
+_stub_UserGetInputDesktop();
+_stub_UserGetInputEvent();
 _stub_UserGetInputLocaleInfo();
 _stub_UserGetInteractiveControlDeviceInfo();
 _stub_UserGetInteractiveControlInfo();
@@ -10119,6 +10758,7 @@ _stub_UserGetKeyboardLayout();
 _stub_UserGetKeyboardLayoutList();
 _stub_UserGetKeyboardLayoutName();
 _stub_UserGetKeyboardState();
+_stub_UserGetKeyboardType();
 _stub_UserGetKeyNameText();
 _stub_UserGetKeyState();
 _stub_UserGetLayeredWindowAttributes();
@@ -10127,6 +10767,9 @@ _stub_UserGetMenuBarInfo();
 _stub_UserGetMenuIndex();
 _stub_UserGetMenuItemRect();
 _stub_UserGetMessage();
+_stub_UserGetMessagePos();
+_stub_UserGetMinuserIdForBaseWindow();
+_stub_UserGetModernAppWindow();
 _stub_UserGetMouseMovePointsEx();
 _stub_UserGetObjectInformation();
 _stub_UserGetOemBitmapSize();
@@ -10148,10 +10791,12 @@ _stub_UserGetPointerProprietaryId();
 _stub_UserGetPointerType();
 _stub_UserGetPrecisionTouchPadConfiguration();
 _stub_UserGetPriorityClipboardFormat();
+_stub_UserGetProcessDefaultLayout();
 _stub_UserGetProcessDpiAwarenessContext();
 _stub_UserGetProcessUIContextInformation();
 _stub_UserGetProcessWindowStation();
 _stub_UserGetProp();
+_stub_UserGetQueueIocp();
 _stub_UserGetQueueStatus();
 _stub_UserGetQueueStatusReadonly();
 _stub_UserGetRawInputBuffer();
@@ -10163,7 +10808,10 @@ _stub_UserGetRegisteredRawInputDevices();
 _stub_UserGetRequiredCursorSizes();
 _stub_UserGetResizeDCompositionSynchronizationObject();
 _stub_UserGetScrollBarInfo();
+_stub_UserGetSendMessageReceiver();
 _stub_UserGetSharedWindowData();
+_stub_UserGetSysMenuOffset();
+_stub_UserGetSystemContentRects();
 _stub_UserGetSystemDpiForProcess();
 _stub_UserGetSystemMenu();
 _stub_UserGetThreadDesktop();
@@ -10173,25 +10821,31 @@ _stub_UserGetTopLevelWindow();
 _stub_UserGetTouchInputInfo();
 _stub_UserGetTouchValidationStatus();
 _stub_UserGetUniformSpaceMapping();
+_stub_UserGetUnpredictedMessagePos();
 _stub_UserGetUpdatedClipboardFormats();
 _stub_UserGetUpdateRect();
 _stub_UserGetUpdateRgn();
 _stub_UserGetWindowBand();
 _stub_UserGetWindowCompositionAttribute();
 _stub_UserGetWindowCompositionInfo();
+_stub_UserGetWindowContextHelpId();
 _stub_UserGetWindowDC();
 _stub_UserGetWindowDisplayAffinity();
 _stub_UserGetWindowFeedbackSetting();
-_stub_UserGetWindowGroupId();
 _stub_UserGetWindowMinimizeRect();
 _stub_UserGetWindowPlacement();
 _stub_UserGetWindowProcessHandle();
 _stub_UserGetWindowRgnEx();
+_stub_UserGetWindowThreadProcessId();
+_stub_UserGetWindowTrackInfoAsync();
+_stub_UserGetWinStationInfo();
 _stub_UserGetWOWClass();
 _stub_UserGhostWindowFromHungWindow();
 _stub_UserHandleDelegatedInput();
+_stub_UserHandleSystemThreadCreationFailure();
 _stub_UserHardErrorControl();
 _stub_UserHideCaret();
+_stub_UserHideCursorNoCapture();
 _stub_UserHidePointerContactVisualization();
 _stub_UserHiliteMenuItem();
 _stub_UserHungWindowFromGhostWindow();
@@ -10199,6 +10853,7 @@ _stub_UserHwndQueryRedirectionInfo();
 _stub_UserHwndSetRedirectionInfo();
 _stub_UserImpersonateDdeClientWindow();
 _stub_UserInheritWindowMonitor();
+_stub_UserInitAnsiOem();
 _stub_UserInitialize();
 _stub_UserInitializeClientPfnArrays();
 _stub_UserInitializeGenericHidInjection();
@@ -10206,7 +10861,9 @@ _stub_UserInitializeInputDeviceInjection();
 _stub_UserInitializePointerDeviceInjection();
 _stub_UserInitializePointerDeviceInjectionEx();
 _stub_UserInitializeTouchInjection();
+_stub_UserInitRunThread();
 _stub_UserInitTask();
+_stub_UserInitThreadCoreMessagingIocp();
 _stub_UserInjectDeviceInput();
 _stub_UserInjectGenericHidInput();
 _stub_UserInjectGesture();
@@ -10230,24 +10887,31 @@ _stub_UserIsTopLevelWindow();
 _stub_UserIsTouchWindow();
 _stub_UserIsWindowBroadcastingDpiToChildren();
 _stub_UserIsWindowGDIScaledDpiMessageEnabled();
+_stub_UserKillSystemTimer();
 _stub_UserKillTimer();
 _stub_UserLayoutCompleted();
 _stub_UserLinkDpiCursor();
+_stub_UserLoadCursorsAndIcons();
 _stub_UserLoadKeyboardLayoutEx();
+_stub_UserLoadUserApiHook();
 _stub_UserLockCursor();
+_stub_UserLockSetForegroundWindow();
 _stub_UserLockWindowStation();
 _stub_UserLockWindowUpdate();
 _stub_UserLockWorkStation();
 _stub_UserLogicalToPerMonitorDPIPhysicalPoint();
 _stub_UserLogicalToPhysicalDpiPointForWindow();
 _stub_UserLogicalToPhysicalPoint();
+_stub_UserLW_LoadFonts();
 _stub_UserMagControl();
 _stub_UserMagGetContextInformation();
 _stub_UserMagSetContextInformation();
+_stub_UserMapDesktopObject();
 _stub_UserMapPointsByVisualIdentifier();
 _stub_UserMapVirtualKeyEx();
 _stub_UserMarkWindowForRawMouse();
 _stub_UserMenuItemFromPoint();
+_stub_UserMessageBeep();
 _stub_UserMessageCall();
 _stub_UserMinInitialize();
 _stub_UserMinMaximize();
@@ -10258,7 +10922,9 @@ _stub_UserModifyWindowTouchCapability();
 _stub_UserMoveWindow();
 _stub_UserMsgWaitForMultipleObjectsEx();
 _stub_UserNavigateFocus();
+_stub_UserNlsKbdSendIMENotification();
 _stub_UserNotifyIMEStatus();
+_stub_UserNotifyOverlayWindow();
 _stub_UserNotifyProcessCreate();
 _stub_UserNotifyWinEvent();
 _stub_UserOpenClipboard();
@@ -10273,15 +10939,17 @@ _stub_UserPeekMessage();
 _stub_UserPerMonitorDPIPhysicalToLogicalPoint();
 _stub_UserPhysicalToLogicalDpiPointForWindow();
 _stub_UserPhysicalToLogicalPoint();
+_stub_UserPlayEventSound();
 _stub_UserPostKeyboardInputMessage();
 _stub_UserPostMessage();
+_stub_UserPostQuitMessage();
 _stub_UserPostThreadMessage();
+_stub_UserPrepareForLogoff();
 _stub_UserPrintWindow();
 _stub_UserProcessConnect();
 _stub_UserProcessInkFeedbackCommand();
 _stub_UserPromoteMouseInPointer();
 _stub_UserPromotePointer();
-_stub_UserQueryActivationObject();
 _stub_UserQueryBSDRWindow();
 _stub_UserQueryDisplayConfig();
 _stub_UserQueryInformationThread();
@@ -10290,42 +10958,72 @@ _stub_UserQuerySendMessage();
 _stub_UserQueryWindow();
 _stub_UserRealChildWindowFromPoint();
 _stub_UserRealInternalGetMessage();
+_stub_UserRealizePalette();
 _stub_UserRealWaitMessageEx();
+_stub_UserReassociateQueueEventCompletionPacket();
+_stub_UserRedrawFrame();
+_stub_UserRedrawFrameAndHook();
+_stub_UserRedrawTitle();
 _stub_UserRedrawWindow();
 _stub_UserRegisterBSDRWindow();
 _stub_UserRegisterClassExWOW();
 _stub_UserRegisterDManipHook();
 _stub_UserRegisterEdgy();
 _stub_UserRegisterErrorReportingDialog();
+_stub_UserRegisterGhostWindow();
 _stub_UserRegisterHotKey();
+_stub_UserRegisterLogonProcess();
+_stub_UserRegisterLPK();
 _stub_UserRegisterManipulationThread();
 _stub_UserRegisterPointerDeviceNotifications();
 _stub_UserRegisterPointerInputTarget();
 _stub_UserRegisterRawInputDevices();
 _stub_UserRegisterServicesProcess();
 _stub_UserRegisterSessionPort();
+_stub_UserRegisterShellHookWindow();
 _stub_UserRegisterShellPTPListener();
+_stub_UserRegisterSiblingFrostWindow();
+_stub_UserRegisterSystemThread();
 _stub_UserRegisterTasklist();
 _stub_UserRegisterTouchHitTestingWindow();
 _stub_UserRegisterTouchPadCapable();
 _stub_UserRegisterUserApiHook();
+_stub_UserRegisterUserHungAppHandlers();
+_stub_UserRegisterWindowArrangementCallout();
 _stub_UserRegisterWindowMessage();
+_stub_UserReleaseCapture();
 _stub_UserReleaseDC();
 _stub_UserReleaseDwmHitTestWaiters();
 _stub_UserRemoteConnect();
+_stub_UserRemoteConnectState();
+_stub_UserRemoteConsoleShadowStop();
+_stub_UserRemoteDisconnect();
+_stub_UserRemoteNotify();
+_stub_UserRemotePassthruDisable();
+_stub_UserRemotePassthruEnable();
+_stub_UserRemoteReconnect();
 _stub_UserRemoteRedrawRectangle();
 _stub_UserRemoteRedrawScreen();
+_stub_UserRemoteShadowCleanup();
+_stub_UserRemoteShadowSetup();
+_stub_UserRemoteShadowStart();
+_stub_UserRemoteShadowStop();
 _stub_UserRemoteStopScreenUpdates();
+_stub_UserRemoteThinwireStats();
 _stub_UserRemoveClipboardFormatListener();
 _stub_UserRemoveInjectionDevice();
 _stub_UserRemoveMenu();
 _stub_UserRemoveProp();
+_stub_UserRemoveQueueCompletion();
 _stub_UserRemoveVisualIdentifier();
+_stub_UserReplyMessage();
 _stub_UserReportInertia();
-_stub_UserRequestMoveSizeOperation();
+_stub_UserResetDblClk();
 _stub_UserResolveDesktopForWOW();
 _stub_UserRestoreWindowDpiChanges();
 _stub_UserSBGetParms();
+_stub_UserScaleSystemMetricForDPIWithoutCache();
+_stub_UserScheduleDispatchNotification();
 _stub_UserScrollDC();
 _stub_UserScrollWindowEx();
 _stub_UserSelectPalette();
@@ -10335,12 +11033,16 @@ _stub_UserSendInteractiveControlHapticsReport();
 _stub_UserSetActivationFilter();
 _stub_UserSetActiveProcessForMonitor();
 _stub_UserSetActiveWindow();
+_stub_UserSetAdditionalForegroundBoostProcesses();
 _stub_UserSetAppImeLevel();
 _stub_UserSetAutoRotation();
 _stub_UserSetBridgeWindowChild();
 _stub_UserSetBrokeredForeground();
 _stub_UserSetCalibrationData();
+_stub_UserSetCancelRotationDelayHintWindow();
 _stub_UserSetCapture();
+_stub_UserSetCaretBlinkTime();
+_stub_UserSetCaretPos();
 _stub_UserSetChildWindowNoActivate();
 _stub_UserSetClassLong();
 _stub_UserSetClassLongPtr();
@@ -10352,16 +11054,23 @@ _stub_UserSetCoreWindowPartner();
 _stub_UserSetCursor();
 _stub_UserSetCursorContents();
 _stub_UserSetCursorIconData();
+_stub_UserSetCursorIconDataEx();
 _stub_UserSetCursorPos();
 _stub_UserSetDesktopColorTransform();
 _stub_UserSetDesktopVisualInputSink();
 _stub_UserSetDialogControlDpiChangeBehavior();
+_stub_UserSetDialogPointer();
+_stub_UserSetDialogSystemMenu();
 _stub_UserSetDisplayAutoRotationPreferences();
 _stub_UserSetDisplayConfig();
 _stub_UserSetDisplayMapping();
+_stub_UserSetDoubleClickTime();
+_stub_UserSetDpiForWindow();
 _stub_UserSetFallbackForeground();
 _stub_UserSetFeatureReportResponse();
 _stub_UserSetFocus();
+_stub_UserSetForegroundRedirectionForActivationObject();
+_stub_UserSetForegroundWindow();
 _stub_UserSetForegroundWindowForApplication();
 _stub_UserSetFullscreenMagnifierOffsetsDWMUpdated();
 _stub_UserSetGestureConfig();
@@ -10381,41 +11090,55 @@ _stub_UserSetMenu();
 _stub_UserSetMenuContextHelpId();
 _stub_UserSetMenuDefaultItem();
 _stub_UserSetMenuFlagRtoL();
+_stub_UserSetMessageExtraInfo();
 _stub_UserSetMirrorRendering();
+_stub_UserSetModernAppWindow();
 _stub_UserSetMonitorWorkArea();
 _stub_UserSetMouseInputRateLimitingTimer();
+_stub_UserSetMsgBox();
 _stub_UserSetObjectInformation();
 _stub_UserSetParent();
 _stub_UserSetPrecisionTouchPadConfiguration();
+_stub_UserSetProcessDefaultLayout();
 _stub_UserSetProcessDpiAwarenessContext();
 _stub_UserSetProcessInteractionFlags();
+_stub_UserSetProcessLaunchForegroundPolicy();
 _stub_UserSetProcessMousewheelRoutingMode();
 _stub_UserSetProcessRestrictionExemption();
 _stub_UserSetProcessUIAccessZorder();
 _stub_UserSetProcessWindowStation();
+_stub_UserSetProgmanWindow();
 _stub_UserSetProp();
 _stub_UserSetScrollInfo();
 _stub_UserSetSensorPresence();
 _stub_UserSetSharedWindowData();
+_stub_UserSetShellChangeNotifyHWND();
 _stub_UserSetShellWindowEx();
 _stub_UserSetSysColors();
+_stub_UserSetSysMenu();
+_stub_UserSetSystemContentRects();
 _stub_UserSetSystemCursor();
 _stub_UserSetSystemMenu();
 _stub_UserSetSystemTimer();
 _stub_UserSetTargetForResourceBrokering();
+_stub_UserSetTaskmanWindow();
 _stub_UserSetThreadDesktop();
 _stub_UserSetThreadInputBlocked();
 _stub_UserSetThreadLayoutHandles();
+_stub_UserSetThreadQueueMergeSetting();
 _stub_UserSetThreadState();
 _stub_UserSetTimer();
-_stub_UserSetWindowArrangement();
+_stub_UserSetTSFEventState();
+_stub_UserSetVisible();
+_stub_UserSetWaitForQueueAttach();
+_stub_UserSetWatermarkStrings();
 _stub_UserSetWindowBand();
 _stub_UserSetWindowCompositionAttribute();
 _stub_UserSetWindowCompositionTransition();
+_stub_UserSetWindowContextHelpId();
 _stub_UserSetWindowDisplayAffinity();
 _stub_UserSetWindowFeedbackSetting();
 _stub_UserSetWindowFNID();
-_stub_UserSetWindowGroup();
 _stub_UserSetWindowLong();
 _stub_UserSetWindowLongPtr();
 _stub_UserSetWindowPlacement();
@@ -10425,12 +11148,17 @@ _stub_UserSetWindowRgnEx();
 _stub_UserSetWindowsHookAW();
 _stub_UserSetWindowsHookEx();
 _stub_UserSetWindowShowState();
+_stub_UserSetWindowState();
 _stub_UserSetWindowStationUser();
 _stub_UserSetWindowWord();
 _stub_UserSetWinEventHook();
+_stub_UserShellMigrateWindow();
+_stub_UserShellSetWindowPos();
 _stub_UserShowCaret();
 _stub_UserShowCursor();
+_stub_UserShowOwnedPopups();
 _stub_UserShowScrollBar();
+_stub_UserShowStartGlass();
 _stub_UserShowSystemCursor();
 _stub_UserShowWindow();
 _stub_UserShowWindowAsync();
@@ -10441,13 +11169,17 @@ _stub_UserSignalRedirectionStartComplete();
 _stub_UserSlicerControl();
 _stub_UserSoundSentry();
 _stub_UserStopAndEndInertia();
+_stub_UserSwapMouseButton();
 _stub_UserSwitchDesktop();
+_stub_UserSwitchToThisWindow();
 _stub_UserSystemParametersInfo();
 _stub_UserSystemParametersInfoForDpi();
 _stub_UserTestForInteractiveUser();
+_stub_UserThreadMessageQueueAttached();
 _stub_UserThunkedMenuInfo();
 _stub_UserThunkedMenuItemInfo();
 _stub_UserToUnicodeEx();
+_stub_UserTraceLoggingSendMixedModeTelemetry();
 _stub_UserTrackMouseEvent();
 _stub_UserTrackPopupMenuEx();
 _stub_UserTransformPoint();
@@ -10455,6 +11187,7 @@ _stub_UserTransformRect();
 _stub_UserTranslateAccelerator();
 _stub_UserTranslateMessage();
 _stub_UserUndelegateInput();
+_stub_UserUnhookWindowsHook();
 _stub_UserUnhookWindowsHookEx();
 _stub_UserUnhookWinEvent();
 _stub_UserUnloadKeyboardLayout();
@@ -10463,15 +11196,22 @@ _stub_UserUnregisterClass();
 _stub_UserUnregisterHotKey();
 _stub_UserUnregisterSessionPort();
 _stub_UserUnregisterUserApiHook();
+_stub_UserUpdateClientRect();
 _stub_UserUpdateDefaultDesktopThumbnail();
 _stub_UserUpdateInputContext();
 _stub_UserUpdateInstance();
 _stub_UserUpdateLayeredWindow();
+_stub_UserUpdatePerUserImmEnabling();
 _stub_UserUpdatePerUserSystemParameters();
+_stub_UserUpdateWindow();
 _stub_UserUpdateWindowInputSinkHints();
+_stub_UserUpdateWindows();
 _stub_UserUpdateWindowTrackingInfo();
 _stub_UserUserHandleGrantAccess();
+_stub_UserUserPowerCalloutWorker();
+_stub_UserValidateHandleSecure();
 _stub_UserValidateRect();
+_stub_UserValidateRgn();
 _stub_UserValidateTimerCallback();
 _stub_UserVkKeyScanEx();
 _stub_UserWaitAvailableMessageEx();
@@ -10479,11 +11219,14 @@ _stub_UserWaitForInputIdle();
 _stub_UserWaitForMsgAndEvent();
 _stub_UserWaitForRedirectionStartComplete();
 _stub_UserWaitMessage();
+_stub_UserWakeRITForShutdown();
 _stub_UserWindowFromDC();
 _stub_UserWindowFromPhysicalPoint();
 _stub_UserWindowFromPoint();
 _stub_UserWOWCleanup();
+_stub_UserWOWModuleUnload();
 _stub_UserYieldTask();
+_stub_UserZapActiveAndFocus();
 _stub_ValidateCompositionSurfaceHandle();
 _stub_VisualCaptureBits();
 SysEntryGetDispatchTableValues();
@@ -10507,14 +11250,13 @@ __win32kstub_NtCloseCompositionInputSink();
 __win32kstub_NtCompositionInputThread();
 __win32kstub_NtCompositionSetDropTarget();
 __win32kstub_NtCompositorNotifyExitWindows();
-__win32kstub_NtCompositorNotifyForegroundChanged();
-__win32kstub_NtCompositorUpdateLastInputTime();
 __win32kstub_NtConfigureInputSpace();
 __win32kstub_NtCreateCompositionInputSink();
 __win32kstub_NtCreateCompositionSurfaceHandle();
 __win32kstub_NtCreateImplicitCompositionInputSink();
 __win32kstub_NtDCompositionAddCrossDeviceVisualChild();
 __win32kstub_NtDCompositionBeginFrame();
+__win32kstub_NtDCompositionBoostCompositorClock();
 __win32kstub_NtDCompositionCommitChannel();
 __win32kstub_NtDCompositionCommitSynchronizationObject();
 __win32kstub_NtDCompositionConfirmFrame();
@@ -10527,7 +11269,6 @@ __win32kstub_NtDCompositionCreateSharedResourceHandle();
 __win32kstub_NtDCompositionCreateSynchronizationObject();
 __win32kstub_NtDCompositionDestroyChannel();
 __win32kstub_NtDCompositionDestroyConnection();
-__win32kstub_NtDCompositionDiscardFrame();
 __win32kstub_NtDCompositionDuplicateHandleToProcess();
 __win32kstub_NtDCompositionDuplicateSwapchainHandleToDwm();
 __win32kstub_NtDCompositionEnableMMCSS();
@@ -10535,17 +11276,22 @@ __win32kstub_NtDCompositionGetBatchId();
 __win32kstub_NtDCompositionGetChannels();
 __win32kstub_NtDCompositionGetConnectionBatch();
 __win32kstub_NtDCompositionGetDeletedResources();
+__win32kstub_NtDCompositionGetFrameId();
+__win32kstub_NtDCompositionGetFrameIdFromBatchId();
 __win32kstub_NtDCompositionGetFrameLegacyTokens();
 __win32kstub_NtDCompositionGetFrameStatistics();
 __win32kstub_NtDCompositionGetFrameSurfaceUpdates();
 __win32kstub_NtDCompositionGetMaterialProperty();
+__win32kstub_NtDCompositionGetStatistics();
+__win32kstub_NtDCompositionGetTargetStatistics();
+__win32kstub_NtDCompositionNotifySuperWetInkWork();
 __win32kstub_NtDCompositionProcessChannelBatchBuffer();
 __win32kstub_NtDCompositionReferenceSharedResourceOnDwmChannel();
 __win32kstub_NtDCompositionRegisterThumbnailVisual();
 __win32kstub_NtDCompositionRegisterVirtualDesktopVisual();
 __win32kstub_NtDCompositionReleaseAllResources();
 __win32kstub_NtDCompositionRemoveCrossDeviceVisualChild();
-__win32kstub_NtDCompositionRetireFrame();
+__win32kstub_NtDCompositionSetBlurredWallpaperSurface();
 __win32kstub_NtDCompositionSetChannelCommitCompletionEvent();
 __win32kstub_NtDCompositionSetChannelConnectionId();
 __win32kstub_NtDCompositionSetChildRootVisual();
@@ -10563,8 +11309,11 @@ __win32kstub_NtDCompositionTelemetryTouchInteractionEnd();
 __win32kstub_NtDCompositionTelemetryTouchInteractionUpdate();
 __win32kstub_NtDCompositionUpdatePointerCapture();
 __win32kstub_NtDCompositionWaitForChannel();
+__win32kstub_NtDCompositionWaitForCompositorClock();
 __win32kstub_NtDesktopCaptureBits();
 __win32kstub_NtDuplicateCompositionInputSink();
+__win32kstub_NtDxgkCancelPresents();
+__win32kstub_NtDxgkCheckSinglePlaneForMultiPlaneOverlaySupport();
 __win32kstub_NtDxgkCreateTrackedWorkload();
 __win32kstub_NtDxgkDestroyTrackedWorkload();
 __win32kstub_NtDxgkDisplayPortOperation();
@@ -10573,11 +11322,13 @@ __win32kstub_NtDxgkDuplicateHandle();
 __win32kstub_NtDxgkEnumAdapters3();
 __win32kstub_NtDxgkGetAvailableTrackedWorkloadIndex();
 __win32kstub_NtDxgkGetProcessList();
+__win32kstub_NtDxgkGetProperties();
 __win32kstub_NtDxgkGetTrackedWorkloadStatistics();
 __win32kstub_NtDxgkOutputDuplPresentToHwQueue();
 __win32kstub_NtDxgkPinResources();
 __win32kstub_NtDxgkRegisterVailProcess();
 __win32kstub_NtDxgkResetTrackedWorkloadStatistics();
+__win32kstub_NtDxgkSetProperties();
 __win32kstub_NtDxgkSubmitPresentBltToHwQueue();
 __win32kstub_NtDxgkSubmitPresentToHwQueue();
 __win32kstub_NtDxgkUnpinResources();
@@ -10601,12 +11352,12 @@ __win32kstub_NtFlipObjectOpen();
 __win32kstub_NtFlipObjectPresentCancel();
 __win32kstub_NtFlipObjectQueryBufferAvailableEvent();
 __win32kstub_NtFlipObjectQueryEndpointConnected();
+__win32kstub_NtFlipObjectQueryLostEvent();
 __win32kstub_NtFlipObjectQueryNextMessageToProducer();
 __win32kstub_NtFlipObjectReadNextMessageToProducer();
 __win32kstub_NtFlipObjectRemoveContent();
 __win32kstub_NtFlipObjectRemovePoolBuffer();
 __win32kstub_NtFlipObjectSetContent();
-__win32kstub_NtFlipObjectSetMaximumBackchannelQueueDepth();
 __win32kstub_NtGdiAbortDoc();
 __win32kstub_NtGdiAbortPath();
 __win32kstub_NtGdiAddEmbFontToDC();
@@ -10757,6 +11508,7 @@ __win32kstub_NtGdiDdDDIGetSetSwapChainMetadata();
 __win32kstub_NtGdiDdDDIGetSharedPrimaryHandle();
 __win32kstub_NtGdiDdDDIGetSharedResourceAdapterLuid();
 __win32kstub_NtGdiDdDDIGetSharedResourceAdapterLuidFlipManager();
+__win32kstub_NtGdiDdDDIGetSwapChainSurfacePhysicalAddress();
 __win32kstub_NtGdiDdDDIGetYieldPercentage();
 __win32kstub_NtGdiDdDDIInvalidateActiveVidPn();
 __win32kstub_NtGdiDdDDIInvalidateCache();
@@ -10946,7 +11698,6 @@ __win32kstub_NtGdiFrameRgn();
 __win32kstub_NtGdiFullscreenControl();
 __win32kstub_NtGdiGetAndSetDCDword();
 __win32kstub_NtGdiGetAppClipBox();
-__win32kstub_NtGdiGetAppliedDeviceGammaRamp();
 __win32kstub_NtGdiGetBitmapBits();
 __win32kstub_NtGdiGetBitmapDimension();
 __win32kstub_NtGdiGetBitmapDpiScaleValue();
@@ -10971,7 +11722,6 @@ __win32kstub_NtGdiGetDCObject();
 __win32kstub_NtGdiGetDCPoint();
 __win32kstub_NtGdiGetDeviceCaps();
 __win32kstub_NtGdiGetDeviceCapsAll();
-__win32kstub_NtGdiGetDeviceGammaRamp();
 __win32kstub_NtGdiGetDeviceWidth();
 __win32kstub_NtGdiGetDhpdev();
 __win32kstub_NtGdiGetDIBitsInternal();
@@ -10985,7 +11735,6 @@ __win32kstub_NtGdiGetFontFileData();
 __win32kstub_NtGdiGetFontFileInfo();
 __win32kstub_NtGdiGetFontResourceInfoInternalW();
 __win32kstub_NtGdiGetFontUnicodeRanges();
-__win32kstub_NtGdiGetGammaRampCapability();
 __win32kstub_NtGdiGetGlyphIndicesW();
 __win32kstub_NtGdiGetGlyphIndicesWInternal();
 __win32kstub_NtGdiGetGlyphOutline();
@@ -11095,7 +11844,6 @@ __win32kstub_NtGdiSetBrushAttributes();
 __win32kstub_NtGdiSetBrushOrg();
 __win32kstub_NtGdiSetColorAdjustment();
 __win32kstub_NtGdiSetColorSpace();
-__win32kstub_NtGdiSetDeviceGammaRamp();
 __win32kstub_NtGdiSetDIBitsToDeviceInternal();
 __win32kstub_NtGdiSetFontEnumeration();
 __win32kstub_NtGdiSetFontXform();
@@ -11108,7 +11856,6 @@ __win32kstub_NtGdiSetMiterLimit();
 __win32kstub_NtGdiSetOPMSigningKeyAndSequenceNumbers();
 __win32kstub_NtGdiSetPixel();
 __win32kstub_NtGdiSetPixelFormat();
-__win32kstub_NtGdiSetPrivateDeviceGammaRamp();
 __win32kstub_NtGdiSetPUMPDOBJ();
 __win32kstub_NtGdiSetRectRgn();
 __win32kstub_NtGdiSetSizeDevice();
@@ -11145,6 +11892,8 @@ __win32kstub_NtGdiXLATEOBJ_iXlate();
 __win32kstub_NtHWCursorUpdatePointer();
 __win32kstub_NtInputSpaceRegionFromPoint();
 __win32kstub_NtIsOneCoreTransformMode();
+__win32kstub_NtKSTInitialize();
+__win32kstub_NtKSTWait();
 __win32kstub_NtMapVisualRelativePoints();
 __win32kstub_NtMinGetInputTransform();
 __win32kstub_NtMinInteropCoreMessagingWithInput();
@@ -11153,6 +11902,7 @@ __win32kstub_NtMinQSuspendInputProcessing();
 __win32kstub_NtMinQUpdateWakeMask();
 __win32kstub_NtMITAccessibilityTimerNotification();
 __win32kstub_NtMITActivateInputProcessing();
+__win32kstub_NtMITConfigureVirtualTouchpad();
 __win32kstub_NtMITCoreMsgKOpenConnectionTo();
 __win32kstub_NtMITDeactivateInputProcessing();
 __win32kstub_NtMITDisableMouseIntercept();
@@ -11161,7 +11911,6 @@ __win32kstub_NtMITEnableMouseIntercept();
 __win32kstub_NtMITGetCursorUpdateHandle();
 __win32kstub_NtMITInitMinuserThread();
 __win32kstub_NtMITMinuserSetInputTransformOffset();
-__win32kstub_NtMITMinuserWindowCreated();
 __win32kstub_NtMITMinuserWindowDestroyed();
 __win32kstub_NtMITPostMouseInputMessage();
 __win32kstub_NtMITPostThreadEventMessage();
@@ -11169,7 +11918,6 @@ __win32kstub_NtMITPostWindowEventMessage();
 __win32kstub_NtMITPrepareReceiveInputMessage();
 __win32kstub_NtMITPrepareSendInputMessage();
 __win32kstub_NtMITProcessDelegateCapturedPointers();
-__win32kstub_NtMITSetForegroundRoutingInfo();
 __win32kstub_NtMITSetInputCallbacks();
 __win32kstub_NtMITSetInputDelegationMode();
 __win32kstub_NtMITSetInputObservationState();
@@ -11199,14 +11947,15 @@ __win32kstub_NtModerncoreSetNavigationServiceSid();
 __win32kstub_NtModerncoreUnregisterNavigationWindowHandle();
 __win32kstub_NtNotifyPresentToCompositionSurface();
 __win32kstub_NtOpenCompositionSurfaceDirtyRegion();
+__win32kstub_NtOpenCompositionSurfaceRealizationInfo();
 __win32kstub_NtOpenCompositionSurfaceSectionInfo();
-__win32kstub_NtOpenCompositionSurfaceSwapChainHandleInfo();
 __win32kstub_NtQueryCompositionInputIsImplicit();
 __win32kstub_NtQueryCompositionInputQueueAndTransform();
 __win32kstub_NtQueryCompositionInputSink();
 __win32kstub_NtQueryCompositionInputSinkLuid();
 __win32kstub_NtQueryCompositionInputSinkViewId();
 __win32kstub_NtQueryCompositionSurfaceBinding();
+__win32kstub_NtQueryCompositionSurfaceFrameRate();
 __win32kstub_NtQueryCompositionSurfaceHDRMetaData();
 __win32kstub_NtQueryCompositionSurfaceRenderingRealization();
 __win32kstub_NtQueryCompositionSurfaceStatistics();
@@ -11222,12 +11971,14 @@ __win32kstub_NtRIMGetDevicePropertiesLockfree();
 __win32kstub_NtRIMGetPhysicalDeviceRect();
 __win32kstub_NtRIMGetSourceProcessId();
 __win32kstub_NtRIMObserveNextInput();
+__win32kstub_NtRIMOnAsyncPnpWorkNotification();
 __win32kstub_NtRIMOnPnpNotification();
 __win32kstub_NtRIMOnTimerNotification();
 __win32kstub_NtRIMQueryDevicePath();
 __win32kstub_NtRIMReadInput();
-__win32kstub_NtRIMRegisterForInput();
+__win32kstub_NtRIMRegisterForInputEx();
 __win32kstub_NtRIMRemoveInputObserver();
+__win32kstub_NtRIMSetDeadzoneRotation();
 __win32kstub_NtRIMSetExtendedDeviceProperty();
 __win32kstub_NtRIMSetTestModeStatus();
 __win32kstub_NtRIMUnregisterForInput();
@@ -11255,15 +12006,20 @@ __win32kstub_NtUserAcquireInteractiveControlBackgroundAccess();
 __win32kstub_NtUserActivateKeyboardLayout();
 __win32kstub_NtUserAddClipboardFormatListener();
 __win32kstub_NtUserAddVisualIdentifier();
+__win32kstub_NtUserAllowForegroundActivation();
+__win32kstub_NtUserAllowSetForegroundWindow();
 __win32kstub_NtUserAlterWindowStyle();
+__win32kstub_NtUserArrangeIconicWindows();
 __win32kstub_NtUserAssociateInputContext();
 __win32kstub_NtUserAttachThreadInput();
 __win32kstub_NtUserAutoPromoteMouseInPointer();
 __win32kstub_NtUserAutoRotateScreen();
+__win32kstub_NtUserBeginDeferWindowPos();
 __win32kstub_NtUserBeginLayoutUpdate();
 __win32kstub_NtUserBeginPaint();
 __win32kstub_NtUserBitBltSysBmp();
 __win32kstub_NtUserBlockInput();
+__win32kstub_NtUserBroadcastImeShowStatusChange();
 __win32kstub_NtUserBroadcastThemeChangeEvent();
 __win32kstub_NtUserBuildHimcList();
 __win32kstub_NtUserBuildHwndList();
@@ -11271,30 +12027,26 @@ __win32kstub_NtUserBuildNameList();
 __win32kstub_NtUserBuildPropList();
 __win32kstub_NtUserCalcMenuBar();
 __win32kstub_NtUserCalculatePopupWindowPosition();
-__win32kstub_NtUserCallHwnd();
-__win32kstub_NtUserCallHwndLock();
-__win32kstub_NtUserCallHwndLockSafe();
-__win32kstub_NtUserCallHwndOpt();
-__win32kstub_NtUserCallHwndParam();
-__win32kstub_NtUserCallHwndParamLock();
-__win32kstub_NtUserCallHwndParamLockSafe();
-__win32kstub_NtUserCallHwndSafe();
 __win32kstub_NtUserCallMsgFilter();
 __win32kstub_NtUserCallNextHookEx();
-__win32kstub_NtUserCallNoParam();
-__win32kstub_NtUserCallOneParam();
-__win32kstub_NtUserCallTwoParam();
 __win32kstub_NtUserCanBrokerForceForeground();
+__win32kstub_NtUserCancelQueueEventCompletionPacket();
 __win32kstub_NtUserChangeClipboardChain();
 __win32kstub_NtUserChangeDisplaySettings();
+__win32kstub_NtUserChangeWindowMessageFilter();
 __win32kstub_NtUserChangeWindowMessageFilterEx();
 __win32kstub_NtUserCheckAccessForIntegrityLevel();
+__win32kstub_NtUserCheckImeShowStatusInThread();
 __win32kstub_NtUserCheckMenuItem();
 __win32kstub_NtUserCheckProcessForClipboardAccess();
 __win32kstub_NtUserCheckProcessSession();
 __win32kstub_NtUserCheckWindowThreadDesktop();
 __win32kstub_NtUserChildWindowFromPointEx();
+__win32kstub_NtUserCitSetInfo();
 __win32kstub_NtUserClearForeground();
+__win32kstub_NtUserClearRunWakeBit();
+__win32kstub_NtUserClearWakeMask();
+__win32kstub_NtUserClearWindowState();
 __win32kstub_NtUserClipCursor();
 __win32kstub_NtUserCloseClipboard();
 __win32kstub_NtUserCloseDesktop();
@@ -11308,76 +12060,94 @@ __win32kstub_NtUserConvertMemHandle();
 __win32kstub_NtUserCopyAcceleratorTable();
 __win32kstub_NtUserCountClipboardFormats();
 __win32kstub_NtUserCreateAcceleratorTable();
-__win32kstub_NtUserCreateActivationGroup();
 __win32kstub_NtUserCreateActivationObject();
+__win32kstub_NtUserCreateBaseWindow();
 __win32kstub_NtUserCreateCaret();
 __win32kstub_NtUserCreateDCompositionHwndTarget();
 __win32kstub_NtUserCreateDesktopEx();
 __win32kstub_NtUserCreateEmptyCursorObject();
 __win32kstub_NtUserCreateInputContext();
 __win32kstub_NtUserCreateLocalMemHandle();
+__win32kstub_NtUserCreateMenu();
 __win32kstub_NtUserCreatePalmRejectionDelayZone();
+__win32kstub_NtUserCreatePopupMenu();
+__win32kstub_NtUserCreateSystemThreads();
 __win32kstub_NtUserCreateWindowEx();
-__win32kstub_NtUserCreateWindowGroup();
 __win32kstub_NtUserCreateWindowStation();
+__win32kstub_NtUserCsDdeUninitialize();
 __win32kstub_NtUserCtxDisplayIOCtl();
 __win32kstub_NtUserDdeInitialize();
+__win32kstub_NtUserDeferredDesktopRotation();
 __win32kstub_NtUserDeferWindowDpiChanges();
 __win32kstub_NtUserDeferWindowPosAndBand();
 __win32kstub_NtUserDefSetText();
 __win32kstub_NtUserDelegateCapturePointers();
 __win32kstub_NtUserDelegateInput();
 __win32kstub_NtUserDeleteMenu();
-__win32kstub_NtUserDeleteWindowGroup();
+__win32kstub_NtUserDeregisterShellHookWindow();
 __win32kstub_NtUserDestroyAcceleratorTable();
-__win32kstub_NtUserDestroyActivationGroup();
 __win32kstub_NtUserDestroyActivationObject();
+__win32kstub_NtUserDestroyCaret();
 __win32kstub_NtUserDestroyCursor();
 __win32kstub_NtUserDestroyDCompositionHwndTarget();
 __win32kstub_NtUserDestroyInputContext();
 __win32kstub_NtUserDestroyMenu();
 __win32kstub_NtUserDestroyPalmRejectionDelayZone();
 __win32kstub_NtUserDestroyWindow();
+__win32kstub_NtUserDirectedYield();
 __win32kstub_NtUserDisableImmersiveOwner();
 __win32kstub_NtUserDisableProcessWindowFiltering();
+__win32kstub_NtUserDisableProcessWindowsGhosting();
 __win32kstub_NtUserDisableThreadIme();
 __win32kstub_NtUserDiscardPointerFrameMessages();
 __win32kstub_NtUserDispatchMessage();
 __win32kstub_NtUserDisplayConfigGetDeviceInfo();
 __win32kstub_NtUserDisplayConfigSetDeviceInfo();
+__win32kstub_NtUserDoInitMessagePumpHook();
 __win32kstub_NtUserDoSoundConnect();
 __win32kstub_NtUserDoSoundDisconnect();
+__win32kstub_NtUserDoUninitMessagePumpHook();
 __win32kstub_NtUserDownlevelTouchpad();
 __win32kstub_NtUserDragDetect();
 __win32kstub_NtUserDragObject();
+__win32kstub_NtUserDrainThreadCoreMessagingCompletions();
 __win32kstub_NtUserDrawAnimatedRects();
 __win32kstub_NtUserDrawCaption();
 __win32kstub_NtUserDrawCaptionTemp();
 __win32kstub_NtUserDrawIconEx();
+__win32kstub_NtUserDrawMenuBar();
 __win32kstub_NtUserDrawMenuBarTemp();
 __win32kstub_NtUserDwmGetRemoteSessionOcclusionEvent();
 __win32kstub_NtUserDwmGetRemoteSessionOcclusionState();
 __win32kstub_NtUserDwmKernelShutdown();
 __win32kstub_NtUserDwmKernelStartup();
+__win32kstub_NtUserDwmLockScreenUpdates();
 __win32kstub_NtUserDwmValidateWindow();
+__win32kstub_NtUserDWP_GetEnabledPopupOffset();
 __win32kstub_NtUserEmptyClipboard();
 __win32kstub_NtUserEnableChildWindowDpiMessage();
 __win32kstub_NtUserEnableIAMAccess();
 __win32kstub_NtUserEnableMenuItem();
+__win32kstub_NtUserEnableModernAppWindowKeyboardIntercept();
 __win32kstub_NtUserEnableMouseInPointer();
+__win32kstub_NtUserEnableMouseInPointerForThread();
 __win32kstub_NtUserEnableMouseInPointerForWindow();
 __win32kstub_NtUserEnableMouseInputForCursorSuppression();
 __win32kstub_NtUserEnableNonClientDpiScaling();
 __win32kstub_NtUserEnableResizeLayoutSynchronization();
 __win32kstub_NtUserEnableScrollBar();
+__win32kstub_NtUserEnableSessionForMMCSS();
+__win32kstub_NtUserEnableShellWindowManagementBehavior();
 __win32kstub_NtUserEnableSoftwareCursorForScreenCapture();
 __win32kstub_NtUserEnableTouchPad();
+__win32kstub_NtUserEnableWindow();
 __win32kstub_NtUserEnableWindowGDIScaledDpiMessage();
-__win32kstub_NtUserEnableWindowGroupPolicy();
 __win32kstub_NtUserEnableWindowResizeOptimization();
 __win32kstub_NtUserEndDeferWindowPosEx();
 __win32kstub_NtUserEndMenu();
 __win32kstub_NtUserEndPaint();
+__win32kstub_NtUserEnsureDpiDepSysMetCacheForPlateau();
+__win32kstub_NtUserEnumClipboardFormats();
 __win32kstub_NtUserEnumDisplayDevices();
 __win32kstub_NtUserEnumDisplayMonitors();
 __win32kstub_NtUserEnumDisplaySettings();
@@ -11387,6 +12157,7 @@ __win32kstub_NtUserFillWindow();
 __win32kstub_NtUserFindExistingCursorIcon();
 __win32kstub_NtUserFindWindowEx();
 __win32kstub_NtUserFlashWindowEx();
+__win32kstub_NtUserForceEnableNumpadTranslation();
 __win32kstub_NtUserForceWindowToDpiForTest();
 __win32kstub_NtUserFrostCrashedWindow();
 __win32kstub_NtUserFunctionalizeDisplayConfig();
@@ -11400,6 +12171,7 @@ __win32kstub_NtUserGetAutoRotationState();
 __win32kstub_NtUserGetCaretBlinkTime();
 __win32kstub_NtUserGetCaretPos();
 __win32kstub_NtUserGetCIMSSM();
+__win32kstub_NtUserGetClassIcoCur();
 __win32kstub_NtUserGetClassInfoEx();
 __win32kstub_NtUserGetClassName();
 __win32kstub_NtUserGetClipboardAccessToken();
@@ -11418,9 +12190,13 @@ __win32kstub_NtUserGetCurrentInputMessageSource();
 __win32kstub_NtUserGetCursor();
 __win32kstub_NtUserGetCursorFrameInfo();
 __win32kstub_NtUserGetCursorInfo();
+__win32kstub_NtUserGetCursorPos();
 __win32kstub_NtUserGetDC();
 __win32kstub_NtUserGetDCEx();
+__win32kstub_NtUserGetDCompositionHwndBitmap();
 __win32kstub_NtUserGetDesktopID();
+__win32kstub_NtUserGetDesktopVisualTransform();
+__win32kstub_NtUserGetDeviceChangeInfo();
 __win32kstub_NtUserGetDisplayAutoRotationPreferences();
 __win32kstub_NtUserGetDisplayAutoRotationPreferencesByProcessId();
 __win32kstub_NtUserGetDisplayConfigBufferSizes();
@@ -11441,7 +12217,10 @@ __win32kstub_NtUserGetIconInfo();
 __win32kstub_NtUserGetIconSize();
 __win32kstub_NtUserGetImeHotKey();
 __win32kstub_NtUserGetImeInfoEx();
+__win32kstub_NtUserGetIMEShowStatus();
 __win32kstub_NtUserGetInputContainerId();
+__win32kstub_NtUserGetInputDesktop();
+__win32kstub_NtUserGetInputEvent();
 __win32kstub_NtUserGetInputLocaleInfo();
 __win32kstub_NtUserGetInteractiveControlDeviceInfo();
 __win32kstub_NtUserGetInteractiveControlInfo();
@@ -11451,6 +12230,7 @@ __win32kstub_NtUserGetKeyboardLayout();
 __win32kstub_NtUserGetKeyboardLayoutList();
 __win32kstub_NtUserGetKeyboardLayoutName();
 __win32kstub_NtUserGetKeyboardState();
+__win32kstub_NtUserGetKeyboardType();
 __win32kstub_NtUserGetKeyNameText();
 __win32kstub_NtUserGetKeyState();
 __win32kstub_NtUserGetLayeredWindowAttributes();
@@ -11459,6 +12239,9 @@ __win32kstub_NtUserGetMenuBarInfo();
 __win32kstub_NtUserGetMenuIndex();
 __win32kstub_NtUserGetMenuItemRect();
 __win32kstub_NtUserGetMessage();
+__win32kstub_NtUserGetMessagePos();
+__win32kstub_NtUserGetMinuserIdForBaseWindow();
+__win32kstub_NtUserGetModernAppWindow();
 __win32kstub_NtUserGetMouseMovePointsEx();
 __win32kstub_NtUserGetObjectInformation();
 __win32kstub_NtUserGetOemBitmapSize();
@@ -11480,10 +12263,12 @@ __win32kstub_NtUserGetPointerProprietaryId();
 __win32kstub_NtUserGetPointerType();
 __win32kstub_NtUserGetPrecisionTouchPadConfiguration();
 __win32kstub_NtUserGetPriorityClipboardFormat();
+__win32kstub_NtUserGetProcessDefaultLayout();
 __win32kstub_NtUserGetProcessDpiAwarenessContext();
 __win32kstub_NtUserGetProcessUIContextInformation();
 __win32kstub_NtUserGetProcessWindowStation();
 __win32kstub_NtUserGetProp();
+__win32kstub_NtUserGetQueueIocp();
 __win32kstub_NtUserGetQueueStatus();
 __win32kstub_NtUserGetQueueStatusReadonly();
 __win32kstub_NtUserGetRawInputBuffer();
@@ -11495,7 +12280,10 @@ __win32kstub_NtUserGetRegisteredRawInputDevices();
 __win32kstub_NtUserGetRequiredCursorSizes();
 __win32kstub_NtUserGetResizeDCompositionSynchronizationObject();
 __win32kstub_NtUserGetScrollBarInfo();
+__win32kstub_NtUserGetSendMessageReceiver();
 __win32kstub_NtUserGetSharedWindowData();
+__win32kstub_NtUserGetSysMenuOffset();
+__win32kstub_NtUserGetSystemContentRects();
 __win32kstub_NtUserGetSystemDpiForProcess();
 __win32kstub_NtUserGetSystemMenu();
 __win32kstub_NtUserGetThreadDesktop();
@@ -11505,25 +12293,31 @@ __win32kstub_NtUserGetTopLevelWindow();
 __win32kstub_NtUserGetTouchInputInfo();
 __win32kstub_NtUserGetTouchValidationStatus();
 __win32kstub_NtUserGetUniformSpaceMapping();
+__win32kstub_NtUserGetUnpredictedMessagePos();
 __win32kstub_NtUserGetUpdatedClipboardFormats();
 __win32kstub_NtUserGetUpdateRect();
 __win32kstub_NtUserGetUpdateRgn();
 __win32kstub_NtUserGetWindowBand();
 __win32kstub_NtUserGetWindowCompositionAttribute();
 __win32kstub_NtUserGetWindowCompositionInfo();
+__win32kstub_NtUserGetWindowContextHelpId();
 __win32kstub_NtUserGetWindowDC();
 __win32kstub_NtUserGetWindowDisplayAffinity();
 __win32kstub_NtUserGetWindowFeedbackSetting();
-__win32kstub_NtUserGetWindowGroupId();
 __win32kstub_NtUserGetWindowMinimizeRect();
 __win32kstub_NtUserGetWindowPlacement();
 __win32kstub_NtUserGetWindowProcessHandle();
 __win32kstub_NtUserGetWindowRgnEx();
+__win32kstub_NtUserGetWindowThreadProcessId();
+__win32kstub_NtUserGetWindowTrackInfoAsync();
+__win32kstub_NtUserGetWinStationInfo();
 __win32kstub_NtUserGetWOWClass();
 __win32kstub_NtUserGhostWindowFromHungWindow();
 __win32kstub_NtUserHandleDelegatedInput();
+__win32kstub_NtUserHandleSystemThreadCreationFailure();
 __win32kstub_NtUserHardErrorControl();
 __win32kstub_NtUserHideCaret();
+__win32kstub_NtUserHideCursorNoCapture();
 __win32kstub_NtUserHidePointerContactVisualization();
 __win32kstub_NtUserHiliteMenuItem();
 __win32kstub_NtUserHungWindowFromGhostWindow();
@@ -11531,6 +12325,7 @@ __win32kstub_NtUserHwndQueryRedirectionInfo();
 __win32kstub_NtUserHwndSetRedirectionInfo();
 __win32kstub_NtUserImpersonateDdeClientWindow();
 __win32kstub_NtUserInheritWindowMonitor();
+__win32kstub_NtUserInitAnsiOem();
 __win32kstub_NtUserInitialize();
 __win32kstub_NtUserInitializeClientPfnArrays();
 __win32kstub_NtUserInitializeGenericHidInjection();
@@ -11538,7 +12333,9 @@ __win32kstub_NtUserInitializeInputDeviceInjection();
 __win32kstub_NtUserInitializePointerDeviceInjection();
 __win32kstub_NtUserInitializePointerDeviceInjectionEx();
 __win32kstub_NtUserInitializeTouchInjection();
+__win32kstub_NtUserInitRunThread();
 __win32kstub_NtUserInitTask();
+__win32kstub_NtUserInitThreadCoreMessagingIocp();
 __win32kstub_NtUserInjectDeviceInput();
 __win32kstub_NtUserInjectGenericHidInput();
 __win32kstub_NtUserInjectGesture();
@@ -11562,24 +12359,31 @@ __win32kstub_NtUserIsTopLevelWindow();
 __win32kstub_NtUserIsTouchWindow();
 __win32kstub_NtUserIsWindowBroadcastingDpiToChildren();
 __win32kstub_NtUserIsWindowGDIScaledDpiMessageEnabled();
+__win32kstub_NtUserKillSystemTimer();
 __win32kstub_NtUserKillTimer();
 __win32kstub_NtUserLayoutCompleted();
 __win32kstub_NtUserLinkDpiCursor();
+__win32kstub_NtUserLoadCursorsAndIcons();
 __win32kstub_NtUserLoadKeyboardLayoutEx();
+__win32kstub_NtUserLoadUserApiHook();
 __win32kstub_NtUserLockCursor();
+__win32kstub_NtUserLockSetForegroundWindow();
 __win32kstub_NtUserLockWindowStation();
 __win32kstub_NtUserLockWindowUpdate();
 __win32kstub_NtUserLockWorkStation();
 __win32kstub_NtUserLogicalToPerMonitorDPIPhysicalPoint();
 __win32kstub_NtUserLogicalToPhysicalDpiPointForWindow();
 __win32kstub_NtUserLogicalToPhysicalPoint();
+__win32kstub_NtUserLW_LoadFonts();
 __win32kstub_NtUserMagControl();
 __win32kstub_NtUserMagGetContextInformation();
 __win32kstub_NtUserMagSetContextInformation();
+__win32kstub_NtUserMapDesktopObject();
 __win32kstub_NtUserMapPointsByVisualIdentifier();
 __win32kstub_NtUserMapVirtualKeyEx();
 __win32kstub_NtUserMarkWindowForRawMouse();
 __win32kstub_NtUserMenuItemFromPoint();
+__win32kstub_NtUserMessageBeep();
 __win32kstub_NtUserMessageCall();
 __win32kstub_NtUserMinInitialize();
 __win32kstub_NtUserMinMaximize();
@@ -11590,7 +12394,9 @@ __win32kstub_NtUserModifyWindowTouchCapability();
 __win32kstub_NtUserMoveWindow();
 __win32kstub_NtUserMsgWaitForMultipleObjectsEx();
 __win32kstub_NtUserNavigateFocus();
+__win32kstub_NtUserNlsKbdSendIMENotification();
 __win32kstub_NtUserNotifyIMEStatus();
+__win32kstub_NtUserNotifyOverlayWindow();
 __win32kstub_NtUserNotifyProcessCreate();
 __win32kstub_NtUserNotifyWinEvent();
 __win32kstub_NtUserOpenClipboard();
@@ -11605,15 +12411,17 @@ __win32kstub_NtUserPeekMessage();
 __win32kstub_NtUserPerMonitorDPIPhysicalToLogicalPoint();
 __win32kstub_NtUserPhysicalToLogicalDpiPointForWindow();
 __win32kstub_NtUserPhysicalToLogicalPoint();
+__win32kstub_NtUserPlayEventSound();
 __win32kstub_NtUserPostKeyboardInputMessage();
 __win32kstub_NtUserPostMessage();
+__win32kstub_NtUserPostQuitMessage();
 __win32kstub_NtUserPostThreadMessage();
+__win32kstub_NtUserPrepareForLogoff();
 __win32kstub_NtUserPrintWindow();
 __win32kstub_NtUserProcessConnect();
 __win32kstub_NtUserProcessInkFeedbackCommand();
 __win32kstub_NtUserPromoteMouseInPointer();
 __win32kstub_NtUserPromotePointer();
-__win32kstub_NtUserQueryActivationObject();
 __win32kstub_NtUserQueryBSDRWindow();
 __win32kstub_NtUserQueryDisplayConfig();
 __win32kstub_NtUserQueryInformationThread();
@@ -11622,42 +12430,72 @@ __win32kstub_NtUserQuerySendMessage();
 __win32kstub_NtUserQueryWindow();
 __win32kstub_NtUserRealChildWindowFromPoint();
 __win32kstub_NtUserRealInternalGetMessage();
+__win32kstub_NtUserRealizePalette();
 __win32kstub_NtUserRealWaitMessageEx();
+__win32kstub_NtUserReassociateQueueEventCompletionPacket();
+__win32kstub_NtUserRedrawFrame();
+__win32kstub_NtUserRedrawFrameAndHook();
+__win32kstub_NtUserRedrawTitle();
 __win32kstub_NtUserRedrawWindow();
 __win32kstub_NtUserRegisterBSDRWindow();
 __win32kstub_NtUserRegisterClassExWOW();
 __win32kstub_NtUserRegisterDManipHook();
 __win32kstub_NtUserRegisterEdgy();
 __win32kstub_NtUserRegisterErrorReportingDialog();
+__win32kstub_NtUserRegisterGhostWindow();
 __win32kstub_NtUserRegisterHotKey();
+__win32kstub_NtUserRegisterLogonProcess();
+__win32kstub_NtUserRegisterLPK();
 __win32kstub_NtUserRegisterManipulationThread();
 __win32kstub_NtUserRegisterPointerDeviceNotifications();
 __win32kstub_NtUserRegisterPointerInputTarget();
 __win32kstub_NtUserRegisterRawInputDevices();
 __win32kstub_NtUserRegisterServicesProcess();
 __win32kstub_NtUserRegisterSessionPort();
+__win32kstub_NtUserRegisterShellHookWindow();
 __win32kstub_NtUserRegisterShellPTPListener();
+__win32kstub_NtUserRegisterSiblingFrostWindow();
+__win32kstub_NtUserRegisterSystemThread();
 __win32kstub_NtUserRegisterTasklist();
 __win32kstub_NtUserRegisterTouchHitTestingWindow();
 __win32kstub_NtUserRegisterTouchPadCapable();
 __win32kstub_NtUserRegisterUserApiHook();
+__win32kstub_NtUserRegisterUserHungAppHandlers();
+__win32kstub_NtUserRegisterWindowArrangementCallout();
 __win32kstub_NtUserRegisterWindowMessage();
+__win32kstub_NtUserReleaseCapture();
 __win32kstub_NtUserReleaseDC();
 __win32kstub_NtUserReleaseDwmHitTestWaiters();
 __win32kstub_NtUserRemoteConnect();
+__win32kstub_NtUserRemoteConnectState();
+__win32kstub_NtUserRemoteConsoleShadowStop();
+__win32kstub_NtUserRemoteDisconnect();
+__win32kstub_NtUserRemoteNotify();
+__win32kstub_NtUserRemotePassthruDisable();
+__win32kstub_NtUserRemotePassthruEnable();
+__win32kstub_NtUserRemoteReconnect();
 __win32kstub_NtUserRemoteRedrawRectangle();
 __win32kstub_NtUserRemoteRedrawScreen();
+__win32kstub_NtUserRemoteShadowCleanup();
+__win32kstub_NtUserRemoteShadowSetup();
+__win32kstub_NtUserRemoteShadowStart();
+__win32kstub_NtUserRemoteShadowStop();
 __win32kstub_NtUserRemoteStopScreenUpdates();
+__win32kstub_NtUserRemoteThinwireStats();
 __win32kstub_NtUserRemoveClipboardFormatListener();
 __win32kstub_NtUserRemoveInjectionDevice();
 __win32kstub_NtUserRemoveMenu();
 __win32kstub_NtUserRemoveProp();
+__win32kstub_NtUserRemoveQueueCompletion();
 __win32kstub_NtUserRemoveVisualIdentifier();
+__win32kstub_NtUserReplyMessage();
 __win32kstub_NtUserReportInertia();
-__win32kstub_NtUserRequestMoveSizeOperation();
+__win32kstub_NtUserResetDblClk();
 __win32kstub_NtUserResolveDesktopForWOW();
 __win32kstub_NtUserRestoreWindowDpiChanges();
 __win32kstub_NtUserSBGetParms();
+__win32kstub_NtUserScaleSystemMetricForDPIWithoutCache();
+__win32kstub_NtUserScheduleDispatchNotification();
 __win32kstub_NtUserScrollDC();
 __win32kstub_NtUserScrollWindowEx();
 __win32kstub_NtUserSelectPalette();
@@ -11667,12 +12505,16 @@ __win32kstub_NtUserSendInteractiveControlHapticsReport();
 __win32kstub_NtUserSetActivationFilter();
 __win32kstub_NtUserSetActiveProcessForMonitor();
 __win32kstub_NtUserSetActiveWindow();
+__win32kstub_NtUserSetAdditionalForegroundBoostProcesses();
 __win32kstub_NtUserSetAppImeLevel();
 __win32kstub_NtUserSetAutoRotation();
 __win32kstub_NtUserSetBridgeWindowChild();
 __win32kstub_NtUserSetBrokeredForeground();
 __win32kstub_NtUserSetCalibrationData();
+__win32kstub_NtUserSetCancelRotationDelayHintWindow();
 __win32kstub_NtUserSetCapture();
+__win32kstub_NtUserSetCaretBlinkTime();
+__win32kstub_NtUserSetCaretPos();
 __win32kstub_NtUserSetChildWindowNoActivate();
 __win32kstub_NtUserSetClassLong();
 __win32kstub_NtUserSetClassLongPtr();
@@ -11684,16 +12526,23 @@ __win32kstub_NtUserSetCoreWindowPartner();
 __win32kstub_NtUserSetCursor();
 __win32kstub_NtUserSetCursorContents();
 __win32kstub_NtUserSetCursorIconData();
+__win32kstub_NtUserSetCursorIconDataEx();
 __win32kstub_NtUserSetCursorPos();
 __win32kstub_NtUserSetDesktopColorTransform();
 __win32kstub_NtUserSetDesktopVisualInputSink();
 __win32kstub_NtUserSetDialogControlDpiChangeBehavior();
+__win32kstub_NtUserSetDialogPointer();
+__win32kstub_NtUserSetDialogSystemMenu();
 __win32kstub_NtUserSetDisplayAutoRotationPreferences();
 __win32kstub_NtUserSetDisplayConfig();
 __win32kstub_NtUserSetDisplayMapping();
+__win32kstub_NtUserSetDoubleClickTime();
+__win32kstub_NtUserSetDpiForWindow();
 __win32kstub_NtUserSetFallbackForeground();
 __win32kstub_NtUserSetFeatureReportResponse();
 __win32kstub_NtUserSetFocus();
+__win32kstub_NtUserSetForegroundRedirectionForActivationObject();
+__win32kstub_NtUserSetForegroundWindow();
 __win32kstub_NtUserSetForegroundWindowForApplication();
 __win32kstub_NtUserSetFullscreenMagnifierOffsetsDWMUpdated();
 __win32kstub_NtUserSetGestureConfig();
@@ -11713,41 +12562,55 @@ __win32kstub_NtUserSetMenu();
 __win32kstub_NtUserSetMenuContextHelpId();
 __win32kstub_NtUserSetMenuDefaultItem();
 __win32kstub_NtUserSetMenuFlagRtoL();
+__win32kstub_NtUserSetMessageExtraInfo();
 __win32kstub_NtUserSetMirrorRendering();
+__win32kstub_NtUserSetModernAppWindow();
 __win32kstub_NtUserSetMonitorWorkArea();
 __win32kstub_NtUserSetMouseInputRateLimitingTimer();
+__win32kstub_NtUserSetMsgBox();
 __win32kstub_NtUserSetObjectInformation();
 __win32kstub_NtUserSetParent();
 __win32kstub_NtUserSetPrecisionTouchPadConfiguration();
+__win32kstub_NtUserSetProcessDefaultLayout();
 __win32kstub_NtUserSetProcessDpiAwarenessContext();
 __win32kstub_NtUserSetProcessInteractionFlags();
+__win32kstub_NtUserSetProcessLaunchForegroundPolicy();
 __win32kstub_NtUserSetProcessMousewheelRoutingMode();
 __win32kstub_NtUserSetProcessRestrictionExemption();
 __win32kstub_NtUserSetProcessUIAccessZorder();
 __win32kstub_NtUserSetProcessWindowStation();
+__win32kstub_NtUserSetProgmanWindow();
 __win32kstub_NtUserSetProp();
 __win32kstub_NtUserSetScrollInfo();
 __win32kstub_NtUserSetSensorPresence();
 __win32kstub_NtUserSetSharedWindowData();
+__win32kstub_NtUserSetShellChangeNotifyHWND();
 __win32kstub_NtUserSetShellWindowEx();
 __win32kstub_NtUserSetSysColors();
+__win32kstub_NtUserSetSysMenu();
+__win32kstub_NtUserSetSystemContentRects();
 __win32kstub_NtUserSetSystemCursor();
 __win32kstub_NtUserSetSystemMenu();
 __win32kstub_NtUserSetSystemTimer();
 __win32kstub_NtUserSetTargetForResourceBrokering();
+__win32kstub_NtUserSetTaskmanWindow();
 __win32kstub_NtUserSetThreadDesktop();
 __win32kstub_NtUserSetThreadInputBlocked();
 __win32kstub_NtUserSetThreadLayoutHandles();
+__win32kstub_NtUserSetThreadQueueMergeSetting();
 __win32kstub_NtUserSetThreadState();
 __win32kstub_NtUserSetTimer();
-__win32kstub_NtUserSetWindowArrangement();
+__win32kstub_NtUserSetTSFEventState();
+__win32kstub_NtUserSetVisible();
+__win32kstub_NtUserSetWaitForQueueAttach();
+__win32kstub_NtUserSetWatermarkStrings();
 __win32kstub_NtUserSetWindowBand();
 __win32kstub_NtUserSetWindowCompositionAttribute();
 __win32kstub_NtUserSetWindowCompositionTransition();
+__win32kstub_NtUserSetWindowContextHelpId();
 __win32kstub_NtUserSetWindowDisplayAffinity();
 __win32kstub_NtUserSetWindowFeedbackSetting();
 __win32kstub_NtUserSetWindowFNID();
-__win32kstub_NtUserSetWindowGroup();
 __win32kstub_NtUserSetWindowLong();
 __win32kstub_NtUserSetWindowLongPtr();
 __win32kstub_NtUserSetWindowPlacement();
@@ -11757,12 +12620,17 @@ __win32kstub_NtUserSetWindowRgnEx();
 __win32kstub_NtUserSetWindowsHookAW();
 __win32kstub_NtUserSetWindowsHookEx();
 __win32kstub_NtUserSetWindowShowState();
+__win32kstub_NtUserSetWindowState();
 __win32kstub_NtUserSetWindowStationUser();
 __win32kstub_NtUserSetWindowWord();
 __win32kstub_NtUserSetWinEventHook();
+__win32kstub_NtUserShellMigrateWindow();
+__win32kstub_NtUserShellSetWindowPos();
 __win32kstub_NtUserShowCaret();
 __win32kstub_NtUserShowCursor();
+__win32kstub_NtUserShowOwnedPopups();
 __win32kstub_NtUserShowScrollBar();
+__win32kstub_NtUserShowStartGlass();
 __win32kstub_NtUserShowSystemCursor();
 __win32kstub_NtUserShowWindow();
 __win32kstub_NtUserShowWindowAsync();
@@ -11773,13 +12641,17 @@ __win32kstub_NtUserSignalRedirectionStartComplete();
 __win32kstub_NtUserSlicerControl();
 __win32kstub_NtUserSoundSentry();
 __win32kstub_NtUserStopAndEndInertia();
+__win32kstub_NtUserSwapMouseButton();
 __win32kstub_NtUserSwitchDesktop();
+__win32kstub_NtUserSwitchToThisWindow();
 __win32kstub_NtUserSystemParametersInfo();
 __win32kstub_NtUserSystemParametersInfoForDpi();
 __win32kstub_NtUserTestForInteractiveUser();
+__win32kstub_NtUserThreadMessageQueueAttached();
 __win32kstub_NtUserThunkedMenuInfo();
 __win32kstub_NtUserThunkedMenuItemInfo();
 __win32kstub_NtUserToUnicodeEx();
+__win32kstub_NtUserTraceLoggingSendMixedModeTelemetry();
 __win32kstub_NtUserTrackMouseEvent();
 __win32kstub_NtUserTrackPopupMenuEx();
 __win32kstub_NtUserTransformPoint();
@@ -11787,6 +12659,7 @@ __win32kstub_NtUserTransformRect();
 __win32kstub_NtUserTranslateAccelerator();
 __win32kstub_NtUserTranslateMessage();
 __win32kstub_NtUserUndelegateInput();
+__win32kstub_NtUserUnhookWindowsHook();
 __win32kstub_NtUserUnhookWindowsHookEx();
 __win32kstub_NtUserUnhookWinEvent();
 __win32kstub_NtUserUnloadKeyboardLayout();
@@ -11795,15 +12668,22 @@ __win32kstub_NtUserUnregisterClass();
 __win32kstub_NtUserUnregisterHotKey();
 __win32kstub_NtUserUnregisterSessionPort();
 __win32kstub_NtUserUnregisterUserApiHook();
+__win32kstub_NtUserUpdateClientRect();
 __win32kstub_NtUserUpdateDefaultDesktopThumbnail();
 __win32kstub_NtUserUpdateInputContext();
 __win32kstub_NtUserUpdateInstance();
 __win32kstub_NtUserUpdateLayeredWindow();
+__win32kstub_NtUserUpdatePerUserImmEnabling();
 __win32kstub_NtUserUpdatePerUserSystemParameters();
+__win32kstub_NtUserUpdateWindow();
 __win32kstub_NtUserUpdateWindowInputSinkHints();
+__win32kstub_NtUserUpdateWindows();
 __win32kstub_NtUserUpdateWindowTrackingInfo();
 __win32kstub_NtUserUserHandleGrantAccess();
+__win32kstub_NtUserUserPowerCalloutWorker();
+__win32kstub_NtUserValidateHandleSecure();
 __win32kstub_NtUserValidateRect();
+__win32kstub_NtUserValidateRgn();
 __win32kstub_NtUserValidateTimerCallback();
 __win32kstub_NtUserVkKeyScanEx();
 __win32kstub_NtUserWaitAvailableMessageEx();
@@ -11811,11 +12691,14 @@ __win32kstub_NtUserWaitForInputIdle();
 __win32kstub_NtUserWaitForMsgAndEvent();
 __win32kstub_NtUserWaitForRedirectionStartComplete();
 __win32kstub_NtUserWaitMessage();
+__win32kstub_NtUserWakeRITForShutdown();
 __win32kstub_NtUserWindowFromDC();
 __win32kstub_NtUserWindowFromPhysicalPoint();
 __win32kstub_NtUserWindowFromPoint();
 __win32kstub_NtUserWOWCleanup();
+__win32kstub_NtUserWOWModuleUnload();
 __win32kstub_NtUserYieldTask();
+__win32kstub_NtUserZapActiveAndFocus();
 __win32kstub_NtValidateCompositionSurfaceHandle();
 __win32kstub_NtVisualCaptureBits();
 WNDOBJ_bEnum();
@@ -11832,6 +12715,7 @@ XLATEOBJ_piVector();
 // Globals
 
 __@@_PchSym_@00@KxulyqvxgPillgKxulmvxlivfzkUdrmwldhUxlivUmgtwrUtivUxlivUpnoryUlyquivUznwGEUkivxlnkOlyq@gre_core;
+ExPoolZeroingNativelySupported;
 ext_ms_win_core_win32k_base_export_l1;
 ext_ms_win_core_win32k_base_export_l1_host;
 ext_ms_win_core_win32k_baseinit_l1;
@@ -11913,28 +12797,17 @@ __guard_iat_count;
 __guard_iat_table;
 __guard_longjmp_count;
 __guard_longjmp_table;
-HotPatchSpareGlobal1;
-HotPatchSpareGlobal10;
-HotPatchSpareGlobal11;
-HotPatchSpareGlobal12;
-HotPatchSpareGlobal13;
-HotPatchSpareGlobal14;
-HotPatchSpareGlobal15;
-HotPatchSpareGlobal16;
-HotPatchSpareGlobal2;
-HotPatchSpareGlobal3;
-HotPatchSpareGlobal4;
-HotPatchSpareGlobal5;
-HotPatchSpareGlobal6;
-HotPatchSpareGlobal7;
-HotPatchSpareGlobal8;
-HotPatchSpareGlobal9;
+__guard_xfg_check_icall_fptr;
+__guard_xfg_dispatch_icall_fptr;
+__guard_xfg_table_dispatch_icall_fptr;
+HotPatchSpareGlobals;
 __IMPORT_DESCRIPTOR_ext-ms-win-core-win32k-dxgk-l1-1-0;
-__IMPORT_DESCRIPTOR_ext-ms-win-core-win32k-flipmgr-l1-1-0;
-__IMPORT_DESCRIPTOR_ext-ms-win-core-win32k-surfmgr-l1-1-0;
+__IMPORT_DESCRIPTOR_ext-ms-win-core-win32k-flipmgr-l1-1-1;
+__IMPORT_DESCRIPTOR_ext-ms-win-core-win32k-surfmgr-l1-1-1;
 __IMPORT_DESCRIPTOR_ext-ms-win-core-win32k-tokenmgr-l1-1-0;
 __IMPORT_DESCRIPTOR_ntoskrnl;
 __IMPORT_DESCRIPTOR_watchdog;
+__isa_info;
 _load_config_used;
 __NULL_IMPORT_DESCRIPTOR;
 __security_cookie;
