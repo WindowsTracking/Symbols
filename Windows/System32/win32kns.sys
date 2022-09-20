@@ -58,8 +58,12 @@ IVUnregisterChildLifetimeNotifications();
 memcpy();
 memmove();
 memset();
+memset$thunk$772440563353939046();
 __memset_query();
 __memset_repmovs();
+__memset_spec_ermsb();
+__memset_spec_ermsb_repmovsb();
+__memset_spec_plain();
 __report_gsfailure();
 __security_check_cookie();
 __security_init_cookie();
@@ -82,6 +86,7 @@ WppTraceCallback();
 
 // Globals
 
+__castguard_check_failure_os_handled_fptr;
 gbRootPartition;
 gChannelMap;
 struct RECORDER_LOG__ * gNSWPPLog;

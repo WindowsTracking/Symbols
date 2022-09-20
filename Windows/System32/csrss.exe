@@ -1,5 +1,5 @@
 /*
- * PDB file: csrss.pdb\6A696BF94289F74F65479350AFB9F8651\csrss.pdb
+ * PDB file: csrss.pdb\817087EA2A44CA5B204C19256E25842A1\csrss.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -35,6 +35,7 @@ struct _CSR_THREAD;
 struct _CURDIR;
 struct _CUSTOM_SYSTEM_EVENT_TRIGGER_CONFIG;
 struct _DEVICE_CAPABILITIES;
+struct _DEVICE_DESCRIPTION;
 struct _DEVICE_OBJECT;
 struct _DEVICE_OBJECT_POWER_EXTENSION;
 enum _DEVICE_POWER_STATE;
@@ -47,6 +48,7 @@ enum _DIRECTORY_NOTIFY_INFORMATION_CLASS;
 struct _DISPATCHER_HEADER;
 struct _DMA_ADAPTER;
 struct _DMA_ADAPTER_INFO;
+struct _DMA_ADAPTER_INFO_CRASHDUMP;
 struct _DMA_ADAPTER_INFO_V1;
 struct _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION;
 enum _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_ACCESS_TYPE;
@@ -54,9 +56,11 @@ enum _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_TYPE;
 struct _DMA_COMMON_BUFFER_VECTOR;
 enum DMA_COMPLETION_STATUS;
 struct _DMA_OPERATIONS;
+enum _DMA_SPEED;
 struct _DMA_TRANSFER_INFO;
 struct _DMA_TRANSFER_INFO_V1;
 struct _DMA_TRANSFER_INFO_V2;
+enum _DMA_WIDTH;
 struct _DRIVER_EXTENSION;
 struct _DRIVER_OBJECT;
 struct _ECP_LIST;
@@ -83,8 +87,6 @@ struct _FILE_OBJECT;
 struct _FILE_STANDARD_INFORMATION;
 enum _FSINFOCLASS;
 struct _GDI_TEB_BATCH;
-struct _GENERAL_LOOKASIDE;
-struct _GENERAL_LOOKASIDE_POOL;
 struct _GENERIC_MAPPING;
 struct _GUID;
 struct _IMAGE_DATA_DIRECTORY;
@@ -114,6 +116,8 @@ struct _IRP;
 enum _IRQ_PRIORITY;
 enum JOB_OBJECT_IO_RATE_CONTROL_FLAGS;
 enum JOB_OBJECT_NET_RATE_CONTROL_FLAGS;
+enum _JOBOBJECT_IO_PRIORITY_LIMIT_FLAGS;
+enum _JOBOBJECT_PAGE_PRIORITY_LIMIT_FLAGS;
 enum _JOBOBJECTINFOCLASS;
 struct _KAFFINITY_EX;
 struct _KAPC;
@@ -129,6 +133,7 @@ union _KIDTENTRY64;
 enum _KINTERRUPT_POLARITY;
 struct _KPCR;
 struct _KPRCB;
+struct _KPRCB_TRACEPOINT_LOG;
 union _KPRIORITY_STATE;
 struct _KPROCESS;
 struct _KPROCESSOR_STATE;
@@ -145,7 +150,6 @@ struct _LEAP_SECOND_DATA;
 struct LIST_ENTRY32;
 struct LIST_ENTRY64;
 struct _LIST_ENTRY;
-struct _LOOKASIDE_LIST_EX;
 struct _LUID;
 struct _LUID_AND_ATTRIBUTES;
 struct _M128A;
@@ -157,7 +161,6 @@ enum _MEMORY_CACHING_TYPE_ORIG;
 enum _MEMORY_PHYSICAL_CONTIGUITY_UNIT_STATE;
 enum _MODE;
 struct _NAMED_PIPE_CREATE_PARAMETERS;
-struct _NPAGED_LOOKASIDE_LIST;
 enum _NT_PRODUCT_TYPE;
 struct _NT_TIB;
 struct _OB_EXTENDED_PARSE_PARAMETERS;
@@ -168,7 +171,6 @@ struct _OBJECT_NAME_INFORMATION;
 struct _OBJECT_TYPE;
 struct _OBJECT_TYPE_INITIALIZER;
 struct _OWNER_ENTRY;
-struct _PAGED_LOOKASIDE_LIST;
 struct _PEB;
 struct _PEB_LDR_DATA;
 enum _POOL_TYPE;
@@ -188,6 +190,7 @@ enum _PS_PROTECTED_TYPE;
 enum _PS_STD_HANDLE_STATE;
 enum _PS_WAKE_REASON;
 struct _QUAD;
+enum _REFS_SET_VOLUME_COMPRESSION_INFO_FLAGS;
 enum _REFS_STREAM_SNAPSHOT_OPERATION;
 enum _REG_NOTIFY_CLASS;
 enum ReplacesCorHdrNumericDefines;
@@ -216,7 +219,6 @@ enum _SECURITY_OPERATION_CODE;
 struct _SECURITY_QUALITY_OF_SERVICE;
 struct _SECURITY_SUBJECT_CONTEXT;
 struct _SINGLE_LIST_ENTRY;
-struct _SLIST_ENTRY;
 union _SLIST_HEADER;
 struct _STRING;
 enum _SYSTEM_FEATURE_CONFIGURATION_SECTION_TYPE;
@@ -828,6 +830,30 @@ typedef struct _DEVICE_CAPABILITIES
   unsigned long D3Latency;
 } DEVICE_CAPABILITIES, *PDEVICE_CAPABILITIES;
 
+typedef struct _DEVICE_DESCRIPTION
+{
+  unsigned long Version;
+  unsigned char Master;
+  unsigned char ScatterGather;
+  unsigned char DemandMode;
+  unsigned char AutoInitialize;
+  unsigned char Dma32BitAddresses;
+  unsigned char IgnoreCount;
+  unsigned char Reserved1;
+  unsigned char Dma64BitAddresses;
+  unsigned long BusNumber;
+  unsigned long DmaChannel;
+  enum _INTERFACE_TYPE InterfaceType;
+  enum _DMA_WIDTH DmaWidth;
+  enum _DMA_SPEED DmaSpeed;
+  unsigned long MaximumLength;
+  unsigned long DmaPort;
+  unsigned long DmaAddressWidth;
+  unsigned long DmaControllerInstance;
+  unsigned long DmaRequestLine;
+  union _LARGE_INTEGER DeviceAddress;
+} DEVICE_DESCRIPTION, *PDEVICE_DESCRIPTION;
+
 typedef struct _DEVICE_OBJECT
 {
   short Type;
@@ -940,6 +966,8 @@ typedef enum _DIRECTORY_NOTIFY_INFORMATION_CLASS
 {
   DirectoryNotifyInformation = 1,
   DirectoryNotifyExtendedInformation = 2,
+  DirectoryNotifyFullInformation = 3,
+  DirectoryNotifyMaximumInformation = 4,
 } DIRECTORY_NOTIFY_INFORMATION_CLASS, *PDIRECTORY_NOTIFY_INFORMATION_CLASS;
 
 typedef struct _DISPATCHER_HEADER
@@ -1084,8 +1112,19 @@ typedef struct _DMA_ADAPTER
 typedef struct _DMA_ADAPTER_INFO
 {
   unsigned long Version;
-  struct _DMA_ADAPTER_INFO_V1 V1;
+  union
+  {
+    struct _DMA_ADAPTER_INFO_V1 V1;
+    struct _DMA_ADAPTER_INFO_CRASHDUMP Crashdump;
+  };
 } DMA_ADAPTER_INFO, *PDMA_ADAPTER_INFO;
+
+typedef struct _DMA_ADAPTER_INFO_CRASHDUMP
+{
+  struct _DEVICE_DESCRIPTION DeviceDescription;
+  unsigned __int64 DeviceIdSize;
+  void* DeviceId;
+} DMA_ADAPTER_INFO_CRASHDUMP, *PDMA_ADAPTER_INFO_CRASHDUMP;
 
 typedef struct _DMA_ADAPTER_INFO_V1
 {
@@ -1187,6 +1226,16 @@ typedef struct _DMA_OPERATIONS
   void* CreateCommonBufferFromMdl /* function */;
 } DMA_OPERATIONS, *PDMA_OPERATIONS;
 
+typedef enum _DMA_SPEED
+{
+  Compatible = 0,
+  TypeA = 1,
+  TypeB = 2,
+  TypeC = 3,
+  TypeF = 4,
+  MaximumDmaSpeed = 5,
+} DMA_SPEED, *PDMA_SPEED;
+
 typedef struct _DMA_TRANSFER_INFO
 {
   unsigned long Version;
@@ -1211,6 +1260,16 @@ typedef struct _DMA_TRANSFER_INFO_V2
   unsigned long ScatterGatherListSize;
   unsigned long LogicalPageCount;
 } DMA_TRANSFER_INFO_V2, *PDMA_TRANSFER_INFO_V2;
+
+typedef enum _DMA_WIDTH
+{
+  Width8Bits = 0,
+  Width16Bits = 1,
+  Width32Bits = 2,
+  Width64Bits = 3,
+  WidthNoWrap = 4,
+  MaximumDmaWidth = 5,
+} DMA_WIDTH, *PDMA_WIDTH;
 
 typedef struct _DRIVER_EXTENSION
 {
@@ -1598,95 +1657,6 @@ typedef struct _GDI_TEB_BATCH
   unsigned long Buffer[310];
 } GDI_TEB_BATCH, *PGDI_TEB_BATCH;
 
-typedef struct _GENERAL_LOOKASIDE
-{
-  union
-  {
-    union _SLIST_HEADER ListHead;
-    struct _SINGLE_LIST_ENTRY SingleListHead;
-  };
-  unsigned short Depth;
-  unsigned short MaximumDepth;
-  unsigned long TotalAllocates;
-  union
-  {
-    unsigned long AllocateMisses;
-    unsigned long AllocateHits;
-  };
-  unsigned long TotalFrees;
-  union
-  {
-    unsigned long FreeMisses;
-    unsigned long FreeHits;
-  };
-  enum _POOL_TYPE Type;
-  unsigned long Tag;
-  unsigned long Size;
-  union
-  {
-    void* AllocateEx /* function */;
-    void* Allocate /* function */;
-  };
-  union
-  {
-    void* FreeEx /* function */;
-    void* Free /* function */;
-  };
-  struct _LIST_ENTRY ListEntry;
-  unsigned long LastTotalAllocates;
-  union
-  {
-    unsigned long LastAllocateMisses;
-    unsigned long LastAllocateHits;
-  };
-  unsigned long Future[2];
-  long __PADDING__[8];
-} GENERAL_LOOKASIDE, *PGENERAL_LOOKASIDE;
-
-typedef struct _GENERAL_LOOKASIDE_POOL
-{
-  union
-  {
-    union _SLIST_HEADER ListHead;
-    struct _SINGLE_LIST_ENTRY SingleListHead;
-  };
-  unsigned short Depth;
-  unsigned short MaximumDepth;
-  unsigned long TotalAllocates;
-  union
-  {
-    unsigned long AllocateMisses;
-    unsigned long AllocateHits;
-  };
-  unsigned long TotalFrees;
-  union
-  {
-    unsigned long FreeMisses;
-    unsigned long FreeHits;
-  };
-  enum _POOL_TYPE Type;
-  unsigned long Tag;
-  unsigned long Size;
-  union
-  {
-    void* AllocateEx /* function */;
-    void* Allocate /* function */;
-  };
-  union
-  {
-    void* FreeEx /* function */;
-    void* Free /* function */;
-  };
-  struct _LIST_ENTRY ListEntry;
-  unsigned long LastTotalAllocates;
-  union
-  {
-    unsigned long LastAllocateMisses;
-    unsigned long LastAllocateHits;
-  };
-  unsigned long Future[2];
-} GENERAL_LOOKASIDE_POOL, *PGENERAL_LOOKASIDE_POOL;
-
 typedef struct _GENERIC_MAPPING
 {
   unsigned long GenericRead;
@@ -1842,6 +1812,7 @@ typedef struct _IO_COMPLETION_CONTEXT
 {
   void* Port;
   void* Key;
+  __int64 UsageCount;
 } IO_COMPLETION_CONTEXT, *PIO_COMPLETION_CONTEXT;
 
 typedef struct _IO_DRIVER_CREATE_CONTEXT
@@ -2394,6 +2365,18 @@ enum JOB_OBJECT_NET_RATE_CONTROL_FLAGS
   JOB_OBJECT_NET_RATE_CONTROL_VALID_FLAGS = 7,
 };
 
+typedef enum _JOBOBJECT_IO_PRIORITY_LIMIT_FLAGS
+{
+  JOBOBJECT_IO_PRIORITY_LIMIT_ENABLE = 1,
+  JOBOBJECT_IO_PRIORITY_LIMIT_VALID_FLAGS = 1,
+} JOBOBJECT_IO_PRIORITY_LIMIT_FLAGS, *PJOBOBJECT_IO_PRIORITY_LIMIT_FLAGS;
+
+typedef enum _JOBOBJECT_PAGE_PRIORITY_LIMIT_FLAGS
+{
+  JOBOBJECT_PAGE_PRIORITY_LIMIT_ENABLE = 1,
+  JOBOBJECT_PAGE_PRIORITY_LIMIT_VALID_FLAGS = 1,
+} JOBOBJECT_PAGE_PRIORITY_LIMIT_FLAGS, *PJOBOBJECT_PAGE_PRIORITY_LIMIT_FLAGS;
+
 typedef enum _JOBOBJECTINFOCLASS
 {
   JobObjectBasicAccountingInformation = 1,
@@ -2438,6 +2421,8 @@ typedef enum _JOBOBJECTINFOCLASS
   JobObjectSiloSystemRoot = 45,
   JobObjectEnergyTrackingState = 46,
   JobObjectThreadImpersonationInformation = 47,
+  JobObjectIoPriorityLimit = 48,
+  JobObjectPagePriorityLimit = 49,
   JobObjectReserved1Information = 18,
   JobObjectReserved2Information = 19,
   JobObjectReserved3Information = 20,
@@ -2468,7 +2453,9 @@ typedef enum _JOBOBJECTINFOCLASS
   JobObjectReserved23Information = 45,
   JobObjectReserved24Information = 46,
   JobObjectReserved25Information = 47,
-  MaxJobObjectInfoClass = 48,
+  JobObjectReserved26Information = 48,
+  JobObjectReserved27Information = 49,
+  MaxJobObjectInfoClass = 50,
 } JOBOBJECTINFOCLASS, *PJOBOBJECTINFOCLASS;
 
 typedef struct _KAFFINITY_EX
@@ -2486,7 +2473,15 @@ typedef struct _KAFFINITY_EX
 typedef struct _KAPC
 {
   unsigned char Type;
-  unsigned char SpareByte0;
+  union
+  {
+    unsigned char AllFlags;
+    struct /* bitfield */
+    {
+      unsigned char CallbackDataContext : 1; /* bit position: 0 */
+      unsigned char Unused : 7; /* bit position: 1 */
+    }; /* bitfield */
+  };
   unsigned char Size;
   unsigned char SpareByte1;
   unsigned long SpareLong0;
@@ -2748,10 +2743,13 @@ typedef struct _KPRCB
   unsigned short MajorVersion;
   unsigned char BuildType;
   unsigned char CpuVendor;
-  unsigned char CoresPerPhysicalProcessor;
-  unsigned char LogicalProcessorsPerCore;
+  unsigned char LegacyCoresPerPhysicalProcessor;
+  unsigned char LegacyLogicalProcessorsPerCore;
   unsigned __int64 TscFrequency;
-  unsigned __int64 PrcbPad04[5];
+  struct _KPRCB_TRACEPOINT_LOG* TracepointLog;
+  unsigned long CoresPerPhysicalProcessor;
+  unsigned long LogicalProcessorsPerCore;
+  unsigned __int64 PrcbPad04[3];
   struct _KSCHEDULER_SUBNODE* SchedulerSubNode;
   unsigned __int64 GroupSetMember;
   unsigned char Group;
@@ -2791,7 +2789,8 @@ typedef struct _KPRCB
                 unsigned char BpbClearOnIdle : 1; /* bit position: 0 */
                 unsigned char BpbEnabled : 1; /* bit position: 1 */
                 unsigned char BpbSmep : 1; /* bit position: 2 */
-                unsigned char BpbFeaturesReserved : 5; /* bit position: 3 */
+                unsigned char BpbKCet : 1; /* bit position: 3 */
+                unsigned char BpbFeaturesReserved : 4; /* bit position: 4 */
               }; /* bitfield */
               unsigned char BpbCurrentSpecCtrl;
               unsigned char BpbKernelSpecCtrl;
@@ -2813,6 +2812,8 @@ typedef struct _KPRCB
   unsigned __int64 PrcbPad12[3];
   long __PADDING__[4];
 } KPRCB, *PKPRCB;
+
+struct _KPRCB_TRACEPOINT_LOG;
 
 union _KPRIORITY_STATE;
 
@@ -3010,6 +3011,7 @@ typedef struct _KUSER_SHARED_DATA
   struct _XSTATE_CONFIGURATION XState;
   struct _KSYSTEM_TIME FeatureConfigurationChangeStamp;
   unsigned long Spare;
+  unsigned __int64 UserPointerAuthMask;
 } KUSER_SHARED_DATA, *PKUSER_SHARED_DATA;
 
 typedef union _LARGE_INTEGER
@@ -3056,11 +3058,6 @@ struct LIST_ENTRY64
   unsigned __int64 Flink;
   unsigned __int64 Blink;
 };
-
-typedef struct _LOOKASIDE_LIST_EX
-{
-  struct _GENERAL_LOOKASIDE_POOL L;
-} LOOKASIDE_LIST_EX, *PLOOKASIDE_LIST_EX;
 
 typedef struct _LUID
 {
@@ -3157,11 +3154,6 @@ typedef struct _NAMED_PIPE_CREATE_PARAMETERS
   unsigned char TimeoutSpecified;
   char __PADDING__[7];
 } NAMED_PIPE_CREATE_PARAMETERS, *PNAMED_PIPE_CREATE_PARAMETERS;
-
-typedef struct _NPAGED_LOOKASIDE_LIST
-{
-  struct _GENERAL_LOOKASIDE L;
-} NPAGED_LOOKASIDE_LIST, *PNPAGED_LOOKASIDE_LIST;
 
 typedef enum _NT_PRODUCT_TYPE
 {
@@ -3303,11 +3295,6 @@ typedef struct _OWNER_ENTRY
   long __PADDING__[1];
 } OWNER_ENTRY, *POWNER_ENTRY;
 
-typedef struct _PAGED_LOOKASIDE_LIST
-{
-  struct _GENERAL_LOOKASIDE L;
-} PAGED_LOOKASIDE_LIST, *PPAGED_LOOKASIDE_LIST;
-
 typedef struct _PEB
 {
   unsigned char InheritedAddressSpace;
@@ -3417,7 +3404,8 @@ typedef struct _PEB
   void* SparePointers[2];
   void* PatchLoaderData;
   struct _CHPEV2_PROCESS_INFO* ChpeV2ProcessInfo;
-  unsigned long SpareUlongs[3];
+  unsigned long AppModelFeatureState;
+  unsigned long SpareUlongs[2];
   unsigned short ActiveCodePage;
   unsigned short OemCodePage;
   unsigned short UseCaseMapping;
@@ -3643,6 +3631,7 @@ typedef enum _PS_MITIGATION_OPTION
   PS_MITIGATION_OPTION_POINTER_AUTH_USER_IP = 35,
   PS_MITIGATION_OPTION_CET_DYNAMIC_APIS_OUT_OF_PROC_ONLY = 36,
   PS_MITIGATION_OPTION_REDIRECTION_TRUST = 37,
+  PS_MITIGATION_OPTION_RESTRICT_CORE_SHARING = 38,
 } PS_MITIGATION_OPTION, *PPS_MITIGATION_OPTION;
 
 typedef struct _PS_MITIGATION_OPTIONS_MAP
@@ -3700,6 +3689,12 @@ typedef struct _QUAD
     double DoNotUseThisField;
   };
 } QUAD, *PQUAD;
+
+typedef enum _REFS_SET_VOLUME_COMPRESSION_INFO_FLAGS
+{
+  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_COMPRESS_SYNC = 1,
+  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_MAX = 1,
+} REFS_SET_VOLUME_COMPRESSION_INFO_FLAGS, *PREFS_SET_VOLUME_COMPRESSION_INFO_FLAGS;
 
 typedef enum _REFS_STREAM_SNAPSHOT_OPERATION
 {
@@ -3867,7 +3862,7 @@ typedef struct _RTL_CRITICAL_SECTION_DEBUG
   unsigned long ContentionCount;
   unsigned long Flags;
   unsigned short CreatorBackTraceIndexHigh;
-  unsigned short SpareUSHORT;
+  unsigned short Identifier;
 } RTL_CRITICAL_SECTION_DEBUG, *PRTL_CRITICAL_SECTION_DEBUG;
 
 typedef struct _RTL_DRIVE_LETTER_CURDIR
@@ -3919,11 +3914,21 @@ typedef struct _RTL_DYNAMIC_HASH_TABLE_ENUMERATOR
 typedef enum _RTL_FEATURE_CONFIGURATION_PRIORITY
 {
   FeatureConfigurationPriorityImageDefault = 0,
-  FeatureConfigurationPriorityEnrollment = 2,
+  FeatureConfigurationPriorityEKB = 1,
+  FeatureConfigurationPrioritySafeguard = 2,
+  FeatureConfigurationPriorityPersistent = 2,
+  FeatureConfigurationPriorityReserved3 = 3,
   FeatureConfigurationPriorityService = 4,
+  FeatureConfigurationPriorityReserved5 = 5,
+  FeatureConfigurationPriorityDynamic = 6,
+  FeatureConfigurationPriorityReserved7 = 7,
   FeatureConfigurationPriorityUser = 8,
+  FeatureConfigurationPrioritySecurity = 9,
   FeatureConfigurationPriorityUserPolicy = 10,
+  FeatureConfigurationPriorityReserved11 = 11,
   FeatureConfigurationPriorityTest = 12,
+  FeatureConfigurationPriorityReserved13 = 13,
+  FeatureConfigurationPriorityReserved14 = 14,
   FeatureConfigurationPriorityImageOverride = 15,
   FeatureConfigurationPriorityMax = 15,
 } RTL_FEATURE_CONFIGURATION_PRIORITY, *PRTL_FEATURE_CONFIGURATION_PRIORITY;
@@ -3985,6 +3990,8 @@ typedef struct _RTL_USER_PROCESS_PARAMETERS
   unsigned __int64* DefaultThreadpoolCpuSetMasks;
   unsigned long DefaultThreadpoolCpuSetMaskCount;
   unsigned long DefaultThreadpoolThreadMaximum;
+  unsigned long HeapMemoryTypeMask;
+  long __PADDING__[1];
 } RTL_USER_PROCESS_PARAMETERS, *PRTL_USER_PROCESS_PARAMETERS;
 
 typedef struct _SCATTER_GATHER_ELEMENT
@@ -4056,12 +4063,6 @@ typedef struct _SINGLE_LIST_ENTRY
 {
   struct _SINGLE_LIST_ENTRY* Next;
 } SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY;
-
-typedef struct _SLIST_ENTRY
-{
-  struct _SLIST_ENTRY* Next;
-  long __PADDING__[2];
-} SLIST_ENTRY, *PSLIST_ENTRY;
 
 typedef union _SLIST_HEADER
 {
@@ -4338,7 +4339,13 @@ typedef enum _SYSTEM_INFORMATION_CLASS
   SystemSupportedProcessorArchitectures2 = 230,
   SystemSingleProcessorRelationshipInformation = 231,
   SystemXfgCheckFailureInformation = 232,
-  MaxSystemInfoClass = 233,
+  SystemIommuStateInformation = 233,
+  SystemHypervisorMinrootInformation = 234,
+  SystemHypervisorBootPagesInformation = 235,
+  SystemPointerAuthInformation = 236,
+  SystemSecureKernelDebuggerInformation = 237,
+  SystemOriginalImageFeatureInformation = 238,
+  MaxSystemInfoClass = 239,
 } SYSTEM_INFORMATION_CLASS, *PSYSTEM_INFORMATION_CLASS;
 
 typedef enum _SYSTEM_POOL_LIMIT_MEM_TYPE
@@ -5029,7 +5036,9 @@ typedef enum _WHEA_ERROR_SOURCE_TYPE
   WheaErrSrcTypeBMC = 14,
   WheaErrSrcTypePMEM = 15,
   WheaErrSrcTypeDeviceDriver = 16,
-  WheaErrSrcTypeMax = 17,
+  WheaErrSrcTypeSea = 17,
+  WheaErrSrcTypeSei = 18,
+  WheaErrSrcTypeMax = 19,
 } WHEA_ERROR_SOURCE_TYPE, *PWHEA_ERROR_SOURCE_TYPE;
 
 typedef enum _WHEA_ERROR_TYPE
@@ -5151,6 +5160,20 @@ typedef enum _WHEA_EVENT_LOG_ENTRY_ID
   WheaEventLogEntryIdMemoryAddDevice = -2147483575,
   WheaEventLogEntryIdMemoryRemoveDevice = -2147483574,
   WheaEventLogEntryIdMemorySummaryFailed = -2147483573,
+  WheaEventLogEntryIdPcieDpcError = -2147483572,
+  WheaEventLogEntryIdCpuBusesInitFailed = -2147483571,
+  WheaEventLogEntryIdPshedPluginInitFailed = -2147483570,
+  WheaEventLogEntryIdFailedAddToDefectList = -2147483569,
+  WheaEventLogEntryIdDefectListFull = -2147483568,
+  WheaEventLogEntryIdDefectListUEFIVarFailed = -2147483567,
+  WheaEventLogEntryIdDefectListCorrupt = -2147483566,
+  WheaEventLogEntryIdBadHestNotifyData = -2147483565,
+  WheaEventLogEntryIdSrasTableNotFound = -2147483564,
+  WheaEventLogEntryIdSrasTableError = -2147483563,
+  WheaEventLogEntryIdSrasTableEntries = -2147483562,
+  WheaEventLogEntryIdRowFailure = -2147483561,
+  WheaEventLogEntryIdCpusFrozen = -2147483552,
+  WheaEventLogEntryIdCpusFrozenNoCrashDump = -2147483551,
   WheaEventLogEntryIdPshedPiTraceLog = -2147221488,
 } WHEA_EVENT_LOG_ENTRY_ID, *PWHEA_EVENT_LOG_ENTRY_ID;
 
@@ -5542,6 +5565,7 @@ __security_init_cookie_ex();
 
 // Globals
 
+__castguard_check_failure_os_handled_fptr;
 __enclave_config;
 __guard_check_icall_fptr;
 __guard_dispatch_icall_fptr;

@@ -23,6 +23,7 @@ UserHardError();
 
 // Globals
 
+__castguard_check_failure_os_handled_fptr;
 __DefaultResolveDelayLoadedAPIFlags;
 __DELAY_IMPORT_DESCRIPTOR_ext_ms_win_core_winsrv_l1_1_0_dll;
 __DELAY_IMPORT_DESCRIPTOR_ext_ms_win_core_winsrv_min_l1_1_0_dll;

@@ -123,6 +123,7 @@ StringCchPrintfW();
 // Globals
 
 BNOLinksDirectory;
+__castguard_check_failure_os_handled_fptr;
 ClientThreadSetupRoutine;
 CsrApiPort;
 CsrApiPortName;

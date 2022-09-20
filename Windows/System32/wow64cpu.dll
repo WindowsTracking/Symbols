@@ -74,6 +74,7 @@ WaitForMultipleObjects32();
 
 // Globals
 
+__castguard_check_failure_os_handled_fptr;
 CpupSystemCallFast;
 CpupUserSharedData;
 __enclave_config;

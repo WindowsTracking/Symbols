@@ -1,0 +1,62 @@
+
+// Functions
+
+public: bool __cdecl CHMRefHwndByHandle::bValid(void)const ;
+public: class CHMRefHwndByHandle & __cdecl CHMRefHwndByHandle::operator=(class CHMRefHwndByHandle const &);
+public: struct tagWND * __cdecl CHMRefHwndByHandle::rpwnd(void)const ;
+public: enum CompositionInputFlags __cdecl CompositionInputObject::GetInputFlags(void)const ;
+public: int __cdecl CompositionInputObject::IsImplicit(void)const ;
+DllInitialize();
+DllUnload();
+DriverEntry();
+unsigned long __cdecl GetCurrentProcessSessionId(void);
+GsDriverEntry();
+_guard_check_icall_nop();
+_guard_dispatch_icall_nop();
+_guard_xfg_dispatch_icall_nop();
+public: virtual long __cdecl IOCPDispatcher::PopulateCustomDispatcherObjectsArray(unsigned int,void * *);
+memcpy();
+memmove();
+__report_gsfailure();
+__security_check_cookie();
+__security_init_cookie();
+SGDAttemptToFreeSessionSlots();
+SGDGetSessionState();
+SGDGetUserGdiSessionState();
+SGDGetUserSessionState();
+SGDInitialize();
+SGDSessionInitialize();
+SGDSessionUninitialize();
+
+// Globals
+
+__@@_PchSym_@00@KxulyqvxgPillgKxulmvxlivfzkUdrmwldhUxlivUmgfhviUpvimvoUhtwUlyquivUznwGEUkivxlnkOlyq@userk_sgd;
+__castguard_check_failure_os_handled_fptr;
+gaClipILDef;
+unsigned long gAvailableSlots;
+struct _EX_PUSH_LOCK gLock;
+void * * gLowSessionGlobalSlots;
+struct tagSessionSlots * gpSESSIONSLOTS;
+void * * gSessionGlobalSlots;
+struct _LIST_ENTRY gSessionSlotsList;
+__guard_check_icall_fptr;
+__guard_dispatch_icall_fptr;
+__guard_eh_cont_count;
+__guard_eh_cont_table;
+__guard_fids_count;
+__guard_fids_table;
+__guard_flags;
+__guard_iat_count;
+__guard_iat_table;
+__guard_longjmp_count;
+__guard_longjmp_table;
+__guard_xfg_check_icall_fptr;
+__guard_xfg_dispatch_icall_fptr;
+__guard_xfg_table_dispatch_icall_fptr;
+HotPatchSpareGlobals;
+__IMPORT_DESCRIPTOR_ntoskrnl;
+_load_config_used;
+__NULL_IMPORT_DESCRIPTOR;
+__security_cookie;
+__security_cookie_complement;
+WPP_MAIN_CB;

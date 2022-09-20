@@ -1,5 +1,5 @@
 /*
- * PDB file: ndis.pdb\FA41BCEDA81D750ACAC91580109D5E341\ndis.pdb
+ * PDB file: ndis.pdb\4903B3FA99C54C39ED1904F41FCC4E931\ndis.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -24,6 +24,7 @@ enum BIND_SOURCE_STATE;
 enum BINDING_ENABLED_OR_DISABLED;
 struct _BSSID_INFO;
 enum BUS_QUERY_ID_TYPE;
+union _BUS_SPECIFIC_RESET_FLAGS;
 enum CallRunMode;
 struct _CHPEV2_CPUAREA_INFO;
 struct _CHPEV2_PROCESS_INFO;
@@ -53,11 +54,13 @@ struct _CUSTOM_SYSTEM_EVENT_TRIGGER_CONFIG;
 struct _DEVICE_BUS_SPECIFIC_RESET_INFO;
 union _DEVICE_BUS_SPECIFIC_RESET_TYPE;
 struct _DEVICE_CAPABILITIES;
+struct _DEVICE_DESCRIPTION;
 struct _DEVICE_OBJECT;
 struct _DEVICE_OBJECT_POWER_EXTENSION;
 enum _DEVICE_POWER_STATE;
 enum _DEVICE_RELATION_TYPE;
 struct _DEVICE_RESET_INTERFACE_STANDARD;
+union _DEVICE_RESET_STATUS_FLAGS;
 enum _DEVICE_RESET_TYPE;
 enum DEVICE_TEXT_TYPE;
 enum _DEVICE_USAGE_NOTIFICATION_TYPE;
@@ -74,6 +77,7 @@ union _DL_EUI48;
 union _DL_OUI;
 struct _DMA_ADAPTER;
 struct _DMA_ADAPTER_INFO;
+struct _DMA_ADAPTER_INFO_CRASHDUMP;
 struct _DMA_ADAPTER_INFO_V1;
 struct _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION;
 enum _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION_ACCESS_TYPE;
@@ -142,6 +146,7 @@ struct _DRIVER_EXTENSION;
 struct _DRIVER_OBJECT;
 struct _ECP_LIST;
 struct _EJOB;
+enum EmptyCVariant_ExpiredFeature;
 enum EmptyCVariant_FeatureStaging_MinioNetworking;
 struct _EPROCESS;
 struct _ERESOURCE;
@@ -164,6 +169,7 @@ struct _EXCEPTION_RECORD;
 struct _EXCEPTION_REGISTRATION_RECORD;
 struct _EXECUTION_CONTEXT_CONFIGURATION;
 enum _EXECUTION_CONTEXT_FLAGS;
+struct _EXECUTION_CONTEXT_NOTIFY_PARAMETERS;
 struct _EXECUTION_CONTEXT_RUNTIME_KNOBS;
 struct _EXECUTION_CONTEXT_WORK_UNIT_KNOBS;
 struct _EXT_DELETE_PARAMETERS;
@@ -219,6 +225,7 @@ struct _IO_INTERRUPT_MESSAGE_INFO_ENTRY;
 enum _IO_PRIORITY_HINT;
 struct _IO_PRIORITY_INFO;
 enum _IO_RATE_CONTROL_TYPE;
+enum _IO_RELEASE_PAGE_FLAGS;
 struct _IO_REMOVE_LOCK;
 struct _IO_REMOVE_LOCK_COMMON_BLOCK;
 struct _IO_RESOURCE_DESCRIPTOR;
@@ -242,6 +249,8 @@ struct _IRP;
 enum _IRQ_PRIORITY;
 enum JOB_OBJECT_IO_RATE_CONTROL_FLAGS;
 enum JOB_OBJECT_NET_RATE_CONTROL_FLAGS;
+enum _JOBOBJECT_IO_PRIORITY_LIMIT_FLAGS;
+enum _JOBOBJECT_PAGE_PRIORITY_LIMIT_FLAGS;
 enum _JOBOBJECTINFOCLASS;
 class KAcquireSpinLock;
 struct _KAFFINITY_EX;
@@ -298,6 +307,7 @@ class KnobNamespace;
 struct KnobState;
 struct _KPCR;
 struct _KPRCB;
+struct _KPRCB_TRACEPOINT_LOG;
 union _KPRIORITY_STATE;
 struct _KPROCESS;
 struct _KPROCESSOR_STATE;
@@ -997,7 +1007,9 @@ struct _NPAGED_LOOKASIDE_LIST;
 struct _NPI_MODULEID;
 enum _NPI_MODULEID_TYPE;
 enum _NT_PRODUCT_TYPE;
+enum _NT_READ_FLAGS;
 struct _NT_TIB;
+enum _NT_WRITE_FLAGS;
 struct _OB_EXTENDED_PARSE_PARAMETERS;
 enum _OB_OPEN_REASON;
 struct _OBJECT_DUMP_CONTROL;
@@ -1009,7 +1021,6 @@ struct _OFFLOAD_STATE_HEADER;
 enum OFFLOAD_STATE_TYPE;
 struct _OID_LIST;
 struct _OWNER_ENTRY;
-struct _PAGED_LOOKASIDE_LIST;
 struct PAGED_OBJECT<1147946562>;
 struct PAGED_OBJECT<1148473410>;
 struct PAGED_OBJECT<1282164290>;
@@ -1039,6 +1050,7 @@ enum _PERFINFO_KERNELMEMORY_USAGE_TYPE;
 enum _PERFINFO_MM_STAT;
 enum _PKG_TYPE;
 struct _PKTMON_COMPONENT_CONTEXT;
+enum _PKTMON_COMPONENT_TYPE;
 struct _PKTMON_EDGE_CONTEXT;
 enum _PKTMON_PACKET_TYPE;
 struct _PMKID_CANDIDATE;
@@ -1071,6 +1083,7 @@ struct _RECORDER_LOG_CREATE_PARAMS;
 struct _REFERENCE;
 struct _REFERENCE_EX;
 union _REFERENCE_OBJECT;
+enum _REFS_SET_VOLUME_COMPRESSION_INFO_FLAGS;
 enum _REFS_STREAM_SNAPSHOT_OPERATION;
 enum _REG_NOTIFY_CLASS;
 enum ReplacesCorHdrNumericDefines;
@@ -1241,6 +1254,14 @@ struct _WHEA_XPF_CMC_DESCRIPTOR;
 struct _WHEA_XPF_MC_BANK_DESCRIPTOR;
 struct _WHEA_XPF_MCE_DESCRIPTOR;
 struct _WHEA_XPF_NMI_DESCRIPTOR;
+struct wil::details::close_invoke_helper<0,void __cdecl(_FAST_MUTEX *) noexcept,&wil::details::release_fast_mutex_with_critical_region,_FAST_MUTEX *>;
+struct wil::details::close_invoke_helper<0,void __cdecl(_FAST_MUTEX *),&ExReleaseFastMutex,_FAST_MUTEX *>;
+struct wil::details::close_invoke_helper<0,void __cdecl(unsigned __int64 *) noexcept,&wil::details::ReleaseSpinLockFromDpcLevel,unsigned __int64 *>;
+struct wil::details::close_invoke_helper<0,void __cdecl(wil::details::kspin_lock_saved_irql const &),&wil::details::kspin_lock_saved_irql::Release,wil::details::kspin_lock_saved_irql>;
+struct wil::details::close_invoke_helper<1,long (__cdecl*)(void *),&ZwClose,void *>;
+struct wil::details::close_invoke_helper<1,void (__cdecl*)(_EX_PUSH_LOCK *) noexcept,&wil::details::release_push_lock_exclusive,_EX_PUSH_LOCK *>;
+struct wil::details::close_invoke_helper<1,void (__cdecl*)(_EX_PUSH_LOCK *) noexcept,&wil::details::release_push_lock_shared,_EX_PUSH_LOCK *>;
+struct wil::details::close_invoke_helper<1,void (__cdecl*)(NDISWATCHDOG__ *),&ndisFreeWatchdog,NDISWATCHDOG__ *>;
 struct wil::details::kspin_lock_saved_irql;
 struct wil::details::resource_policy<_EX_PUSH_LOCK *,void (__cdecl*)(_EX_PUSH_LOCK *) noexcept,&wil::details::release_push_lock_exclusive,wistd::integral_constant<unsigned __int64,1>,_EX_PUSH_LOCK *,_EX_PUSH_LOCK *,0,std::nullptr_t>;
 struct wil::details::resource_policy<_EX_PUSH_LOCK *,void (__cdecl*)(_EX_PUSH_LOCK *) noexcept,&wil::details::release_push_lock_shared,wistd::integral_constant<unsigned __int64,1>,_EX_PUSH_LOCK *,_EX_PUSH_LOCK *,0,std::nullptr_t>;
@@ -1282,6 +1303,7 @@ struct wil_details_FeatureReportingCache;
 union wil_details_FeatureStateCache;
 struct wil_details_FeatureTestState;
 enum wil_details_FeatureTestStateKind;
+struct wil_details_RecordCachedUsage::__l2::Change;
 union wil_details_RecordedState;
 struct wil_details_RecordUsageResult;
 union wil_details_ReportedState;
@@ -1335,7 +1357,9 @@ struct _WNF_STATE_NAME;
 struct _WNF_TYPE_ID;
 struct _WORK_QUEUE_ITEM;
 struct WORKITEM_WITH_IRP;
+enum _WPP_RECORDER_TRI_STATE;
 enum _WWAN_ACTIVATION_COMMAND;
+enum _WWAN_ACTIVATION_OPTION;
 struct _WWAN_AUTH_AKA_CHALLENGE;
 struct _WWAN_AUTH_AKAP_CHALLENGE;
 struct _WWAN_AUTH_CHALLENGE;
@@ -1352,6 +1376,7 @@ struct _WWAN_DRIVER_CAPS;
 enum _WWAN_EMERGENCY_MODE;
 enum _WWAN_IP_TYPE;
 struct _WWAN_LIST_HEADER;
+struct _WWAN_OFFSET_SIZE_ELEMENT;
 enum _WWAN_PACKET_SERVICE_ACTION;
 struct _WWAN_PIN_DESC;
 enum _WWAN_PIN_FORMAT;
@@ -1369,6 +1394,7 @@ struct _WWAN_SET_REGISTER_STATE;
 struct _WWAN_SET_SIGNAL_INDICATION;
 struct _WWAN_SET_SMS_CONFIGURATION;
 enum _WWAN_SIM_CLASS;
+struct _WWAN_SINGLE_NSSAI;
 enum _WWAN_SMS_CDMA_ENCODING;
 enum _WWAN_SMS_CDMA_LANG;
 struct _WWAN_SMS_FILTER;
@@ -1625,6 +1651,22 @@ enum BUS_QUERY_ID_TYPE
   BusQueryDeviceSerialNumber = 4,
   BusQueryContainerID = 5,
 };
+
+typedef union _BUS_SPECIFIC_RESET_FLAGS
+{
+  union
+  {
+    struct
+    {
+      struct /* bitfield */
+      {
+        unsigned __int64 KeepStackReset : 1; /* bit position: 0 */
+        unsigned __int64 Reserved : 63; /* bit position: 1 */
+      }; /* bitfield */
+    } u;
+    unsigned __int64 AsUlonglong;
+  };
+} BUS_SPECIFIC_RESET_FLAGS, *PBUS_SPECIFIC_RESET_FLAGS;
 
 enum CallRunMode
 {
@@ -2050,6 +2092,30 @@ typedef struct _DEVICE_CAPABILITIES
   unsigned long D3Latency;
 } DEVICE_CAPABILITIES, *PDEVICE_CAPABILITIES;
 
+typedef struct _DEVICE_DESCRIPTION
+{
+  unsigned long Version;
+  unsigned char Master;
+  unsigned char ScatterGather;
+  unsigned char DemandMode;
+  unsigned char AutoInitialize;
+  unsigned char Dma32BitAddresses;
+  unsigned char IgnoreCount;
+  unsigned char Reserved1;
+  unsigned char Dma64BitAddresses;
+  unsigned long BusNumber;
+  unsigned long DmaChannel;
+  enum _INTERFACE_TYPE InterfaceType;
+  enum _DMA_WIDTH DmaWidth;
+  enum _DMA_SPEED DmaSpeed;
+  unsigned long MaximumLength;
+  unsigned long DmaPort;
+  unsigned long DmaAddressWidth;
+  unsigned long DmaControllerInstance;
+  unsigned long DmaRequestLine;
+  union _LARGE_INTEGER DeviceAddress;
+} DEVICE_DESCRIPTION, *PDEVICE_DESCRIPTION;
+
 typedef struct _DEVICE_OBJECT
 {
   short Type;
@@ -2124,6 +2190,23 @@ typedef struct _DEVICE_RESET_INTERFACE_STANDARD
   void* DeviceBusSpecificReset /* function */;
   void* GetDeviceResetStatus /* function */;
 } DEVICE_RESET_INTERFACE_STANDARD, *PDEVICE_RESET_INTERFACE_STANDARD;
+
+typedef union _DEVICE_RESET_STATUS_FLAGS
+{
+  union
+  {
+    struct
+    {
+      struct /* bitfield */
+      {
+        unsigned __int64 KeepStackReset : 1; /* bit position: 0 */
+        unsigned __int64 RecoveringFromBusError : 1; /* bit position: 1 */
+        unsigned __int64 Reserved : 62; /* bit position: 2 */
+      }; /* bitfield */
+    } u;
+    unsigned __int64 AsUlonglong;
+  };
+} DEVICE_RESET_STATUS_FLAGS, *PDEVICE_RESET_STATUS_FLAGS;
 
 typedef enum _DEVICE_RESET_TYPE
 {
@@ -2202,6 +2285,8 @@ typedef enum _DIRECTORY_NOTIFY_INFORMATION_CLASS
 {
   DirectoryNotifyInformation = 1,
   DirectoryNotifyExtendedInformation = 2,
+  DirectoryNotifyFullInformation = 3,
+  DirectoryNotifyMaximumInformation = 4,
 } DIRECTORY_NOTIFY_INFORMATION_CLASS, *PDIRECTORY_NOTIFY_INFORMATION_CLASS;
 
 typedef struct _DISPATCHER_HEADER
@@ -2384,8 +2469,19 @@ typedef struct _DMA_ADAPTER
 typedef struct _DMA_ADAPTER_INFO
 {
   unsigned long Version;
-  struct _DMA_ADAPTER_INFO_V1 V1;
+  union
+  {
+    struct _DMA_ADAPTER_INFO_V1 V1;
+    struct _DMA_ADAPTER_INFO_CRASHDUMP Crashdump;
+  };
 } DMA_ADAPTER_INFO, *PDMA_ADAPTER_INFO;
+
+typedef struct _DMA_ADAPTER_INFO_CRASHDUMP
+{
+  struct _DEVICE_DESCRIPTION DeviceDescription;
+  unsigned __int64 DeviceIdSize;
+  void* DeviceId;
+} DMA_ADAPTER_INFO_CRASHDUMP, *PDMA_ADAPTER_INFO_CRASHDUMP;
 
 typedef struct _DMA_ADAPTER_INFO_V1
 {
@@ -2974,6 +3070,7 @@ typedef enum _DOT11_PHY_TYPE
   dot11_phy_type_vht = 8,
   dot11_phy_type_dmg = 9,
   dot11_phy_type_he = 10,
+  dot11_phy_type_eht = 11,
   dot11_phy_type_IHV_start = -2147483648,
   dot11_phy_type_IHV_end = -1,
 } DOT11_PHY_TYPE, *PDOT11_PHY_TYPE;
@@ -3133,6 +3230,11 @@ typedef struct _DRIVER_OBJECT
 struct _ECP_LIST;
 
 struct _EJOB;
+
+enum EmptyCVariant_ExpiredFeature
+{
+  CVariant_ExpiredFeature_Empty = 0,
+};
 
 enum EmptyCVariant_FeatureStaging_MinioNetworking
 {
@@ -3369,6 +3471,14 @@ typedef enum _EXECUTION_CONTEXT_FLAGS
   ExecutionContextFlagTryExtendMaxTimeAtDispatch = 4,
 } EXECUTION_CONTEXT_FLAGS, *PEXECUTION_CONTEXT_FLAGS;
 
+typedef struct _EXECUTION_CONTEXT_NOTIFY_PARAMETERS
+{
+  unsigned long Size;
+  unsigned char Irql;
+  unsigned char AllowContextStealing;
+  char __PADDING__[2];
+} EXECUTION_CONTEXT_NOTIFY_PARAMETERS, *PEXECUTION_CONTEXT_NOTIFY_PARAMETERS;
+
 typedef struct _EXECUTION_CONTEXT_RUNTIME_KNOBS
 {
   unsigned long Size;
@@ -3462,7 +3572,7 @@ enum FEATURE_ENABLED_STATE
   FEATURE_ENABLED_STATE_DISABLED = 1,
   FEATURE_ENABLED_STATE_ENABLED = 2,
   FEATURE_ENABLED_STATE_HAS_NOTIFICATION = 128,
-  FEATURE_ENABLED_STATE_HAS_VARIANT_CONFIGURATION = 64,
+  FEATURE_ENABLED_STATE_IS_WEXP_CONFIGURATION = 64,
 };
 
 struct FEATURE_ERROR
@@ -3909,7 +4019,9 @@ typedef struct _HV_X64_HYPERVISOR_FEATURES
     unsigned int HpetNeededForC3PowerState_Deprecated : 1; /* bit position: 4 */
     unsigned int InvariantMperfAvailable : 1; /* bit position: 5 */
     unsigned int SupervisorShadowStackAvailable : 1; /* bit position: 6 */
-    unsigned int Reserved : 25; /* bit position: 7 */
+    unsigned int ArchPmuAvailable : 1; /* bit position: 7 */
+    unsigned int ExceptionTrapInterceptAvailable : 1; /* bit position: 8 */
+    unsigned int Reserved : 23; /* bit position: 9 */
   }; /* bitfield */
   struct /* bitfield */
   {
@@ -4141,6 +4253,7 @@ typedef struct _IO_COMPLETION_CONTEXT
 {
   void* Port;
   void* Key;
+  __int64 UsageCount;
 } IO_COMPLETION_CONTEXT, *PIO_COMPLETION_CONTEXT;
 
 typedef struct _IO_DRIVER_CREATE_CONTEXT
@@ -4219,6 +4332,11 @@ typedef enum _IO_RATE_CONTROL_TYPE
   IoRateControlTypeLimitExcessNotifyMax = 14,
   IoRateControlTypeMax = 15,
 } IO_RATE_CONTROL_TYPE, *PIO_RATE_CONTROL_TYPE;
+
+typedef enum _IO_RELEASE_PAGE_FLAGS
+{
+  IO_RELEASE_PAGE_FLAG_NONE = 0,
+} IO_RELEASE_PAGE_FLAGS, *PIO_RELEASE_PAGE_FLAGS;
 
 typedef struct _IO_REMOVE_LOCK
 {
@@ -4869,6 +4987,18 @@ enum JOB_OBJECT_NET_RATE_CONTROL_FLAGS
   JOB_OBJECT_NET_RATE_CONTROL_VALID_FLAGS = 7,
 };
 
+typedef enum _JOBOBJECT_IO_PRIORITY_LIMIT_FLAGS
+{
+  JOBOBJECT_IO_PRIORITY_LIMIT_ENABLE = 1,
+  JOBOBJECT_IO_PRIORITY_LIMIT_VALID_FLAGS = 1,
+} JOBOBJECT_IO_PRIORITY_LIMIT_FLAGS, *PJOBOBJECT_IO_PRIORITY_LIMIT_FLAGS;
+
+typedef enum _JOBOBJECT_PAGE_PRIORITY_LIMIT_FLAGS
+{
+  JOBOBJECT_PAGE_PRIORITY_LIMIT_ENABLE = 1,
+  JOBOBJECT_PAGE_PRIORITY_LIMIT_VALID_FLAGS = 1,
+} JOBOBJECT_PAGE_PRIORITY_LIMIT_FLAGS, *PJOBOBJECT_PAGE_PRIORITY_LIMIT_FLAGS;
+
 typedef enum _JOBOBJECTINFOCLASS
 {
   JobObjectBasicAccountingInformation = 1,
@@ -4913,6 +5043,8 @@ typedef enum _JOBOBJECTINFOCLASS
   JobObjectSiloSystemRoot = 45,
   JobObjectEnergyTrackingState = 46,
   JobObjectThreadImpersonationInformation = 47,
+  JobObjectIoPriorityLimit = 48,
+  JobObjectPagePriorityLimit = 49,
   JobObjectReserved1Information = 18,
   JobObjectReserved2Information = 19,
   JobObjectReserved3Information = 20,
@@ -4943,7 +5075,9 @@ typedef enum _JOBOBJECTINFOCLASS
   JobObjectReserved23Information = 45,
   JobObjectReserved24Information = 46,
   JobObjectReserved25Information = 47,
-  MaxJobObjectInfoClass = 48,
+  JobObjectReserved26Information = 48,
+  JobObjectReserved27Information = 49,
+  MaxJobObjectInfoClass = 50,
 } JOBOBJECTINFOCLASS, *PJOBOBJECTINFOCLASS;
 
 class KAcquireSpinLock
@@ -5139,7 +5273,15 @@ struct KALLOCATOR_NONPAGED<1280069188,512>
 typedef struct _KAPC
 {
   unsigned char Type;
-  unsigned char SpareByte0;
+  union
+  {
+    unsigned char AllFlags;
+    struct /* bitfield */
+    {
+      unsigned char CallbackDataContext : 1; /* bit position: 0 */
+      unsigned char Unused : 7; /* bit position: 1 */
+    }; /* bitfield */
+  };
   unsigned char Size;
   unsigned char SpareByte1;
   unsigned long SpareLong0;
@@ -5506,10 +5648,13 @@ typedef struct _KPRCB
   unsigned short MajorVersion;
   unsigned char BuildType;
   unsigned char CpuVendor;
-  unsigned char CoresPerPhysicalProcessor;
-  unsigned char LogicalProcessorsPerCore;
+  unsigned char LegacyCoresPerPhysicalProcessor;
+  unsigned char LegacyLogicalProcessorsPerCore;
   unsigned __int64 TscFrequency;
-  unsigned __int64 PrcbPad04[5];
+  struct _KPRCB_TRACEPOINT_LOG* TracepointLog;
+  unsigned long CoresPerPhysicalProcessor;
+  unsigned long LogicalProcessorsPerCore;
+  unsigned __int64 PrcbPad04[3];
   struct _KSCHEDULER_SUBNODE* SchedulerSubNode;
   unsigned __int64 GroupSetMember;
   unsigned char Group;
@@ -5549,7 +5694,8 @@ typedef struct _KPRCB
                 unsigned char BpbClearOnIdle : 1; /* bit position: 0 */
                 unsigned char BpbEnabled : 1; /* bit position: 1 */
                 unsigned char BpbSmep : 1; /* bit position: 2 */
-                unsigned char BpbFeaturesReserved : 5; /* bit position: 3 */
+                unsigned char BpbKCet : 1; /* bit position: 3 */
+                unsigned char BpbFeaturesReserved : 4; /* bit position: 4 */
               }; /* bitfield */
               unsigned char BpbCurrentSpecCtrl;
               unsigned char BpbKernelSpecCtrl;
@@ -5571,6 +5717,8 @@ typedef struct _KPRCB
   unsigned __int64 PrcbPad12[3];
   long __PADDING__[4];
 } KPRCB, *PKPRCB;
+
+struct _KPRCB_TRACEPOINT_LOG;
 
 union _KPRIORITY_STATE;
 
@@ -5860,6 +6008,7 @@ typedef struct _KUSER_SHARED_DATA
   struct _XSTATE_CONFIGURATION XState;
   struct _KSYSTEM_TIME FeatureConfigurationChangeStamp;
   unsigned long Spare;
+  unsigned __int64 UserPointerAuthMask;
 } KUSER_SHARED_DATA, *PKUSER_SHARED_DATA;
 
 class KWaitEvent
@@ -8748,6 +8897,7 @@ typedef struct _NDIS_IF_BLOCK
   unsigned char MiniportFatalErrorTimestampIndex;
   unsigned char NetworkIdOverridden;
   unsigned char IsWDFMiniportInterface;
+  unsigned char IsUpdatePending;
   enum _NDIS_NSI_INTERFACE_PURPOSE ifPurpose;
   struct _NDIS_PCW_DATA_BLOCK* PcwDataBlock;
 } NDIS_IF_BLOCK, *PNDIS_IF_BLOCK;
@@ -8788,7 +8938,8 @@ typedef enum _NDIS_IF_REFTAG
   IFREF_UPDATECHARS = 14,
   IFREF_UPDATE = 15,
   IFREF_TIMESTAMPING = 16,
-  IFREF_NUMBER_OF_TAGS = 17,
+  IFREF_UPDATEAPI = 17,
+  IFREF_NUMBER_OF_TAGS = 18,
 } NDIS_IF_REFTAG, *PNDIS_IF_REFTAG;
 
 typedef struct _NDIS_IF_STACK_ENTRY
@@ -9930,8 +10081,8 @@ typedef struct _NDIS_MINIPORT_BLOCK
   class KnobNamespace PollModeConfigKnobsNamespace;
   class Rtl::KArray<KnobDescriptor,1> PollModeConfigKnobDescriptors;
   struct _EXECUTION_CONTEXT_RUNTIME_KNOBS PollModeConfigKnobs;
-  unsigned char WdfCxPowerManagement;
-  char __PADDING__[3];
+  struct _GUID PnPActivityID;
+  long __PADDING__[1];
 } NDIS_MINIPORT_BLOCK, *PNDIS_MINIPORT_BLOCK;
 
 typedef struct _NDIS_MINIPORT_CO_CHARACTERISTICS
@@ -10427,7 +10578,8 @@ typedef enum _NDIS_MP_REFTAG
   MPREF_QUERY_DEVICE_RESET = 108,
   MPREF_WDF_DEFAULT = 109,
   MPREF_IDLE_CONDITION = 110,
-  MPREF_NUMBER_OF_TAGS = 111,
+  MPREF_PKTMON_NOTIFY = 111,
+  MPREF_NUMBER_OF_TAGS = 112,
 } NDIS_MP_REFTAG, *PNDIS_MP_REFTAG;
 
 typedef enum _NDIS_MPIF_REFTAG
@@ -10768,15 +10920,13 @@ typedef struct _NDIS_NET_BUFFER_LIST_POOL
 {
   unsigned char ProtocolId;
   unsigned short ContextSize;
+  unsigned long Flags;
   void* OwnerHandle;
   void* Allocator;
-  unsigned long Tag;
-  unsigned long Flags;
   class KSpinLockManualConstruct Lock;
   struct _LIST_ENTRY GlobalNetBufferListPoolList;
   unsigned long DataSize;
   unsigned long MdlSize;
-  unsigned long ItemLength;
   struct _NDIS_NPAGED_LOOKASIDE_LIST NetBufferListPoolList[1];
 } NDIS_NET_BUFFER_LIST_POOL, *PNDIS_NET_BUFFER_LIST_POOL;
 
@@ -10799,10 +10949,8 @@ typedef struct _NDIS_NET_BUFFER_LIST_VIRTUAL_SUBNET_INFO
 
 typedef struct _NDIS_NET_BUFFER_POOL
 {
-  unsigned long ItemLength;
   void* OwnerHandle;
   void* Allocator;
-  unsigned long Tag;
   class KSpinLockManualConstruct Lock;
   struct _LIST_ENTRY GlobalNetBufferPoolList;
   unsigned long Flags;
@@ -10945,7 +11093,10 @@ typedef enum _NDIS_NSI_INTERFACE_PURPOSE
 {
   NDIS_NSI_INTERFACE_PURPOSE_DEFAULT = 0,
   NDIS_NSI_INTERFACE_PURPOSE_INTERNAL_VSWITCH_NIC = 1,
-  NDIS_NSI_INTERFACE_PURPOSE_MAX = 2,
+  NDIS_NSI_INTERFACE_PURPOSE_SECONDARY_OR_ONDEMAND = 2,
+  NDIS_NSI_INTERFACE_PURPOSE_IN_DISCONNECTED_STANDBY = 3,
+  NDIS_NSI_INTERFACE_PURPOSE_IN_FAILOVER = 4,
+  NDIS_NSI_INTERFACE_PURPOSE_MAX = 5,
 } NDIS_NSI_INTERFACE_PURPOSE, *PNDIS_NSI_INTERFACE_PURPOSE;
 
 typedef enum _NDIS_NSI_REFTAG
@@ -11116,7 +11267,8 @@ typedef struct _NDIS_OID_REQUEST_FLAGS
     unsigned long SkipSourceCompletion : 1; /* bit position: 25 */
     unsigned long SourceCompletionOnly : 1; /* bit position: 26 */
     unsigned long InternalClone : 1; /* bit position: 27 */
-    unsigned long Remainder : 4; /* bit position: 28 */
+    unsigned long TelemetryFilter : 2; /* bit position: 28 */
+    unsigned long Remainder : 2; /* bit position: 30 */
   }; /* bitfield */
 } NDIS_OID_REQUEST_FLAGS, *PNDIS_OID_REQUEST_FLAGS;
 
@@ -11181,6 +11333,7 @@ typedef struct _NDIS_OID_REQUEST_RESERVED
       struct _NDIS_PACKET_PATTERN_ENTRY* SourcePacketEntry;
     } PMContext;
   };
+  struct _GUID ActivityID;
 } NDIS_OID_REQUEST_RESERVED, *PNDIS_OID_REQUEST_RESERVED;
 
 typedef struct _NDIS_OPEN_BLOCK
@@ -11995,8 +12148,11 @@ typedef enum _NDIS_PNP_DEVICE_STATE
 typedef struct _NDIS_POOL_HEADER
 {
   struct _NDIS_OBJECT_HEADER Header;
+  unsigned long PoolFlags;
   class KSpinLock ListLock;
   struct _LIST_ENTRY AllocatedList;
+  unsigned long ItemLength;
+  unsigned long Tag;
 } NDIS_POOL_HEADER, *PNDIS_POOL_HEADER;
 
 typedef struct _NDIS_PORT
@@ -14702,6 +14858,7 @@ typedef struct _NET_BUFFER_LIST_POOL_PARAMETERS
   unsigned short ContextSize;
   unsigned long PoolTag;
   unsigned long DataSize;
+  unsigned long Flags;
 } NET_BUFFER_LIST_POOL_PARAMETERS, *PNET_BUFFER_LIST_POOL_PARAMETERS;
 
 typedef struct _NET_BUFFER_LIST_TIMESTAMP
@@ -14714,6 +14871,7 @@ typedef struct _NET_BUFFER_POOL_PARAMETERS
   struct _NDIS_OBJECT_HEADER Header;
   unsigned long PoolTag;
   unsigned long DataSize;
+  unsigned long Flags;
 } NET_BUFFER_POOL_PARAMETERS, *PNET_BUFFER_POOL_PARAMETERS;
 
 typedef struct _NET_BUFFER_SHARED_MEMORY
@@ -15164,6 +15322,11 @@ typedef enum _NT_PRODUCT_TYPE
   NtProductServer = 3,
 } NT_PRODUCT_TYPE, *PNT_PRODUCT_TYPE;
 
+typedef enum _NT_READ_FLAGS
+{
+  NT_READ_FLAG_NONE = 0,
+} NT_READ_FLAGS, *PNT_READ_FLAGS;
+
 typedef struct _NT_TIB
 {
   struct _EXCEPTION_REGISTRATION_RECORD* ExceptionList;
@@ -15178,6 +15341,12 @@ typedef struct _NT_TIB
   void* ArbitraryUserPointer;
   struct _NT_TIB* Self;
 } NT_TIB, *PNT_TIB;
+
+typedef enum _NT_WRITE_FLAGS
+{
+  NT_WRITE_FLAG_NONE = 0,
+  NT_WRITE_FLAG_WRITE_THROUGH = 1,
+} NT_WRITE_FLAGS, *PNT_WRITE_FLAGS;
 
 typedef struct _OB_EXTENDED_PARSE_PARAMETERS
 {
@@ -15333,11 +15502,6 @@ typedef struct _OWNER_ENTRY
   };
   long __PADDING__[1];
 } OWNER_ENTRY, *POWNER_ENTRY;
-
-typedef struct _PAGED_LOOKASIDE_LIST
-{
-  struct _GENERAL_LOOKASIDE L;
-} PAGED_LOOKASIDE_LIST, *PPAGED_LOOKASIDE_LIST;
 
 struct PAGED_OBJECT<1147946562>
 {
@@ -15702,7 +15866,9 @@ enum PDCCLIENTID
   PDC_HOT_KEY_MANAGER_CLIENT = 117,
   PDC_SERVICING_PLATFORM = 118,
   PDC_TNC_CLIENT = 119,
-  PDC_NUMBER_OF_CLIENTS = 120,
+  PDC_USER_SHUTDOWN_CLIENT = 120,
+  PDC_KERNEL_PLUG_AND_PLAY = 121,
+  PDC_NUMBER_OF_CLIENTS = 122,
 };
 
 typedef struct _PEB
@@ -15912,17 +16078,42 @@ typedef enum _PKG_TYPE
 
 typedef struct _PKTMON_COMPONENT_CONTEXT
 {
+  struct _LIST_ENTRY ListLink;
+  struct _LIST_ENTRY EdgeList;
+  long EdgeCount;
   void* CompHandle;
+  enum _PKTMON_COMPONENT_TYPE CompType;
   enum _PKTMON_PACKET_TYPE PacketType;
   struct /* bitfield */
   {
     int FlowEnabled : 1; /* bit position: 0 */
     int DropEnabled : 1; /* bit position: 1 */
   }; /* bitfield */
+  long __PADDING__[1];
 } PKTMON_COMPONENT_CONTEXT, *PPKTMON_COMPONENT_CONTEXT;
+
+typedef enum _PKTMON_COMPONENT_TYPE
+{
+  PktMonComp_Ndis = 1,
+  PktMonComp_Miniport = 2,
+  PktMonComp_Filter = 3,
+  PktMonComp_Protocol = 4,
+  PktMonComp_VmsVmNic = 5,
+  PktMonComp_VmsMiniport = 6,
+  PktMonComp_VmsExtMiniport = 7,
+  PktMonComp_VmsProtocolNic = 8,
+  PktMonComp_NetVsc = 9,
+  PktMonComp_HTTP = 10,
+  PktMonComp_IpInterface = 11,
+  PktMonComp_Slbmux = 12,
+  PktMonComp_Ipsec = 13,
+  PktMonComp_NetCx = 14,
+  PktMonComp_HTTPMessage = 15,
+} PKTMON_COMPONENT_TYPE, *PPKTMON_COMPONENT_TYPE;
 
 typedef struct _PKTMON_EDGE_CONTEXT
 {
+  struct _LIST_ENTRY ListLink;
   void* EdgeHandle;
   struct _PKTMON_COMPONENT_CONTEXT* CompContext;
   enum _PKTMON_PACKET_TYPE PacketType;
@@ -16193,6 +16384,7 @@ typedef enum _PS_MITIGATION_OPTION
   PS_MITIGATION_OPTION_POINTER_AUTH_USER_IP = 35,
   PS_MITIGATION_OPTION_CET_DYNAMIC_APIS_OUT_OF_PROC_ONLY = 36,
   PS_MITIGATION_OPTION_REDIRECTION_TRUST = 37,
+  PS_MITIGATION_OPTION_RESTRICT_CORE_SHARING = 38,
 } PS_MITIGATION_OPTION, *PPS_MITIGATION_OPTION;
 
 typedef struct _PS_MITIGATION_OPTIONS_MAP
@@ -16255,7 +16447,8 @@ typedef struct _RECORDER_CONFIGURE_PARAMS
 {
   unsigned long Size;
   unsigned char CreateDefaultLog;
-  char __PADDING__[3];
+  enum _WPP_RECORDER_TRI_STATE UseTimeStamp;
+  enum _WPP_RECORDER_TRI_STATE PreciseTimeStamp;
 } RECORDER_CONFIGURE_PARAMS, *PRECORDER_CONFIGURE_PARAMS;
 
 typedef struct _RECORDER_LOG_CREATE_PARAMS
@@ -16268,6 +16461,8 @@ typedef struct _RECORDER_LOG_CREATE_PARAMS
   unsigned char LogIdentifierAppendValueSet;
   unsigned long LogIdentifierSize;
   char LogIdentifier[16];
+  enum _WPP_RECORDER_TRI_STATE UseTimeStamp;
+  enum _WPP_RECORDER_TRI_STATE PreciseTimeStamp;
 } RECORDER_LOG_CREATE_PARAMS, *PRECORDER_LOG_CREATE_PARAMS;
 
 typedef struct _REFERENCE
@@ -16300,6 +16495,12 @@ typedef union _REFERENCE_OBJECT
     long Value;
   };
 } REFERENCE_OBJECT, *PREFERENCE_OBJECT;
+
+typedef enum _REFS_SET_VOLUME_COMPRESSION_INFO_FLAGS
+{
+  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_COMPRESS_SYNC = 1,
+  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_MAX = 1,
+} REFS_SET_VOLUME_COMPRESSION_INFO_FLAGS, *PREFS_SET_VOLUME_COMPRESSION_INFO_FLAGS;
 
 typedef enum _REFS_STREAM_SNAPSHOT_OPERATION
 {
@@ -16694,6 +16895,8 @@ typedef struct _RTL_USER_PROCESS_PARAMETERS
   unsigned __int64* DefaultThreadpoolCpuSetMasks;
   unsigned long DefaultThreadpoolCpuSetMaskCount;
   unsigned long DefaultThreadpoolThreadMaximum;
+  unsigned long HeapMemoryTypeMask;
+  long __PADDING__[1];
 } RTL_USER_PROCESS_PARAMETERS, *PRTL_USER_PROCESS_PARAMETERS;
 
 typedef struct _SCATTER_GATHER_ELEMENT
@@ -17135,7 +17338,13 @@ typedef enum _SYSTEM_INFORMATION_CLASS
   SystemSupportedProcessorArchitectures2 = 230,
   SystemSingleProcessorRelationshipInformation = 231,
   SystemXfgCheckFailureInformation = 232,
-  MaxSystemInfoClass = 233,
+  SystemIommuStateInformation = 233,
+  SystemHypervisorMinrootInformation = 234,
+  SystemHypervisorBootPagesInformation = 235,
+  SystemPointerAuthInformation = 236,
+  SystemSecureKernelDebuggerInformation = 237,
+  SystemOriginalImageFeatureInformation = 238,
+  MaxSystemInfoClass = 239,
 } SYSTEM_INFORMATION_CLASS, *PSYSTEM_INFORMATION_CLASS;
 
 typedef enum _SYSTEM_POOL_LIMIT_MEM_TYPE
@@ -18334,7 +18543,9 @@ typedef enum _WHEA_ERROR_SOURCE_TYPE
   WheaErrSrcTypeBMC = 14,
   WheaErrSrcTypePMEM = 15,
   WheaErrSrcTypeDeviceDriver = 16,
-  WheaErrSrcTypeMax = 17,
+  WheaErrSrcTypeSea = 17,
+  WheaErrSrcTypeSei = 18,
+  WheaErrSrcTypeMax = 19,
 } WHEA_ERROR_SOURCE_TYPE, *PWHEA_ERROR_SOURCE_TYPE;
 
 typedef enum _WHEA_ERROR_TYPE
@@ -18456,6 +18667,20 @@ typedef enum _WHEA_EVENT_LOG_ENTRY_ID
   WheaEventLogEntryIdMemoryAddDevice = -2147483575,
   WheaEventLogEntryIdMemoryRemoveDevice = -2147483574,
   WheaEventLogEntryIdMemorySummaryFailed = -2147483573,
+  WheaEventLogEntryIdPcieDpcError = -2147483572,
+  WheaEventLogEntryIdCpuBusesInitFailed = -2147483571,
+  WheaEventLogEntryIdPshedPluginInitFailed = -2147483570,
+  WheaEventLogEntryIdFailedAddToDefectList = -2147483569,
+  WheaEventLogEntryIdDefectListFull = -2147483568,
+  WheaEventLogEntryIdDefectListUEFIVarFailed = -2147483567,
+  WheaEventLogEntryIdDefectListCorrupt = -2147483566,
+  WheaEventLogEntryIdBadHestNotifyData = -2147483565,
+  WheaEventLogEntryIdSrasTableNotFound = -2147483564,
+  WheaEventLogEntryIdSrasTableError = -2147483563,
+  WheaEventLogEntryIdSrasTableEntries = -2147483562,
+  WheaEventLogEntryIdRowFailure = -2147483561,
+  WheaEventLogEntryIdCpusFrozen = -2147483552,
+  WheaEventLogEntryIdCpusFrozenNoCrashDump = -2147483551,
   WheaEventLogEntryIdPshedPiTraceLog = -2147221488,
 } WHEA_EVENT_LOG_ENTRY_ID, *PWHEA_EVENT_LOG_ENTRY_ID;
 
@@ -18731,6 +18956,38 @@ typedef struct _WHEA_XPF_NMI_DESCRIPTOR
   unsigned char Enabled;
 } WHEA_XPF_NMI_DESCRIPTOR, *PWHEA_XPF_NMI_DESCRIPTOR;
 
+struct wil::details::close_invoke_helper<0,void __cdecl(_FAST_MUTEX *) noexcept,&wil::details::release_fast_mutex_with_critical_region,_FAST_MUTEX *>
+{
+};
+
+struct wil::details::close_invoke_helper<0,void __cdecl(_FAST_MUTEX *),&ExReleaseFastMutex,_FAST_MUTEX *>
+{
+};
+
+struct wil::details::close_invoke_helper<0,void __cdecl(unsigned __int64 *) noexcept,&wil::details::ReleaseSpinLockFromDpcLevel,unsigned __int64 *>
+{
+};
+
+struct wil::details::close_invoke_helper<0,void __cdecl(wil::details::kspin_lock_saved_irql const &),&wil::details::kspin_lock_saved_irql::Release,wil::details::kspin_lock_saved_irql>
+{
+};
+
+struct wil::details::close_invoke_helper<1,long (__cdecl*)(void *),&ZwClose,void *>
+{
+};
+
+struct wil::details::close_invoke_helper<1,void (__cdecl*)(_EX_PUSH_LOCK *) noexcept,&wil::details::release_push_lock_exclusive,_EX_PUSH_LOCK *>
+{
+};
+
+struct wil::details::close_invoke_helper<1,void (__cdecl*)(_EX_PUSH_LOCK *) noexcept,&wil::details::release_push_lock_shared,_EX_PUSH_LOCK *>
+{
+};
+
+struct wil::details::close_invoke_helper<1,void (__cdecl*)(NDISWATCHDOG__ *),&ndisFreeWatchdog,NDISWATCHDOG__ *>
+{
+};
+
 struct wil::details::kspin_lock_saved_irql
 {
   unsigned __int64* spinLock;
@@ -18897,6 +19154,7 @@ typedef struct __WIL__WNF_TYPE_ID
 struct wil_details_FeatureDescriptor
 {
   union wil_details_FeatureStateCache* featureStateCache;
+  struct wil_details_FeatureReportingCache* featureReportingCache;
   unsigned int featureId;
   unsigned char changeTime;
   unsigned char isAlwaysDisabled;
@@ -18932,7 +19190,7 @@ union wil_details_FeatureStateCache
         unsigned int configuredState : 2; /* bit position: 5 */
         unsigned int needsRefresh : 1; /* bit position: 7 */
         unsigned int hasNotification : 1; /* bit position: 8 */
-        unsigned int isVariant : 1; /* bit position: 9 */
+        unsigned int isWexpConfiguration : 1; /* bit position: 9 */
         unsigned int variant : 6; /* bit position: 10 */
         unsigned int unused : 16; /* bit position: 16 */
       }; /* bitfield */
@@ -18957,6 +19215,12 @@ enum wil_details_FeatureTestStateKind
 {
   wil_details_FeatureTestStateKind_EnabledState = 0,
   wil_details_FeatureTestStateKind_Variant = 1,
+};
+
+struct wil_details_RecordCachedUsage::__l2::Change
+{
+  enum wil_details_ServiceReportingKind kind;
+  unsigned int count;
 };
 
 union wil_details_RecordedState
@@ -18984,7 +19248,7 @@ struct wil_details_RecordUsageResult
   enum wil_details_ServiceReportingKind kindImmediate;
   unsigned int payloadId;
   int ignoredUse;
-  int isVariantConfiguration;
+  int isWexpConfiguration;
 };
 
 union wil_details_ReportedState
@@ -19063,7 +19327,7 @@ enum wil_FeatureEnabledState
 enum wil_FeatureEnabledStateOptions
 {
   wil_FeatureEnabledStateOptions_None = 0,
-  wil_FeatureEnabledStateOptions_VariantConfig = 1,
+  wil_FeatureEnabledStateOptions_WexpConfig = 1,
 };
 
 enum wil_FeatureStage
@@ -19081,7 +19345,7 @@ struct wil_FeatureState
   enum wil_FeatureVariantPayloadKind payloadKind;
   unsigned int payload;
   int hasNotification;
-  int isVariantConfiguration;
+  int isWexpConfiguration;
 };
 
 enum wil_FeatureStore
@@ -19272,6 +19536,13 @@ struct WORKITEM_WITH_IRP
   struct _IRP* Irp;
 };
 
+typedef enum _WPP_RECORDER_TRI_STATE
+{
+  WppRecorderFalse = 0,
+  WppRecorderTrue = 1,
+  WppRecorderUseDefault = 2,
+} WPP_RECORDER_TRI_STATE, *PWPP_RECORDER_TRI_STATE;
+
 typedef enum _WWAN_ACTIVATION_COMMAND
 {
   WwanActivationCommandDeactivate = 0,
@@ -19279,6 +19550,15 @@ typedef enum _WWAN_ACTIVATION_COMMAND
   WwanActivationCommandCancel = 2,
   WwanActivationCommandMax = 3,
 } WWAN_ACTIVATION_COMMAND, *PWWAN_ACTIVATION_COMMAND;
+
+typedef enum _WWAN_ACTIVATION_OPTION
+{
+  WwanActivationOptionDefault = 0,
+  WwanActivationOptionPerNonDefaultURSPRules = 1,
+  WwanActivationOptionPerDefaultURSPRule = 2,
+  WwanActivationOptionPerURSPRules = 3,
+  WwanActivationOptionMax = 4,
+} WWAN_ACTIVATION_OPTION, *PWWAN_ACTIVATION_OPTION;
 
 typedef struct _WWAN_AUTH_AKA_CHALLENGE
 {
@@ -19377,7 +19657,8 @@ typedef enum _WWAN_CONTEXT_TYPE
   WwanContextTypeTethering = 12,
   WwanContextTypeEmergencyCall = 13,
   WwanContextTypeLteAttach = 14,
-  WwanContextTypeMax = 15,
+  WwanContextTypeSupl = 15,
+  WwanContextTypeMax = 16,
 } WWAN_CONTEXT_TYPE, *PWWAN_CONTEXT_TYPE;
 
 typedef struct _WWAN_DEVICE_CAPS
@@ -19442,6 +19723,12 @@ typedef struct _WWAN_LIST_HEADER
   enum _WWAN_STRUCT_TYPE ElementType;
   unsigned long ElementCount;
 } WWAN_LIST_HEADER, *PWWAN_LIST_HEADER;
+
+typedef struct _WWAN_OFFSET_SIZE_ELEMENT
+{
+  unsigned long Offset;
+  unsigned long Size;
+} WWAN_OFFSET_SIZE_ELEMENT, *PWWAN_OFFSET_SIZE_ELEMENT;
 
 typedef enum _WWAN_PACKET_SERVICE_ACTION
 {
@@ -19513,6 +19800,7 @@ typedef struct _WWAN_READY_INFO
   wchar_t SimIccId[21];
   unsigned char CdmaShortMsgSize;
   unsigned long StatusFlags;
+  unsigned long SlotId;
   struct _WWAN_LIST_HEADER TNListHeader;
 } WWAN_READY_INFO, *PWWAN_READY_INFO;
 
@@ -19566,6 +19854,9 @@ typedef struct _WWAN_SET_CONTEXT_STATE
   enum _WWAN_IP_TYPE IPType;
   enum _WWAN_PSMEDIA_PREFERENCE MediaPreference;
   enum _WWAN_CONFIGURATION_SOURCE ConnectionMediaSource;
+  enum _WWAN_ACTIVATION_OPTION ActivationOption;
+  struct _WWAN_SINGLE_NSSAI Snssai;
+  struct _WWAN_OFFSET_SIZE_ELEMENT TrafficParameters;
 } WWAN_SET_CONTEXT_STATE, *PWWAN_SET_CONTEXT_STATE;
 
 typedef struct _WWAN_SET_REGISTER_STATE
@@ -19595,6 +19886,15 @@ typedef enum _WWAN_SIM_CLASS
   WwanSimClassSimRemote = 3,
   WwanSimClassMax = 4,
 } WWAN_SIM_CLASS, *PWWAN_SIM_CLASS;
+
+typedef struct _WWAN_SINGLE_NSSAI
+{
+  unsigned int Bitmasks;
+  unsigned short SliceServiceType;
+  unsigned short MappedSliceServiceType;
+  unsigned int SliceDifferentiator;
+  unsigned int MappedSliceDifferentiator;
+} WWAN_SINGLE_NSSAI, *PWWAN_SINGLE_NSSAI;
 
 typedef enum _WWAN_SMS_CDMA_ENCODING
 {
@@ -19715,8 +20015,11 @@ typedef enum _WWAN_STRUCT_TYPE
   WwanStructMPDPChildInterface = 23,
   WwanStructSNSSAI = 24,
   WwanStructRejectedSNSSAI = 25,
-  WwanStructTAI = 26,
-  WwanStructMax = 27,
+  WwanStructProvisionedContextV2 = 26,
+  WwanStructTaiSinglePlmnNonConsecutive = 27,
+  WwanStructTaiSinglePlmnConsecutive = 28,
+  WwanStructTaiMultiPlmn = 29,
+  WwanStructMax = 30,
 } WWAN_STRUCT_TYPE, *PWWAN_STRUCT_TYPE;
 
 typedef enum _WWAN_VOICE_CLASS
@@ -19850,22 +20153,44 @@ typedef struct _XSTATE_FEATURE
 ? <lambda_1547dc6d0e90217ea0a9abc5d2ee1198>::<lambda_invoker_cdecl>;
 ? <lambda_1ce2f6a77f21132b8bb3b24f4409dc0f>::<lambda_invoker_cdecl>;
 ? <lambda_3ed15a572a362cb111cc1d3010d8268d>::operator();
+? <lambda_41733bf2d8819ac48e8a92fbe4ca966a>::<lambda_invoker_cdecl>;
+? <lambda_41733bf2d8819ac48e8a92fbe4ca966a>::operator();
 ? <lambda_4865fb945cd28a177f845da523c8204e>::operator();
-? <lambda_5943cd26b3388b3d76ca98b9665004c9>::<lambda_invoker_cdecl>;
-? <lambda_5943cd26b3388b3d76ca98b9665004c9>::operator();
 ? <lambda_90693e01559ab5daa9d90de50bdb401e>::operator();
-? <lambda_91df9d05bf67801b2bd22608b8e0e6a4>::<lambda_invoker_cdecl>;
-? <lambda_91df9d05bf67801b2bd22608b8e0e6a4>::operator();
-? <lambda_9edbb2f1ece71295dd9ace7767007f5b>::<lambda_invoker_cdecl>;
 ? <lambda_9f85fcd2040f04b850747010404e3e47>::<lambda_invoker_cdecl>;
+? <lambda_aa0d548783481213e67ffe434bc72bd0>::<lambda_invoker_cdecl>;
 ? <lambda_b246ce06b62e0fe260ebdade75b833fa>::<lambda_invoker_cdecl>;
 ? <lambda_b620d5060cec3b68d836340d92a5e127>::<lambda_invoker_cdecl>;
 ? <lambda_cf61730e764cafb5fbe53142b0d3259b>::operator();
+? <lambda_e707af44feb2328f0567bcb6066c5fb7>::<lambda_invoker_cdecl>;
+? <lambda_e707af44feb2328f0567bcb6066c5fb7>::operator();
 ? <lambda_f04dbbba9fe6a1cf15f4fb42f8ba953a>::<lambda_invoker_cdecl>;
 ? <lambda_f1f475d4aaff1d18d6eae9fe5eca1b95>::operator();
 ? <lambda_f57a5082c6497a0052959e1defd60ec1>::<lambda_invoker_cdecl>;
 ? AddAces;
 ? AddKnobNameToBuffer;
+public: __cdecl AzTelemetry::Details::DriverCallbackBase<struct _NDIS_MINIPORT_BLOCK,int>::DriverCallbackBase<struct _NDIS_MINIPORT_BLOCK,int><int,0,0>(struct _NDIS_MINIPORT_BLOCK const *,int const &);
+? AzTelemetry::Details::DriverCallbackBase<_NDIS_MINIPORT_BLOCK,void>::DriverCallbackBase<_NDIS_MINIPORT_BLOCK,void><void,0,0>;
+public: virtual __cdecl AzTelemetry::MiniportAddDeviceTelemetry::~MiniportAddDeviceTelemetry(void);
+public: __cdecl AzTelemetry::MiniportDevicePnPEventNotify::MiniportDevicePnPEventNotify(struct _NDIS_MINIPORT_BLOCK const *,enum _NDIS_DEVICE_PNP_EVENT);
+? AzTelemetry::MiniportDevicePnPEventNotify::~MiniportDevicePnPEventNotify;
+public: virtual __cdecl AzTelemetry::MiniportDriverUnload::~MiniportDriverUnload(void);
+public: virtual __cdecl AzTelemetry::MiniportFilterResourceRequirements::~MiniportFilterResourceRequirements(void);
+public: __cdecl AzTelemetry::MiniportHaltTelemetry::MiniportHaltTelemetry(struct _NDIS_MINIPORT_BLOCK const *,enum _NDIS_HALT_ACTION);
+? AzTelemetry::MiniportHaltTelemetry::~MiniportHaltTelemetry;
+public: virtual __cdecl AzTelemetry::MiniportRemoveDeviceTelemetry::~MiniportRemoveDeviceTelemetry(void);
+public: virtual __cdecl AzTelemetry::MiniportStartDevice::~MiniportStartDevice(void);
+? AzTelemetryWriteMiniportInitialize;
+? BindingMetrics::BaseMetric::BaseMetric;
+public: __cdecl BindingMetrics::Filter::Filter(enum BindingMetrics::OperationType,struct _NDIS_MINIPORT_BLOCK const *,struct NDIS_BIND_FILTER_LINK const *,struct _GUID const &);
+? BindingMetrics::Filter::~Filter;
+public: __cdecl BindingMetrics::Miniport::Miniport(enum BindingMetrics::OperationType,struct _NDIS_MINIPORT_BLOCK const *,struct _GUID const &);
+? BindingMetrics::Miniport::~Miniport;
+public: __cdecl BindingMetrics::Protocol::Protocol(enum BindingMetrics::OperationType,struct _NDIS_MINIPORT_BLOCK const *,struct NDIS_BIND_PROTOCOL_LINK const *,struct _GUID const &);
+? BindingMetrics::Protocol::~Protocol;
+public: void __cdecl BindingMetrics::UpdateBindings::SetIterations(unsigned __int64);
+public: __cdecl BindingMetrics::UpdateBindings::UpdateBindings(struct _NDIS_MINIPORT_BLOCK const *,struct _GUID const &);
+? BindingMetrics::UpdateBindings::~UpdateBindings;
 public: void __cdecl Bucketizer::UpdateBucketSchema(unsigned __int64);
 ? BuildServicePath;
 __C_specific_handler();
@@ -19926,11 +20251,10 @@ unsigned char __cdecl EthInitializeFilter(unsigned int,unsigned char const *,str
 void __cdecl EthQueryGlobalFilterAddresses(int *,struct _X_FILTER *,unsigned int,unsigned int *,unsigned char (*)[6]);
 void __cdecl EthQueryOpenFilterAddresses(int *,struct _X_FILTER *,struct _NDIS_OPEN_BLOCK *,unsigned int,unsigned int *,unsigned char (*)[6]);
 unsigned long __cdecl EtwEx_tidActivityInfoTransfer(unsigned __int64,struct _EVENT_DESCRIPTOR const *,struct _GUID const *,struct _GUID const *,unsigned char,struct _GUID const *,unsigned long);
-ExAllocateFromNPagedLookasideList();
 ? ExecutionContextKnobCollection::Open;
 protected: virtual long __cdecl ExecutionContextKnobCollection::ReadKnobFromKey(class KRegKey &,struct KnobDescriptor const &,struct KnobState &);
 public: long __cdecl ExecutionContextLibrary::Initialize(void);
-ExFreeToNPagedLookasideList();
+public: __cdecl ExecutionContextLibrary::~ExecutionContextLibrary(void);
 ? ExtractAggregateFieldTypes;
 void __cdecl FILTER_CLEAR_ALL_STATE_FLAGS(struct _NDIS_FILTER_BLOCK *);
 void __cdecl FILTER_CLEAR_FLAG(struct _NDIS_FILTER_BLOCK *,unsigned long);
@@ -19948,6 +20272,10 @@ struct _NDIS_MINIPORT_BLOCK * __cdecl GetMiniportFromReqTracker(struct _NDIS_REQ
 ? GetModuleServiceName;
 ? GetMsgDpc;
 ? GetPkeyName;
+unsigned long __cdecl GetRequestFlags(struct _NDIS_OID_REQUEST const *);
+struct _UNICODE_STRING const * __cdecl GetRequestSourceInstanceName(struct _NDIS_OID_REQUEST const *);
+unsigned long __cdecl GetRequestSwitchID(struct _NDIS_OID_REQUEST const *);
+unsigned long __cdecl GetRequestVPortID(struct _NDIS_OID_REQUEST const *);
 GsDriverEntry();
 __GSHandlerCheck();
 __GSHandlerCheck_SEH();
@@ -19963,7 +20291,7 @@ HviIsHypervisorMicrosoftCompatible();
 public: long __cdecl IfIndexRange::AllocateAnyBit(unsigned long *);
 ? IfIndexRange::Grow;
 void __cdecl IncrementReadConcurrency(struct NDIS_VERIFY_RW_LOCK_EX *);
-InitializeTelemetryAssertsKM();
+InitializeTelemetryAssertsKMByDriverObject();
 InitializeTelemetryAssertsKMWorkerInternal();
 ? InsertEventEntryInLookUpTable;
 _invalid_parameter();
@@ -19972,6 +20300,7 @@ IopDevObjApplyPostCreationSettings();
 ? IsFileObjectForNetworkInterface;
 bool __cdecl IsIfBlockAvailable(struct _GUID const &);
 unsigned char __cdecl IsOidRequestDirectOid(unsigned long);
+bool __cdecl IsOidTelemetryFilterEnabled(unsigned long,struct _NDIS_OID_REQUEST_RESERVED *);
 int __cdecl IsReadLockAlreadyHeldByCurrentThread(struct _NDIS_RW_LOCK *);
 ? KAcquireSpinLock::~KAcquireSpinLock;
 public: static class KHistogram * __cdecl KHistogram::Create(unsigned __int64,unsigned __int64,unsigned long);
@@ -20018,6 +20347,7 @@ private: long __cdecl KnobNamespace::SetKnobStoreValue(wchar_t const *,unsigned 
 private: long __cdecl KnobNamespace::UpdateKnobs(bool *);
 private: void __cdecl KnobNamespace::UpdateSingleKnob(class KnobCollection *,struct KnobDescriptor const *,struct KnobState *);
 public: __cdecl KnobNamespace::~KnobNamespace(void);
+public: __cdecl KnobTransaction::~KnobTransaction(void);
 public: __cdecl KPushLock::KPushLock(void);
 public: void __cdecl KPushLockManualConstruct::Initialize(void);
 ? KRef<NDIS_BIND_FILTER_DRIVER>::`scalar deleting destructor';
@@ -20051,6 +20381,7 @@ public: long __cdecl KRegKey::QueryValueUlong(wchar_t const *,unsigned long *);
 public: long __cdecl KRegKey::QueryValueUshort(wchar_t const *,unsigned short *);
 public: long __cdecl KRegKey::SetValueUlong(wchar_t const *,unsigned long);
 public: long __cdecl KRegKey::SetValueUlong64(wchar_t const *,unsigned __int64);
+public: __cdecl KRegKey::~KRegKey(void);
 public: bool __cdecl KRundownBase::TryAcquire(void);
 public: __cdecl KRundownHolder::~KRundownHolder(void);
 ? KStackStorage<`ndisSynchronousOidRequestInternal'::`2'::NDIS_SYNCHRONOUS_OID_CALLFRAME,7>::Pop;
@@ -20067,9 +20398,11 @@ long __cdecl LoadDriver(struct _UNICODE_STRING *);
 long __cdecl LookupNetSetupPropertyKey(wchar_t const *,struct _NETSETUPPROPKEY &);
 ? LookUpTableFlushComplete;
 ? LookUpTableFlushPartial;
+public: __cdecl LwfBindProperties::~LwfBindProperties(void);
 class wistd::unique_ptr<struct _NDIS_PM_PACKET_PATTERN,struct KFreePool<struct _NDIS_PM_PACKET_PATTERN> > __cdecl MakeExtendedPoolPtr<struct _NDIS_PM_PACKET_PATTERN>(unsigned long,unsigned long,unsigned long *);
 class wistd::unique_ptr<struct _NDIS_PM_WOL_PATTERN,struct KFreePool<struct _NDIS_PM_WOL_PATTERN> > __cdecl MakeExtendedPoolPtr<struct _NDIS_PM_WOL_PATTERN>(unsigned long,unsigned long,unsigned long *);
 class wistd::unique_ptr<struct _NDIS_WOL_XLATION_CONTEXT,struct KFreePool<struct _NDIS_WOL_XLATION_CONTEXT> > __cdecl MakePoolPtr<struct _NDIS_WOL_XLATION_CONTEXT>(unsigned long);
+class wistd::unique_ptr<struct NDIS_IF_UPDATE_CONTEXT,struct KFreePool<struct NDIS_IF_UPDATE_CONTEXT> > __cdecl MakePoolPtr<struct NDIS_IF_UPDATE_CONTEXT>(unsigned long);
 class wistd::unique_ptr<struct _NDIS_SG_DMA_BLOCK,struct KFreePoolNP<struct _NDIS_SG_DMA_BLOCK> > __cdecl MakePoolPtrNP<struct _NDIS_SG_DMA_BLOCK>(unsigned long);
 class wistd::unique_ptr<struct _MDL,struct KFreePool<struct _MDL> > __cdecl MakeSizedPoolPtr<struct _MDL>(unsigned long,unsigned __int64);
 class wistd::unique_ptr<struct _NDIS_PM_WOL_PATTERN,struct KFreePool<struct _NDIS_PM_WOL_PATTERN> > __cdecl MakeSizedPoolPtr<struct _NDIS_PM_WOL_PATTERN>(unsigned long,unsigned __int64);
@@ -20130,14 +20463,19 @@ McTemplateK0zq_EtwWriteTransfer();
 unsigned char __cdecl mem::ReadAcquire<unsigned char,void>(unsigned char const volatile *);
 unsigned char __cdecl mem::ReadNoFence<unsigned char,void>(unsigned char const volatile *);
 unsigned long __cdecl mem::ReadNoFence<unsigned long,void>(unsigned long const volatile *);
+void __cdecl mem::WriteNoFence<unsigned char,void>(unsigned char volatile *,unsigned char);
 void __cdecl mem::WriteRelease<struct _NDIS_PCW_DATA_BLOCK *,void>(struct _NDIS_PCW_DATA_BLOCK * volatile *,struct _NDIS_PCW_DATA_BLOCK *);
 memcmp();
 memcpy();
 memcpy_s();
 memmove();
 memset();
+memset$thunk$772440563353939046();
 __memset_query();
 __memset_repmovs();
+__memset_spec_ermsb();
+__memset_spec_ermsb_repmovsb();
+__memset_spec_plain();
 Microsoft_Windows_Networking_Correlation_EtwEnableCallback();
 MicrosoftTelemetryAssertTriggeredNoArgsKM();
 MicrosoftTelemetryAssertTriggeredWorker();
@@ -20239,17 +20577,17 @@ public: __cdecl NDIS_PD_GLOBAL::NDIS_PD_GLOBAL(void);
 public: __cdecl NDIS_PD_MEM_BLOCK::~NDIS_PD_MEM_BLOCK(void);
 public: __cdecl NDIS_PD_QUEUE_TRACKER::NDIS_PD_QUEUE_TRACKER(void);
 public: void __cdecl _NDIS_PROTOCOL_BLOCK::NotifyBindComplete(void);
-? NDIS_RESTART_INFORMATION::~NDIS_RESTART_INFORMATION;
+public: __cdecl NDIS_RESTART_INFORMATION::~NDIS_RESTART_INFORMATION(void);
 ? NDIS_STACK_RESERVED_FROM_PACKET;
 ? ndisAcquireMiniportPnPEventLock;
 void __cdecl ndisAcquireReadLockPerCpuRefCnt(struct _NDIS_RW_LOCK *,unsigned long *);
 int __cdecl ndisAcquireReadLockSharedRefCnt(struct _NDIS_RW_LOCK *);
-NdisAcquireReadWriteLock();
+? NdisAcquireReadWriteLock;
 void __cdecl ndisAcquireReadWriteLockX(struct _NDIS_RW_LOCK *,unsigned char,struct _LOCK_STATE *,unsigned char);
 NdisAcquireRWLockRead();
 ? NdisAcquireRWLockWrite;
 NdisAcquireSpinLock();
-void __cdecl ndisAcquireWriteLockPerCpuRefCnt(struct _NDIS_RW_LOCK *,unsigned long *,unsigned __int64);
+? ndisAcquireWriteLockPerCpuRefCnt;
 int __cdecl ndisAcquireWriteLockSharedRefCnt(struct _NDIS_RW_LOCK *);
 NdisActiveGroupCount();
 ? ndisAddDevice;
@@ -20287,7 +20625,7 @@ NdisAllocateMemoryWithTagPriority();
 ? NdisAllocateNetBuffer;
 ? NdisAllocateNetBufferAndNetBufferList;
 ? NdisAllocateNetBufferList;
-NdisAllocateNetBufferListContext();
+? NdisAllocateNetBufferListContext;
 ? NdisAllocateNetBufferListPool;
 ? NdisAllocateNetBufferMdlAndData;
 ? NdisAllocateNetBufferPool;
@@ -20350,6 +20688,7 @@ void __cdecl ndisArmWatchdog(struct NDISWATCHDOG__ *,void *,unsigned long,void *
 ? ndisAssignSGListLookasideList;
 ? ndisAttachFilter;
 ? ndisAttachFilterInner;
+? ndisAzTelemetryOidDelivered<_NDIS_MINIPORT_BLOCK>;
 void __cdecl ndisBindBuilderCleanup(void);
 ? NdisBindBuilderGlobal::NdisBindBuilderGlobal;
 public: __cdecl NdisBindBuilderGlobal::~NdisBindBuilderGlobal(void);
@@ -20385,7 +20724,6 @@ NdisBuildScatterGatherList();
 void __cdecl ndisCalculateIdealNblTrackerHistoryBufferSize(void);
 int __cdecl ndisCalculateRssParametersSize(struct _NDIS_RECEIVE_SCALE_PARAMETERS *,unsigned long *);
 ? ndisCalculateRssProcessorCount;
-unsigned long __cdecl ndisCalculateRssV2ParametersFlags(struct _NDIS_RECEIVE_SCALE_PARAMETERS *);
 void __cdecl ndisCallNextDatapathHandler<2,void * &,void (__cdecl*&)(void *,struct _NET_BUFFER_LIST *,unsigned long,unsigned long,unsigned long),void * &,struct _NET_BUFFER_LIST * &,unsigned long &,unsigned long &,unsigned long &>(void * &,void (__cdecl*&)(void *,struct _NET_BUFFER_LIST *,unsigned long,unsigned long,unsigned long),void * &,struct _NET_BUFFER_LIST * &,unsigned long &,unsigned long &,unsigned long &);
 ? ndisCallReceiveHandler;
 void __cdecl ndisCancelDequeuedDirectOidRequests(struct _NDIS_MINIPORT_BLOCK *,struct _LIST_ENTRY *);
@@ -20522,7 +20860,7 @@ void __cdecl ndisConvertInterruptTimeToLocalTime(unsigned __int64,union _LARGE_I
 ? ndisConvertNdisStatusToNtStatusForIoctl;
 ? NdisConvertNtStatusToNdisStatus;
 int __cdecl ndisConvertOffloadValueToString(struct _UNICODE_STRING *,unsigned long);
-? ndisConvertPMCapabilitiesToPnp;
+void __cdecl ndisConvertPMCapabilitiesToPnp(struct _NDIS_PM_CAPABILITIES *,struct _NDIS_PNP_CAPABILITIES *);
 void __cdecl ndisConvertPnpCapabilitiesToPM(struct _NDIS_PNP_CAPABILITIES *,struct _NDIS_PM_CAPABILITIES *);
 void __cdecl ndisConvertWakeUpEnableToPMConfig(unsigned long,struct _NDIS_PM_PARAMETERS *,unsigned short);
 NdisCoOidRequest();
@@ -20536,9 +20874,9 @@ void __cdecl ndisCopyNBLInfoToPacket(struct _NET_BUFFER_LIST *,struct _NDIS_PACK
 void __cdecl ndisCopyNdisOffload(struct _NDIS_OFFLOAD *,struct _NDIS_OFFLOAD *,unsigned int,unsigned int *,unsigned char);
 void __cdecl ndisCopyPacketInfoToNBL(struct _NDIS_PACKET *,struct _NET_BUFFER_LIST *,enum _NDIS_XLATE_TYPE);
 ? ndisCopyPeriodicReceiveNbl;
-NdisCopyReceiveNetBufferListInfo();
+? NdisCopyReceiveNetBufferListInfo;
 void __cdecl ndisCopyReceiveQueueInfo(struct _NDIS_RECEIVE_QUEUE_INFO *,struct _NDIS_RECEIVE_QUEUE_BLOCK *);
-NdisCopySendNetBufferListInfo();
+? NdisCopySendNetBufferListInfo;
 NdisCoRequest();
 NdisCoRequestComplete();
 NdisCoSendNetBufferLists();
@@ -20610,6 +20948,7 @@ unsigned char __cdecl ndisDereferenceRef(struct _REFERENCE_EX *,unsigned char);
 void __cdecl ndisDereferenceSap(struct _NDIS_CO_SAP_BLOCK *);
 void __cdecl ndisDereferenceVcPtr(struct _NDIS_CO_VC_PTR_BLOCK *);
 ? NdisDereferenceWithTag;
+? ndisDereferenceWithTagCompact;
 NdisDeregisterDeviceEx();
 NdisDeregisterPoll();
 NdisDeregisterProtocol();
@@ -20642,7 +20981,7 @@ enum _IO_ALLOCATION_ACTION __cdecl ndisDmaExecutionRoutine(struct _DEVICE_OBJECT
 ? ndisDmaTelemetryKnobsUpdateRoutine;
 ? ndisDmaTelemetryUpdateBucketSchema;
 ? ndisDoCancelDirectOidRequest;
-int __cdecl ndisDoDirectOidRequest(struct _NDIS_OID_REQUEST *,struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_FILTER_BLOCK *,struct _NDIS_FILTER_BLOCK *);
+? ndisDoDirectOidRequest;
 ? ndisDoesSystemSupportSriov;
 void __cdecl ndisDoLoopbackNetBufferList(struct _NDIS_MINIPORT_BLOCK *,struct _NET_BUFFER *,struct _NET_BUFFER_LIST *,unsigned long,unsigned long);
 ? ndisDoOidRequests;
@@ -20657,6 +20996,7 @@ void __cdecl ndisDrainWatchdog(struct NDISWATCHDOG__ *);
 ? ndisDriverReinit;
 ? ndisDriverSystemDispatch;
 bool __cdecl ndisDriverVerifierNdisFlagEnabled(void);
+? ndisDriverVerifierNdisFlagEnabledForCaller;
 long __cdecl ndisDummyHandler(struct _DEVICE_OBJECT *,struct _NDIS_OBJECT_HEADER *,struct _IRP *);
 long __cdecl ndisDummyIrpHandler(struct _DEVICE_OBJECT *,struct _IRP *);
 ? ndisEmptyPeriodicReceivesQueue;
@@ -20718,7 +21058,7 @@ unsigned char __cdecl ndisFilterIndicatePMOffloadReject(struct _NDIS_FILTER_BLOC
 void __cdecl ndisFilterIndicateReceiveNetBufferLists(void *,struct _NET_BUFFER_LIST *,unsigned long,unsigned long,unsigned long);
 unsigned char __cdecl ndisFilterIndicateWoLPatternReject(struct _NDIS_FILTER_BLOCK *,struct _NDIS_STATUS_INDICATION *);
 void __cdecl ndisFilterSendNetBufferLists(void *,struct _NET_BUFFER_LIST *,unsigned long,unsigned long);
-void __cdecl ndisFilterWaitForPnPComplete(struct _NDIS_FILTER_BLOCK *);
+? ndisFilterWaitForPnPComplete;
 unsigned char __cdecl ndisFilterXStateClearFlag(struct _NDIS_FILTER_BLOCK *,unsigned char);
 void __cdecl ndisFilterXStateSetFlag(struct _NDIS_FILTER_BLOCK *,unsigned char);
 ? ndisFindAdjacentFilters;
@@ -20782,7 +21122,7 @@ NdisFreeMemoryWithTagPriority();
 ? ndisFreeNblToNPagedPool;
 ? NdisFreeNetBuffer;
 ? NdisFreeNetBufferList;
-NdisFreeNetBufferListContext();
+? NdisFreeNetBufferListContext;
 ? NdisFreeNetBufferListPool;
 NdisFreeNetBufferPool();
 ? ndisFreeOpenBlock;
@@ -20830,7 +21170,6 @@ void __cdecl ndisGenericWaitWakeCallback(struct _DEVICE_OBJECT *,unsigned char,u
 ? ndisGetAdapterRssInfo;
 ? NdisGetAndReferenceCompartmentJobObject;
 ? ndisGetAnyActiveRefTag;
-struct _PROCESSOR_NUMBER __cdecl ndisGetAnyProcInsideNode(unsigned short);
 void __cdecl ndisGetBindLinkNameForTracing(std::nullptr_t,struct NDIS_PNPTRACE_LOCALS *);
 void __cdecl ndisGetBindLinkNameForTracing(struct _NDIS_MINIPORT_BLOCK *,struct NDIS_PNPTRACE_LOCALS *);
 void __cdecl ndisGetBindLinkNameForTracing(struct NDIS_BIND_FILTER_LINK *,struct NDIS_PNPTRACE_LOCALS *);
@@ -20926,6 +21265,7 @@ void __cdecl ndisHandleFilterHandlersChange(struct _NDIS_MINIPORT_BLOCK *);
 ? ndisHandleUModePnPOp;
 ? ndisHistogramDeleteAllEntries;
 ? ndisHistogramRunOnceCallback;
+? ndisHiveLoadCallback;
 void __cdecl ndisIdleCancelWorkItem(struct _NDIS_WORK_ITEM *,void *);
 void __cdecl ndisIdleWaitWakeCallback(struct _DEVICE_OBJECT *,unsigned char,union _POWER_STATE,void *,struct _IO_STATUS_BLOCK *);
 ? NdisIfAddIfStackEntry;
@@ -20967,7 +21307,7 @@ struct _NDIS_IF_BLOCK * __cdecl ndisIfFindNextInterfaceByNetLuid(union _NET_LUID
 ? ndisIfFindNextRcvAddress;
 ? ndisIfFindRcvAddress;
 ? ndisIfFindStackEntry;
-void __cdecl ndisIfFreeIfIndex(unsigned long);
+? ndisIfFreeIfIndex;
 ? NdisIfFreeNetLuidIndex;
 long __cdecl ndisIfGetCompartmentNamespaceGuid(unsigned int,struct _GUID *);
 ? ndisIfGetDefaultNetworkGuid;
@@ -21020,8 +21360,10 @@ long __cdecl ndisIfThreadObjectSubsystemInitialize(void);
 ? ndisIfTryAllocatingSuggestedIndex;
 bool __cdecl ndisIfUpdateCurrentMacAddress(struct _NDIS_IF_BLOCK *,struct _IF_PHYSICAL_ADDRESS_LH const *);
 void __cdecl ndisIfUpdateCurrentMacAddressAndNotify(struct _NDIS_IF_BLOCK *,struct _IF_PHYSICAL_ADDRESS_LH const *);
+? ndisIfUpdateExternalInterface;
 void __cdecl ndisIfUpdateFilterIfStack(struct _NDIS_MINIPORT_BLOCK *);
 ? ndisIfUpdateIfBlockFromPersistedState;
+NdisIfUpdateInterface();
 ? ndisIfUpdateInterfaceFromPersistentStore;
 void __cdecl ndisIfUpdateInterfaceHiddenFlag(struct _NDIS_IF_BLOCK *,bool);
 long __cdecl ndisIfUpdateInterfaceIsolationNetworkId(struct _NDIS_IF_BLOCK *,struct _GUID const &,unsigned char);
@@ -21032,6 +21374,7 @@ bool __cdecl ndisIfUpdateL2MtuSize(struct _NDIS_IF_BLOCK *,unsigned long);
 void __cdecl ndisIfUpdateL2MtuSizeAndNotify(struct _NDIS_IF_BLOCK *,unsigned long);
 ? ndisIfUpdateLoopbackInterfaceOnNetwork;
 int __cdecl ndisIfUpdatePersistedInterfaceInfo(unsigned char *,unsigned long,unsigned long,unsigned char *);
+? ndisIfUpdateSingleField;
 ? ndisIfUpdateStringIfNeeded;
 ? ndisIfWriteBackPersistedInterface;
 ? ndisIfWriteRegistry;
@@ -21085,8 +21428,10 @@ void __cdecl ndisInitialBindCompleted(struct _NDIS_MINIPORT_BLOCK *);
 ? ndisInitializeAdapter;
 ? ndisInitializeConfiguration;
 void __cdecl ndisInitializeDirectedWolPattern(unsigned char *,unsigned long,struct _RTL_BITMAP *,unsigned char * *);
+void __cdecl ndisInitializeDmaSubsystem(void);
 NdisInitializeEvent();
 ? ndisInitializeMiniportRestartAttributes;
+void __cdecl ndisInitializeNblPoolGlobal(void);
 void __cdecl ndisInitializeNetPnPEvent(struct _NET_PNP_EVENT_NOTIFICATION *,struct _KEVENT *);
 ? ndisInitializePeriodicReceives;
 ? ndisInitializePerProcessorSlotAllocator;
@@ -21104,7 +21449,7 @@ NdisInitiateOffload();
 void __cdecl ndisInitModeTimeoutDpc(void *,void *,void *,void *);
 void __cdecl __based(PAGE) ndisInitModeTimeoutWorkItem(struct _NDIS_WORK_ITEM *,void *);
 void __cdecl ndisInitPDQAWM(struct NDIS_PD_QUEUE_TRACKER *);
-? ndisInsertInWorkQueue;
+void __cdecl ndisInsertInWorkQueue(struct _NDIS_WORK_QUEUE *,struct _WORK_QUEUE_ITEM *,unsigned char);
 void __cdecl ndisInsertPatternListEntry(struct _SINGLE_LIST_ENTRY *,struct _NDIS_PACKET_PATTERN_ENTRY *);
 NdisInterlockedAddUlong();
 NdisInterlockedDecrement();
@@ -21187,6 +21532,7 @@ unsigned char __cdecl ndisIsCompartmentEnumerable(struct _NDIS_IF_COMPARTMENT_BL
 ? ndisIsFilterVerified;
 ? ndisIsLwfBindable;
 ? ndisIsLwfBindingEnabled;
+? ndisIsMacAddressHidden;
 unsigned char __cdecl ndisIsMiniportReady(struct _NDIS_MINIPORT_BLOCK *);
 ? ndisIsMiniportStarted;
 ? ndisIsMiniportVerified;
@@ -21231,6 +21577,7 @@ void __cdecl ndisLiveBugCheck(unsigned __int64,unsigned __int64,unsigned __int64
 ? ndisLiveDumpAddSecondaryData;
 ? ndisLoadNamedFilterAltitudes;
 ? ndisLoadNetworkInterfaceFromPersistedState;
+? ndisLoadNotifyRegister;
 ? ndisLogMiniportEvent;
 ? ndisLowPowerEpochCallback;
 ? ndisLwfSortPredicate;
@@ -21337,10 +21684,10 @@ void __cdecl ndisMDeRegisterPDCTaskClient(struct _NDIS_MINIPORT_BLOCK *);
 NdisMDeregisterScatterGatherDma();
 NdisMDeregisterWdiMiniportDriver();
 int __cdecl ndisMDirectOidRequest(void *,struct _NDIS_OID_REQUEST *);
-NdisMDirectOidRequestComplete();
+? NdisMDirectOidRequestComplete;
 void __cdecl ndisMDispatchReceiveNetBufferLists(void *,struct _NET_BUFFER_LIST *,unsigned long,unsigned long,unsigned long);
 ? ndisMDispatchReceiveNetBufferListsWithLock;
-int __cdecl ndisMDoDirectOidRequest(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OID_REQUEST *,unsigned char);
+? ndisMDoDirectOidRequest;
 ? ndisMDoesMiniportNeedCoNdisNdProxy;
 ? ndisMDoMiniportOp;
 ? ndisMDoOidRequest;
@@ -21389,7 +21736,6 @@ NdisMGetVirtualDeviceLocation();
 NdisMGetVirtualFunctionBusData();
 NdisMGetVirtualFunctionLocation();
 void __cdecl ndisMHaltMiniport(struct _NDIS_MINIPORT_BLOCK *);
-int __cdecl ndisMHandleNDKPnPEvents(struct _NDIS_MINIPORT_BLOCK *,struct _NET_PNP_EVENT_NOTIFICATION *);
 NdisMIdleNotificationComplete();
 NdisMIdleNotificationCompleteEx();
 NdisMIdleNotificationConfirm();
@@ -21452,7 +21798,6 @@ void __cdecl ndisMInvokeCancelOidRequest(struct _NDIS_MINIPORT_BLOCK *,void *);
 unsigned char __cdecl ndisMInvokeCheckForHang(struct _NDIS_MINIPORT_BLOCK *);
 ? ndisMInvokeDevicePnPEventNotifyHandler;
 ? ndisMInvokeDevicePowerNotify;
-? ndisMInvokeDirectOidRequest;
 void __cdecl ndisMInvokeDriverUnload(struct _NDIS_M_DRIVER_BLOCK *,struct _DRIVER_OBJECT *);
 int __cdecl ndisMInvokeFilterResourceRequirements(struct _NDIS_MINIPORT_BLOCK *,struct _IRP *);
 ? ndisMInvokeHalt;
@@ -21476,12 +21821,13 @@ void __cdecl ndisMLoopbackNetBufferLists(struct _NDIS_MINIPORT_BLOCK *,struct _N
 unsigned char __cdecl ndisMLoopbackPacketX(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_PACKET *);
 NdisMMapIoSpace();
 NdisMNetPnPEvent();
-void __cdecl ndisMNotifyMachineName(struct _NDIS_MINIPORT_BLOCK *);
+? ndisMNotifyMachineName;
 NdisMOffloadEventIndicate();
 ? ndisMOidRequest;
 NdisMOidRequestComplete();
-void __cdecl ndisMOidRequestCompleteInternal(void *,struct _NDIS_OID_REQUEST *,int,struct _NDIS_OID_REQUEST *);
+? ndisMOidRequestCompleteInternal;
 int __cdecl ndisMOidRequestToRequest(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OID_REQUEST *);
+NdisMonitorReceiveDrop();
 ? ndisMOpenAdapter;
 void __cdecl ndisMoveLinkedList(struct _LIST_ENTRY *,struct _LIST_ENTRY *);
 ? ndisMoveUnicodeStringToNdisVarDataDesc;
@@ -21491,7 +21837,7 @@ void __cdecl ndisMPauseMiniport(struct _NDIS_MINIPORT_BLOCK *);
 NdisMPciAssignResources();
 ? ndisMPeriodicPendingReceives;
 ? ndisMPeriodicReceivesResources;
-void __cdecl ndisMpHookDefaultDirectOidRequestComplete(void *,struct NDIS_MINIPORT_HOOK_ADAPTER_HANDLE__ *,struct NDIS_MINIPORT_ADAPTER_HANDLE__ *,struct _NDIS_OID_REQUEST *,int);
+? ndisMpHookDefaultDirectOidRequestComplete;
 void __cdecl ndisMpHookDefaultIndicateStatus(void *,struct NDIS_MINIPORT_HOOK_ADAPTER_HANDLE__ *,struct NDIS_MINIPORT_ADAPTER_HANDLE__ *,struct _NDIS_STATUS_INDICATION *);
 void __cdecl ndisMpHookDefaultOidRequestComplete(void *,struct NDIS_MINIPORT_HOOK_ADAPTER_HANDLE__ *,struct NDIS_MINIPORT_ADAPTER_HANDLE__ *,struct _NDIS_OID_REQUEST *,int);
 class KRundownPtr<struct NDIS_MINIPORT_HOOK_PROVIDER_INFO const > __cdecl ndisMpHookGetHook(enum _NDIS_MINIPORT_HOOK_DRIVER_TYPE);
@@ -21675,7 +22021,7 @@ void __cdecl ndisNblTrackerRecordEventInternal(struct _NET_BUFFER_LIST *,struct 
 ? NdisNblTrackerRegisterComponent;
 void __cdecl ndisNblTrackerReportStuckNbl(struct _NDIS_NBL_TRACKER *);
 void __cdecl ndisNblTrackerSetSqmFlag(struct _NDIS_NBL_TRACKER *);
-void __cdecl ndisNblTrackerTransferOneNbl(struct _NET_BUFFER_LIST *,union _NDIS_NBL_TRACKER_OWNER,struct NDIS_NBL_TRACKER_HANDLE__ *,union _NDIS_NBL_TRACKER_OWNER,void *,__int64 *,__int64 *);
+? ndisNblTrackerTransferOneNbl;
 NdisNblTrackerTransferOwnership();
 ? ndisNblTrackerTransferOwnershipInternal;
 void __cdecl ndisNblTrackerTransferOwnershipSingleNbl(struct _NET_BUFFER_LIST *,struct NDIS_NBL_TRACKER_HANDLE__ *,struct NDIS_NBL_TRACKER_HANDLE__ *,unsigned char);
@@ -21692,11 +22038,10 @@ void __cdecl ndisNDKCleanup(struct _NDIS_MINIPORT_BLOCK *);
 unsigned char __cdecl ndisNDKGlobalDisabled(void);
 long __cdecl ndisNDKHandleWmiChangeRequest(struct _NDIS_MINIPORT_BLOCK *,unsigned char);
 ndisNdkPcwAddCounter();
-ndisNdkPcwCollectData();
 ndisNdkPcwCollectMiniportStats();
 ndisNdkPcwEnumerateInstances();
 void __cdecl ndisNdkPcwMiniportCleanup(void *);
-long __cdecl ndisNdkPcwProviderCallback(enum _PCW_CALLBACK_TYPE,union _PCW_CALLBACK_INFORMATION *,void *);
+? ndisNdkPcwProviderCallback;
 ndisNdkPcwRemoveCounter();
 void __cdecl ndisNDKWmiGetAdapterCapabilities(struct _NDIS_MINIPORT_BLOCK *,unsigned long,struct _NDIS_WMI_NDK_CAPABILITIES *);
 int __cdecl ndisNetBufferToPacket(struct _NET_BUFFER *,unsigned char,struct _NDIS_PACKET * *);
@@ -21749,6 +22094,7 @@ long __cdecl ndisNsiGetIfRcvAddress(struct _NM_REQUEST_GET_PARAMETER *);
 ? ndisNsiGetInterfaceRosInformation;
 ? ndisNsiGetInterfaceRwInformation;
 long __cdecl ndisNsiGetNetworkInfo(struct _NM_REQUEST_GET_PARAMETER *);
+? ndisNsiGetPackageFamilyName;
 struct _NDIS_IF_BLOCK * __cdecl ndisNsiGetTopIfBlockFromMiniport(struct _NDIS_MINIPORT_BLOCK *);
 ? ndisNsiNotifyClientCompartmentChange;
 void __cdecl ndisNsiNotifyClientInterfaceChange(struct _NDIS_IF_BLOCK *,enum _NSI_NOTIFICATION,struct _NSI_SINGLE_PARAM_DESC *,enum _NDIS_NSI_OBJECT_INDEX);
@@ -21815,7 +22161,7 @@ void __cdecl ndisOidPostRcvFilterMoveFilter(struct _NDIS_REQ_TRACKER *);
 void __cdecl ndisOidPostRcvFilterQueueParameters(struct _NDIS_REQ_TRACKER *);
 void __cdecl ndisOidPostRcvFilterSetFilter(struct _NDIS_REQ_TRACKER *);
 void __cdecl ndisOidPostRemovePMProtocolOffload(struct _NDIS_REQ_TRACKER *);
-? ndisOidPostRSSParameters;
+void __cdecl ndisOidPostRSSParameters(struct _NDIS_REQ_TRACKER *);
 void __cdecl ndisOidPostRSSv2Parameters(struct _NDIS_REQ_TRACKER *);
 void __cdecl ndisOidPostStatistics(struct _NDIS_REQ_TRACKER *);
 void __cdecl ndisOidPostTaskOffload(struct _NDIS_REQ_TRACKER *);
@@ -21918,7 +22264,7 @@ unsigned char __cdecl ndisOidPreReceiveFilterCaps(struct _NDIS_REQ_TRACKER *);
 unsigned char __cdecl ndisOidPreRemovePMProtocolOffload(struct _NDIS_REQ_TRACKER *);
 unsigned char __cdecl ndisOidPreRemoveWakeUpPattern(struct _NDIS_REQ_TRACKER *);
 ? ndisOidPreRSSCaps;
-? ndisOidPreRSSParameters;
+unsigned char __cdecl ndisOidPreRSSParameters(struct _NDIS_REQ_TRACKER *);
 unsigned char __cdecl ndisOidPreRSSv2Parameters(struct _NDIS_REQ_TRACKER *);
 unsigned char __cdecl ndisOidPreSetHDSplitParameters(struct _NDIS_REQ_TRACKER *);
 unsigned char __cdecl ndisOidPreSetPortAuthentication(struct _NDIS_REQ_TRACKER *);
@@ -21959,7 +22305,7 @@ void __cdecl ndisPauseFilter(struct _NDIS_MINIPORT_BLOCK *,struct NDIS_BIND_FILT
 ? ndisPauseProtocol;
 void __cdecl ndisPauseProtocolInner(struct _NDIS_OPEN_BLOCK *,unsigned long);
 ? ndisPcwAddCounter;
-void __cdecl ndisPcwAddCyclesToCycleCounter(struct NDIS_PCW_CONTEXT *,unsigned long,unsigned __int64,unsigned __int64);
+void __cdecl ndisPcwAddEvent(struct NDIS_PCW_CONTEXT *,unsigned __int64,unsigned __int64);
 long __cdecl ndisPcwAddSinglePhysicalInstance(struct _PCW_BUFFER *,struct _NDIS_MINIPORT_BLOCK *);
 long __cdecl ndisPcwCollectPhysicalData(struct _PCW_BUFFER *);
 ? ndisPcwDeleteConsumer;
@@ -22069,10 +22415,14 @@ void __cdecl ndisPeriodicReceivesLearning(struct _NDIS_MINIPORT_BLOCK *,unsigned
 ? ndisPeriodicReceivesTimer;
 void __cdecl ndisPeriodicReceivesWorker(void *);
 ? ndisPhysicalNicPcwProviderCallback;
+ndisPktMonComponentNotify();
 ? ndisPktMonFilterRegister;
 ? ndisPktMonMiniportRegister;
 ? ndisPktMonOpenRegister;
-void __cdecl ndisPktMonRegisterComponentsCallback(void);
+void __cdecl ndisPktMonRegisterAllFilters(void);
+void __cdecl ndisPktMonRegisterAllMiniports(void);
+void __cdecl ndisPktMonRegisterAllOpens(void);
+ndisPktMonRegisterComponentsCallback();
 int __cdecl ndisPMAddProtocolOffload(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_FILTER_BLOCK *,struct _NDIS_OID_REQUEST *);
 void __cdecl ndisPMAddRemoveAsync(void *);
 int __cdecl ndisPMAddWOLPattern(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_FILTER_BLOCK *,struct _NDIS_OID_REQUEST *);
@@ -22137,8 +22487,8 @@ void __cdecl ndisPostSetAddWakeUpPattern(struct _NDIS_REQ_TRACKER *);
 void __cdecl ndisPostSetMiniportRSSParameters(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OID_REQUEST *,int);
 void __cdecl ndisPostSetMiniportRSSv2Parameters(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OID_REQUEST *,int);
 ? ndisPostSetOpenPacketFilter;
-? ndisPostSetOpenRSSParameters;
-? ndisPostSetOpenRSSParametersHelper;
+void __cdecl ndisPostSetOpenRSSParameters(struct _NDIS_OPEN_BLOCK *,struct _NDIS_OID_REQUEST *,int);
+void __cdecl ndisPostSetOpenRSSParametersHelper(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OPEN_BLOCK *,struct _NDIS_RECEIVE_SCALE_PARAMETERS *);
 void __cdecl ndisPostSetOpenRSSv2Parameters(struct _NDIS_OPEN_BLOCK *,struct _NDIS_OID_REQUEST *,int);
 void __cdecl ndisPostSetRemoveWakeUpPattern(struct _NDIS_REQ_TRACKER *);
 ? ndisPowerDispatch;
@@ -22148,6 +22498,8 @@ void __cdecl ndisPowerIrpWorker(void *);
 ? ndisPowerStateCallback;
 void __cdecl ndisPowerSuspendRequestComplete(struct _DEVICE_OBJECT *,unsigned char,union _POWER_STATE,void *,struct _IO_STATUS_BLOCK *);
 ? ndisPplAllocate;
+void * __cdecl ndisPplAllocateFromSpecialPool(struct _NDIS_POOL_HEADER const *);
+? ndisPplConfigureVerifier;
 struct PPL_POOL_HANDLE__ * __cdecl ndisPplCreatePool(unsigned long,unsigned __int64,unsigned long,unsigned short,unsigned char);
 void __cdecl ndisPplDestroyPool(struct PPL_POOL_HANDLE__ *,unsigned long);
 ? ndisPplLazyInitializeLookaside;
@@ -22196,7 +22548,7 @@ int __cdecl ndisQueryMiniportOffloadCaps(struct _NDIS_MINIPORT_BLOCK *,struct _N
 int __cdecl ndisQueryMiniportPacketFilter(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OID_REQUEST *);
 int __cdecl ndisQueryMiniportRSSParameters(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OID_REQUEST *);
 int __cdecl ndisQueryMiniportRSSv2Parameters(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OID_REQUEST *);
-NdisQueryNetBufferPhysicalCount();
+? NdisQueryNetBufferPhysicalCount;
 NdisQueryOffloadState();
 int __cdecl ndisQueryOidList(struct _NDIS_USER_OPEN_CONTEXT *);
 int __cdecl ndisQueryOpenEnableWakeUp(struct _NDIS_OPEN_BLOCK *,struct _NDIS_OID_REQUEST *);
@@ -22251,6 +22603,7 @@ void __cdecl ndisQueueWorkitem(struct _WORK_QUEUE_ITEM *);
 ? ndisReadBindPaths;
 void __cdecl NdisReadConfigShimHook(int *,struct _NDIS_CONFIGURATION_PARAMETER * *,void *,struct _UNICODE_STRING *,enum _NDIS_PARAMETER_TYPE);
 ? NdisReadConfiguration;
+? ndisReadCtaPolicy;
 ? ndisReadDataLinkLayerKeywords;
 NdisReadEisaSlotInformation();
 NdisReadEisaSlotInformationEx();
@@ -22293,11 +22646,11 @@ struct _NDIS_MINIPORT_BLOCK * __cdecl ndisReferenceMiniportByGuid(struct _GUID c
 ? ndisReferenceMiniportByHandle;
 ? ndisReferenceMiniportByHandleForNsi;
 ? ndisReferenceMiniportByName;
-? ndisReferenceMiniportByNetLuid;
+struct _NDIS_MINIPORT_BLOCK * __cdecl ndisReferenceMiniportByNetLuid(union _NET_LUID_LH,enum _NDIS_MP_REFTAG);
 void __cdecl ndisReferenceMiniportNoCheck(struct _NDIS_MINIPORT_BLOCK *,enum _NDIS_MP_REFTAG);
 ? ndisReferenceNextUnprocessedMiniport;
 ? ndisReferenceNextUnprocessedOpenEx;
-unsigned char __cdecl ndisReferenceOpenByHandle(struct _NDIS_OPEN_BLOCK *,enum _NDIS_OPEN_REFTAG);
+? ndisReferenceOpenByHandle;
 ? ndisReferencePackage;
 unsigned char __cdecl ndisReferenceProtocol(struct _NDIS_PROTOCOL_BLOCK *,enum _NDIS_PT_REFTAG);
 long __cdecl ndisReferenceProtocolByName(struct _UNICODE_STRING const *,struct _NDIS_PROTOCOL_BLOCK * *,unsigned char,enum _NDIS_PT_REFTAG);
@@ -22327,7 +22680,7 @@ void __cdecl ndisRejectUnsupportedWoLPatterns(struct _NDIS_MINIPORT_BLOCK *);
 ? ndisReleaseMiniportPnPEventLock;
 NdisReleaseNicActive();
 void __cdecl ndisReleaseReadLockSharedRefCnt(struct _NDIS_RW_LOCK *);
-NdisReleaseReadWriteLock();
+? NdisReleaseReadWriteLock;
 void __cdecl ndisReleaseReadWriteLockX(struct _NDIS_RW_LOCK *,struct _LOCK_STATE *,unsigned char);
 NdisReleaseRWLock();
 NdisReleaseSpinLock();
@@ -22361,7 +22714,7 @@ void __cdecl ndisRestartProtocolInner(struct _NDIS_OPEN_BLOCK *,struct NDIS_REST
 ? ndisRestoreFilterHandlersForMediaDisconnect;
 NdisRetreatNetBufferDataStart();
 NdisRetreatNetBufferListDataStart();
-? ndisReturnNblWithPowerQueue;
+void __cdecl ndisReturnNblWithPowerQueue(void *,struct _NET_BUFFER_LIST *,unsigned long);
 ? NdisReturnNetBufferLists;
 ? ndisReturnNetBufferListsInternal;
 void __cdecl ndisReturnNetBufferListsToPackets(void *,struct _NET_BUFFER_LIST *,unsigned long);
@@ -22416,7 +22769,7 @@ long __cdecl NdisSetJobObjectCompartmentId(struct _EJOB *,unsigned int);
 void __cdecl ndisSetMediaDisconnectTimer(struct _NDIS_MINIPORT_BLOCK *);
 int __cdecl ndisSetMiniportEnableWakeUp(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OID_REQUEST *,unsigned char *);
 ? ndisSetMiniportEthMulticastList;
-void __cdecl __based(PAGENPNP) ndisSetMiniportHandlers(struct _NDIS_MINIPORT_BLOCK *);
+? ndisSetMiniportHandlers;
 ? ndisSetMiniportPacketFilter;
 int __cdecl ndisSetMiniportReenumerateHandlers(void *,struct _NDIS_DRIVER_OPTIONAL_HANDLERS *);
 unsigned char __cdecl ndisSetMiniportRSSParameters(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OID_REQUEST *,int *);
@@ -22429,7 +22782,7 @@ int __cdecl ndisSetOpenEnableWakeUp(struct _NDIS_OPEN_BLOCK *,struct _NDIS_OID_R
 unsigned char __cdecl ndisSetOpenEthAddDeleteMulticast(struct _NDIS_OPEN_BLOCK *,struct _NDIS_OID_REQUEST *,int *);
 ? ndisSetOpenEthMulticastList;
 ? ndisSetOpenPacketFilter;
-? ndisSetOpenRSSParameters;
+unsigned char __cdecl ndisSetOpenRSSParameters(struct _NDIS_OPEN_BLOCK *,struct _NDIS_OID_REQUEST *,int *);
 unsigned char __cdecl ndisSetOpenRSSv2Parameters(struct _NDIS_OPEN_BLOCK *,struct _NDIS_OID_REQUEST *,int *);
 void __cdecl __based(PAGENPNP) ndisSetOpenToTranslationMode(struct _NDIS_OPEN_BLOCK *);
 ? NdisSetOptionalHandlers;
@@ -22440,7 +22793,7 @@ void __cdecl ndisSetPdcTaskClientExpiryTimer(struct _NDIS_MINIPORT_BLOCK *,unsig
 int __cdecl ndisSetPerfTrackParameters(struct _NDIS_MINIPORT_BLOCK *,struct _IRP *,int *);
 NdisSetPeriodicTimer();
 NdisSetPollAffinity();
-long __cdecl ndisSetPower(struct _IRP *,struct _IO_STACK_LOCATION *,struct _NDIS_MINIPORT_BLOCK *);
+? ndisSetPower;
 long __cdecl ndisSetPowerResume(struct _IRP *,struct _IO_STACK_LOCATION *,struct _NDIS_MINIPORT_BLOCK *);
 long __cdecl ndisSetPowerResumeComplete(struct _DEVICE_OBJECT *,struct _IRP *,void *);
 void __cdecl ndisSetPowerResumeCompleteWorkItem(void *);
@@ -22474,7 +22827,7 @@ void __cdecl ndisSetupPDQTracker(struct NDIS_PD_QUEUE_TRACKER *,struct _NDIS_PD_
 void __cdecl ndisSetupWmiNode(struct _NDIS_MINIPORT_BLOCK *,struct _UNICODE_STRING const *,unsigned long,void *,struct tagWNODE_SINGLE_INSTANCE * *);
 unsigned char __cdecl ndisSetWakeUpTimer(struct _NDIS_MINIPORT_BLOCK *);
 void __cdecl ndisShallowCopyNetPnPEvent(struct _NET_PNP_EVENT_NOTIFICATION *,struct _NET_PNP_EVENT_NOTIFICATION const *);
-? ndisShouldCacheRSSParameters;
+unsigned char __cdecl ndisShouldCacheRSSParameters(struct _NDIS_OID_REQUEST const *);
 unsigned char __cdecl ndisShouldCacheRSSv2ParametersInMiniport(struct _NDIS_OID_REQUEST const *);
 unsigned char __cdecl ndisShouldEngageNicAutoPowerSaver(struct _NDIS_MINIPORT_BLOCK *);
 unsigned char __cdecl ndisShouldSuppressReceiveFilterCapabilities(struct _NDIS_RECEIVE_FILTER_CAPABILITIES *);
@@ -22541,7 +22894,6 @@ void __cdecl NdisTraceLoggingCsStateChange(struct _NDIS_MINIPORT_BLOCK *,struct 
 ? NdisTraceLoggingDeviceInitialized;
 void __cdecl NdisTraceLoggingDeviceRemoved(struct _NDIS_MINIPORT_BLOCK *,enum _NDIS_TRACEFORMAT_REMOVAL_REASON);
 ? NdisTraceLoggingDeviceStarted;
-enum _NDIS_TRACEFORMAT_OPERATIONAL_STATUS __cdecl NdisTraceLoggingDiscoverOperationalStatus(struct _NDIS_MINIPORT_BLOCK *);
 void __cdecl NdisTraceLoggingGreTaskeConfigOffloads(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OFFLOAD *);
 void __cdecl NdisTraceLoggingGreTaskHardwareOffloads(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OFFLOAD *);
 void __cdecl NdisTraceLoggingLogoFailure(enum NdisTLLogoFailureReason,struct _UNICODE_STRING const *,unsigned __int64);
@@ -22550,7 +22902,7 @@ void __cdecl NdisTraceLoggingLsoV2HardwareOffloads(struct _NDIS_MINIPORT_BLOCK *
 void __cdecl NdisTraceLoggingMiniportWakeBufferTooLarge(struct _NDIS_MINIPORT_BLOCK *,unsigned long);
 void __cdecl NdisTraceLoggingNDKCapabilities(struct _NDIS_MINIPORT_BLOCK *,union _NDIS_MINIPORT_ADAPTER_ATTRIBUTES *);
 void __cdecl NdisTraceLoggingNicAutoPowerSaver(struct _NDIS_MINIPORT_BLOCK *,unsigned char,unsigned __int64,unsigned __int64,unsigned long,unsigned __int64,unsigned __int64,unsigned long,struct _NDIS_NAPS_TELEMETRY_REASON_DATA *,unsigned long,struct _NDIS_NAPS_TELEMETRY_OID_DATA *);
-? NdisTraceLoggingOffloadConfigRead;
+void __cdecl NdisTraceLoggingOffloadConfigRead(struct _NDIS_MINIPORT_BLOCK *);
 void __cdecl NdisTraceLoggingOffloads(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OFFLOAD *,struct _NDIS_OFFLOAD *);
 void __cdecl NdisTraceLoggingPacketDirectConfigChanged(struct _NDIS_MINIPORT_BLOCK *,unsigned char,unsigned char);
 void __cdecl NdisTraceLoggingPowerOnStatistics(struct _NDIS_MINIPORT_BLOCK *);
@@ -22562,7 +22914,7 @@ void __cdecl NdisTraceLoggingRareFilterPath(struct _NDIS_FILTER_DRIVER_BLOCK *,e
 void __cdecl NdisTraceLoggingRareMiniportPath(struct _NDIS_MINIPORT_BLOCK *,enum NdisTLMiniportEvent,int);
 void __cdecl NdisTraceLoggingRscConfigOffloads(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OFFLOAD *);
 void __cdecl NdisTraceLoggingRscHardwareOffloads(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OFFLOAD *);
-? NdisTraceLoggingRssConfiguration;
+void __cdecl NdisTraceLoggingRssConfiguration(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_CONFIGURATION_PARAMETER *,int);
 void __cdecl NdisTraceLoggingStuckNbl(struct _NDIS_NBL_TRACKER *);
 void __cdecl NdisTraceLoggingTemporarilyScribbleNetLuidIndex(union _NET_LUID_LH &);
 void __cdecl NdisTraceLoggingUnexpectedAoAcError(struct _NDIS_MINIPORT_BLOCK *,unsigned short,long);
@@ -22608,6 +22960,7 @@ int __cdecl ndisUpdateHDSplitKeyword(struct _NDIS_MINIPORT_BLOCK *,unsigned long
 void __cdecl ndisUpdateMiniportCsTrafficStatistics(struct _NDIS_MINIPORT_BLOCK *,enum _NDIS_CS_TRAFFIC_STATS);
 void __cdecl ndisUpdateMiniportFakeStatus(struct _NDIS_MINIPORT_BLOCK *);
 int __cdecl ndisUpdateMiniportPortStates(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_STATUS_INDICATION *);
+void __cdecl ndisUpdateNDKMiniportState(struct _NDIS_MINIPORT_BLOCK *,struct _NET_PNP_EVENT_NOTIFICATION *);
 ? ndisUpdateNoPauseOnSuspend;
 NdisUpdateOffload();
 int __cdecl ndisUpdateOffloadKeywords(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OFFLOAD_PARAMETERS *);
@@ -22636,6 +22989,7 @@ bool __cdecl ndisValidateMacAddressChange(struct _NDIS_MINIPORT_BLOCK *,struct _
 ? ndisValidateNdisOffsetAndLengthInputString;
 ? ndisValidateNdisVarDataDesc32InputString;
 ? ndisValidateNdisVarDataDescInputString;
+int __cdecl ndisValidateNDKPnPEvents(struct _NDIS_MINIPORT_BLOCK *,struct _NET_PNP_EVENT_NOTIFICATION *);
 unsigned char __cdecl ndisValidateOffloadCapability(struct _NDIS_OFFLOAD *);
 unsigned char __cdecl ndisValidatePDCapsBuffer(unsigned long,struct _NDIS_PD_CAPABILITIES const *);
 unsigned char __cdecl ndisValidatePDConfigBuffer(unsigned long,struct _NDIS_PD_CONFIG const *);
@@ -22718,7 +23072,6 @@ NdisWdfGetAdapterContextFromAdapterHandle();
 struct _NDIS_WDF_CX_DRIVER_BLOCK * __cdecl NdisWdfGetCxBlockFromMiniport(struct _NDIS_MINIPORT_BLOCK *);
 void __cdecl ndisWdfGetGuidToOidList(unsigned long const *,unsigned short,struct _NDIS_GUID *,unsigned short *);
 NdisWdfGetGuidToOidMap();
-? ndisWdfLogMiniportPowerTransition;
 NdisWdfMiniportDataPathPause();
 NdisWdfMiniportDataPathStart();
 NdisWdfMiniportDereference();
@@ -22760,7 +23113,7 @@ long __cdecl ndisWmiChangeSingleInstance(struct _NDIS_MINIPORT_BLOCK *,struct _N
 ? ndisWmiDisableEvents;
 ? ndisWMIDispatch;
 ? ndisWmiEnableEvents;
-? ndisWmiExecuteMethod;
+long __cdecl ndisWmiExecuteMethod(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_GUID *,struct tagWNODE_METHOD_ITEM *,unsigned long,unsigned long *);
 long __cdecl ndisWmiFindInstanceName(struct _NDIS_CO_VC_PTR_BLOCK * *,struct _NDIS_MINIPORT_BLOCK *,wchar_t *,unsigned short);
 ? ndisWmiGetGuid;
 ? ndisWmiGuidIsAdapterSpecific;
@@ -22886,7 +23239,7 @@ public: virtual long __cdecl RegistryKnobCollection::SetKnobInStore(struct KnobD
 void __cdecl RELEASE_PROT_MUTEX(struct _NDIS_PROTOCOL_BLOCK *);
 __report_gsfailure();
 __report_rangecheckfailure();
-class wistd::unique_ptr<struct _UNICODE_STRING,struct KFreePool<struct _UNICODE_STRING> > __cdecl Rtl::DuplicateUnicodeString(struct _UNICODE_STRING const &,unsigned long);
+? Rtl::DuplicateUnicodeString;
 ? Rtl::KArray<KnobDescriptor,1>::reserve;
 private: bool __cdecl Rtl::KArray<class KRef<struct NDIS_BIND_FILTER_DRIVER>,1>::grow(unsigned __int64);
 public: bool __cdecl Rtl::KArray<class KRef<struct NDIS_BIND_FILTER_DRIVER>,1>::reserve(unsigned __int64);
@@ -22917,6 +23270,7 @@ public: bool __cdecl Rtl::KArray<class wistd::unique_ptr<struct NDIS_BIND_PROTOC
 ? Rtl::KArray<wistd::unique_ptr<NDIS_BIND_PROTOCOL_LINK,wistd::default_delete<NDIS_BIND_PROTOCOL_LINK> >,1>::reserve;
 public: bool __cdecl Rtl::KArray<class wistd::unique_ptr<struct Rtl::KString,struct wistd::default_delete<struct Rtl::KString> >,1>::reserve(unsigned __int64);
 public: bool __cdecl Rtl::KArray<class wistd::unique_ptr<struct Rtl::KString,struct wistd::default_delete<struct Rtl::KString> >,1>::resize(unsigned __int64);
+public: __cdecl Rtl::KArray<class wistd::unique_ptr<struct Rtl::KString,struct wistd::default_delete<struct Rtl::KString> >,1>::~KArray<class wistd::unique_ptr<struct Rtl::KString,struct wistd::default_delete<struct Rtl::KString> >,1>(void);
 private: static void * __cdecl Rtl::KHashTableBase<1>::AllocateBuckets(unsigned __int64,void *);
 private: static void __cdecl Rtl::KHashTableBase<1>::FreeBuckets(void *,void *);
 ? Rtl::KNeutralLock<enum NDIS_MINIPORT_POLICY_OWNER>::Acquire;
@@ -22954,6 +23308,7 @@ SepSddlParseWideStringUlong();
 SepSddlSecurityDescriptorFromSDDLString();
 SeSddlSecurityDescriptorFromSDDL();
 SeUtilSecurityInfoFromSecurityDescriptor();
+? ShouldEnableOidTracing;
 int __cdecl swprintf_s<40>(wchar_t (&)[40],wchar_t const *,...);
 void __cdecl TlgAggregateInternalFlushTimerCallbackKernelMode(struct _EX_TIMER *,void *);
 void __cdecl TlgAggregateInternalFlushWorkItemRoutineKernelMode(void *);
@@ -22969,6 +23324,11 @@ _tlgDefineProvider_annotation__TlgTlgAggregateInternalProviderProv();
 _tlgEnableCallback();
 _tlgKeywordOn();
 ? TlgRegisterAggregateProviderEx;
+public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapBuffer<struct _UNICODE_STRING>,struct _tlgWrapperByRef<16>,struct _tlgWrapBuffer<struct _UNICODE_STRING>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<8> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapBuffer<struct _UNICODE_STRING> const &,struct _tlgWrapperByRef<16> const &,struct _tlgWrapBuffer<struct _UNICODE_STRING> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<8> const &);
+public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapBuffer<struct _UNICODE_STRING>,struct _tlgWrapperByRef<16>,struct _tlgWrapBuffer<struct _UNICODE_STRING>,struct _tlgWrapperByVal<8> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapBuffer<struct _UNICODE_STRING> const &,struct _tlgWrapperByRef<16> const &,struct _tlgWrapBuffer<struct _UNICODE_STRING> const &,struct _tlgWrapperByVal<8> const &);
+public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapBuffer<struct _UNICODE_STRING>,struct _tlgWrapperByRef<16>,struct _tlgWrapperByVal<8> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapBuffer<struct _UNICODE_STRING> const &,struct _tlgWrapperByRef<16> const &,struct _tlgWrapperByVal<8> const &);
+public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByRef<16>,struct _tlgWrapBuffer<struct _UNICODE_STRING>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<8> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByRef<16> const &,struct _tlgWrapBuffer<struct _UNICODE_STRING> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<8> const &);
+public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByRef<16>,struct _tlgWrapBuffer<struct _UNICODE_STRING>,struct _tlgWrapperByVal<8> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByRef<16> const &,struct _tlgWrapBuffer<struct _UNICODE_STRING> const &,struct _tlgWrapperByVal<8> const &);
 public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByRef<16>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<4> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByRef<16> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<4> const &);
 public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByRef<16>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<2>,struct _tlgWrapperByVal<1> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByRef<16> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<2> const &,struct _tlgWrapperByVal<1> const &);
 public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByRef<16>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<8> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByRef<16> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<8> const &);
@@ -22976,12 +23336,14 @@ public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t
 public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByRef<16>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<1> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByRef<16> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<1> const &);
 public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByRef<16>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByRef<16> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &);
 public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByRef<16>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByRef<16> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &);
+public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByRef<16>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapBuffer<struct _UNICODE_STRING> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByRef<16> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapBuffer<struct _UNICODE_STRING> const &);
+public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByRef<16>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapBuffer<struct _UNICODE_STRING>,struct _tlgWrapBuffer<struct _UNICODE_STRING> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByRef<16> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapBuffer<struct _UNICODE_STRING> const &,struct _tlgWrapBuffer<struct _UNICODE_STRING> const &);
+public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByRef<16>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapBuffer<struct _UNICODE_STRING>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByRef<16> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapBuffer<struct _UNICODE_STRING> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &);
 public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByRef<16>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<1> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByRef<16> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<1> const &);
 public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByRef<16>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperPtrSize,struct _tlgWrapperPtrSize,struct _tlgWrapperPtrSize>(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByRef<16> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperPtrSize const &,struct _tlgWrapperPtrSize const &,struct _tlgWrapperPtrSize const &);
 public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByRef<16>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperPtrSize,struct _tlgWrapperByVal<4>,struct _tlgWrapperArray<4> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByRef<16> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperPtrSize const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperArray<4> const &);
 public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByRef<16>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<8>,struct _tlgWrapBuffer<struct _UNICODE_STRING>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperPtrSize,struct _tlgWrapperPtrSize,struct _tlgWrapperPtrSize>(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByRef<16> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapBuffer<struct _UNICODE_STRING> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperPtrSize const &,struct _tlgWrapperPtrSize const &,struct _tlgWrapperPtrSize const &);
 public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByRef<16>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByRef<16> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &);
-public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByRef<16>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByRef<16> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &);
 public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByRef<16>,struct _tlgWrapperByVal<8>,struct _tlgWrapSz<wchar_t>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<8> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByRef<16> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapSz<wchar_t> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<8> const &);
 public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByVal<4>,struct _tlgWrapBuffer<struct _UNICODE_STRING>,struct _tlgWrapperByVal<8> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByVal<4> const &,struct _tlgWrapBuffer<struct _UNICODE_STRING> const &,struct _tlgWrapperByVal<8> const &);
 public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByVal<4>,struct _tlgWrapperBinary,struct _tlgWrapperBinary,struct _tlgWrapperByRef<16>,struct _tlgWrapperByVal<8>,struct _tlgWrapSz<wchar_t>,struct _tlgWrapperByVal<4> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperBinary const &,struct _tlgWrapperBinary const &,struct _tlgWrapperByRef<16> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapSz<wchar_t> const &,struct _tlgWrapperByVal<4> const &);
@@ -22992,11 +23354,22 @@ public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t
 public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByVal<4>,struct _tlgWrapperByRef<16>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<1> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByRef<16> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<1> const &);
 public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByRef<16>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByVal<1> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByRef<16> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByVal<1> const &);
 public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByRef<16>,struct _tlgWrapperByVal<8>,struct _tlgWrapSz<wchar_t>,struct _tlgWrapperByVal<4> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByRef<16> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapSz<wchar_t> const &,struct _tlgWrapperByVal<4> const &);
+public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByRef<16>,struct _tlgWrapperBinary,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<1>,struct _tlgWrapperBinary,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<1>,struct _tlgWrapperBinary,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<1>,struct _tlgWrapperBinary,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<1>,struct _tlgWrapperBinary,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<1>,struct _tlgWrapperBinary,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<1>,struct _tlgWrapperBinary,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<1>,struct _tlgWrapperBinary,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<1>,struct _tlgWrapperBinary,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<1> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByRef<16> const &,struct _tlgWrapperBinary const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperBinary const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperBinary const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperBinary const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperBinary const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperBinary const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperBinary const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperBinary const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperBinary const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<1> const &);
 public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,void const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteAgg(struct _tlgProvider_t const *,void const *,void const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),void const *>::Write<struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByRef<16>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperPtrSize,struct _tlgWrapperByVal<4> >(struct _tlgProvider_t const *,void const *,void const *,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByRef<16> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperPtrSize const &,struct _tlgWrapperByVal<4> const &);
 public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,void const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteAgg(struct _tlgProvider_t const *,void const *,void const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),void const *>::Write<struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<8>,struct _tlgWrapperByRef<16>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperPtrSize,struct _tlgWrapperByVal<4> >(struct _tlgProvider_t const *,void const *,void const *,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByRef<16> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperPtrSize const &,struct _tlgWrapperByVal<4> const &);
 ? _tlgWriteTemplate<long __cdecl(_tlgProvider_t const *,void const *,_GUID const *,_GUID const *,unsigned int,_EVENT_DATA_DESCRIPTOR *),&_tlgWriteTransfer_EtwWriteTransfer,_GUID const *,_GUID const *>::Write<_tlgWrapperByVal<4>,_tlgWrapperBinary,_tlgWrapperBinary,_tlgWrapperByRef<16>,_tlgWrapperByVal<8>,_tlgWrapSz<wchar_t>,_tlgWrapperByVal<4> >;
 _tlgWriteTransfer_EtwWriteTransfer();
 ? TraceLoggingRegisterEx_EtwRegister_EtwSetInformation;
+void __cdecl TraceLoggingWriteOidRequestCompletedActivity<0>(struct _NDIS_REQ_TRACKER const *);
+void __cdecl TraceLoggingWriteOidRequestCompletedActivity<2>(struct _NDIS_REQ_TRACKER const *);
+void __cdecl TraceLoggingWriteOidRequestQueuedActivity<0,struct _NDIS_FILTER_BLOCK>(struct _NDIS_FILTER_BLOCK const *,struct _NDIS_OID_REQUEST const *);
+void __cdecl TraceLoggingWriteOidRequestQueuedActivity<0,struct _NDIS_MINIPORT_BLOCK>(struct _NDIS_MINIPORT_BLOCK const *,struct _NDIS_OID_REQUEST const *);
+void __cdecl TraceLoggingWriteOidRequestQueuedActivity<1,struct _NDIS_FILTER_BLOCK>(struct _NDIS_FILTER_BLOCK const *,struct _NDIS_OID_REQUEST const *);
+void __cdecl TraceLoggingWriteOidRequestQueuedActivity<1,struct _NDIS_MINIPORT_BLOCK>(struct _NDIS_MINIPORT_BLOCK const *,struct _NDIS_OID_REQUEST const *);
+void __cdecl TraceLoggingWriteOidRequestReturnedActivity<0,struct _NDIS_FILTER_BLOCK>(struct _NDIS_FILTER_BLOCK const *,struct _NDIS_OID_REQUEST const *);
+void __cdecl TraceLoggingWriteOidRequestReturnedActivity<0,struct _NDIS_OPEN_BLOCK>(struct _NDIS_OPEN_BLOCK const *,struct _NDIS_OID_REQUEST const *);
+void __cdecl TraceLoggingWriteOidRequestReturnedActivity<2,struct _NDIS_FILTER_BLOCK>(struct _NDIS_FILTER_BLOCK const *,struct _NDIS_OID_REQUEST const *);
+void __cdecl TraceLoggingWriteOidRequestReturnedActivity<2,struct _NDIS_OPEN_BLOCK>(struct _NDIS_OPEN_BLOCK const *,struct _NDIS_OID_REQUEST const *);
 long __cdecl UnloadDriver(struct _UNICODE_STRING *);
 ? UpdateInternalStatsOnFlush;
 ? validateMemoryPages;
@@ -23012,35 +23385,56 @@ wcscmp();
 WdmlibIoCreateDeviceSecure();
 WdmlibIoValidateDeviceIoControlAccess();
 WdmlibRtlInitUnicodeStringEx();
+class wil::unique_any_t<class wil::details::unique_storage<struct wil::details::resource_policy<unsigned __int64 *,void __cdecl(struct wil::details::kspin_lock_saved_irql const &),&public: static void __cdecl wil::details::kspin_lock_saved_irql::Release(struct wil::details::kspin_lock_saved_irql const &),struct wistd::integral_constant<unsigned __int64,2>,struct wil::details::kspin_lock_saved_irql,unsigned __int64 *,0,std::nullptr_t> > > __cdecl wil::acquire_kspin_lock(unsigned __int64 *);
 void __cdecl wil::attach_to_smart_pointer<class wistd::unique_ptr<struct _UNICODE_STRING,struct KFreePool<struct _UNICODE_STRING> >,void>(class wistd::unique_ptr<struct _UNICODE_STRING,struct KFreePool<struct _UNICODE_STRING> > &,struct _UNICODE_STRING *);
 void __cdecl wil::attach_to_smart_pointer<class wistd::unique_ptr<wchar_t,struct KFreePool<wchar_t> >,void>(class wistd::unique_ptr<wchar_t,struct KFreePool<wchar_t> > &,wchar_t *);
-? wil::details::lambda_call<<lambda_0df1e35efd21efab71f51a22b66beb8b> >::~lambda_call<<lambda_0df1e35efd21efab71f51a22b66beb8b> >;
-? wil::details::lambda_call<<lambda_c18eadf4a2a14e2e189094deb1de46d4> >::~lambda_call<<lambda_c18eadf4a2a14e2e189094deb1de46d4> >;
+public: static void __cdecl wil::details::kspin_lock_saved_irql::Release(struct wil::details::kspin_lock_saved_irql const &);
+? wil::details::lambda_call<<lambda_063cca05b8591c1f2753529b48475674> >::~lambda_call<<lambda_063cca05b8591c1f2753529b48475674> >;
+? wil::details::lambda_call<<lambda_16f7d953e3aee9e3fcfcb9da7fdb0623> >::~lambda_call<<lambda_16f7d953e3aee9e3fcfcb9da7fdb0623> >;
+? wil::details::lambda_call<<lambda_329f299aae1cd30621f80eb33d2d9772> >::~lambda_call<<lambda_329f299aae1cd30621f80eb33d2d9772> >;
+? wil::details::lambda_call<<lambda_93aa6df5f885dc390f79e7d69480c1e9> >::~lambda_call<<lambda_93aa6df5f885dc390f79e7d69480c1e9> >;
 protected: __cdecl wil::details::unique_storage<struct wil::details::resource_policy<struct _DMA_ADAPTER *,void __cdecl(struct _DMA_ADAPTER *),&void __cdecl CloseDmaAdapter(struct _DMA_ADAPTER *),struct wistd::integral_constant<unsigned __int64,0>,struct _DMA_ADAPTER *,struct _DMA_ADAPTER *,0,std::nullptr_t> >::~unique_storage<struct wil::details::resource_policy<struct _DMA_ADAPTER *,void __cdecl(struct _DMA_ADAPTER *),&void __cdecl CloseDmaAdapter(struct _DMA_ADAPTER *),struct wistd::integral_constant<unsigned __int64,0>,struct _DMA_ADAPTER *,struct _DMA_ADAPTER *,0,std::nullptr_t> >(void);
 public: void __cdecl wil::details::unique_storage<struct wil::details::resource_policy<struct _FILE_OBJECT *,__int64 (__cdecl*)(void *),&__int64 __cdecl ObfDereferenceObject(void *),struct wistd::integral_constant<unsigned __int64,0>,struct _FILE_OBJECT *,struct _FILE_OBJECT *,0,std::nullptr_t> >::reset(struct _FILE_OBJECT *);
-protected: __cdecl wil::details::unique_storage<struct wil::details::resource_policy<struct _FILE_OBJECT *,__int64 (__cdecl*)(void *),&__int64 __cdecl ObfDereferenceObject(void *),struct wistd::integral_constant<unsigned __int64,0>,struct _FILE_OBJECT *,struct _FILE_OBJECT *,0,std::nullptr_t> >::~unique_storage<struct wil::details::resource_policy<struct _FILE_OBJECT *,__int64 (__cdecl*)(void *),&__int64 __cdecl ObfDereferenceObject(void *),struct wistd::integral_constant<unsigned __int64,0>,struct _FILE_OBJECT *,struct _FILE_OBJECT *,0,std::nullptr_t> >(void);
 public: void __cdecl wil::details::unique_storage<struct wil::details::resource_policy<struct NDISWATCHDOG__ *,void (__cdecl*)(struct NDISWATCHDOG__ *),&void __cdecl ndisFreeWatchdog(struct NDISWATCHDOG__ *),struct wistd::integral_constant<unsigned __int64,1>,struct NDISWATCHDOG__ *,__int64,-1,std::nullptr_t> >::reset(struct NDISWATCHDOG__ *);
-protected: __cdecl wil::details::unique_storage<struct wil::details::resource_policy<struct NDISWATCHDOG__ *,void (__cdecl*)(struct NDISWATCHDOG__ *),&void __cdecl ndisFreeWatchdog(struct NDISWATCHDOG__ *),struct wistd::integral_constant<unsigned __int64,1>,struct NDISWATCHDOG__ *,__int64,-1,std::nullptr_t> >::~unique_storage<struct wil::details::resource_policy<struct NDISWATCHDOG__ *,void (__cdecl*)(struct NDISWATCHDOG__ *),&void __cdecl ndisFreeWatchdog(struct NDISWATCHDOG__ *),struct wistd::integral_constant<unsigned __int64,1>,struct NDISWATCHDOG__ *,__int64,-1,std::nullptr_t> >(void);
+public: void __cdecl wil::details::unique_storage<struct wil::details::resource_policy<unsigned __int64 *,void __cdecl(struct wil::details::kspin_lock_saved_irql const &),&public: static void __cdecl wil::details::kspin_lock_saved_irql::Release(struct wil::details::kspin_lock_saved_irql const &),struct wistd::integral_constant<unsigned __int64,2>,struct wil::details::kspin_lock_saved_irql,unsigned __int64 *,0,std::nullptr_t> >::reset(struct wil::details::kspin_lock_saved_irql);
+protected: __cdecl wil::details::unique_storage<struct wil::details::resource_policy<unsigned __int64 *,void __cdecl(struct wil::details::kspin_lock_saved_irql const &),&public: static void __cdecl wil::details::kspin_lock_saved_irql::Release(struct wil::details::kspin_lock_saved_irql const &),struct wistd::integral_constant<unsigned __int64,2>,struct wil::details::kspin_lock_saved_irql,unsigned __int64 *,0,std::nullptr_t> >::~unique_storage<struct wil::details::resource_policy<unsigned __int64 *,void __cdecl(struct wil::details::kspin_lock_saved_irql const &),&public: static void __cdecl wil::details::kspin_lock_saved_irql::Release(struct wil::details::kspin_lock_saved_irql const &),struct wistd::integral_constant<unsigned __int64,2>,struct wil::details::kspin_lock_saved_irql,unsigned __int64 *,0,std::nullptr_t> >(void);
 public: void __cdecl wil::details::unique_storage<struct wil::details::resource_policy<void *,long (__cdecl*)(void *),&long __cdecl ZwClose(void *),struct wistd::integral_constant<unsigned __int64,0>,void *,void *,0,std::nullptr_t> >::reset(void *);
-protected: __cdecl wil::details::unique_storage<struct wil::details::resource_policy<void *,long (__cdecl*)(void *),&long __cdecl ZwClose(void *),struct wistd::integral_constant<unsigned __int64,0>,void *,void *,0,std::nullptr_t> >::~unique_storage<struct wil::details::resource_policy<void *,long (__cdecl*)(void *),&long __cdecl ZwClose(void *),struct wistd::integral_constant<unsigned __int64,0>,void *,void *,0,std::nullptr_t> >(void);
 protected: __cdecl wil::details::unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *),&void __cdecl ndisFreeMappingAddress(void *),struct wistd::integral_constant<unsigned __int64,1>,void *,void *,0,std::nullptr_t> >::~unique_storage<struct wil::details::resource_policy<void *,void (__cdecl*)(void *),&void __cdecl ndisFreeMappingAddress(void *),struct wistd::integral_constant<unsigned __int64,1>,void *,void *,0,std::nullptr_t> >(void);
+? wil::details::unique_storage<wil::details::resource_policy<void *,void (__cdecl*)(void *),&ndisFreeMappingAddress,wistd::integral_constant<unsigned __int64,1>,void *,void *,0,std::nullptr_t> >::~unique_storage<wil::details::resource_policy<void *,void (__cdecl*)(void *),&ndisFreeMappingAddress,wistd::integral_constant<unsigned __int64,1>,void *,void *,0,std::nullptr_t> >;
 class wistd::unique_ptr<struct KModule,struct wistd::default_delete<struct KModule> > __cdecl wil::make_unique_nothrow<struct KModule,struct _GUID &,class wistd::unique_ptr<struct _UNICODE_STRING,struct KFreePool<struct _UNICODE_STRING> > >(struct _GUID &,class wistd::unique_ptr<struct _UNICODE_STRING,struct KFreePool<struct _UNICODE_STRING> > &&);
 class wistd::unique_ptr<struct NDIS_BIND_FILTER_LINK,struct wistd::default_delete<struct NDIS_BIND_FILTER_LINK> > __cdecl wil::make_unique_nothrow<struct NDIS_BIND_FILTER_LINK>(void);
 class wistd::unique_ptr<class NdisPoll,struct wistd::default_delete<class NdisPoll> > __cdecl wil::make_unique_nothrow<class NdisPoll,void * &,void * &,void (__cdecl*const &)(void *,struct _NDIS_POLL_NOTIFICATION *),void (__cdecl*const &)(void *,struct _NDIS_POLL_DATA *)>(void * &,void * &,void (__cdecl*const &)(void *,struct _NDIS_POLL_NOTIFICATION *),void (__cdecl*const &)(void *,struct _NDIS_POLL_DATA *));
 struct wil::details::out_param_t<class wistd::unique_ptr<struct _UNICODE_STRING,struct KFreePool<struct _UNICODE_STRING> > > __cdecl wil::out_param<class wistd::unique_ptr<struct _UNICODE_STRING,struct KFreePool<struct _UNICODE_STRING> > >(class wistd::unique_ptr<struct _UNICODE_STRING,struct KFreePool<struct _UNICODE_STRING> > &);
 struct wil::details::out_param_t<class wistd::unique_ptr<wchar_t,struct KFreePool<wchar_t> > > __cdecl wil::out_param<class wistd::unique_ptr<wchar_t,struct KFreePool<wchar_t> > >(class wistd::unique_ptr<wchar_t,struct KFreePool<wchar_t> > &);
+public: __cdecl wil::unique_any_t<class wil::details::unique_storage<struct wil::details::resource_policy<struct NDISWATCHDOG__ *,void (__cdecl*)(struct NDISWATCHDOG__ *),&void __cdecl ndisFreeWatchdog(struct NDISWATCHDOG__ *),struct wistd::integral_constant<unsigned __int64,1>,struct NDISWATCHDOG__ *,__int64,-1,std::nullptr_t> > >::~unique_any_t<class wil::details::unique_storage<struct wil::details::resource_policy<struct NDISWATCHDOG__ *,void (__cdecl*)(struct NDISWATCHDOG__ *),&void __cdecl ndisFreeWatchdog(struct NDISWATCHDOG__ *),struct wistd::integral_constant<unsigned __int64,1>,struct NDISWATCHDOG__ *,__int64,-1,std::nullptr_t> > >(void);
 long __cdecl wil_details_BuildFeatureStateCacheFromQueryResults(long,struct _RTL_FEATURE_CONFIGURATION const *,union wil_details_FeatureStateCache *);
 union wil_details_FeatureStateCache __cdecl wil_details_EvaluateFeatureDependencies_GetCachedFeatureEnabledState(union wil_details_FeatureStateCache *,struct wil_details_FeatureDescriptor const *);
 union wil_details_FeatureStateCache __cdecl wil_details_EvaluateFeatureDependencies_ReevaluateCachedFeatureEnabledState(union wil_details_FeatureStateCache *,union wil_details_FeatureStateCache,struct wil_details_FeatureDescriptor const *);
 void __cdecl wil_details_FeatureReporting_IncrementOpportunityInCache(struct wil_details_FeatureReportingCache *,enum wil_details_ServiceReportingKind,unsigned int,struct wil_details_RecordUsageResult *);
 void __cdecl wil_details_FeatureReporting_IncrementUsageInCache(struct wil_details_FeatureReportingCache *,enum wil_details_ServiceReportingKind,unsigned int,struct wil_details_RecordUsageResult *);
-? wil_details_FeatureReporting_ReportUsageToService;
 ? wil_details_FeatureReporting_ReportUsageToServiceDirect;
 void __cdecl wil_details_OnFeatureConfigurationChange(void *);
 void __cdecl wil_details_UpdateFeatureConfiguredStates(void);
 ? wil_InitializeFeatureStaging;
-long __cdecl wistd::invoke<long (__cdecl*)(void *),void * &>(long (__cdecl*&&)(void *),void * &);
-void __cdecl wistd::invoke<void (__cdecl*)(void *),void * &>(void (__cdecl*&&)(void *),void * &);
+void __cdecl wistd::invoke<void (__cdecl*)(struct wil::details::kspin_lock_saved_irql const &),struct wil::details::kspin_lock_saved_irql &>(void (__cdecl*&&)(struct wil::details::kspin_lock_saved_irql const &),struct wil::details::kspin_lock_saved_irql &);
+public: __cdecl wistd::unique_ptr<struct _MDL * [0],struct wistd::default_delete<struct _MDL * [0]> >::~unique_ptr<struct _MDL * [0],struct wistd::default_delete<struct _MDL * [0]> >(void);
+public: __cdecl wistd::unique_ptr<struct _MDL,struct KFreePool<struct _MDL> >::~unique_ptr<struct _MDL,struct KFreePool<struct _MDL> >(void);
+public: __cdecl wistd::unique_ptr<struct _NDIS_CONFIGURATION_HANDLE,struct KFreePool<struct _NDIS_CONFIGURATION_HANDLE> >::~unique_ptr<struct _NDIS_CONFIGURATION_HANDLE,struct KFreePool<struct _NDIS_CONFIGURATION_HANDLE> >(void);
+public: __cdecl wistd::unique_ptr<struct _NDIS_MINIPORT_DRIVER_CHARACTERISTICS,struct wistd::default_delete<struct _NDIS_MINIPORT_DRIVER_CHARACTERISTICS> >::~unique_ptr<struct _NDIS_MINIPORT_DRIVER_CHARACTERISTICS,struct wistd::default_delete<struct _NDIS_MINIPORT_DRIVER_CHARACTERISTICS> >(void);
+public: __cdecl wistd::unique_ptr<struct _NDIS_RW_LOCK_EX,struct KFreePoolNP<struct _NDIS_RW_LOCK_EX> >::~unique_ptr<struct _NDIS_RW_LOCK_EX,struct KFreePoolNP<struct _NDIS_RW_LOCK_EX> >(void);
+public: __cdecl wistd::unique_ptr<struct _NDIS_SG_DMA_BLOCK,struct KFreePoolNP<struct _NDIS_SG_DMA_BLOCK> >::~unique_ptr<struct _NDIS_SG_DMA_BLOCK,struct KFreePoolNP<struct _NDIS_SG_DMA_BLOCK> >(void);
+public: __cdecl wistd::unique_ptr<struct _UNICODE_STRING,struct KFreePool<struct _UNICODE_STRING> >::~unique_ptr<struct _UNICODE_STRING,struct KFreePool<struct _UNICODE_STRING> >(void);
+public: __cdecl wistd::unique_ptr<struct KModule,struct wistd::default_delete<struct KModule> >::~unique_ptr<struct KModule,struct wistd::default_delete<struct KModule> >(void);
+public: __cdecl wistd::unique_ptr<struct KModuleReference,struct wistd::default_delete<struct KModuleReference> >::~unique_ptr<struct KModuleReference,struct wistd::default_delete<struct KModuleReference> >(void);
+public: __cdecl wistd::unique_ptr<class KnobCollection,struct KFreePool<class KnobCollection> >::~unique_ptr<class KnobCollection,struct KFreePool<class KnobCollection> >(void);
+public: __cdecl wistd::unique_ptr<class KnobCollection,struct wistd::default_delete<class KnobCollection> >::~unique_ptr<class KnobCollection,struct wistd::default_delete<class KnobCollection> >(void);
+public: __cdecl wistd::unique_ptr<struct NDIS_BIND_FILTER_LINK,struct wistd::default_delete<struct NDIS_BIND_FILTER_LINK> >::~unique_ptr<struct NDIS_BIND_FILTER_LINK,struct wistd::default_delete<struct NDIS_BIND_FILTER_LINK> >(void);
+public: __cdecl wistd::unique_ptr<struct NDIS_BIND_PROTOCOL_LINK,struct wistd::default_delete<struct NDIS_BIND_PROTOCOL_LINK> >::~unique_ptr<struct NDIS_BIND_PROTOCOL_LINK,struct wistd::default_delete<struct NDIS_BIND_PROTOCOL_LINK> >(void);
+public: __cdecl wistd::unique_ptr<struct NDIS_LWM_FILE_OBJECT_CONTEXT,struct KFreePoolNP<struct NDIS_LWM_FILE_OBJECT_CONTEXT> >::~unique_ptr<struct NDIS_LWM_FILE_OBJECT_CONTEXT,struct KFreePoolNP<struct NDIS_LWM_FILE_OBJECT_CONTEXT> >(void);
+public: __cdecl wistd::unique_ptr<struct NdisHistogramEntry,struct wistd::default_delete<struct NdisHistogramEntry> >::~unique_ptr<struct NdisHistogramEntry,struct wistd::default_delete<struct NdisHistogramEntry> >(void);
+public: __cdecl wistd::unique_ptr<struct NdisHistogramGlobal,struct wistd::default_delete<struct NdisHistogramGlobal> >::~unique_ptr<struct NdisHistogramGlobal,struct wistd::default_delete<struct NdisHistogramGlobal> >(void);
+public: __cdecl wistd::unique_ptr<struct Rtl::KString,struct wistd::default_delete<struct Rtl::KString> >::~unique_ptr<struct Rtl::KString,struct wistd::default_delete<struct Rtl::KString> >(void);
+public: __cdecl wistd::unique_ptr<unsigned char [0],struct wistd::default_delete<unsigned char [0]> >::~unique_ptr<unsigned char [0],struct wistd::default_delete<unsigned char [0]> >(void);
 public: __cdecl wistd::unique_ptr<wchar_t,struct KFreePool<wchar_t> >::~unique_ptr<wchar_t,struct KFreePool<wchar_t> >(void);
 ? WPP_RECORDER_SF_;
 ? WPP_RECORDER_SF__guid_;
@@ -23058,9 +23452,9 @@ WPP_RECORDER_SF__guid_ZDDDIDDDIDDDIDDDIDDDIDDDIDDDI();
 WPP_RECORDER_SF__guid_ZDIDIII();
 ? WPP_RECORDER_SF_D;
 ? WPP_RECORDER_SF_d;
+? WPP_RECORDER_SF_DD;
 ? WPP_RECORDER_SF_Dd;
 ? WPP_RECORDER_SF_dd;
-WPP_RECORDER_SF_DD();
 WPP_RECORDER_SF_dD();
 ? WPP_RECORDER_SF_DDD;
 WPP_RECORDER_SF_Ddd();
@@ -23270,10 +23664,12 @@ char * AllUsersReadSecurityDescriptor;
 char * AllUsersReadWriteSecurityDescriptor;
 char * AllUsersWriteSecurityDescriptor;
 struct _UNICODE_STRING AoAcTestStr;
+struct _UNICODE_STRING const * * BindingMetrics::BindingOperationNames;
 CallMiniportReset;
 CancelFilterOidRequestEx;
 CancelledWakeIrp;
 CancelMiniportOidRequestEx;
+__castguard_check_failure_os_handled_fptr;
 ChangeInformationFailed;
 ChangeNotificationCompartment;
 ChangeNotificationInterfaceEnum;
@@ -23326,8 +23722,6 @@ EXECUTION_CONTEXT_MODULE_ID;
 ExitingConnectedStandby;
 Feature_NdisDatapathVerifier__private_reporting;
 Feature_NdisDatapathVerifier_logged_traits;
-Feature_ScreenON_NAPS__private_reporting;
-Feature_ScreenON_NAPS_logged_traits;
 FilterArrivalIndicationFailed;
 FilterChangedMediaType;
 FilterRegistrationFailed;
@@ -23349,7 +23743,7 @@ class KPushLockManualConstruct g_WdiLoadLock;
 enum WdiLoadState g_WdiLoadState;
 unsigned long g_WdiRefCount;
 void (__cdecl* g_wil_details_pfnFeatureLoggingHook)(unsigned int,struct FEATURE_LOGGED_TRAITS const *,struct FEATURE_ERROR const *,int,enum wil_ReportingKind const *,enum wil_VariantReportingKind const *,unsigned char,unsigned __int64);
-void (__cdecl* g_wil_details_recordFeatureUsage)(unsigned int,enum wil_details_ServiceReportingKind,unsigned int,struct wil_details_FeatureReportingCache *,struct wil_details_RecordUsageResult *);
+g_wil_details_recordFeatureUsage;
 __guard_check_icall_fptr;
 __guard_dispatch_icall_fptr;
 __guard_eh_cont_count;
@@ -23494,6 +23888,8 @@ unsigned __int64 ndisAoAcMaxStartToRefTime;
 unsigned __int64 ndisAoAcMaxWakeToRefTime;
 unsigned char ndisAoAcTest;
 unsigned long ndisAoAcTestOverride;
+enum AzOidTelemetryFilter ndisAzOidTelemetryFilter;
+unsigned long * ndisAzOidTelemetryList;
 struct _CALLBACK_OBJECT * ndisBindUnbindCallbackObject;
 union _LARGE_INTEGER ndisBootFinishedTime;
 struct _NET_BUFFER_LIST * ndisBreakNbl;
@@ -23506,6 +23902,7 @@ struct _GUID ndisControlGuid;
 struct _NDIS_GUID * ndisCoSupportedGuids;
 struct _NDIS_PROCESSOR_INFO_EX * ndisCpuInfo;
 unsigned char ndisCsResiliency;
+unsigned char ndisCtaPolicyEnabled;
 enum NDIS_DATAPATH_VERIFIER_MODE ndisDatapathVerifierMode;
 unsigned long ndisDebugLoggingMode;
 unsigned long ndisDefaultNapsState;
@@ -23516,8 +23913,10 @@ struct _UNICODE_STRING ndisDeviceStr;
 struct _UNICODE_STRING NdisDeviceTypeStr;
 unsigned long ndisDirectedMacForNapsState;
 unsigned long * ndisDirectOidRequestPathOids;
+unsigned char ndisDisableNblUseAfterFreeVerifier;
 unsigned char ndisDllInitialized;
 unsigned long ndisDmaAlignment;
+unsigned char ndisDmaUseNumaAwareAllocator;
 struct _UNICODE_STRING ndisDosDevicesStr;
 unsigned long ndisDpcWatchdogLimit;
 struct _DRIVER_OBJECT * ndisDriverObject;
@@ -23535,6 +23934,7 @@ unsigned __int64 ndisFilterDriverListLock;
 struct _UNICODE_STRING ndisFilterDriverParamsStr;
 struct _UNICODE_STRING ndisFilterInstanceParamsStr;
 long ndisFlags;
+unsigned char ndisForceUWPWlanMacAddressBlock;
 void * (__cdecl* ndisGetSystemRoutineAddressEx)(struct _UNICODE_STRING *,char *);
 struct _KSE_HOOK * NdisGetVersion640ShimHooks;
 struct _KSE_SHIM NdisGetVersionShim;
@@ -23650,6 +24050,7 @@ struct _KSE_HOOK * NdisReadConfigShimHooks;
 struct _NDIS_PKT_POOL * ndisRecvPacketPool;
 unsigned char volatile ndisRefCountReferenceCountOverflow;
 struct _UNICODE_STRING ndisRegistryPath;
+struct _UNICODE_STRING const * * NdisRequestSourceStringTable;
 unsigned long ndisRssBaseCpu;
 unsigned long ndisRssCpuCount;
 struct _PROCESSOR_NUMBER * ndisRssProcessors;
@@ -23713,6 +24114,9 @@ PiRegStateSysAllInherittedSecurityDescriptor;
 PktMon;
 PktMonClientDispatch;
 PktMonClientNotify;
+PktMonCompCount;
+PktMonCompList;
+PktMonCompMutex;
 struct _UNICODE_STRING PMARPOffloadStr;
 struct _UNICODE_STRING PMNSOffloadStr;
 struct _UNICODE_STRING PMWiFiRekeyOffloadStr;
@@ -23812,118 +24216,120 @@ wil_details_featureDescriptors_a;
 wil_details_featureDescriptors_z;
 WNF_NDIS_ADAPTER_ARRIVAL;
 WNF_PO_SCENARIO_CHANGE;
-WPP_00be6b421a7931e0b0f96a5f66efcc23_Traceguids;
 WPP_012aeb269b5b38b010d0502f73c9d515_Traceguids;
-WPP_04120f1ead0836c58aece9b177b8d3ef_Traceguids;
+WPP_016ec685c1db3aefc7ddcf22ff746e69_Traceguids;
+WPP_04559e7e7c09397d982a2b5ca78317e3_Traceguids;
 WPP_0533647bba4931a92b3f74f2e1f8f42b_Traceguids;
 WPP_05716c62bb2536c54c77dd3b41b95439_Traceguids;
-WPP_05df6b0dfc6d3b8949b7b3d56ccb6053_Traceguids;
 WPP_06130e0e9ce93e3f61209ea4309c1b81_Traceguids;
 WPP_069cc08c20e532709d80f678bd350850_Traceguids;
 WPP_074752314c3a3f0a224cf35f2e3b0fec_Traceguids;
-WPP_078299f750f03c42c1abf7e109e37087_Traceguids;
 WPP_089a512067333d51f5b66ea612d009fe_Traceguids;
-WPP_114f7642a05539f6b4acd5bfcbda8e2d_Traceguids;
+WPP_08e23d885e9f3e5b5dc6dc71f31f970b_Traceguids;
+WPP_113b5d63f6553d9bcc3525ff11e8009d_Traceguids;
 WPP_1199be12e998382f89b5427f6f01d2c3_Traceguids;
-WPP_11a28086b84d3ef8c5fd89228ccff39a_Traceguids;
-WPP_151f43625ba432ff3b4f32128ec0a405_Traceguids;
-WPP_16eb98c3925833bf94e97087bc83531a_Traceguids;
+WPP_13cdcbc839493cf5610b89d83e48f096_Traceguids;
 WPP_18d3cc1af93e36e581740cabd8754bec_Traceguids;
 WPP_190ea6b10f113182d35a903b93524bb3_Traceguids;
-WPP_197eb4ab19783370fa11e732ea3b5a2d_Traceguids;
 WPP_1ba601ee69d03855ff220f07563e78fc_Traceguids;
 WPP_1cdba23956c23e7115893e836b18f005_Traceguids;
-WPP_1edf3853795934c168f7fc439cf9fda8_Traceguids;
-WPP_231a7ad8765e3b8a0571d07bdac2bb37_Traceguids;
-WPP_253435589b0e38e3eac3f4424dd8c8e4_Traceguids;
-WPP_25d6d8e3d10f36e38db4a5cf8631e048_Traceguids;
+WPP_1dd2aa6ea6da3bb0de8e6de1ae3e6425_Traceguids;
+WPP_1f4f9304c13d30d166c4c68f5fb6e586_Traceguids;
 WPP_2c51eb48a59734479dee2054718361a6_Traceguids;
-WPP_2fca99124a243983c47039c87b76db5a_Traceguids;
+WPP_2cfafda6ad1d3851beeb62a61158407a_Traceguids;
+WPP_2e89932a50af35deab5418396cb84628_Traceguids;
+WPP_3046af50312d39676cde585a7c547f92_Traceguids;
 WPP_305c8e6892fe3ae606912da7400a78c3_Traceguids;
 WPP_306c5f62fe7235e3b3f6b40a211ce2fc_Traceguids;
-WPP_31fc045ef7a830d4d2887bbee76fe91d_Traceguids;
-WPP_35d184c8b2d837816e9b9ffd1456ac53_Traceguids;
+WPP_3155975836c13457e86c838cef1b881a_Traceguids;
+WPP_36f24d049e8d3fc3e46fb027110f7201_Traceguids;
 WPP_37210d7308e93eba942d1cae1437c40c_Traceguids;
-WPP_37f5471886ec325c8ea92c2cabbd4cf9_Traceguids;
+WPP_3780f8d1fffe30c913701ae5a436082a_Traceguids;
 WPP_388d5b0555a83352147e712e55d69f1d_Traceguids;
-WPP_39285a130bc13dc3f0681d114c7faf72_Traceguids;
+WPP_38a12df014cc3a137b3c95c6dd994a94_Traceguids;
 WPP_3bc756b3e3313898ba315478217523d2_Traceguids;
 WPP_3d61bbabecaa38aa84130e7e4a2da4d6_Traceguids;
-WPP_3f10502a8e7e385c6a77087d2be74200_Traceguids;
-WPP_44b390fadec23ba9bcae0cc9320a34b9_Traceguids;
+WPP_405c908af2143fed945d9a560d683c7b_Traceguids;
+WPP_40b3d572a35736b75ceff139a227553e_Traceguids;
+WPP_432f55ab7af13a0c054b107dbaeb9b07_Traceguids;
 WPP_4816aa3b0baa34f1d8e04600f3680c92_Traceguids;
-WPP_4a94757187d03d50151c0070042f9279_Traceguids;
-WPP_4b855e46533b35be5b26cddd546981b7_Traceguids;
-WPP_4d967b23182e3f3a688d9e1e4507b542_Traceguids;
+WPP_4bb37904251735b56aed9b76a1765d54_Traceguids;
 WPP_50c81d7a54e933505abf2e2dd0037343_Traceguids;
 WPP_51ab2d8c499231d359effe6bcd859c62_Traceguids;
-WPP_56ea039682543cc41749bafffb9946f1_Traceguids;
-WPP_573a5358497137649e8f40cb87ceec67_Traceguids;
-WPP_5bedcaa04221382d8c44769b0ae4b3c6_Traceguids;
-WPP_5eb2c2b9ff2532e0d02b0f2c9580dec3_Traceguids;
-WPP_63db700a80b438f6540a523b9430c1eb_Traceguids;
+WPP_5534017d7f5337f8eda1a8849ff85c0a_Traceguids;
+WPP_57bb37eb04a63a2ba0133ebb8ef3a7c8_Traceguids;
+WPP_57ccdd0fd6ee3fd78554414e6337e6e9_Traceguids;
+WPP_5b0cabd4e4003ddabf2fa0325cbbad71_Traceguids;
+WPP_5c8f887eaf433a39d6a8a30c25163583_Traceguids;
+WPP_604bc0d44fec3b611aa9e21621a409dc_Traceguids;
+WPP_64b9953f987037c4a892513bd407e9c6_Traceguids;
 WPP_67203364a8c4390a74a1000e006604cb_Traceguids;
+WPP_6b67e79cbf5736d8de5dcc27eb05ee5a_Traceguids;
 WPP_6b68bced203d37be22ae4726b477fac7_Traceguids;
 WPP_6bf195b864a83f4f583394206a2d0b8f_Traceguids;
-WPP_6f1fdeeae41b37a0f4719f2e2ad1af8e_Traceguids;
+WPP_72d2fa87a3a93fc51dc3e318202acea4_Traceguids;
+WPP_740369199f403c504b96f54c3be14249_Traceguids;
+WPP_78fc2fada0c137ca2e9d99d042b3d7f2_Traceguids;
 WPP_793cc56eb21738532989aa31410832fc_Traceguids;
 WPP_815c5b72200d33c5216d4fda710d2065_Traceguids;
-WPP_82edb36cecd534540cfb01a6d1688083_Traceguids;
+WPP_82356f6a26f43913dc7d269f99b45093_Traceguids;
+WPP_824b22f4f32f3f23845d72b4ca1f6a19_Traceguids;
 WPP_834e21fbe3523c7dd35af4d888c0fe37_Traceguids;
-WPP_86d126c3b3973784f3a25f907dcbade5_Traceguids;
-WPP_8b177330f3293d529522b7596f0e5147_Traceguids;
+WPP_8a0939a2660a33c5680df34f1733eef3_Traceguids;
+WPP_8bdee05f76073f9a92e843a96fd0a7a9_Traceguids;
 WPP_8c7d05b852ee33ce6c4fa26611c41e92_Traceguids;
 WPP_8d8320412401304bdeb4ea90cedd2ab7_Traceguids;
 WPP_900830c1729f38670cf8e0a8f44a346b_Traceguids;
-WPP_9190a19b6c933546b552b39008d6fd57_Traceguids;
 WPP_938dc497801239a3aa49f69f20f6972d_Traceguids;
 WPP_9435edde217234e5ab0ef78f2248663b_Traceguids;
-WPP_94a72b969c633e443f818cea79d87844_Traceguids;
 WPP_95183bb0f0753f6c13106ebc2f54bafa_Traceguids;
+WPP_9631851058cb35c6ce0e43959fab5e67_Traceguids;
+WPP_978108687cf53f4f40ba23c4c4a475db_Traceguids;
+WPP_9c2ae63cf1b030f77db7d8db8508a9c2_Traceguids;
 WPP_9c5ba4de329e350b3ef3aa77f1331679_Traceguids;
 WPP_9c5dbb675d153c4950aa5c00a0b3ed9a_Traceguids;
-WPP_9c7545698de03e72e7f6cc9d06876dcb_Traceguids;
-WPP_9e530ad7497935be369aa690794a9224_Traceguids;
+WPP_9c8fc78aeca7325506c7c0cc4d060098_Traceguids;
+WPP_9cab5530743f3d13a616f229202fc263_Traceguids;
+WPP_9d39fc7439b531a7ef03335b36f94dfe_Traceguids;
 WPP_9f41e74d39a236f7fb97fc9dca66f2cd_Traceguids;
-WPP_a095d03b818b3b9702993c77529453c6_Traceguids;
+WPP_9f67bee46862369e16808214337f5b41_Traceguids;
+WPP_a280002375d0303e102e31d262e8bddb_Traceguids;
 WPP_a2b6dbcfb567359ff6487843a1f14dac_Traceguids;
-WPP_a3deceaeb6403c5105309677219e7454_Traceguids;
+WPP_a3a0dfe1e6d739a64d48f097d248e118_Traceguids;
+WPP_a5540c02e42530b9a47673fb9b499302_Traceguids;
+WPP_aaef0678e9a53a35292f438c4061d952_Traceguids;
+WPP_ac6be41cbcc037e0c9ab930039f814bd_Traceguids;
+WPP_ad107ce1d5553708f9afef3ea157b65d_Traceguids;
 WPP_b07d896841303d6dd5e4c2ea1f7441a9_Traceguids;
-WPP_b1ed157841423f7eebcb67bf8ae6c3a6_Traceguids;
+WPP_b26d01b0bab2332eb15f1eb1befd6893_Traceguids;
+WPP_b2e58fb44a513861c2538b26e5e9140e_Traceguids;
+WPP_b4da289a22fb3fb85c881fb62f41861d_Traceguids;
 WPP_b57355dc9ebc301c1304e623da4026ea_Traceguids;
 WPP_b63bfbe161d630bd8667a0af4d86a580_Traceguids;
-WPP_b73066c8574e3d1b9eeedc46f4c32798_Traceguids;
-WPP_b91592bb01f43ce3789ff49310979abe_Traceguids;
 WPP_bacc0da9805531f1e85588a73c3812ec_Traceguids;
-WPP_bb899958c3b83c4be5ffe2f3031e3faa_Traceguids;
 WPP_bbcca2468c6c34318e9f260dcf80966e_Traceguids;
 WPP_c07ec7be4eec343cc9b8d30db2584b3f_Traceguids;
-WPP_c3a5b58c3f75330003e91651c017d5c9_Traceguids;
-WPP_c5d0b5f7d8c43de1f0150a9d8e7af364_Traceguids;
-WPP_cc38803a95a73ced301517c87e670f26_Traceguids;
+WPP_c74afd9d563c345f462daa8dd9b7a4ff_Traceguids;
+WPP_c884a764ce4f344e81b00742df278ddf_Traceguids;
+WPP_cd3cd4c8e5733a8d9138b29e4c73b290_Traceguids;
 WPP_cd4e9b2dabae38dbd591d3804b6301c7_Traceguids;
 WPP_cdc05a73e2a7317b4d5b1bd183068846_Traceguids;
-WPP_ce88abd507b4341f7f3e7e732f33c3be_Traceguids;
 WPP_cf4f20c66de63f4841bb36597d808402_Traceguids;
-WPP_d6f9ee23862e32d1b410ecc78cf8ba08_Traceguids;
-WPP_d8e439f37e93330c15fe7f442367bc83_Traceguids;
-WPP_d91ceb72d0b83ce0f6c1a37caa1739dd_Traceguids;
+WPP_d81ae1bd0d0e3cce0560c16a859ea6b0_Traceguids;
 WPP_d974074cd3cc3e6d13bf92274613e368_Traceguids;
-WPP_dc12ede7e5783ca416b94229a508177d_Traceguids;
-WPP_de660bc3d878310dfb6252d632ae88c1_Traceguids;
+WPP_da285872e2723d62fcb8cab539a90eca_Traceguids;
 WPP_de7b4475eb543019aeb186df8ee4bca2_Traceguids;
-WPP_e5e9fcda50673f468ae0a771c0dd338b_Traceguids;
-WPP_e806c7b12e263323da2330dd0ab8d056_Traceguids;
-WPP_e8de539a0b3a325987ea25a41bd9244b_Traceguids;
+WPP_e87dde1cc8503e3aa3a546a0453643df_Traceguids;
 WPP_e90bf158f27a33b0bb566add4f73b7c2_Traceguids;
 WPP_e951ce375e4a3458b598cd910eaaab3e_Traceguids;
 WPP_ebf57095e638305b5a9962a85db12dfe_Traceguids;
 WPP_ecc0162481ba31e412c2de57aaf9ced1_Traceguids;
-WPP_efbf28d9260935c89d2bbaa18add4d77_Traceguids;
-WPP_f2c4b1f7b8f63ce0f40173d4296b5311_Traceguids;
+WPP_ed0d4e867c5c32c49659a97a590a07bf_Traceguids;
 WPP_f2e723125d8f3d1097c3ab5c6e889825_Traceguids;
-WPP_f5789781eb7936fb0ee30459399492d7_Traceguids;
+WPP_fb317eeef9633c6fdc03619c7424905f_Traceguids;
+WPP_fdc5294f2db637a048b8ad24a033bc88_Traceguids;
 WPP_fdf545dd66dd39d1f17f4251088b9525_Traceguids;
+WPP_ff9c29c8cd06316dbc9d020b9b7a81a2_Traceguids;
 WPP_GLOBAL_Control;
 WPP_MAIN_CB;
 WPP_RECORDER_INITIALIZED;
