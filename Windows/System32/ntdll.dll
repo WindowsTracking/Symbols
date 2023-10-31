@@ -1,5 +1,5 @@
 /*
- * PDB file: ntdll.pdb\51CC349DA70E69398B1674F9D3A0C8141\ntdll.pdb
+ * PDB file: ntdll.pdb\158A782AFAE4E837A58B83204612935F1\ntdll.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -2239,7 +2239,9 @@ typedef struct _EPROCESS
       struct /* bitfield */
       {
         unsigned long RestrictCoreSharing : 1; /* bit position: 0 */
-        unsigned long MitigationFlags3Spare : 31; /* bit position: 1 */
+        unsigned long DisallowFsctlSystemCalls : 1; /* bit position: 1 */
+        unsigned long AuditDisallowFsctlSystemCalls : 1; /* bit position: 2 */
+        unsigned long MitigationFlags3Spare : 29; /* bit position: 3 */
       }; /* bitfield */
     } MitigationFlags3Values;
   };
@@ -2894,7 +2896,12 @@ typedef enum _FILE_INFORMATION_CLASS
   FileStorageReserveIdInformation = 74,
   FileCaseSensitiveInformationForceAccessCheck = 75,
   FileKnownFolderInformation = 76,
-  FileMaximumInformation = 77,
+  FileStatBasicInformation = 77,
+  FileId64ExtdDirectoryInformation = 78,
+  FileId64ExtdBothDirectoryInformation = 79,
+  FileIdAllExtdDirectoryInformation = 80,
+  FileIdAllExtdBothDirectoryInformation = 81,
+  FileMaximumInformation = 82,
 } FILE_INFORMATION_CLASS, *PFILE_INFORMATION_CLASS;
 
 typedef struct _FILE_NETWORK_OPEN_INFORMATION
@@ -3068,7 +3075,8 @@ typedef enum _FSINFOCLASS
   FileFsDataCopyInformation = 12,
   FileFsMetadataSizeInformation = 13,
   FileFsFullSizeInformationEx = 14,
-  FileFsMaximumInformation = 15,
+  FileFsGuidInformation = 15,
+  FileFsMaximumInformation = 16,
 } FSINFOCLASS, *PFSINFOCLASS;
 
 typedef enum _FUNCTION_TABLE_TYPE
@@ -5061,6 +5069,8 @@ typedef struct _IO_STACK_LOCATION
       {
         struct _VPB* Vpb;
         struct _DEVICE_OBJECT* DeviceObject;
+        unsigned long OutputBufferLength;
+        long __PADDING__[1];
       } MountVolume;
       struct
       {
@@ -6264,7 +6274,8 @@ typedef struct _KPRCB
                 unsigned char BpbClearOnIdle : 1; /* bit position: 0 */
                 unsigned char BpbEnabled : 1; /* bit position: 1 */
                 unsigned char BpbSmep : 1; /* bit position: 2 */
-                unsigned char BpbFeaturesReserved : 5; /* bit position: 3 */
+                unsigned char BpbKCet : 1; /* bit position: 3 */
+                unsigned char BpbFeaturesReserved : 4; /* bit position: 4 */
               }; /* bitfield */
               unsigned char BpbCurrentSpecCtrl;
               unsigned char BpbKernelSpecCtrl;
@@ -6300,7 +6311,7 @@ typedef struct _KPRCB
             unsigned char BpbTrappedIbpbOnReturn : 1; /* bit position: 2 */
             unsigned char BpbTrappedIbpbOnTrap : 1; /* bit position: 3 */
             unsigned char BpbTrappedIbpbOnRetpolineExit : 1; /* bit position: 4 */
-            unsigned char BpbtrappedBpbStateReserved : 3; /* bit position: 5 */
+            unsigned char BpbTrappedBpbStateReserved : 3; /* bit position: 5 */
           }; /* bitfield */
           union
           {
@@ -6525,7 +6536,7 @@ typedef struct _KPRCB
   unsigned long PrcbPad91;
   void* MmInternal;
   struct _PROCESSOR_POWER_STATE PowerState;
-  unsigned __int64 PrcbPad96[2];
+  unsigned __int64 PrcbPad96[1];
   void* PrcbPad90;
   struct _LIST_ENTRY ScbList;
   struct _KDPC ForceIdleDpc;
@@ -9589,6 +9600,7 @@ typedef struct _PROC_PERF_DOMAIN
   unsigned char AllowSchedulerDirectedPerfStates;
   unsigned char InitiateAllProcessors;
   unsigned char AllowVmPerfSelection;
+  unsigned char TurboRangeKnown;
   unsigned long VmFrequencyStepMhz;
   unsigned long VmHighestFrequencyMhz;
   unsigned long VmNominalFrequencyMhz;
@@ -9883,7 +9895,8 @@ typedef struct _PROCESSOR_POWER_STATE
   struct _PROCESSOR_CYCLES_WORKLOAD_CLASS* EeCyclesWorkloadClassList;
   struct _PROCESSOR_CYCLES_WORKLOAD_CLASS* PerfCyclesWorkloadClassList;
   unsigned char NotUsed;
-  char __PADDING__[7];
+  unsigned short FrequencyBucketThresholds[4];
+  char __PADDING__[6];
 } PROCESSOR_POWER_STATE, *PPROCESSOR_POWER_STATE;
 
 typedef enum _PROCESSOR_PRESENCE
@@ -10053,6 +10066,7 @@ typedef enum _PS_MITIGATION_OPTION
   PS_MITIGATION_OPTION_CET_DYNAMIC_APIS_OUT_OF_PROC_ONLY = 36,
   PS_MITIGATION_OPTION_REDIRECTION_TRUST = 37,
   PS_MITIGATION_OPTION_RESTRICT_CORE_SHARING = 38,
+  PS_MITIGATION_OPTION_FSCTL_SYSTEM_CALL_DISABLE = 39,
 } PS_MITIGATION_OPTION, *PPS_MITIGATION_OPTION;
 
 typedef struct _PS_MITIGATION_OPTIONS_MAP
@@ -10235,8 +10249,10 @@ typedef struct _QUAD
 
 typedef enum _REFS_SET_VOLUME_COMPRESSION_INFO_FLAGS
 {
-  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_COMPRESS_SYNC = 1,
-  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_MAX = 1,
+  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_START_COMPRESSION = 1,
+  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_STOP_COMPRESSION = 2,
+  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_GC_ONLY = 4,
+  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_MAX = 2,
 } REFS_SET_VOLUME_COMPRESSION_INFO_FLAGS, *PREFS_SET_VOLUME_COMPRESSION_INFO_FLAGS;
 
 typedef enum _REFS_STREAM_SNAPSHOT_OPERATION
@@ -10536,11 +10552,21 @@ typedef struct _RTL_DYNAMIC_TIME_ZONE_INFORMATION
 typedef enum _RTL_FEATURE_CONFIGURATION_PRIORITY
 {
   FeatureConfigurationPriorityImageDefault = 0,
-  FeatureConfigurationPriorityEnrollment = 2,
+  FeatureConfigurationPriorityEKB = 1,
+  FeatureConfigurationPrioritySafeguard = 2,
+  FeatureConfigurationPriorityPersistent = 2,
+  FeatureConfigurationPriorityReserved3 = 3,
   FeatureConfigurationPriorityService = 4,
+  FeatureConfigurationPriorityReserved5 = 5,
+  FeatureConfigurationPriorityDynamic = 6,
+  FeatureConfigurationPriorityReserved7 = 7,
   FeatureConfigurationPriorityUser = 8,
+  FeatureConfigurationPrioritySecurity = 9,
   FeatureConfigurationPriorityUserPolicy = 10,
+  FeatureConfigurationPriorityReserved11 = 11,
   FeatureConfigurationPriorityTest = 12,
+  FeatureConfigurationPriorityReserved13 = 13,
+  FeatureConfigurationPriorityReserved14 = 14,
   FeatureConfigurationPriorityImageOverride = 15,
   FeatureConfigurationPriorityMax = 15,
 } RTL_FEATURE_CONFIGURATION_PRIORITY, *PRTL_FEATURE_CONFIGURATION_PRIORITY;
@@ -13635,7 +13661,8 @@ ExpInterlockedPopEntrySListResume();
 ExpInterlockedPushEntrySList();
 fabs();
 _fclrf();
-Feature_Servicing_CritsecInit__private_IsEnabled();
+Feature_REFSDV__private_IsEnabled();
+Feature_Servicing_OemToUnicodeFix__private_IsEnabled();
 _fgetwc_nolock();
 _filbuf();
 _filbuf_s();
@@ -13753,7 +13780,7 @@ labs();
 LdrAccessResource();
 ? LdrAddDllDirectory;
 ? LdrAddDllDirectory$fin$0;
-LdrAddLoadAsDataTable();
+? LdrAddLoadAsDataTable;
 ? LdrAddLoadAsDataTable$fin$0;
 LdrAddRefDll();
 LdrAppxHandleIntegrityFailure();
@@ -13945,14 +13972,14 @@ LdrpGetDelayloadDescriptor();
 ? LdrpGetDelayloadExportDll;
 ? LdrpGetDllPath;
 ? LdrpGetFileDriverStoreRoot;
-LdrpGetFileSizeFromLoadAsDataTable();
+? LdrpGetFileSizeFromLoadAsDataTable;
 ? LdrpGetFileSizeFromLoadAsDataTable$fin$0;
 LdrpGetFromMUIMemCache();
 ? LdrpGetFromMUIMemCache$fin$0;
 ? LdrpGetFullPath;
 ? LdrpGetImageSize;
 ? LdrpGetImportDescriptorForSnap;
-LdrpGetLoadAsEntry();
+? LdrpGetLoadAsEntry;
 ? LdrpGetLoadAsEntry$fin$0;
 LdrpGetMappingFromCacheEntry();
 ? LdrpGetModuleInfoFromVirtualMemory;
@@ -14013,7 +14040,6 @@ LdrpInitializeSmtDelayedSleep();
 ? LdrpInitializeThread$fin$1;
 ? LdrpInitializeThread$fin$2;
 ? LdrpInitializeTls;
-? LdrpInitMuiCrits;
 LdrpInitMuiCritsRtlInitOnce();
 LdrpInitParallelLoadingSupport();
 ? LdrpInitShimEngine;
@@ -14221,7 +14247,7 @@ LdrQueryProcessModuleInformationEx2();
 ? LdrRegisterDllNotification;
 LdrRelocateImageWithBias();
 ? LdrRemoveDllDirectory;
-LdrRemoveLoadAsDataTable();
+? LdrRemoveLoadAsDataTable;
 ? LdrRemoveLoadAsDataTable$fin$0;
 ? LdrResFallbackLangList;
 LdrResFindResource();
@@ -15659,6 +15685,7 @@ RtlIsDosDeviceName_U();
 RtlIsEcCode();
 RtlIsElevatedRid();
 ? RtlIsEnclaveFeaturePresent;
+RtlIsFeatureEnabledForEnterprise();
 RtlIsGenericTableEmpty();
 RtlIsGenericTableEmptyAvl();
 ? RtlIsMultiSessionSku;
@@ -15799,7 +15826,7 @@ RtlpAnalyzeHeapFailure();
 RtlpApplyAclToObject();
 RtlpApplyLengthFunction();
 RtlpAreLegacyDosDeviceNamesEnabled();
-? RtlpAssemblyStorageMapResolutionDefaultCallback;
+RtlpAssemblyStorageMapResolutionDefaultCallback();
 RtlpAtomMapAtomToHandleEntry();
 RtlpAutoCompleteLanguageFallback();
 ? RtlpBase64Encode;
@@ -15919,6 +15946,8 @@ RtlpDiskSpeedInitialize();
 ? RtlpDosPathNameToRelativeNtPathName;
 RtlpDosPathNameToRelativeNtPathName_U();
 ? RtlpDupTebLanguageList;
+RtlpEcReadPolicyState();
+RtlpEcReadSkuUpdateManagementGroup();
 RtlpEnclaveCallDispatchFilter();
 ? RtlpEnsureBufferSize;
 RtlpEnsureLiveDeadListsInitialized();
@@ -15928,6 +15957,9 @@ RtlpEnsureTailingSlashAndAddToList();
 ? RtlpEnumProcessHeaps;
 ? RtlpEnumProcessHeaps$fin$0;
 ? RtlpEstimateAllocatedSize;
+RtlpEtcGetDwordFromPersistedState();
+RtlpEtcGetDwordFromRegistry();
+RtlpEtcIsValidFeatureId();
 RtlpExceptionHandler();
 RtlpExecuteHandlerForException();
 RtlpExecuteHandlerForUnwind();
@@ -15954,7 +15986,7 @@ RtlpFcNotifyFeatureUsageTarget();
 RtlpFcQueryAllFeatureConfigurationsFromBuffers();
 RtlpFcQueryAllFeatureConfigurationsFromBufferSet();
 RtlpFcQueryAllFeatureUsageSubscriptionNotificationsFromBufferSet();
-? RtlpFcQueryFeatureConfigurationFromBuffers;
+RtlpFcQueryFeatureConfigurationFromBuffers();
 RtlpFcQueryFeatureConfigurationFromBufferSet();
 RtlpFcQueryFeatureConfigurationFromKernel();
 RtlpFcReferenceFeatureConfigurationBuffers();
@@ -16014,12 +16046,13 @@ RtlpGetBootStatusPath();
 RtlpGetBootStatusPathFromRegistry();
 ? RtlpGetCachedPath;
 RtlpGetChainHead();
-RtlpGetCodePageData();
+? RtlpGetCodePageData;
 RtlpGetCompleteLanguageFallback();
 RtlpGetContainingRange();
 ? RtlpGetContextFlagsLocation;
 ? RtlpGetCorrelationVectorBufferLength;
 ? RtlpGetCorrelationVectorEndPosition;
+? RtlpGetCorrelationVectorLastDotPosition;
 RtlpGetCurrentProcessorNumberExUninitialized();
 RtlpGetCurrentProcessorNumberUninitialized();
 RtlpGetCustomCultureData();
@@ -16059,6 +16092,7 @@ RtlpGetMultiStringLength();
 RtlpGetNextWnfNameSubscription();
 ? RtlpGetNormalization;
 RtlpGetNtProductTypeFromRegistry();
+RtlpGetPersistedRegistryLocation();
 ? RtlpGetPolicyValueForSystemCapability;
 RtlpGetProcessCodepagesForLocale();
 ? RtlpGetRegistryHandle;
@@ -16404,6 +16438,7 @@ RtlpIsCustomLocale();
 ? RtlpIsDosDeviceName_Ustr;
 RtlpIsDuplicateAce();
 RtlpIsEmptyImageFileOptionsKey();
+RtlpIsEnterpriseTemporaryControl();
 RtlpIsFrameInBounds();
 RtlpIsLFHZoneAllocation();
 RtlpIsNameInExpressionPrivate();
@@ -18441,7 +18476,6 @@ CurDirDllLoadFailureError;
 CurDirDllLoadFailureWarning;
 _d_inf;
 _d_max;
-DataLoadLockCount;
 DeprecatedDll;
 __enclave_config;
 EtwpFreeRegistrationList;
@@ -18458,10 +18492,21 @@ EtwpRegistrationSequence;
 EtwpRegistrationTable;
 FastPebLock;
 FatalUserCallbackException;
-Feature_Servicing_CritsecInit__private_descriptor;
-Feature_Servicing_CritsecInit__private_featureState;
-Feature_Servicing_CritsecInit__private_reporting;
-Feature_Servicing_CritsecInit_logged_traits;
+Feature_MTestUx14__private_descriptor;
+Feature_MTestUx14__private_featureState;
+Feature_MTestUx14__private_reporting;
+Feature_MTestUx15__private_descriptor;
+Feature_MTestUx15__private_featureState;
+Feature_MTestUx15__private_reporting;
+Feature_MTestUx15__private_requiresFeatures;
+Feature_REFSDV__private_descriptor;
+Feature_REFSDV__private_featureState;
+Feature_REFSDV__private_reporting;
+Feature_REFSDV__private_requiresFeatures;
+Feature_Servicing_OemToUnicodeFix__private_descriptor;
+Feature_Servicing_OemToUnicodeFix__private_featureState;
+Feature_Servicing_OemToUnicodeFix__private_reporting;
+Feature_Servicing_OemToUnicodeFix_logged_traits;
 Feature_TreatDosDevicePathsAsNormalFiles__private_reporting;
 Feature_TreatDosDevicePathsAsNormalFiles_logged_traits;
 _fltused;

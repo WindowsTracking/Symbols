@@ -1,5 +1,5 @@
 /*
- * PDB file: ndis.pdb\4903B3FA99C54C39ED1904F41FCC4E931\ndis.pdb
+ * PDB file: ndis.pdb\5B1895CD6AA48156DD0BE888F5E0A1911\ndis.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -176,6 +176,8 @@ struct _EXT_DELETE_PARAMETERS;
 struct _EXT_SET_PARAMETERS_V0;
 struct _FAST_IO_DISPATCH;
 struct _FAST_MUTEX;
+enum _FAST_RESOURCE_ACQUIRE_FLAGS;
+enum _FAST_RESOURCE_MOVE_FLAGS;
 enum FEATURE_CHANGE_TIME;
 enum FEATURE_ENABLED_STATE;
 struct FEATURE_ERROR;
@@ -863,6 +865,7 @@ struct _NDIS_TIMESTAMP_CAPABILITY_FLAGS;
 struct _NDIS_TRACK_MEM;
 struct _NDIS_TRIAGE_OBJECT_HEADER;
 enum _NDIS_UDP_HEADER_FIELD;
+struct _NDIS_UDP_RSC_OFFLOAD_NET_BUFFER_LIST_INFO;
 struct _NDIS_UDP_SEGMENTATION_OFFLOAD;
 struct _NDIS_VF_BLOCK;
 struct _NDIS_VPORT_BLOCK;
@@ -3557,6 +3560,20 @@ typedef struct _FAST_MUTEX
   long __PADDING__[1];
 } FAST_MUTEX, *PFAST_MUTEX;
 
+typedef enum _FAST_RESOURCE_ACQUIRE_FLAGS
+{
+  FastResourceAcquireExclusive = 1,
+  FastResourceAcquireShared = 2,
+  FastResourceAcquireSharedStarveExclusive = 4,
+  FastResourceAcquireWait = 8,
+  FastResourceAcquireDisowned = 16,
+} FAST_RESOURCE_ACQUIRE_FLAGS, *PFAST_RESOURCE_ACQUIRE_FLAGS;
+
+typedef enum _FAST_RESOURCE_MOVE_FLAGS
+{
+  FastResourceMoveDisowned = 1,
+} FAST_RESOURCE_MOVE_FLAGS, *PFAST_RESOURCE_MOVE_FLAGS;
+
 enum FEATURE_CHANGE_TIME
 {
   FEATURE_CHANGE_TIME_READ = 0,
@@ -3694,7 +3711,12 @@ typedef enum _FILE_INFORMATION_CLASS
   FileStorageReserveIdInformation = 74,
   FileCaseSensitiveInformationForceAccessCheck = 75,
   FileKnownFolderInformation = 76,
-  FileMaximumInformation = 77,
+  FileStatBasicInformation = 77,
+  FileId64ExtdDirectoryInformation = 78,
+  FileId64ExtdBothDirectoryInformation = 79,
+  FileIdAllExtdDirectoryInformation = 80,
+  FileIdAllExtdBothDirectoryInformation = 81,
+  FileMaximumInformation = 82,
 } FILE_INFORMATION_CLASS, *PFILE_INFORMATION_CLASS;
 
 typedef struct _FILE_NETWORK_OPEN_INFORMATION
@@ -3815,7 +3837,8 @@ typedef enum _FSINFOCLASS
   FileFsDataCopyInformation = 12,
   FileFsMetadataSizeInformation = 13,
   FileFsFullSizeInformationEx = 14,
-  FileFsMaximumInformation = 15,
+  FileFsGuidInformation = 15,
+  FileFsMaximumInformation = 16,
 } FSINFOCLASS, *PFSINFOCLASS;
 
 typedef struct _GDI_TEB_BATCH
@@ -4041,7 +4064,7 @@ typedef struct _HV_X64_HYPERVISOR_FEATURES
     unsigned int DisableHypervisorAvailable : 1; /* bit position: 13 */
     unsigned int ExtendedGvaRangesForFlushVirtualAddressListAvailable : 1; /* bit position: 14 */
     unsigned int FastHypercallOutputAvailable : 1; /* bit position: 15 */
-    unsigned int SvmFeaturesAvailable : 1; /* bit position: 16 */
+    unsigned int PasidFeaturesAvailable : 1; /* bit position: 16 */
     unsigned int SintPollingModeAvailable : 1; /* bit position: 17 */
     unsigned int HypercallMsrLockAvailable : 1; /* bit position: 18 */
     unsigned int DirectSyntheticTimers : 1; /* bit position: 19 */
@@ -4616,6 +4639,8 @@ typedef struct _IO_STACK_LOCATION
       {
         struct _VPB* Vpb;
         struct _DEVICE_OBJECT* DeviceObject;
+        unsigned long OutputBufferLength;
+        long __PADDING__[1];
       } MountVolume;
       struct
       {
@@ -11332,6 +11357,10 @@ typedef struct _NDIS_OID_REQUEST_RESERVED
       unsigned long WolPatternId;
       struct _NDIS_PACKET_PATTERN_ENTRY* SourcePacketEntry;
     } PMContext;
+    struct
+    {
+      unsigned char SkipRegistryUpdate : 1; /* bit position: 0 */
+    } OffloadParamsContext;
   };
   struct _GUID ActivityID;
 } NDIS_OID_REQUEST_RESERVED, *PNDIS_OID_REQUEST_RESERVED;
@@ -13873,6 +13902,19 @@ typedef enum _NDIS_UDP_HEADER_FIELD
   NdisUdpHeaderFieldMaximum = 2,
 } NDIS_UDP_HEADER_FIELD, *PNDIS_UDP_HEADER_FIELD;
 
+typedef struct _NDIS_UDP_RSC_OFFLOAD_NET_BUFFER_LIST_INFO
+{
+  union
+  {
+    struct
+    {
+      unsigned short SegCount;
+      unsigned short SegSize;
+    } Receive;
+    void* Value;
+  };
+} NDIS_UDP_RSC_OFFLOAD_NET_BUFFER_LIST_INFO, *PNDIS_UDP_RSC_OFFLOAD_NET_BUFFER_LIST_INFO;
+
 typedef struct _NDIS_UDP_SEGMENTATION_OFFLOAD
 {
   struct
@@ -16385,6 +16427,7 @@ typedef enum _PS_MITIGATION_OPTION
   PS_MITIGATION_OPTION_CET_DYNAMIC_APIS_OUT_OF_PROC_ONLY = 36,
   PS_MITIGATION_OPTION_REDIRECTION_TRUST = 37,
   PS_MITIGATION_OPTION_RESTRICT_CORE_SHARING = 38,
+  PS_MITIGATION_OPTION_FSCTL_SYSTEM_CALL_DISABLE = 39,
 } PS_MITIGATION_OPTION, *PPS_MITIGATION_OPTION;
 
 typedef struct _PS_MITIGATION_OPTIONS_MAP
@@ -16498,8 +16541,10 @@ typedef union _REFERENCE_OBJECT
 
 typedef enum _REFS_SET_VOLUME_COMPRESSION_INFO_FLAGS
 {
-  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_COMPRESS_SYNC = 1,
-  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_MAX = 1,
+  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_START_COMPRESSION = 1,
+  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_STOP_COMPRESSION = 2,
+  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_GC_ONLY = 4,
+  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_MAX = 2,
 } REFS_SET_VOLUME_COMPRESSION_INFO_FLAGS, *PREFS_SET_VOLUME_COMPRESSION_INFO_FLAGS;
 
 typedef enum _REFS_STREAM_SNAPSHOT_OPERATION
@@ -16792,11 +16837,21 @@ typedef enum _RTL_FEATURE_CONFIGURATION_OPERATION
 typedef enum _RTL_FEATURE_CONFIGURATION_PRIORITY
 {
   FeatureConfigurationPriorityImageDefault = 0,
-  FeatureConfigurationPriorityEnrollment = 2,
+  FeatureConfigurationPriorityEKB = 1,
+  FeatureConfigurationPrioritySafeguard = 2,
+  FeatureConfigurationPriorityPersistent = 2,
+  FeatureConfigurationPriorityReserved3 = 3,
   FeatureConfigurationPriorityService = 4,
+  FeatureConfigurationPriorityReserved5 = 5,
+  FeatureConfigurationPriorityDynamic = 6,
+  FeatureConfigurationPriorityReserved7 = 7,
   FeatureConfigurationPriorityUser = 8,
+  FeatureConfigurationPrioritySecurity = 9,
   FeatureConfigurationPriorityUserPolicy = 10,
+  FeatureConfigurationPriorityReserved11 = 11,
   FeatureConfigurationPriorityTest = 12,
+  FeatureConfigurationPriorityReserved13 = 13,
+  FeatureConfigurationPriorityReserved14 = 14,
   FeatureConfigurationPriorityImageOverride = 15,
   FeatureConfigurationPriorityMax = 15,
 } RTL_FEATURE_CONFIGURATION_PRIORITY, *PRTL_FEATURE_CONFIGURATION_PRIORITY;
@@ -16951,6 +17006,7 @@ typedef enum _SE_SAFE_OPEN_PROMPT_EXPERIENCE_RESULTS
   SeSafeOpenExperienceIgnoreUnknownOrBad = 32,
   SeSafeOpenExperienceDefenderTrustedInstaller = 64,
   SeSafeOpenExperienceMOTWPresent = 128,
+  SeSafeOpenExperienceElevatedNoPropagation = 256,
 } SE_SAFE_OPEN_PROMPT_EXPERIENCE_RESULTS, *PSE_SAFE_OPEN_PROMPT_EXPERIENCE_RESULTS;
 
 enum SE_WS_APPX_SIGNATURE_ORIGIN
@@ -20486,6 +20542,7 @@ public: __cdecl MINIPORT_HOOK_DRIVER::MINIPORT_HOOK_DRIVER(void);
 public: long __cdecl MINIPORT_HOOK_DRIVER::Register(void *,struct _NDIS_MINIPORT_HOOK_DRIVER_PROVIDER_CHARACTERISTICS const *);
 private: void __cdecl MINIPORT_HOOK_DRIVER::WaitForAllHookedDriversToDeregister(void);
 public: __cdecl MINIPORT_HOOK_DRIVER::~MINIPORT_HOOK_DRIVER(void);
+bool __cdecl MINIPORT_INTERLOCKED_TEST_FLAG(struct _NDIS_MINIPORT_BLOCK *,unsigned long);
 public: __cdecl MiniportSpinLock::~MiniportSpinLock(void);
 bool __cdecl MiniportSupportsReceiveThrottle(struct _NDIS_MINIPORT_BLOCK const *);
 ? ndis5InterruptDpc;
@@ -21548,6 +21605,7 @@ unsigned char __cdecl ndisIsPowerReferencedForSelectiveSuspend(struct _NDIS_SELE
 unsigned char __cdecl ndisIsRssEnabledForRequest(struct _NDIS_MINIPORT_BLOCK *,struct _NDIS_OID_REQUEST *);
 ? ndisIsSatisfiedByOidGenStatistics;
 NdisIsStatusIndicationCloneable();
+bool __cdecl ndisIsSuccessOrSupriseRemove(int,struct _NDIS_MINIPORT_BLOCK *);
 void __cdecl ndisIssueNetEventSetPowerEvent(struct _NDIS_MINIPORT_BLOCK *,enum _DEVICE_POWER_STATE,unsigned char);
 ? ndisIsSystemBooting;
 unsigned char __cdecl ndisIsTargetNonDefaultVPort(struct _NDIS_OID_REQUEST const *,unsigned long *);
@@ -21646,7 +21704,7 @@ void __cdecl ndisMCoIndicateReceiveNetBufferListsToNetBufferLists(void *,struct 
 NdisMCoIndicateReceivePacket();
 NdisMCoIndicateStatus();
 NdisMCoIndicateStatusEx();
-? ndisMCommonHaltMiniport;
+void __cdecl ndisMCommonHaltMiniport(struct _NDIS_MINIPORT_BLOCK *,unsigned long);
 NdisMCompleteBufferPhysicalMapping();
 NdisMConfigMSIXTableEntry();
 NdisMCoOidRequestComplete();
@@ -24238,6 +24296,7 @@ WPP_1f4f9304c13d30d166c4c68f5fb6e586_Traceguids;
 WPP_2c51eb48a59734479dee2054718361a6_Traceguids;
 WPP_2cfafda6ad1d3851beeb62a61158407a_Traceguids;
 WPP_2e89932a50af35deab5418396cb84628_Traceguids;
+WPP_30382edc5f5534ea1982f80fa9fe2d2c_Traceguids;
 WPP_3046af50312d39676cde585a7c547f92_Traceguids;
 WPP_305c8e6892fe3ae606912da7400a78c3_Traceguids;
 WPP_306c5f62fe7235e3b3f6b40a211ce2fc_Traceguids;
@@ -24251,7 +24310,6 @@ WPP_3bc756b3e3313898ba315478217523d2_Traceguids;
 WPP_3d61bbabecaa38aa84130e7e4a2da4d6_Traceguids;
 WPP_405c908af2143fed945d9a560d683c7b_Traceguids;
 WPP_40b3d572a35736b75ceff139a227553e_Traceguids;
-WPP_432f55ab7af13a0c054b107dbaeb9b07_Traceguids;
 WPP_4816aa3b0baa34f1d8e04600f3680c92_Traceguids;
 WPP_4bb37904251735b56aed9b76a1765d54_Traceguids;
 WPP_50c81d7a54e933505abf2e2dd0037343_Traceguids;
@@ -24261,7 +24319,6 @@ WPP_57bb37eb04a63a2ba0133ebb8ef3a7c8_Traceguids;
 WPP_57ccdd0fd6ee3fd78554414e6337e6e9_Traceguids;
 WPP_5b0cabd4e4003ddabf2fa0325cbbad71_Traceguids;
 WPP_5c8f887eaf433a39d6a8a30c25163583_Traceguids;
-WPP_604bc0d44fec3b611aa9e21621a409dc_Traceguids;
 WPP_64b9953f987037c4a892513bd407e9c6_Traceguids;
 WPP_67203364a8c4390a74a1000e006604cb_Traceguids;
 WPP_6b67e79cbf5736d8de5dcc27eb05ee5a_Traceguids;
@@ -24297,6 +24354,7 @@ WPP_a280002375d0303e102e31d262e8bddb_Traceguids;
 WPP_a2b6dbcfb567359ff6487843a1f14dac_Traceguids;
 WPP_a3a0dfe1e6d739a64d48f097d248e118_Traceguids;
 WPP_a5540c02e42530b9a47673fb9b499302_Traceguids;
+WPP_a9b9344cfcab39cb180cc205462f61f2_Traceguids;
 WPP_aaef0678e9a53a35292f438c4061d952_Traceguids;
 WPP_ac6be41cbcc037e0c9ab930039f814bd_Traceguids;
 WPP_ad107ce1d5553708f9afef3ea157b65d_Traceguids;

@@ -1,5 +1,5 @@
 /*
- * PDB file: fltMgr.pdb\969A6F3F7B6B03139ED9D16D82046A491\fltMgr.pdb
+ * PDB file: fltMgr.pdb\51A8BE994A72880ED05E344BAF51E04C1\fltMgr.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -67,6 +67,9 @@ struct _DRIVER_OBJECT;
 struct _ECP_LIST;
 struct _EJOB;
 enum EmptyCVariant_ExpiredFeature;
+enum EmptyCVariant_FeatureStaging_FilterManager;
+enum EmptyCVariant_featurestaging_moments;
+enum EmptyCVariant_FeatureStaging_ReFS;
 struct _EPROCESS;
 struct _ERESOURCE;
 struct _ETW_KERNEL_TRACE_TIMESTAMP;
@@ -106,6 +109,7 @@ struct _FILE_OBJECT;
 struct _FILE_STANDARD_INFORMATION;
 struct _FILETIME;
 struct _FILTER_CCB;
+struct _FLT_ATTACH_POLICY;
 struct _FLT_CALLBACK_DATA;
 struct _FLT_CALLBACK_DATA_QUEUE;
 enum _FLT_CALLBACK_DATA_QUEUE_FLAGS;
@@ -371,10 +375,12 @@ union wil_details_ReportedState;
 enum wil_details_ServiceReportingKind;
 enum wil_FeatureChangeTime;
 enum wil_FeatureEnabledState;
+enum wil_FeatureStage;
 struct wil_FeatureState;
 enum wil_FeatureStore;
 enum wil_FeatureVariantPayloadKind;
 enum wil_ReportingKind;
+enum wil_UsageReportingMode;
 enum wil_VariantReportingKind;
 struct _WMI_FLTIO_NOTIFY_ROUTINES;
 struct _WORK_CONTEXT;
@@ -1419,6 +1425,21 @@ enum EmptyCVariant_ExpiredFeature
   CVariant_ExpiredFeature_Empty = 0,
 };
 
+enum EmptyCVariant_FeatureStaging_FilterManager
+{
+  CVariant_FeatureStaging_FilterManager_Empty = 0,
+};
+
+enum EmptyCVariant_featurestaging_moments
+{
+  CVariant_featurestaging_moments_Empty = 0,
+};
+
+enum EmptyCVariant_FeatureStaging_ReFS
+{
+  CVariant_FeatureStaging_ReFS_Empty = 0,
+};
+
 struct _EPROCESS;
 
 typedef struct _ERESOURCE
@@ -1799,7 +1820,12 @@ typedef enum _FILE_INFORMATION_CLASS
   FileStorageReserveIdInformation = 74,
   FileCaseSensitiveInformationForceAccessCheck = 75,
   FileKnownFolderInformation = 76,
-  FileMaximumInformation = 77,
+  FileStatBasicInformation = 77,
+  FileId64ExtdDirectoryInformation = 78,
+  FileId64ExtdBothDirectoryInformation = 79,
+  FileIdAllExtdDirectoryInformation = 80,
+  FileIdAllExtdBothDirectoryInformation = 81,
+  FileMaximumInformation = 82,
 } FILE_INFORMATION_CLASS, *PFILE_INFORMATION_CLASS;
 
 typedef struct _FILE_LIST_CTRL
@@ -1904,6 +1930,18 @@ typedef struct _FILTER_CCB
   unsigned long Iterator;
   long __PADDING__[1];
 } FILTER_CCB, *PFILTER_CCB;
+
+typedef struct _FLT_ATTACH_POLICY
+{
+  long GpAllowStatus;
+  struct _UNICODE_STRING GpAllowList;
+  long SystemAllowStatus;
+  struct _UNICODE_STRING SystemAllowList;
+  long VolumeAllowStatus;
+  struct _UNICODE_STRING VolumeAllowList;
+  int AllowAvFilter;
+  int AvPolicyIsFromGp;
+} FLT_ATTACH_POLICY, *PFLT_ATTACH_POLICY;
 
 typedef struct _FLT_CALLBACK_DATA
 {
@@ -2824,7 +2862,9 @@ typedef struct _FLT_VOLUME
   long SupportedFeatures;
   unsigned short BypassFailingFltNameLen;
   wchar_t BypassFailingFltName[32];
-  char __PADDING__[2];
+  struct _GUID VolumeGuid;
+  struct _GUID FsGuid;
+  struct _FLT_ATTACH_POLICY AttachPolicy;
 } FLT_VOLUME, *PFLT_VOLUME;
 
 typedef enum _FLT_VOLUME_FLAGS
@@ -2841,6 +2881,8 @@ typedef enum _FLT_VOLUME_FLAGS
   VOLFL_READ_ONLY_DATASCAN = 512,
   VOLFL_SUPPORTED_FEATURES_KNOWN = 1024,
   VOLFL_DAX_VOLUME = 2048,
+  VOLFL_DEV_VOLUME = 4096,
+  VOLFL_TRUSTED_VOLUME = 8192,
 } FLT_VOLUME_FLAGS, *PFLT_VOLUME_FLAGS;
 
 typedef struct _FLT_VOLUME_PROPERTIES
@@ -3009,7 +3051,8 @@ typedef enum _FSINFOCLASS
   FileFsDataCopyInformation = 12,
   FileFsMetadataSizeInformation = 13,
   FileFsFullSizeInformationEx = 14,
-  FileFsMaximumInformation = 15,
+  FileFsGuidInformation = 15,
+  FileFsMaximumInformation = 16,
 } FSINFOCLASS, *PFSINFOCLASS;
 
 typedef struct _FSRTL_ADVANCED_FCB_HEADER
@@ -3211,6 +3254,7 @@ typedef struct _GLOBALS
   struct _PAGED_LOOKASIDE_LIST QueryOnCreateLookasideList;
   struct _PAGED_LOOKASIDE_LIST NameBufferLookasideList;
   struct _PAGED_LOOKASIDE_LIST NameCacheNodeLookasideLists[7];
+  struct _PAGED_LOOKASIDE_LIST NameSupportVolumeInfoLookasideList;
   struct
   {
     enum _LOCK_OPERATION DesiredAccess;
@@ -3230,7 +3274,8 @@ typedef struct _GLOBALS
   union _LARGE_INTEGER RenameCounter;
   long FilterSupportedFeaturesMode;
   unsigned __int64 InitialRundownSize;
-  long __PADDING__[6];
+  unsigned char MomentFeatureDevDriveFltAttachPolicyEnabled;
+  char __PADDING__[23];
 } GLOBALS, *PGLOBALS;
 
 typedef struct _GUID
@@ -3640,6 +3685,8 @@ typedef struct _IO_STACK_LOCATION
       {
         struct _VPB* Vpb;
         struct _DEVICE_OBJECT* DeviceObject;
+        unsigned long OutputBufferLength;
+        long __PADDING__[1];
       } MountVolume;
       struct
       {
@@ -4522,8 +4569,10 @@ typedef struct _PRIVILEGE_SET
 
 typedef enum _REFS_SET_VOLUME_COMPRESSION_INFO_FLAGS
 {
-  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_COMPRESS_SYNC = 1,
-  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_MAX = 1,
+  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_START_COMPRESSION = 1,
+  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_STOP_COMPRESSION = 2,
+  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_GC_ONLY = 4,
+  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_MAX = 2,
 } REFS_SET_VOLUME_COMPRESSION_INFO_FLAGS, *PREFS_SET_VOLUME_COMPRESSION_INFO_FLAGS;
 
 typedef enum _REFS_STREAM_SNAPSHOT_OPERATION
@@ -6161,6 +6210,14 @@ enum wil_FeatureEnabledState
   wil_FeatureEnabledState_Enabled = 2,
 };
 
+enum wil_FeatureStage
+{
+  wil_FeatureStage_AlwaysDisabled = 0,
+  wil_FeatureStage_DisabledByDefault = 1,
+  wil_FeatureStage_EnabledByDefault = 2,
+  wil_FeatureStage_AlwaysEnabled = 3,
+};
+
 struct wil_FeatureState
 {
   enum wil_FeatureEnabledState enabledState;
@@ -6194,6 +6251,13 @@ enum wil_ReportingKind
   wil_ReportingKind_DeviceOpportunity = 4,
   wil_ReportingKind_TotalDuration = 5,
   wil_ReportingKind_PausedDuration = 6,
+};
+
+enum wil_UsageReportingMode
+{
+  wil_UsageReportingMode_Default = 0,
+  wil_UsageReportingMode_SuppressPotential = 1,
+  wil_UsageReportingMode_SuppressImplicit = 2,
 };
 
 enum wil_VariantReportingKind
@@ -6329,9 +6393,10 @@ DeleteFileListCtrlCallback();
 ? DoFreeContextMemory;
 ? DoReleaseContext;
 DrainCompletionNode();
-? DriverEntry;
+DriverEntry();
 ? EnableFlushTimer;
 ? ExtractAggregateFieldTypes;
+Feature_FltDdAttachPol__private_IsEnabled();
 FindNextRightSubtree();
 ? FinishHash;
 ? FlattenEventEntryTree;
@@ -6446,7 +6511,7 @@ FltGetDeviceObject();
 FltGetDiskDeviceObject();
 ? FltGetEcpListFromCallbackData;
 FltGetFileContext();
-? FltGetFileNameInformation;
+FltGetFileNameInformation();
 ? FltGetFileNameInformationUnsafe;
 FltGetFileSystemType();
 FltGetFilterFromInstance();
@@ -6488,6 +6553,10 @@ FltGetVolumeFromInstance();
 ? FltGetVolumeInstanceFromName;
 FltGetVolumeName();
 ? FltGetVolumeProperties;
+FltiAttachPolicyCleanup();
+FltiAttachPolicyInit();
+FltiAttachPolicyIsFilterAllowed();
+FltiAttachPolicyNeedsFltMgr();
 FltInitExtraCreateParameterLookasideList();
 FltInitializeFileLock();
 FltInitializeOplock();
@@ -6533,9 +6602,9 @@ FltpAllocateBackPocketIrpCtrl();
 ? FltpAllocateCallbackDataMustSucceed;
 ? FltpAllocateCompletionNodeTracking;
 ? FltpAllocateFileListCtrl;
-? FltpAllocateFileNameInformation;
+FltpAllocateFileNameInformation();
 FltpAllocateFltCcb();
-? FltpAllocateInitializeNameGenerationContext;
+FltpAllocateInitializeNameGenerationContext();
 FltpAllocateIrpCtrl();
 ? FltpAllocateIrpCtrlInternal;
 ? FltpAllocateIrpCtrlMustSucceed;
@@ -6549,6 +6618,12 @@ FltpAllocateTelemetryStringRoutine();
 FltpAsyncIoCompletionCallback();
 ? FltpAttachDeviceObject;
 ? FltpAttachFrame;
+FltpAttachPolicyGetRegValue();
+FltpAttachPolicyInitAllowList();
+FltpAttachPolicyInitAvPolicy();
+FltpAttachPolicyIsAltitudeInAvBand();
+FltpAttachPolicyIsFilterInList();
+FltpAttachPolicyValidateFilterList();
 ? FltpAttachStreamListCtrlToTxVolCtx;
 ? FltpAttachToFileSystemDevice;
 ? FltpAttachVolume;
@@ -6560,7 +6635,7 @@ FltpBuildPathNameForEventLog();
 ? FltpCacheCreateNames;
 FltpCalculateLegacyFilterAltitude();
 ? FltpCallNormalizeNameComponentHandler;
-? FltpCallOpenedFileNameHandler;
+FltpCallOpenedFileNameHandler();
 FltpCallShortFileNameHandler();
 FltpCancelFileOpen();
 FltpCancelIrp();
@@ -6609,7 +6684,7 @@ FltpCopyUnicodeString();
 ? FltpCreate;
 ? FltpCreateControlDeviceObject;
 ? FltpCreateFile;
-? FltpCreateFileNameInformation;
+FltpCreateFileNameInformation();
 ? FltpCreateInstanceFromName;
 ? FltpCreateKtmResourceManager;
 FltpCreatePostCompletion();
@@ -6660,10 +6735,10 @@ FltpEnumerateMiniFilterOnlyInformation();
 FltpEnumerateVolumeInformationInternal();
 ? FltPerformAsynchronousIo;
 ? FltPerformSynchronousIo;
-? FltpExpandFilePath;
+FltpExpandFilePath();
 FltpExpandFilePathCallout();
-? FltpExpandFilePathWorker;
-? FltpExpandShortNames;
+FltpExpandFilePathWorker();
+FltpExpandShortNames();
 ? FltpExtendIrpCtrl;
 FltpFastIoCheckIfPossible();
 ? FltpFastIoDetachDevice;
@@ -6706,16 +6781,17 @@ FltpFreeFrameLookasideLists();
 ? FltpFreeIrpCtrl;
 FltpFreeMdlChain();
 ? FltpFreeNameCacheCreateCtrl;
-? FltpFreeNameGenerationContext;
+FltpFreeNameGenerationContext();
+FltpFreeNameSupportVolumeInfo();
 FltpFreeStaticIrpCtrl();
 FltpFreeTelemetryStringRoutine();
 ? FltpFreeTxVolStreamListCtrlEntries;
 FltpFreeUnicodeString();
-? FltpFreeVolume;
+FltpFreeVolume();
 ? FltpFsControl;
 FltpFsControlCompletion();
 FltpFsControlLoadFileSystem();
-? FltpFsControlMountVolume;
+FltpFsControlMountVolume();
 FltpFsNotification();
 ? FltpFsNotificationActual;
 FltpFsRtlCompletionRoutine();
@@ -6728,34 +6804,36 @@ FltpGetBaseDeviceObjectName();
 FltpGetBoundTransaction();
 FltpGetCallbackNodeForInstance();
 ? FltpGetContexts;
+FltpGetCsvFromMultiSz();
 ? FltpGetDeviceObjectFromName;
 ? FltpGetDriverVersion;
 ? FltpGetFileListCtrl;
-? FltpGetFileName;
-? FltpGetFileNameFromFileObject;
+FltpGetFileName();
+FltpGetFileNameFromFileObject();
 ? FltpGetFileNameInformation;
 ? FltpGetFileNameOpenById;
 FltpGetFileNameOpenByIdCallout();
-? FltpGetFileNameOpenByIdWorker;
+FltpGetFileNameOpenByIdWorker();
 ? FltpGetFltVolumeFromAttachmentList;
 ? FltpGetFrameZeroVolume;
 FltpGetFsDeviceObjectAfterMount();
 FltpGetInformation();
 ? FltpGetInstanceAltitude;
-? FltpGetIoTargetFromFileObject;
+FltpGetIoTargetFromFileObject();
 FltpGetLegacyFilterInformation();
 FltpGetLegacyInstanceInformation();
 ? FltpGetLoadedLegacyFiltersList;
 ? FltpGetLoadOrderGroupRegistryValue;
 ? FltpGetMessage;
+FltpGetNameSupportVolumeInfo();
 ? FltpGetNextCallbackNodeForInstance;
 FltpGetNextMessageWaiter();
 ? FltpGetNormalizedDestinationFileName;
 FltpGetNormalizedFileNameCallout();
-? FltpGetNormalizedFileNameWorker;
+FltpGetNormalizedFileNameWorker();
 ? FltpGetObjectName;
-? FltpGetOpenedDestinationFileName;
-? FltpGetOpenedFileName;
+FltpGetOpenedDestinationFileName();
+FltpGetOpenedFileName();
 FltpGetParameterOffsets();
 FltpGetRegDwordValue();
 FltpGetServicePathFromFilter();
@@ -6786,9 +6864,11 @@ FltpInitializeIrpCtrlStackProfiler();
 ? FltpInitializeTelemetry;
 ? FltpInitializeVolumeCcb;
 FltpInitInstance();
-? FltpInitLookasideLists;
+FltpInitLookasideLists();
+FltpInitNameControl();
 FltpInitThrottledWorkItemCtrl();
 ? FltpInitVolume;
+FltpInitVolumeAttachPolicy();
 ? FltpInsertCallback;
 FltpInsertIrp();
 ? FltpInsertVolumeInstance;
@@ -6813,6 +6893,7 @@ FltpLinkVolume();
 FltpLoadFilter();
 ? FltpLogEventBypassIoNotSupported;
 FltpLogEventBypassIoVetoed();
+FltpLogEventInitAttachPolicy();
 ? FltpLogEventWithObjectID;
 ? FltpLookupPerFileContext;
 FltpManualDeviceAttachTimer();
@@ -6825,12 +6906,12 @@ FltpMiniFilterDummyUnload();
 ? FltpMoveCallbackDataToIrp;
 ? FltpMoveIrpToCallbackData;
 ? FltpMsgDispatch;
-? FltpNameCanBeExpanded;
+FltpNameCanBeExpanded();
 FltpNoFilterCallbackCompletion();
 FltpNoFilterCallbackCompletionWorker();
 FltpNoFilterCallbacksWorkerThread();
 ? FltpNormalizeNameComponent;
-? FltpNormalizeNameFromCache;
+FltpNormalizeNameFromCache();
 FltpNumCallbackNodes();
 ? FltpObjectPointerDereference;
 FltpObjectPointerReference();
@@ -7212,6 +7293,9 @@ _guard_xfg_dispatch_icall_nop();
 ? McGenControlCallbackV2;
 McGenEventRegister_EtwRegister();
 ? McGenEventWrite_EtwWriteTransfer;
+McTemplateK0hzr0jjhzr4d_EtwWriteTransfer();
+McTemplateK0hzr0jjhzr4dhbr7dhbr10dhbr13tt_EtwWriteTransfer();
+McTemplateK0hzr0jjhzr4dhzr7dhzr10dhzr13tt_EtwWriteTransfer();
 ? McTemplateK0zqqmd_EtwWriteTransfer;
 McTemplateK0zqqmszqzd_EtwWriteTransfer();
 memcmp();
@@ -7280,9 +7364,19 @@ ValidateIoParameters();
 wil_details_BuildFeatureStateCacheFromQueryResults();
 wil_details_EvaluateFeatureDependencies_GetCachedFeatureEnabledState();
 wil_details_EvaluateFeatureDependencies_ReevaluateCachedFeatureEnabledState();
+wil_details_FeatureReporting_IncrementOpportunityInCache();
+wil_details_FeatureReporting_IncrementUsageInCache();
+wil_details_FeatureReporting_RecordUsageInCache();
+wil_details_FeatureReporting_ReportUsageToService();
+wil_details_FeatureReporting_ReportUsageToServiceDirect();
+wil_details_FeatureStateCache_GetCachedFeatureEnabledState();
+wil_details_FeatureStateCache_ReevaluateCachedFeatureEnabledState();
+wil_details_GetCurrentFeatureEnabledState();
+wil_details_MapReportingKind();
 wil_details_OnFeatureConfigurationChange();
 wil_details_UpdateFeatureConfiguredStates();
 ? wil_InitializeFeatureStaging;
+wil_RtlStagingConfig_QueryFeatureState();
 WPP_SF_();
 WPP_SF_D();
 WPP_SF_d();
@@ -7343,6 +7437,22 @@ ContextTypeInfo;
 ECP_TYPE_OPEN_REPARSE_GUID;
 FailedToGetFilePath;
 FailedToGetFilePath_buffer;
+Feature_FltDdAttachPol__private_descriptor;
+Feature_FltDdAttachPol__private_featureState;
+Feature_FltDdAttachPol__private_reporting;
+Feature_FltDdAttachPol__private_requiresFeatures;
+Feature_FltDdAttachPol_logged_traits;
+Feature_MTestUx14__private_descriptor;
+Feature_MTestUx14__private_featureState;
+Feature_MTestUx14__private_reporting;
+Feature_MTestUx15__private_descriptor;
+Feature_MTestUx15__private_featureState;
+Feature_MTestUx15__private_reporting;
+Feature_MTestUx15__private_requiresFeatures;
+Feature_REFSDV__private_descriptor;
+Feature_REFSDV__private_featureState;
+Feature_REFSDV__private_reporting;
+Feature_REFSDV__private_requiresFeatures;
 FileSystemRegKeyName;
 FltDynamicRegistrySettingsResource;
 FltGlobals;
@@ -7352,6 +7462,9 @@ FLTMGR_FILTER_UNLOADED;
 FLTMGR_FS_ATTACH_FAILED;
 FLTMGR_FS_BYPASSIO_NOT_SUPPORTED;
 FLTMGR_FS_BYPASSIO_VETOED;
+FLTMGR_INIT_ATTACH_POLICY;
+FLTMGR_INIT_ATTACH_POLICY_FAILED;
+FLTMGR_INIT_ATTACH_POLICY_V0;
 FLTMGR_NAME_CACHING_DISABLED;
 FLTMGR_REGISTER_FILTER_FAILED;
 FLTMGR_START_FILTERING_FAILED;
@@ -7388,6 +7501,10 @@ FltvMessageTable;
 FrameZeroAltitude;
 FsrtlFltMgrCallbacks;
 FsTypes;
+g_wil_details_ensureSubscribedToFeatureConfigurationChanges;
+g_wil_details_pfnFeatureLoggingHook;
+g_wil_details_recordFeatureUsage;
+g_wil_details_subscribeFeatureStateCacheToConfigurationChanges;
 __guard_check_icall_fptr;
 __guard_dispatch_icall_fptr;
 __guard_eh_cont_count;
@@ -7436,26 +7553,26 @@ VerifierObjectTypeNames;
 wil_details_featureChangeNotification;
 wil_details_featureDescriptors_a;
 wil_details_featureDescriptors_z;
-WPP_11392fc6766f3c354e29de648c2ff50c_Traceguids;
+WPP_1ca78a17cba3360f8cc825767a571962_Traceguids;
 WPP_25f8f1cc1d9b3bcfe9b8fb5ad130a4e4_Traceguids;
-WPP_2bcc255db80a381b8f07a56f774da53c_Traceguids;
 WPP_34631b1b045236e3a32c474f3298003d_Traceguids;
 WPP_3cdc21e9d8d13051f9b160f81f9223cb_Traceguids;
-WPP_4764c14601b732a44e833ed0ac244820_Traceguids;
 WPP_5fe24c30b5473d398a5c9c12ebbd52ae_Traceguids;
+WPP_66a21b8c1435388b19022d6eba5553cd_Traceguids;
 WPP_73dd080b56503df6c2994fefcdf1ebd3_Traceguids;
 WPP_80a78fdcfe40325b4d953b627ec44969_Traceguids;
+WPP_8738a08b0ed4389ef939a07500ea4e6f_Traceguids;
 WPP_874063f5ac0a32d84c48095fb4a17f79_Traceguids;
 WPP_9c69d6c21b84300abc778c48ea7a49be_Traceguids;
-WPP_a943ee73c45436e93bb5e32e87960845_Traceguids;
 WPP_b2de2344975939ff37319c68b198cdfe_Traceguids;
-WPP_bf258ec7a176381072ab5ee7f548eb68_Traceguids;
+WPP_bf1a85427135345c605e16f7d0f52f8f_Traceguids;
 WPP_c1ef524b915735315d6a38c2900a2271_Traceguids;
-WPP_cbe3f6451e623b58885c36f6a9ed018e_Traceguids;
+WPP_ce201f7259f03244a6834918ce583e03_Traceguids;
 WPP_e2a6b30a27ec33087ca3b9cf7b2a6f2d_Traceguids;
 WPP_e31c62956803364de79863b89ed01be7_Traceguids;
 WPP_e8684e49308533f31143b963756be383_Traceguids;
 WPP_f4f2b71bbb6732b7d7c5e27e0705658d_Traceguids;
+WPP_f8b9e583ae5d33f3d5244c59fd5f7bad_Traceguids;
 WPP_ffda56d28305341add16439808a660dd_Traceguids;
 WPP_GLOBAL_Control;
 WPP_MAIN_CB;

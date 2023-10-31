@@ -1,5 +1,5 @@
 /*
- * PDB file: win32k.pdb\17469094424A3FB2929E97EC00A99F531\win32k.pdb
+ * PDB file: win32k.pdb\4FAED4BC3FB43EA9C734A5484BB2BD3A1\win32k.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -174,6 +174,8 @@ struct _EXT_SET_PARAMETERS_V0;
 struct _FAST_IO_DISPATCH;
 struct _FAST_MUTEX;
 struct _FAST_OWNER_ENTRY;
+enum _FAST_RESOURCE_ACQUIRE_FLAGS;
+enum _FAST_RESOURCE_MOVE_FLAGS;
 struct _FILE_BASIC_INFORMATION;
 enum _FILE_INFORMATION_CLASS;
 struct _FILE_NETWORK_OPEN_INFORMATION;
@@ -2981,6 +2983,20 @@ typedef struct _FAST_OWNER_ENTRY
   void* Reserved[9];
 } FAST_OWNER_ENTRY, *PFAST_OWNER_ENTRY;
 
+typedef enum _FAST_RESOURCE_ACQUIRE_FLAGS
+{
+  FastResourceAcquireExclusive = 1,
+  FastResourceAcquireShared = 2,
+  FastResourceAcquireSharedStarveExclusive = 4,
+  FastResourceAcquireWait = 8,
+  FastResourceAcquireDisowned = 16,
+} FAST_RESOURCE_ACQUIRE_FLAGS, *PFAST_RESOURCE_ACQUIRE_FLAGS;
+
+typedef enum _FAST_RESOURCE_MOVE_FLAGS
+{
+  FastResourceMoveDisowned = 1,
+} FAST_RESOURCE_MOVE_FLAGS, *PFAST_RESOURCE_MOVE_FLAGS;
+
 typedef struct _FILE_BASIC_INFORMATION
 {
   union _LARGE_INTEGER CreationTime;
@@ -3069,7 +3085,12 @@ typedef enum _FILE_INFORMATION_CLASS
   FileStorageReserveIdInformation = 74,
   FileCaseSensitiveInformationForceAccessCheck = 75,
   FileKnownFolderInformation = 76,
-  FileMaximumInformation = 77,
+  FileStatBasicInformation = 77,
+  FileId64ExtdDirectoryInformation = 78,
+  FileId64ExtdBothDirectoryInformation = 79,
+  FileIdAllExtdDirectoryInformation = 80,
+  FileIdAllExtdBothDirectoryInformation = 81,
+  FileMaximumInformation = 82,
 } FILE_INFORMATION_CLASS, *PFILE_INFORMATION_CLASS;
 
 typedef struct _FILE_NETWORK_OPEN_INFORMATION
@@ -3165,7 +3186,8 @@ typedef enum _FSINFOCLASS
   FileFsDataCopyInformation = 12,
   FileFsMetadataSizeInformation = 13,
   FileFsFullSizeInformationEx = 14,
-  FileFsMaximumInformation = 15,
+  FileFsGuidInformation = 15,
+  FileFsMaximumInformation = 16,
 } FSINFOCLASS, *PFSINFOCLASS;
 
 typedef struct _GDI_TEB_BATCH
@@ -3781,6 +3803,8 @@ typedef struct _IO_STACK_LOCATION
       {
         struct _VPB* Vpb;
         struct _DEVICE_OBJECT* DeviceObject;
+        unsigned long OutputBufferLength;
+        long __PADDING__[1];
       } MountVolume;
       struct
       {
@@ -5408,6 +5432,7 @@ typedef enum _PS_MITIGATION_OPTION
   PS_MITIGATION_OPTION_CET_DYNAMIC_APIS_OUT_OF_PROC_ONLY = 36,
   PS_MITIGATION_OPTION_REDIRECTION_TRUST = 37,
   PS_MITIGATION_OPTION_RESTRICT_CORE_SHARING = 38,
+  PS_MITIGATION_OPTION_FSCTL_SYSTEM_CALL_DISABLE = 39,
 } PS_MITIGATION_OPTION, *PPS_MITIGATION_OPTION;
 
 typedef struct _PS_MITIGATION_OPTIONS_MAP
@@ -5468,8 +5493,10 @@ typedef struct _QUAD
 
 typedef enum _REFS_SET_VOLUME_COMPRESSION_INFO_FLAGS
 {
-  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_COMPRESS_SYNC = 1,
-  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_MAX = 1,
+  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_START_COMPRESSION = 1,
+  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_STOP_COMPRESSION = 2,
+  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_GC_ONLY = 4,
+  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_MAX = 2,
 } REFS_SET_VOLUME_COMPRESSION_INFO_FLAGS, *PREFS_SET_VOLUME_COMPRESSION_INFO_FLAGS;
 
 typedef enum _REFS_STREAM_SNAPSHOT_OPERATION
@@ -5696,13 +5723,21 @@ typedef enum _RTL_FEATURE_CONFIGURATION_OPERATION
 typedef enum _RTL_FEATURE_CONFIGURATION_PRIORITY
 {
   FeatureConfigurationPriorityImageDefault = 0,
+  FeatureConfigurationPriorityEKB = 1,
   FeatureConfigurationPrioritySafeguard = 2,
+  FeatureConfigurationPriorityPersistent = 2,
+  FeatureConfigurationPriorityReserved3 = 3,
   FeatureConfigurationPriorityService = 4,
+  FeatureConfigurationPriorityReserved5 = 5,
   FeatureConfigurationPriorityDynamic = 6,
+  FeatureConfigurationPriorityReserved7 = 7,
   FeatureConfigurationPriorityUser = 8,
   FeatureConfigurationPrioritySecurity = 9,
   FeatureConfigurationPriorityUserPolicy = 10,
+  FeatureConfigurationPriorityReserved11 = 11,
   FeatureConfigurationPriorityTest = 12,
+  FeatureConfigurationPriorityReserved13 = 13,
+  FeatureConfigurationPriorityReserved14 = 14,
   FeatureConfigurationPriorityImageOverride = 15,
   FeatureConfigurationPriorityMax = 15,
 } RTL_FEATURE_CONFIGURATION_PRIORITY, *PRTL_FEATURE_CONFIGURATION_PRIORITY;
@@ -6830,6 +6865,7 @@ typedef struct _W32PROCESS
     unsigned int bWroteScreenBits : 1; /* bit position: 2 */
     unsigned int bGUIConverted : 1; /* bit position: 3 */
     unsigned int bImEnabled : 1; /* bit position: 4 */
+    unsigned int bGDILimitReachedAtLeastOnce : 1; /* bit position: 5 */
   }; /* bitfield */
   unsigned long Cookie;
 } W32PROCESS, *PW32PROCESS;
@@ -9753,7 +9789,11 @@ NtUserSetWindowState();
 NtUserSetWindowStationUser();
 NtUserSetWindowWord();
 NtUserSetWinEventHook();
+NtUserShellHandwritingDelegateInput();
+NtUserShellHandwritingHandleDelegatedInput();
+NtUserShellHandwritingUndelegateInput();
 NtUserShellMigrateWindow();
+NtUserShellRegisterHotKey();
 NtUserShellSetWindowPos();
 NtUserShowCaret();
 NtUserShowCursor();
@@ -11227,7 +11267,11 @@ _stub_UserSetWindowState();
 _stub_UserSetWindowStationUser();
 _stub_UserSetWindowWord();
 _stub_UserSetWinEventHook();
+_stub_UserShellHandwritingDelegateInput();
+_stub_UserShellHandwritingHandleDelegatedInput();
+_stub_UserShellHandwritingUndelegateInput();
 _stub_UserShellMigrateWindow();
+_stub_UserShellRegisterHotKey();
 _stub_UserShellSetWindowPos();
 _stub_UserShowCaret();
 _stub_UserShowCursor();
@@ -12696,7 +12740,11 @@ __win32kstub_NtUserSetWindowState();
 __win32kstub_NtUserSetWindowStationUser();
 __win32kstub_NtUserSetWindowWord();
 __win32kstub_NtUserSetWinEventHook();
+__win32kstub_NtUserShellHandwritingDelegateInput();
+__win32kstub_NtUserShellHandwritingHandleDelegatedInput();
+__win32kstub_NtUserShellHandwritingUndelegateInput();
 __win32kstub_NtUserShellMigrateWindow();
+__win32kstub_NtUserShellRegisterHotKey();
 __win32kstub_NtUserShellSetWindowPos();
 __win32kstub_NtUserShowCaret();
 __win32kstub_NtUserShowCursor();

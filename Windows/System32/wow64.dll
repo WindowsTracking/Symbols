@@ -699,6 +699,8 @@ whNtQueryDefaultUILanguage();
 ? whNtQueryDefaultUILanguage$fin$0;
 whNtQueryDirectoryFile();
 ? whNtQueryDirectoryFile$fin$0;
+whNtQueryDirectoryFile_FileId64ExtdBothDirectoryInformation();
+whNtQueryDirectoryFile_FileId64ExtdDirectoryInformation();
 whNtQueryDirectoryFileEx();
 ? whNtQueryDirectoryFileEx$fin$0;
 whNtQueryDirectoryObject();
