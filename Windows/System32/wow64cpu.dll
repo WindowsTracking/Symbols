@@ -2,16 +2,16 @@
 // Functions
 
 BTCpuGetBopCode();
-? BTCpuGetContext;
-? BTCpuProcessInit;
+BTCpuGetContext();
+BTCpuProcessInit();
 BTCpuResetToConsistentState();
-? BTCpuSetContext;
-? BTCpuSimulate;
+BTCpuSetContext();
+BTCpuSimulate();
 ? BTCpuSimulate$filt$0;
+BTCpuThreadInit();
 BTCpuTurboThunkControl();
 __C_specific_handler();
 CpupReturnFromSimulatedCode();
-CpupSaveLegacyFloatingPointState();
 CpupSimulateHandler();
 CpupSyscallStub();
 DeviceIoctlFile();
@@ -38,6 +38,7 @@ RtlCaptureContext();
 RtlLookupFunctionEntry();
 RtlUnhandledExceptionFilter();
 RtlVirtualUnwind();
+RtlXRestore();
 RunSimulatedCode();
 __security_check_cookie();
 __security_init_cookie();
@@ -75,6 +76,7 @@ WaitForMultipleObjects32();
 // Globals
 
 __castguard_check_failure_os_handled_fptr;
+CpupCpuAreaEnabledFeatures;
 CpupSystemCallFast;
 CpupUserSharedData;
 __enclave_config;

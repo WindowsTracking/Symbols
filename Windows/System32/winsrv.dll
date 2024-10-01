@@ -5,9 +5,10 @@ ApiSetQueryApiSetPresence();
 __delayLoadHelper2();
 _DllMainCRTStartupForGS();
 _guard_check_icall_nop();
+_guard_dispatch_icall();
+_guard_dispatch_icall$thunk$10345483385596137414();
 _guard_dispatch_icall_nop();
 _guard_xfg_dispatch_icall_nop();
-IsConhost();
 IsUserServerDllInitializationExtPresent();
 IsUserServerDllInitializationMinPresent();
 __report_gsfailure();
@@ -19,7 +20,8 @@ __tailMerge_ext_ms_win_core_winsrv_min_l1_1_0_dll();
 UserClientShutdown();
 UserCreateCallbackThread();
 UserHardError();
-? UserServerDllInitialization;
+UserServerDllInitialization();
+UserServerDllInitializationWin1();
 
 // Globals
 

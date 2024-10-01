@@ -1,5 +1,5 @@
 /*
- * PDB file: fltMgr.pdb\51A8BE994A72880ED05E344BAF51E04C1\fltMgr.pdb
+ * PDB file: fltMgr.pdb\6385123B0ADBB30A056C7D9A84F4AB141\fltMgr.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -14,6 +14,7 @@ struct _ALLOCATE_CONTEXT_DIRECT;
 struct _ALLOCATE_CONTEXT_HEADER;
 struct _ALLOCATE_CONTEXT_LOOKASIDE;
 struct _ALLOCATE_CONTEXT_ROUTINES;
+struct _ALTITUDE_RANGE;
 struct _ASYNC_IO_COMPLETION_CONTEXT;
 struct _AUX_ACCESS_DATA;
 struct _BACKPOCKET_THREAD_ENTRY;
@@ -22,7 +23,6 @@ struct _CALLBACK_CTRL;
 struct _CALLBACK_NODE;
 enum _CALLBACK_NODE_FLAGS;
 struct _CC_FILE_SIZES;
-struct Change;
 struct _CM_FULL_RESOURCE_DESCRIPTOR;
 struct _CM_PARTIAL_RESOURCE_DESCRIPTOR;
 struct _CM_PARTIAL_RESOURCE_LIST;
@@ -32,6 +32,7 @@ struct _COMPLETION_NODE_TRACKING_LIST;
 struct _COMPRESSED_DATA_INFO;
 struct _CONTEXT;
 struct _CONTEXT_LIST_CTRL;
+struct _CONTEXT_LIST_LLCACHE_ENTRY;
 struct _CONTEXT_NODE;
 struct _CUSTOM_SYSTEM_EVENT_TRIGGER_CONFIG;
 struct _DEVICE_CAPABILITIES;
@@ -48,7 +49,7 @@ struct _DEVOBJ_EXTENSION;
 enum _DIRECTORY_NOTIFY_INFORMATION_CLASS;
 struct _DISPATCHER_HEADER;
 struct _DMA_ADAPTER;
-struct _DMA_ADAPTER_INFO;
+union _DMA_ADAPTER_INFO;
 struct _DMA_ADAPTER_INFO_CRASHDUMP;
 struct _DMA_ADAPTER_INFO_V1;
 struct _DMA_COMMON_BUFFER_EXTENDED_CONFIGURATION;
@@ -68,8 +69,6 @@ struct _ECP_LIST;
 struct _EJOB;
 enum EmptyCVariant_ExpiredFeature;
 enum EmptyCVariant_FeatureStaging_FilterManager;
-enum EmptyCVariant_featurestaging_moments;
-enum EmptyCVariant_FeatureStaging_ReFS;
 struct _EPROCESS;
 struct _ERESOURCE;
 struct _ETW_KERNEL_TRACE_TIMESTAMP;
@@ -91,8 +90,10 @@ struct _EXCEPTION_RECORD;
 struct _EXCEPTION_REGISTRATION_RECORD;
 struct _EXT_DELETE_PARAMETERS;
 struct _EXT_SET_PARAMETERS_V0;
+struct _FAST_ERESOURCE;
 struct _FAST_IO_DISPATCH;
 struct _FAST_MUTEX;
+struct _FAST_OWNER_ENTRY;
 enum FEATURE_CHANGE_TIME;
 enum FEATURE_ENABLED_STATE;
 struct FEATURE_ERROR;
@@ -124,6 +125,7 @@ struct _FLT_GENERIC_WORKITEM;
 struct _FLT_INSTANCE;
 enum _FLT_INSTANCE_FLAGS;
 struct _FLT_IO_PARAMETER_BLOCK;
+struct _FLT_IO_PERF_CHECKPOINT_CONTEXT;
 struct _FLT_MESSAGE_WAITER;
 struct _FLT_MESSAGE_WAITER_QUEUE;
 struct _FLT_MUTEX_LIST_HEAD;
@@ -131,6 +133,9 @@ struct _FLT_NAME_CONTROL;
 enum _FLT_NPAGED_LOOKASIDE_NUMBER;
 struct _FLT_OBJECT;
 enum _FLT_OBJECT_FLAGS;
+struct _FLT_OBJECT_LOG;
+struct _FLT_OBJECT_LOG_ENTRY;
+enum _FLT_OBJECT_LOG_ENTRY_ACTION;
 struct _FLT_OPERATION_REGISTRATION;
 union _FLT_PARAMETERS;
 struct _FLT_PORT;
@@ -167,6 +172,7 @@ enum _FSINFOCLASS;
 struct _FSRTL_ADVANCED_FCB_HEADER;
 struct _FSRTL_PER_FILE_CONTEXT;
 struct _FSRTL_PER_STREAM_CONTEXT;
+enum FsRtlAllowReservedContext;
 struct _GENERAL_LOOKASIDE;
 struct _GENERAL_LOOKASIDE_POOL;
 struct _GENERIC_MAPPING;
@@ -182,6 +188,13 @@ enum _IO_ALLOCATION_ACTION;
 struct _IO_COMPLETION_CONTEXT;
 struct _IO_CSQ;
 struct _IO_DRIVER_CREATE_CONTEXT;
+struct _IO_PERF_BASIC_BUCKET;
+struct _IO_PERF_BYTES_BUCKET;
+struct _IO_PERF_COUNTERS_DATA;
+struct _IO_PERF_ENTITY_DATA;
+struct _IO_PERF_EXTENTS_BUCKET;
+struct _IO_PERF_PCW_BUCKETIZED_DATA;
+struct _IO_PERF_PCW_INSTANCE;
 enum _IO_PRIORITY_HINT;
 struct _IO_PRIORITY_INFO;
 struct _IO_RESOURCE_DESCRIPTOR;
@@ -192,6 +205,7 @@ struct _IO_STACK_LOCATION;
 struct _IO_STATUS_BLOCK;
 struct _IO_TIMER;
 struct _IO_WORKITEM;
+struct _IOP_FILE_OBJECT_EXTENSION;
 struct _IORING_OBJECT;
 struct _IRP;
 struct _IRP_CALL_CTRL;
@@ -251,9 +265,11 @@ struct _NT_TIB;
 struct _OBJECT_TYPE;
 struct _OWNER_ENTRY;
 struct _PAGED_LOOKASIDE_LIST;
+struct _PCW_DATA;
 struct _PERFINFO_GROUPMASK;
 enum _PERFINFO_KERNELMEMORY_USAGE_TYPE;
 enum _PERFINFO_MM_STAT;
+enum _PO_EFFECTIVE_POWER_MODE;
 enum _POOL_TYPE;
 struct _PORT_CCB;
 enum POWER_ACTION;
@@ -261,11 +277,11 @@ struct _POWER_SEQUENCE;
 union _POWER_STATE;
 enum _POWER_STATE_TYPE;
 struct _PRIVILEGE_SET;
-enum _REFS_SET_VOLUME_COMPRESSION_INFO_FLAGS;
 enum _REFS_STREAM_SNAPSHOT_OPERATION;
 enum _REG_NOTIFY_CLASS;
 enum ReplacesCorHdrNumericDefines;
 struct _RESERVE_IRPCTRL;
+enum _RTL_ARM_FEATURE_USAGE_PROVIDER_FLUSH_NOTIFICATION_FLAGS;
 struct _RTL_AVL_TREE;
 struct _RTL_BALANCED_NODE;
 struct _RTL_BITMAP;
@@ -277,6 +293,9 @@ struct _RTL_FEATURE_CONFIGURATION;
 enum _RTL_FEATURE_CONFIGURATION_PRIORITY;
 enum _RTL_FEATURE_CONFIGURATION_TYPE;
 enum _RTL_FEATURE_ENABLED_STATE_OPTIONS;
+struct _RTL_FEATURE_USAGE_DATA;
+enum _RTL_FEATURE_USAGE_PROVIDER_CALLBACK_TYPE;
+enum _RTL_FEATURE_USAGE_PROVIDER_FLUSH_FLAGS;
 struct _RTL_FEATURE_USAGE_REPORT;
 struct _RTL_QUERY_REGISTRY_TABLE;
 struct _RTL_RB_TREE;
@@ -301,6 +320,7 @@ struct _STREAM_LIST_CTRL;
 struct _STRING;
 enum _SYSTEM_POWER_STATE;
 struct _SYSTEM_POWER_STATE_CONTEXT;
+enum _TAG_UNNAMED_1;
 struct _TELEMETRY_GLOBALS;
 struct _THROTTLE_ELEMENT;
 struct _THROTTLED_WORK_ITEM_CTRL;
@@ -380,6 +400,7 @@ struct wil_FeatureState;
 enum wil_FeatureStore;
 enum wil_FeatureVariantPayloadKind;
 enum wil_ReportingKind;
+struct __WIL_RTL_FEATURE_USAGE_DATA;
 enum wil_UsageReportingMode;
 enum wil_VariantReportingKind;
 struct _WMI_FLTIO_NOTIFY_ROUTINES;
@@ -524,6 +545,12 @@ typedef struct _ALLOCATE_CONTEXT_ROUTINES
   void* ContextFreeCallback /* function */;
 } ALLOCATE_CONTEXT_ROUTINES, *PALLOCATE_CONTEXT_ROUTINES;
 
+typedef struct _ALTITUDE_RANGE
+{
+  struct _UNICODE_STRING LowerBound;
+  struct _UNICODE_STRING UpperBound;
+} ALTITUDE_RANGE, *PALTITUDE_RANGE;
+
 typedef struct _ASYNC_IO_COMPLETION_CONTEXT
 {
   void* UserCallback /* function */;
@@ -609,12 +636,6 @@ typedef struct _CC_FILE_SIZES
   union _LARGE_INTEGER FileSize;
   union _LARGE_INTEGER ValidDataLength;
 } CC_FILE_SIZES, *PCC_FILE_SIZES;
-
-struct Change
-{
-  enum wil_details_ServiceReportingKind kind;
-  unsigned int count;
-};
 
 typedef struct _CM_FULL_RESOURCE_DESCRIPTOR
 {
@@ -856,8 +877,15 @@ typedef struct _CONTEXT
 
 typedef struct _CONTEXT_LIST_CTRL
 {
-  struct _TREE_ROOT List;
+  struct _CONTEXT_LIST_LLCACHE_ENTRY _Cache[8];
+  struct _TREE_ROOT _List;
 } CONTEXT_LIST_CTRL, *PCONTEXT_LIST_CTRL;
+
+typedef struct _CONTEXT_LIST_LLCACHE_ENTRY
+{
+  void* volatile Key1;
+  struct _CONTEXT_NODE* CtxNode;
+} CONTEXT_LIST_LLCACHE_ENTRY, *PCONTEXT_LIST_LLCACHE_ENTRY;
 
 typedef struct _CONTEXT_NODE
 {
@@ -1222,13 +1250,20 @@ typedef struct _DMA_ADAPTER
   struct _DMA_OPERATIONS* DmaOperations;
 } DMA_ADAPTER, *PDMA_ADAPTER;
 
-typedef struct _DMA_ADAPTER_INFO
+typedef union _DMA_ADAPTER_INFO
 {
-  unsigned long Version;
   union
   {
-    struct _DMA_ADAPTER_INFO_V1 V1;
-    struct _DMA_ADAPTER_INFO_CRASHDUMP Crashdump;
+    struct
+    {
+      unsigned long Version;
+      struct _DMA_ADAPTER_INFO_V1 V1;
+    };
+    struct
+    {
+      unsigned __int64 Reserved;
+      struct _DMA_ADAPTER_INFO_CRASHDUMP Crashdump;
+    };
   };
 } DMA_ADAPTER_INFO, *PDMA_ADAPTER_INFO;
 
@@ -1430,16 +1465,6 @@ enum EmptyCVariant_FeatureStaging_FilterManager
   CVariant_FeatureStaging_FilterManager_Empty = 0,
 };
 
-enum EmptyCVariant_featurestaging_moments
-{
-  CVariant_featurestaging_moments_Empty = 0,
-};
-
-enum EmptyCVariant_FeatureStaging_ReFS
-{
-  CVariant_FeatureStaging_ReFS_Empty = 0,
-};
-
 struct _EPROCESS;
 
 typedef struct _ERESOURCE
@@ -1463,7 +1488,9 @@ typedef struct _ERESOURCE
   unsigned long ContentionCount;
   unsigned long NumberOfSharedWaiters;
   unsigned long NumberOfExclusiveWaiters;
-  void* Reserved2;
+  volatile char MiscFlags;
+  unsigned char Reserved1[3];
+  unsigned long ResourceTimeoutCount;
   union
   {
     void* Address;
@@ -1634,6 +1661,16 @@ typedef struct _EXT_SET_PARAMETERS_V0
   __int64 NoWakeTolerance;
 } EXT_SET_PARAMETERS_V0, *PEXT_SET_PARAMETERS_V0;
 
+typedef struct _FAST_ERESOURCE
+{
+  void* Reserved1[3];
+  unsigned long Reserved2;
+  void* Reserved3[4];
+  unsigned long Reserved4[4];
+  void* Reserved5;
+  void* Reserved6[2];
+} FAST_ERESOURCE, *PFAST_ERESOURCE;
+
 typedef struct _FAST_IO_DISPATCH
 {
   unsigned long SizeOfFastIoDispatch;
@@ -1675,6 +1712,11 @@ typedef struct _FAST_MUTEX
   unsigned long OldIrql;
   long __PADDING__[1];
 } FAST_MUTEX, *PFAST_MUTEX;
+
+typedef struct _FAST_OWNER_ENTRY
+{
+  void* Reserved[9];
+} FAST_OWNER_ENTRY, *PFAST_OWNER_ENTRY;
 
 enum FEATURE_CHANGE_TIME
 {
@@ -1825,7 +1867,9 @@ typedef enum _FILE_INFORMATION_CLASS
   FileId64ExtdBothDirectoryInformation = 79,
   FileIdAllExtdDirectoryInformation = 80,
   FileIdAllExtdBothDirectoryInformation = 81,
-  FileMaximumInformation = 82,
+  FileStreamReservationInformation = 82,
+  FileMupProviderInfo = 83,
+  FileMaximumInformation = 84,
 } FILE_INFORMATION_CLASS, *PFILE_INFORMATION_CLASS;
 
 typedef struct _FILE_LIST_CTRL
@@ -1905,7 +1949,7 @@ typedef struct _FILE_OBJECT
   struct _IO_COMPLETION_CONTEXT* CompletionContext;
   unsigned __int64 IrpListLock;
   struct _LIST_ENTRY IrpList;
-  void* FileObjectExtension;
+  struct _IOP_FILE_OBJECT_EXTENSION* FileObjectExtension;
 } FILE_OBJECT, *PFILE_OBJECT;
 
 typedef struct _FILE_STANDARD_INFORMATION
@@ -2111,7 +2155,6 @@ typedef enum _FLT_FILTER_FLAGS
   FLTFL_SUPPORTS_PIPES_MAILSLOTS = 8,
   FLTFL_BACKED_BY_PAGEFILE = 16,
   FLTFL_SUPPORTS_DAX_VOLUME = 32,
-  FLTFL_SUPPORTS_WCOS = 64,
   FLTFL_FILTERS_READ_WRITE = 128,
 } FLT_FILTER_FLAGS, *PFLT_FILTER_FLAGS;
 
@@ -2145,6 +2188,9 @@ typedef struct _FLT_INSTANCE
   struct _CONTEXT_LIST_CTRL TransactionContexts;
   struct _TRACK_COMPLETION_NODES* TrackCompletionNodes;
   struct _CALLBACK_NODE* CallbackNodes[50];
+  unsigned long SamplingCount;
+  unsigned long SamplingThreshold;
+  struct _IO_PERF_ENTITY_DATA IoPerfData;
 } FLT_INSTANCE, *PFLT_INSTANCE;
 
 typedef enum _FLT_INSTANCE_FLAGS
@@ -2169,6 +2215,15 @@ typedef struct _FLT_IO_PARAMETER_BLOCK
   struct _FLT_INSTANCE* TargetInstance;
   union _FLT_PARAMETERS Parameters;
 } FLT_IO_PARAMETER_BLOCK, *PFLT_IO_PARAMETER_BLOCK;
+
+typedef struct _FLT_IO_PERF_CHECKPOINT_CONTEXT
+{
+  struct _KDPC Dpc;
+  struct _KTIMER Timer;
+  struct _IO_WORKITEM* WorkItem;
+  long WorkItemQueued;
+  struct _EX_RUNDOWN_REF Rundown;
+} FLT_IO_PERF_CHECKPOINT_CONTEXT, *PFLT_IO_PERF_CHECKPOINT_CONTEXT;
 
 typedef struct _FLT_MESSAGE_WAITER
 {
@@ -2217,6 +2272,7 @@ typedef struct _FLT_OBJECT
   unsigned long PointerCount;
   struct _EX_RUNDOWN_REF RundownRef;
   struct _LIST_ENTRY PrimaryLink;
+  struct _FLT_OBJECT_LOG* RundownLog;
   struct _GUID UniqueIdentifier;
 } FLT_OBJECT, *PFLT_OBJECT;
 
@@ -2228,6 +2284,28 @@ typedef enum _FLT_OBJECT_FLAGS
   FLT_OBFL_TYPE_FILTER = 0x2000000,
   FLT_OBFL_TYPE_VOLUME = 0x4000000,
 } FLT_OBJECT_FLAGS, *PFLT_OBJECT_FLAGS;
+
+typedef struct _FLT_OBJECT_LOG
+{
+  long Index;
+  unsigned long Reserved;
+  struct _FLT_OBJECT_LOG_ENTRY Log[1024];
+} FLT_OBJECT_LOG, *PFLT_OBJECT_LOG;
+
+typedef struct _FLT_OBJECT_LOG_ENTRY
+{
+  enum _FLT_OBJECT_LOG_ENTRY_ACTION Action;
+  unsigned __int64 RundownRef;
+  void* Stack[14];
+} FLT_OBJECT_LOG_ENTRY, *PFLT_OBJECT_LOG_ENTRY;
+
+typedef enum _FLT_OBJECT_LOG_ENTRY_ACTION
+{
+  ORT_Reference = 1,
+  ORT_Deference = -1,
+  ORT_FailedRef = 5,
+  ORT_Wait = 8,
+} FLT_OBJECT_LOG_ENTRY_ACTION, *PFLT_OBJECT_LOG_ENTRY_ACTION;
 
 typedef struct _FLT_OPERATION_REGISTRATION
 {
@@ -2721,7 +2799,7 @@ typedef struct _FLT_RELATED_OBJECTS
 
 typedef struct _FLT_RESOURCE_LIST_HEAD
 {
-  struct _ERESOURCE rLock;
+  struct _FAST_ERESOURCE rLock;
   struct _LIST_ENTRY rList;
   unsigned long rCount;
   long __PADDING__[1];
@@ -2840,6 +2918,7 @@ typedef struct _FLT_VOLUME
   enum _FLT_FILESYSTEM_TYPE FileSystemType;
   struct _DEVICE_OBJECT* DeviceObject;
   struct _DEVICE_OBJECT* DiskDeviceObject;
+  struct _DEVICE_OBJECT* FrameZeroDeviceObject;
   struct _FLT_VOLUME* FrameZeroVolume;
   struct _FLT_VOLUME* VolumeInNextFrame;
   struct _FLTP_FRAME* Frame;
@@ -2855,7 +2934,7 @@ typedef struct _FLT_VOLUME
   struct _FLT_RESOURCE_LIST_HEAD StreamListCtrls;
   struct _FLT_RESOURCE_LIST_HEAD FileListCtrls;
   struct _NAME_CACHE_VOLUME_CTRL NameCacheCtrl;
-  struct _ERESOURCE MountNotifyLock;
+  struct _FAST_ERESOURCE MountNotifyLock;
   long TargetedOpenActiveCount;
   struct _EX_PUSH_LOCK_AUTO_EXPAND TxVolContextListLock;
   struct _TREE_ROOT TxVolContexts;
@@ -2914,7 +2993,7 @@ typedef struct _FLTP_FRAME
   struct _FLT_MUTEX_LIST_HEAD ZombiedFltObjectContexts;
   void* KtmResourceManagerHandle;
   struct _KRESOURCEMANAGER* KtmResourceManager;
-  struct _ERESOURCE FilterUnloadLock;
+  struct _FAST_ERESOURCE FilterUnloadLock;
   struct _FAST_MUTEX DeviceObjectAttachLock;
   struct _FLT_PRCB* Prcb;
   void* PrcbPoolToFree;
@@ -3083,7 +3162,7 @@ typedef struct _FSRTL_ADVANCED_FCB_HEADER
   };
   void* AePushLock;
   unsigned long BypassIoOpenCount;
-  long __PADDING__[1];
+  struct _FSRTL_PER_STREAM_CONTEXT* ReservedContext;
 } FSRTL_ADVANCED_FCB_HEADER, *PFSRTL_ADVANCED_FCB_HEADER;
 
 typedef struct _FSRTL_PER_FILE_CONTEXT
@@ -3101,6 +3180,12 @@ typedef struct _FSRTL_PER_STREAM_CONTEXT
   void* InstanceId;
   void* FreeCallback /* function */;
 } FSRTL_PER_STREAM_CONTEXT, *PFSRTL_PER_STREAM_CONTEXT;
+
+enum FsRtlAllowReservedContext
+{
+  FsRtlNoReservedContext = 0,
+  FsRtlYesReservedContext = 1,
+};
 
 typedef struct _GENERAL_LOOKASIDE
 {
@@ -3202,7 +3287,7 @@ typedef struct _GENERIC_MAPPING
 typedef struct _GLOBALS
 {
   unsigned long DebugFlags;
-  unsigned __int64 TraceFlags;
+  unsigned __int64 DebugTraceFlags;
   unsigned long GFlags;
   unsigned __int64 RegHandle;
   unsigned long NumProcessors;
@@ -3272,10 +3357,9 @@ typedef struct _GLOBALS
   struct _WMI_FLTIO_NOTIFY_ROUTINES* PerfTraceRoutines;
   struct _WMI_FLTIO_NOTIFY_ROUTINES DummyPerfTraceRoutines;
   union _LARGE_INTEGER RenameCounter;
+  struct _FLT_IO_PERF_CHECKPOINT_CONTEXT FltIoPerfCheckpointContext;
   long FilterSupportedFeaturesMode;
   unsigned __int64 InitialRundownSize;
-  unsigned char MomentFeatureDevDriveFltAttachPolicyEnabled;
-  char __PADDING__[23];
 } GLOBALS, *PGLOBALS;
 
 typedef struct _GUID
@@ -3384,6 +3468,110 @@ typedef struct _IO_DRIVER_CREATE_CONTEXT
   struct _TXN_PARAMETER_BLOCK* TxnParameters;
   struct _EJOB* SiloContext;
 } IO_DRIVER_CREATE_CONTEXT, *PIO_DRIVER_CREATE_CONTEXT;
+
+typedef struct _IO_PERF_BASIC_BUCKET
+{
+  __int64 IoCount;
+  __int64 TotalTimeQpc;
+} IO_PERF_BASIC_BUCKET, *PIO_PERF_BASIC_BUCKET;
+
+typedef struct _IO_PERF_BYTES_BUCKET
+{
+  struct _IO_PERF_BASIC_BUCKET BasicBucket;
+  __int64 TotalBytes;
+} IO_PERF_BYTES_BUCKET, *PIO_PERF_BYTES_BUCKET;
+
+struct _IO_PERF_COUNTERS_DATA;
+
+typedef struct _IO_PERF_ENTITY_DATA
+{
+  volatile unsigned char Enabled;
+  struct _IO_PERF_COUNTERS_DATA* volatile IoTypesPerfData;
+  unsigned __int64 LastTelemetryIoSummaryUit;
+  unsigned __int64 LastEventLogIoSummaryUit;
+  unsigned __int64 LastLocalTracingIoSummaryUit;
+  volatile long* HighLatencyCountTelemetry;
+  volatile long* HighLatencyCountEventLog;
+  volatile long* HighLatencyCountLocalTracing;
+  volatile long HighLatencyTotalIoCount;
+  unsigned long PcwFirstInstanceId;
+  struct _LIST_ENTRY EntityListEntry;
+  struct _IO_PERF_PCW_INSTANCE* PcwIoTypeInstances;
+  struct _UNICODE_STRING PcwEntityName;
+  unsigned char PcwInitialized;
+  void* EntityContext;
+  long __PADDING__[4];
+} IO_PERF_ENTITY_DATA, *PIO_PERF_ENTITY_DATA;
+
+typedef struct _IO_PERF_EXTENTS_BUCKET
+{
+  struct _IO_PERF_BYTES_BUCKET BytesBucket;
+  __int64 ExtentsCount;
+} IO_PERF_EXTENTS_BUCKET, *PIO_PERF_EXTENTS_BUCKET;
+
+typedef struct _IO_PERF_PCW_BUCKETIZED_DATA
+{
+  unsigned __int64 SnapshotTimeUit;
+  __int64 TotalCount;
+  __int64 TotalTimeNs;
+  __int64 TotalBytes;
+  __int64 CountBucket01;
+  __int64 CountBucket02;
+  __int64 CountBucket03;
+  __int64 CountBucket04;
+  __int64 CountBucket05;
+  __int64 CountBucket06;
+  __int64 CountBucket07;
+  __int64 CountBucket08;
+  __int64 CountBucket09;
+  __int64 CountBucket10;
+  __int64 CountBucket11;
+  __int64 CountBucket12;
+  __int64 CountBucket13;
+  __int64 CountBucket14;
+  __int64 CountBucket15;
+  __int64 CountBucket16;
+  __int64 TimeNsBucket01;
+  __int64 TimeNsBucket02;
+  __int64 TimeNsBucket03;
+  __int64 TimeNsBucket04;
+  __int64 TimeNsBucket05;
+  __int64 TimeNsBucket06;
+  __int64 TimeNsBucket07;
+  __int64 TimeNsBucket08;
+  __int64 TimeNsBucket09;
+  __int64 TimeNsBucket10;
+  __int64 TimeNsBucket11;
+  __int64 TimeNsBucket12;
+  __int64 TimeNsBucket13;
+  __int64 TimeNsBucket14;
+  __int64 TimeNsBucket15;
+  __int64 TimeNsBucket16;
+  __int64 BytesBucket01;
+  __int64 BytesBucket02;
+  __int64 BytesBucket03;
+  __int64 BytesBucket04;
+  __int64 BytesBucket05;
+  __int64 BytesBucket06;
+  __int64 BytesBucket07;
+  __int64 BytesBucket08;
+  __int64 BytesBucket09;
+  __int64 BytesBucket10;
+  __int64 BytesBucket11;
+  __int64 BytesBucket12;
+  __int64 BytesBucket13;
+  __int64 BytesBucket14;
+  __int64 BytesBucket15;
+  __int64 BytesBucket16;
+} IO_PERF_PCW_BUCKETIZED_DATA, *PIO_PERF_PCW_BUCKETIZED_DATA;
+
+typedef struct _IO_PERF_PCW_INSTANCE
+{
+  unsigned long Id;
+  struct _UNICODE_STRING Name;
+  struct _PCW_DATA Data;
+  struct _IO_PERF_PCW_BUCKETIZED_DATA Results;
+} IO_PERF_PCW_INSTANCE, *PIO_PERF_PCW_INSTANCE;
 
 typedef enum _IO_PRIORITY_HINT
 {
@@ -3819,6 +4007,8 @@ struct _IO_TIMER;
 
 struct _IO_WORKITEM;
 
+struct _IOP_FILE_OBJECT_EXTENSION;
+
 struct _IORING_OBJECT;
 
 typedef struct _IRP
@@ -3978,6 +4168,7 @@ typedef struct _IRP_CTRL
   unsigned long OriginatingProcessId;
   struct _FLT_CALLBACK_DATA Data;
   struct _FLT_IO_PARAMETER_BLOCK WorkingParameters;
+  __int64 IoStartTime;
 } IRP_CTRL, *PIRP_CTRL;
 
 typedef enum _IRQ_DEVICE_POLICY
@@ -4473,6 +4664,13 @@ typedef struct _PAGED_LOOKASIDE_LIST
   struct _GENERAL_LOOKASIDE L;
 } PAGED_LOOKASIDE_LIST, *PPAGED_LOOKASIDE_LIST;
 
+typedef struct _PCW_DATA
+{
+  const void* Data;
+  unsigned long Size;
+  long __PADDING__[1];
+} PCW_DATA, *PPCW_DATA;
+
 typedef struct _PERFINFO_GROUPMASK
 {
   unsigned long Masks[8];
@@ -4491,6 +4689,19 @@ typedef enum _PERFINFO_MM_STAT
   PerfInfoMMStatIterationPageCombine = 2,
   PerfInfoMMStatMax = 3,
 } PERFINFO_MM_STAT, *PPERFINFO_MM_STAT;
+
+typedef enum _PO_EFFECTIVE_POWER_MODE
+{
+  PoEffectivePowerModeBatterySaver = 0,
+  PoEffectivePowerModeEnergySaverHighSavings = 0,
+  PoEffectivePowerModeBetterBattery = 1,
+  PoEffectivePowerModeEnergySaverStandard = 1,
+  PoEffectivePowerModeBalanced = 2,
+  PoEffectivePowerModeHighPerformance = 3,
+  PoEffectivePowerModeMaxPerformance = 4,
+  PoEffectivePowerModeGameMode = 5,
+  PoEffectivePowerModeMixedReality = 6,
+} PO_EFFECTIVE_POWER_MODE, *PPO_EFFECTIVE_POWER_MODE;
 
 typedef enum _POOL_TYPE
 {
@@ -4566,14 +4777,6 @@ typedef struct _PRIVILEGE_SET
   unsigned long Control;
   struct _LUID_AND_ATTRIBUTES Privilege[1];
 } PRIVILEGE_SET, *PPRIVILEGE_SET;
-
-typedef enum _REFS_SET_VOLUME_COMPRESSION_INFO_FLAGS
-{
-  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_START_COMPRESSION = 1,
-  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_STOP_COMPRESSION = 2,
-  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_GC_ONLY = 4,
-  REFS_SET_VOLUME_COMPRESSION_INFO_FLAG_MAX = 2,
-} REFS_SET_VOLUME_COMPRESSION_INFO_FLAGS, *PREFS_SET_VOLUME_COMPRESSION_INFO_FLAGS;
 
 typedef enum _REFS_STREAM_SNAPSHOT_OPERATION
 {
@@ -4692,6 +4895,12 @@ typedef struct _RESERVE_IRPCTRL
   struct _BACKPOCKET_THREAD_ENTRY Entries[3];
 } RESERVE_IRPCTRL, *PRESERVE_IRPCTRL;
 
+typedef enum _RTL_ARM_FEATURE_USAGE_PROVIDER_FLUSH_NOTIFICATION_FLAGS
+{
+  ArmFeatureUsageProviderFlushNotificationFlagsNone = 0,
+  ArmFeatureUsageProviderFlushNotificationFlagsSetTimer = 1,
+} RTL_ARM_FEATURE_USAGE_PROVIDER_FLUSH_NOTIFICATION_FLAGS, *PRTL_ARM_FEATURE_USAGE_PROVIDER_FLUSH_NOTIFICATION_FLAGS;
+
 typedef struct _RTL_AVL_TREE
 {
   struct _RTL_BALANCED_NODE* Root;
@@ -4809,6 +5018,26 @@ typedef enum _RTL_FEATURE_ENABLED_STATE_OPTIONS
   FeatureEnabledStateOptionsNone = 0,
   FeatureEnabledStateOptionsWexpConfig = 1,
 } RTL_FEATURE_ENABLED_STATE_OPTIONS, *PRTL_FEATURE_ENABLED_STATE_OPTIONS;
+
+typedef struct _RTL_FEATURE_USAGE_DATA
+{
+  unsigned int FeatureId;
+  unsigned short ReportingKind;
+  unsigned short UsageCount;
+} RTL_FEATURE_USAGE_DATA, *PRTL_FEATURE_USAGE_DATA;
+
+typedef enum _RTL_FEATURE_USAGE_PROVIDER_CALLBACK_TYPE
+{
+  FeatureUsageProviderCallbackDefault = 0,
+  FeatureUsageProviderCallBackUsageFlushNotification = 1,
+} RTL_FEATURE_USAGE_PROVIDER_CALLBACK_TYPE, *PRTL_FEATURE_USAGE_PROVIDER_CALLBACK_TYPE;
+
+typedef enum _RTL_FEATURE_USAGE_PROVIDER_FLUSH_FLAGS
+{
+  FlushFeatureUsageFlagDefault = 0,
+  FlushFeatureUsageFlagSyncGather = 1,
+  FlushFeatureUsageFlagSyncPublish = 2,
+} RTL_FEATURE_USAGE_PROVIDER_FLUSH_FLAGS, *PRTL_FEATURE_USAGE_PROVIDER_FLUSH_FLAGS;
 
 typedef struct _RTL_FEATURE_USAGE_REPORT
 {
@@ -5045,6 +5274,13 @@ typedef struct _SYSTEM_POWER_STATE_CONTEXT
   };
 } SYSTEM_POWER_STATE_CONTEXT, *PSYSTEM_POWER_STATE_CONTEXT;
 
+typedef enum _TAG_UNNAMED_1
+{
+  CONTEXT_LIST_LLCACHE_SIZE = 8,
+  CONTEXT_LIST_LLCACHE_LOCK_MASK = 1,
+  CONTEXT_LIST_LLCACHE_TREE_ROOT = 0xffffcace,
+} TAG_UNNAMED_1, *PTAG_UNNAMED_1;
+
 typedef struct _TELEMETRY_GLOBALS
 {
   struct _KTIMER TelemetryInventoryTimer;
@@ -5059,8 +5295,7 @@ typedef struct _TELEMETRY_GLOBALS
   long TelemetryLegacyFiltersLastCount;
   long TelemetryMissedFilterRegistrations;
   long TelemetryMissedFilterUnregistrations;
-  long TelemetryMissedFilterAttachOnWCOS;
-  long __PADDING__[13];
+  long __PADDING__[14];
 } TELEMETRY_GLOBALS, *PTELEMETRY_GLOBALS;
 
 typedef struct _THROTTLE_ELEMENT
@@ -5765,12 +6000,28 @@ typedef enum _WHEA_EVENT_LOG_ENTRY_ID
   WheaEventLogEntryIdDefectListUEFIVarFailed = -2147483567,
   WheaEventLogEntryIdDefectListCorrupt = -2147483566,
   WheaEventLogEntryIdBadHestNotifyData = -2147483565,
-  WheaEventLogEntryIdSrasTableNotFound = -2147483564,
-  WheaEventLogEntryIdSrasTableError = -2147483563,
-  WheaEventLogEntryIdSrasTableEntries = -2147483562,
-  WheaEventLogEntryIdRowFailure = -2147483561,
+  WheaEventLogEntryIdRowFailure = -2147483564,
+  WheaEventLogEntryIdSrasTableNotFound = -2147483563,
+  WheaEventLogEntryIdSrasTableError = -2147483562,
+  WheaEventLogEntryIdSrasTableEntries = -2147483561,
+  WheaEventLogEntryIdPFANotifyCallbackAction = -2147483560,
+  WheaEventLogEntryIdSELBugCheckCpusQuiesced = -2147483559,
+  WheaEventLogEntryIdPshedPiCpuid = -2147483558,
+  WheaEventLogEntryIdSrasTableBadData = -2147483557,
+  WheaEventLogEntryIdDriFsStatus = -2147483556,
   WheaEventLogEntryIdCpusFrozen = -2147483552,
   WheaEventLogEntryIdCpusFrozenNoCrashDump = -2147483551,
+  WheaEventLogEntryIdRegNotifyPolicyChange = -2147483550,
+  WheaEventLogEntryIdRegError = -2147483549,
+  WheaEventLogEntryIdRowOfflineEvent = -2147483548,
+  WheaEventLogEntryIdBitOfflineEvent = -2147483547,
+  WheaEventLogEntryIdBadGasFields = -2147483546,
+  WheaEventLogEntryIdCrashDumpError = -2147483545,
+  WheaEventLogEntryIdCrashDumpCheckpoint = -2147483544,
+  WheaEventLogEntryIdCrashDumpProgressPercent = -2147483543,
+  WheaEventLogEntryIdPreviousCrashBugCheckProgress = -2147483542,
+  WheaEventLogEntryIdSELBugCheckStackDump = -2147483541,
+  WheaEventLogEntryIdPciePromotedAerErr = -2147483540,
   WheaEventLogEntryIdPshedPiTraceLog = -2147221488,
 } WHEA_EVENT_LOG_ENTRY_ID, *PWHEA_EVENT_LOG_ENTRY_ID;
 
@@ -6060,6 +6311,7 @@ struct wil_details_FeatureDescriptor
 {
   union wil_details_FeatureStateCache* featureStateCache;
   struct wil_details_FeatureReportingCache* featureReportingCache;
+  const struct FEATURE_LOGGED_TRAITS* featureLoggedTraits;
   unsigned int featureId;
   unsigned char changeTime;
   unsigned char isAlwaysDisabled;
@@ -6082,26 +6334,28 @@ union wil_details_FeatureStateCache
 {
   union
   {
+    unsigned __int64 exchange64;
     unsigned int exchange;
     struct
     {
       struct /* bitfield */
       {
-        unsigned int stateCached : 1; /* bit position: 0 */
-        unsigned int hasNotificationCached : 1; /* bit position: 1 */
-        unsigned int variantCached : 1; /* bit position: 2 */
-        unsigned int effectiveState : 1; /* bit position: 3 */
-        unsigned int desiredState : 1; /* bit position: 4 */
-        unsigned int configuredState : 2; /* bit position: 5 */
-        unsigned int needsRefresh : 1; /* bit position: 7 */
-        unsigned int hasNotification : 1; /* bit position: 8 */
-        unsigned int isWexpConfiguration : 1; /* bit position: 9 */
-        unsigned int variant : 6; /* bit position: 10 */
-        unsigned int unused : 16; /* bit position: 16 */
+        unsigned int effectiveState : 1; /* bit position: 0 */
+        unsigned int stateCached : 1; /* bit position: 1 */
+        unsigned int hasNotificationCached : 1; /* bit position: 2 */
+        unsigned int variantCached : 1; /* bit position: 3 */
+        unsigned int deviceUsageFastPathEnabled : 1; /* bit position: 4 */
+        unsigned int deviceOpportunityFastPathEnabled : 1; /* bit position: 5 */
+        unsigned int desiredState : 1; /* bit position: 6 */
+        unsigned int configuredState : 2; /* bit position: 7 */
+        unsigned int needsRefresh : 1; /* bit position: 9 */
+        unsigned int hasNotification : 1; /* bit position: 10 */
+        unsigned int isWexpConfiguration : 1; /* bit position: 11 */
+        unsigned int variant : 6; /* bit position: 12 */
+        unsigned int unused : 14; /* bit position: 18 */
       }; /* bitfield */
       unsigned int payloadId;
     };
-    unsigned __int64 exchange64;
   };
 };
 
@@ -6253,6 +6507,13 @@ enum wil_ReportingKind
   wil_ReportingKind_PausedDuration = 6,
 };
 
+typedef struct __WIL_RTL_FEATURE_USAGE_DATA
+{
+  unsigned int FeatureId;
+  unsigned short ReportingKind;
+  unsigned short UsageCount;
+} _WIL_RTL_FEATURE_USAGE_DATA, *P_WIL_RTL_FEATURE_USAGE_DATA;
+
 enum wil_UsageReportingMode
 {
   wil_UsageReportingMode_Default = 0,
@@ -6373,30 +6634,28 @@ typedef struct _XSAVE_FORMAT
 
 __C_specific_handler();
 ? CancelTimerCallbacksAndDeleteTimer;
-? CBufferGetNextOffset;
+? CBufferAllocate;
 CleanupFileListCtrl();
-? CleanupStreamListCtrl;
+CleanupStreamListCtrl();
 CleanupTargetedIo();
 ? ComputeFlushPeriod;
 __cpu_features_init();
 ? CreateNewEventEntry;
-? CreateTemporaryFileNameInformation;
+CreateTemporaryFileNameInformation();
 ? CreateTlgAggregateSession;
 DeleteContextFromFileList();
 ? DeleteContextFromStreamList;
 DeleteFileListCtrlCallback();
-? DeleteNameCacheNodes;
-? DeleteStreamListCtrlCallback;
+DeleteNameCacheNodes();
+DeleteStreamListCtrlCallback();
 ? DestroyAggregateSession;
 ? DestroyEventEntry;
 ? DoFreeContext;
-? DoFreeContextMemory;
+DoFreeContextMemory();
 ? DoReleaseContext;
 DrainCompletionNode();
 DriverEntry();
 ? EnableFlushTimer;
-? ExtractAggregateFieldTypes;
-Feature_FltDdAttachPol__private_IsEnabled();
 FindNextRightSubtree();
 ? FinishHash;
 ? FlattenEventEntryTree;
@@ -6407,22 +6666,22 @@ FltAcquirePushLockShared();
 FltAcquirePushLockSharedEx();
 FltAcquireResourceExclusive();
 FltAcquireResourceShared();
-? FltAddOpenReparseEntry;
+FltAddOpenReparseEntry();
 FltAdjustDeviceStackSizeForIoRedirection();
 FltAllocateCallbackData();
-? FltAllocateCallbackDataEx;
+FltAllocateCallbackDataEx();
 ? FltAllocateContext;
 FltAllocateDeferredIoWorkItem();
 FltAllocateExtraCreateParameter();
-? FltAllocateExtraCreateParameterFromLookasideList;
+FltAllocateExtraCreateParameterFromLookasideList();
 FltAllocateExtraCreateParameterList();
 FltAllocateFileLock();
 FltAllocateGenericWorkItem();
-FltAllocatePoolAlignedWithTag();
+? FltAllocatePoolAlignedWithTag;
 FltApplyPriorityInfoThread();
 FltAttachVolume();
 FltAttachVolumeAtAltitude();
-? FltBuildDefaultSecurityDescriptor;
+FltBuildDefaultSecurityDescriptor();
 FltCancelFileOpen();
 FltCancelIo();
 FltCancellableWaitForMultipleObjects();
@@ -6430,7 +6689,7 @@ FltCancellableWaitForSingleObject();
 FltCbdqDisable();
 FltCbdqEnable();
 FltCbdqInitialize();
-? FltCbdqInsertIo;
+FltCbdqInsertIo();
 FltCbdqRemoveIo();
 FltCbdqRemoveNextIo();
 FltCheckAndGrowNameControl();
@@ -6444,46 +6703,46 @@ FltClose();
 FltCloseClientPort();
 FltCloseCommunicationPort();
 FltCloseSectionForDataScan();
-? FltCommitComplete;
-? FltCommitFinalizeComplete;
+FltCommitComplete();
+FltCommitFinalizeComplete();
 FltCompareInstanceAltitudes();
-? FltCompletePendedPostOperation;
+FltCompletePendedPostOperation();
 ? FltCompletePendedPreOperation;
 FltCopyOpenReparseList();
-? FltCreateCommunicationPort;
+FltCreateCommunicationPort();
 FltCreateFile();
 FltCreateFileEx();
 ? FltCreateFileEx2;
 FltCreateMailslotFile();
 FltCreateNamedPipeFile();
-? FltCreateSectionForDataScan;
+FltCreateSectionForDataScan();
 FltCreateSystemVolumeInformationFolder();
 FltCurrentBatchOplock();
 FltCurrentOplock();
 FltCurrentOplockH();
-? FltDecodeParameters;
+FltDecodeParameters();
 ? FltDeleteContext;
 FltDeleteExtraCreateParameterLookasideList();
 FltDeleteFileContext();
-? FltDeleteInstanceContext;
+FltDeleteInstanceContext();
 FltDeletePushLock();
 FltDeleteStreamContext();
-FltDeleteStreamHandleContext();
+? FltDeleteStreamHandleContext;
 FltDeleteTransactionContext();
-? FltDeleteVolumeContext;
+FltDeleteVolumeContext();
 FltDetachVolume();
 FltDeviceIoControlFile();
-? FltDoCompletionProcessingWhenSafe;
+FltDoCompletionProcessingWhenSafe();
 ? FltEnlistInTransaction;
 ? FltEnumerateFilterInformation;
-FltEnumerateFilters();
-? FltEnumerateInstanceInformationByDeviceObject;
+? FltEnumerateFilters;
+FltEnumerateInstanceInformationByDeviceObject();
 FltEnumerateInstanceInformationByFilter();
 FltEnumerateInstanceInformationByVolume();
-? FltEnumerateInstanceInformationByVolumeName;
-? FltEnumerateInstances;
+FltEnumerateInstanceInformationByVolumeName();
+FltEnumerateInstances();
 FltEnumerateVolumeInformation();
-FltEnumerateVolumes();
+? FltEnumerateVolumes;
 FltFastIoMdlRead();
 FltFastIoMdlReadComplete();
 FltFastIoMdlWriteComplete();
@@ -6491,12 +6750,12 @@ FltFastIoPrepareMdlWrite();
 FltFindExtraCreateParameter();
 FltFlushBuffers();
 FltFlushBuffers2();
-FltFreeCallbackData();
+? FltFreeCallbackData;
 FltFreeDeferredIoWorkItem();
 FltFreeExtraCreateParameter();
 FltFreeExtraCreateParameterList();
 FltFreeFileLock();
-? FltFreeGenericWorkItem;
+FltFreeGenericWorkItem();
 FltFreeOpenReparseList();
 FltFreePoolAlignedWithTag();
 FltFreeSecurityDescriptor();
@@ -6506,19 +6765,19 @@ FltGetBottomInstance();
 FltGetContexts();
 FltGetContextsEx();
 FltGetCopyInformationFromCallbackData();
-? FltGetDestinationFileNameInformation;
+FltGetDestinationFileNameInformation();
 FltGetDeviceObject();
 FltGetDiskDeviceObject();
-? FltGetEcpListFromCallbackData;
+FltGetEcpListFromCallbackData();
 FltGetFileContext();
 FltGetFileNameInformation();
-? FltGetFileNameInformationUnsafe;
+FltGetFileNameInformationUnsafe();
 FltGetFileSystemType();
 FltGetFilterFromInstance();
 FltGetFilterFromName();
 ? FltGetFilterInformation;
 FltGetFsZeroingOffset();
-? FltGetInstanceContext;
+FltGetInstanceContext();
 ? FltGetInstanceInformation;
 FltGetIoAttributionHandleFromCallbackData();
 FltGetIoCacheIntention();
@@ -6531,7 +6790,7 @@ FltGetLowerInstance();
 FltGetNewSystemBufferAddress();
 FltGetNextExtraCreateParameter();
 FltGetRequestorProcess();
-? FltGetRequestorProcessId;
+FltGetRequestorProcessId();
 FltGetRequestorProcessIdEx();
 FltGetRequestorSessionId();
 FltGetRoutineAddress();
@@ -6539,24 +6798,22 @@ FltGetSectionContext();
 ? FltGetStreamContext;
 ? FltGetStreamHandleContext;
 FltGetSwappedBufferMdlAddress();
-? FltGetTopInstance;
-? FltGetTransactionContext;
+FltGetTopInstance();
+FltGetTransactionContext();
 FltGetTunneledName();
 FltGetUpperInstance();
-FltGetVolumeContext();
+? FltGetVolumeContext;
 FltGetVolumeFromDeviceObject();
 FltGetVolumeFromFileObject();
 FltGetVolumeFromInstance();
-? FltGetVolumeFromName;
-? FltGetVolumeGuidName;
-? FltGetVolumeInformation;
-? FltGetVolumeInstanceFromName;
+FltGetVolumeFromName();
+FltGetVolumeGuidName();
+FltGetVolumeInformation();
+FltGetVolumeInstanceFromName();
 FltGetVolumeName();
-? FltGetVolumeProperties;
+FltGetVolumeProperties();
 FltiAttachPolicyCleanup();
-FltiAttachPolicyInit();
 FltiAttachPolicyIsFilterAllowed();
-FltiAttachPolicyNeedsFltMgr();
 FltInitExtraCreateParameterLookasideList();
 FltInitializeFileLock();
 FltInitializeOplock();
@@ -6572,19 +6829,20 @@ FltIsIoCanceled();
 FltIsIoRedirectionAllowed();
 FltIsIoRedirectionAllowedForOperation();
 FltIsOperationSynchronous();
-? FltIsVolumeSnapshot;
+FltIsVolumeSnapshot();
 FltIsVolumeWritable();
 FltLoadFilter();
-? FltLockUserBuffer;
-? FltMgrFsRtlAttachDeviceCallback;
+FltLockUserBuffer();
+FltMgrFsRtlAttachDeviceCallback();
 FltMgrFsRtlEcpCleanup();
 FltMgrFsRtlGetFileNameInformation();
 ? FltMgrFsRtlGetSupportedFeatures;
-? FltMgrOpenReparseEcpCleanup;
-? FltMgrVerifierFsRtlEcpCleanup;
+FltMgrOpenReparseEcpCleanup();
+FltMgrVerifierFsRtlEcpCleanup();
+FltMupGetProviderInfoFromFileObject();
 FltNotifyFilterChangeDirectory();
 FltObjectDereference();
-FltObjectReference();
+? FltObjectReference;
 FltOpenVolume();
 FltOplockBreakH();
 FltOplockBreakToNone();
@@ -6596,78 +6854,73 @@ FltOplockIsSharedRequest();
 FltOplockKeysEqual();
 FltpAcquireLock();
 FltpAcquireMessageWaiterLock();
-? FltpAddMessageWaiter;
-? FltpAdjustFrameAltitudesForLegacyFilter;
+FltpAddMessageWaiter();
 FltpAllocateBackPocketIrpCtrl();
-? FltpAllocateCallbackDataMustSucceed;
-? FltpAllocateCompletionNodeTracking;
-? FltpAllocateFileListCtrl;
+FltpAllocateCallbackDataMustSucceed();
+FltpAllocateCompletionNodeTracking();
+FltpAllocateFileListCtrl();
 FltpAllocateFileNameInformation();
 FltpAllocateFltCcb();
-FltpAllocateInitializeNameGenerationContext();
+? FltpAllocateInitializeNameGenerationContext;
 FltpAllocateIrpCtrl();
 ? FltpAllocateIrpCtrlInternal;
-? FltpAllocateIrpCtrlMustSucceed;
 FltpAllocateNameCacheCreateCtrl();
 FltpAllocateStaticIrpCtrl();
-? FltpAllocateStreamListCtrl;
+FltpAllocateStreamListCtrl();
 FltpAllocateTelemetryStringRoutine();
-? FltpAllocateTxVolContext;
-? FltParseFileName;
-? FltParseFileNameInformation;
+FltpAllocateTxVolContext();
+FltParseFileName();
+FltParseFileNameInformation();
 FltpAsyncIoCompletionCallback();
 ? FltpAttachDeviceObject;
-? FltpAttachFrame;
+FltpAttachFrame();
 FltpAttachPolicyGetRegValue();
 FltpAttachPolicyInitAllowList();
 FltpAttachPolicyInitAvPolicy();
 FltpAttachPolicyIsAltitudeInAvBand();
 FltpAttachPolicyIsFilterInList();
-FltpAttachPolicyValidateFilterList();
-? FltpAttachStreamListCtrlToTxVolCtx;
-? FltpAttachToFileSystemDevice;
-? FltpAttachVolume;
+FltpAttachStreamListCtrlToTxVolCtx();
+FltpAttachToFileSystemDevice();
+FltpAttachVolume();
 FltpBuildCleanupRequest();
-? FltpBuildDeviceControlRequest;
+FltpBuildDeviceControlRequest();
 FltpBuildParameterOffsetTable();
 FltpBuildPathNameForEventLog();
 ? FltpBuildRequest;
+FltpBypassIoCapable();
 ? FltpCacheCreateNames;
 FltpCalculateLegacyFilterAltitude();
-? FltpCallNormalizeNameComponentHandler;
-FltpCallOpenedFileNameHandler();
 FltpCallShortFileNameHandler();
 FltpCancelFileOpen();
 FltpCancelIrp();
 FltpCancelMessageWaiter();
 FltpCancelRoutine();
-FltpCanSimulateFileContexts();
+? FltpCanSimulateFileContexts;
 FltpCheckGetQuotaBufferValidity();
+FltpCheckpointWorker();
 FltpCleanupAfterDataScanConflict();
 FltpCleanupBackPocketIrpCtrls();
-? FltpCleanupCommunicationPort;
+FltpCleanupCommunicationPort();
 FltpCleanupContextRegistration();
-? FltpCleanupDeviceHintEcp;
+FltpCleanupDeviceHintEcp();
 ? FltpCleanupDeviceObject;
-? FltpCleanupFileListCtrlForInstanceRemoval;
 FltpCleanupFileObjectContextForCleanup();
 FltpCleanupFileObjectContextForClose();
 FltpCleanupFileObjectContextsForLastFilterRemoval();
-? FltpCleanupFilterVerifier;
+FltpCleanupFilterVerifier();
 FltpCleanupFrame();
-? FltpCleanupLoadedLegacyFiltersList;
-? FltpCleanupNameControl;
+FltpCleanupLoadedLegacyFiltersList();
+FltpCleanupNameControl();
 FltpCleanupStreamListCtrlForFileObjectClose();
 FltpCleanupStreamListCtrlForFileObjectCloseWithStreamListCtrl();
-? FltpCleanupStreamListCtrlForInstanceRemoval;
-? FltpCleanupTargetInfo;
+FltpCleanupTargetInfo();
 ? FltpClearPurgeFailureMode;
 FltpClearPurgeFailureModeWorker();
-? FltpClientPortClose;
+FltpClientPortClose();
 FltpClientPortDelete();
 FltpCloseControlDevice();
 ? FltpCommonAttachVolume;
-? FltpCommonDetachVolume;
+FltpCommonDetachVolume();
 FltpCommonDetachVolumeWorker();
 ? FltpCommonDeviceControl;
 FltpCommonOplockCheckBreak();
@@ -6677,16 +6930,16 @@ FltpCompleteLockIrpRoutine();
 FltpCompletePhase2Init();
 FltpCompleteRequest();
 FltpCompletionWorkerThread();
-FltpComputeWaitInterval();
-? FltpControlDispatch;
-? FltpCopyOffloadCapable;
+FltpCopyOffloadCapable();
 FltpCopyUnicodeString();
-? FltpCreate;
-? FltpCreateControlDeviceObject;
-? FltpCreateFile;
-FltpCreateFileNameInformation();
+FltpCreate();
+FltpCreateControlDeviceObject();
+FltpCreateFile();
+? FltpCreateFileNameInformation;
+FltpCreateFileNameInformationCallout();
+? FltpCreateFileNameInformationWorker;
 ? FltpCreateInstanceFromName;
-? FltpCreateKtmResourceManager;
+FltpCreateKtmResourceManager();
 FltpCreatePostCompletion();
 ? FltpCreatePreserveFileObject;
 ? FltpCreateVolumeDeviceObject;
@@ -6700,92 +6953,93 @@ FltpDataScanCsqInsertIrp();
 FltpDataScanCsqPeekNextIrp();
 FltpDataScanCsqReleaseLock();
 FltpDataScanCsqRemoveIrp();
+? FltpDbgStatus;
 ? FltpDeleteAllFileListCtrls;
 ? FltpDeleteAllStreamListCtrls;
+? FltpDeleteContextFromList;
 ? FltpDeleteContextList;
-? FltpDeleteTxVolContext;
+FltpDeleteContextNodeFromList();
+FltpDeleteTxVolContext();
 ? FltpDeleteTxVolContextList;
-? FltpDequeueThrottledWorkItem;
-? FltpDetachFromFileSystemDevice;
+FltpDequeueThrottledWorkItem();
+FltpDetachFromFileSystemDevice();
 FltpDetachVolume();
-FltpDetermineStaticOperationType();
+? FltpDetermineStaticOperationType;
 ? FltpDetranslateIoctlDataBuffers;
 FltpDisableNameCachePurgeForTxRename();
 FltpDisableNameCachingForStream();
 FltpDisableNameCachingForVolume();
 FltpDisconnectPort();
-? FltpDispatch;
-FltpDoAltitudeAdjustment();
-? FltpDoFilterNotificationForNewVolume;
+FltpDispatch();
+FltpDoFilterNotificationForNewVolume();
 FltpDoInstanceDetachNotification();
-FltpDoInstanceSetupNotification();
 FltpDoUnloadFilter();
-? FltpDoVolumeNotificationForNewFilter;
+FltpDoVolumeNotificationForNewFilter();
 ? FltpDrainActiveCompletions;
 FltpDriverReinitialization();
 ? FltpEnableNameCachePurgeForTxRename;
 FltpEnableNameCachingForStream();
 FltpEnableNameCachingForVolume();
-? FltpEnableStreamListForSectionContexts;
-? FltpEnlistTxVolContextInTransaction;
+FltpEnableStreamListForSectionContexts();
+FltpEnlistTxVolContextInTransaction();
 ? FltpEnumerateAggregateFilterInformation;
-? FltpEnumerateFileSystemVolumes;
+FltpEnumerateFileSystemVolumes();
 FltpEnumerateMiniFilterOnlyInformation();
-? FltpEnumerateRegistryInstances;
+FltpEnumerateRegistryInstances();
 FltpEnumerateVolumeInformationInternal();
 ? FltPerformAsynchronousIo;
 ? FltPerformSynchronousIo;
 FltpExpandFilePath();
 FltpExpandFilePathCallout();
-FltpExpandFilePathWorker();
-FltpExpandShortNames();
+? FltpExpandFilePathWorker;
+? FltpExpandShortNames;
 ? FltpExtendIrpCtrl;
-FltpFastIoCheckIfPossible();
-? FltpFastIoDetachDevice;
+? FltpFastIoCheckIfPossible;
+FltpFastIoDetachDevice();
 FltpFastIoDetachDeviceWorker();
-? FltpFastIoDeviceControl;
-? FltpFastIoLock;
+FltpFastIoDeviceControl();
+FltpFastIoLock();
 FltpFastIoMdlCommon();
 ? FltpFastIoMdlRead;
-? FltpFastIoMdlReadComplete;
+FltpFastIoMdlReadComplete();
 FltpFastIoMdlReadCompleteCompressed();
 ? FltpFastIoMdlWriteComplete;
 FltpFastIoMdlWriteCompleteCompressed();
 ? FltpFastIoPrepareMdlWrite;
-? FltpFastIoQueryBasicInfo;
-? FltpFastIoQueryNetworkOpenInfo;
-? FltpFastIoQueryOpen;
-? FltpFastIoQueryStandardInfo;
-? FltpFastIoRead;
+FltpFastIoQueryBasicInfo();
+FltpFastIoQueryNetworkOpenInfo();
+FltpFastIoQueryOpen();
+FltpFastIoQueryStandardInfo();
+FltpFastIoRead();
 FltpFastIoReadCompressed();
-FltpFastIoUnlockAll();
+? FltpFastIoUnlockAll;
 FltpFastIoUnlockAllByKey();
-? FltpFastIoUnlockSingle;
-? FltpFastIoWrite;
+FltpFastIoUnlockSingle();
+FltpFastIoWrite();
 FltpFastIoWriteCompressed();
 FltpFilterCountInstances();
 ? FltpFilterMessage;
-? FltpFilterReply;
+FltpFilterReply();
+? FltpFinalizeContextInList;
 FltpFindCharReverse();
-? FltpFindFirst;
+FltpFindFirst();
 FltpFindFrameForDeviceStack();
-? FltpFindFrameForFilter;
-? FltpFindNext;
-FltpFreeBackPocketIrpCtrl();
-? FltpFreeCallbackDataMdlChain;
-? FltpFreeCompletionNodeTracking;
-? FltpFreeFileNameInformation;
+FltpFindNext();
+? FltpFreeBackPocketIrpCtrl;
+FltpFreeCallbackDataMdlChain();
+FltpFreeCompletionNodeTracking();
+FltpFreeFileNameInformation();
 FltpFreeFltCcb();
 FltpFreeFrameLookasideLists();
-? FltpFreeInstance;
+FltpFreeInstance();
 ? FltpFreeIrpCtrl;
 FltpFreeMdlChain();
-? FltpFreeNameCacheCreateCtrl;
+FltpFreeNameCacheCreateCtrl();
 FltpFreeNameGenerationContext();
 FltpFreeNameSupportVolumeInfo();
 FltpFreeStaticIrpCtrl();
 FltpFreeTelemetryStringRoutine();
-? FltpFreeTxVolStreamListCtrlEntries;
+FltpFreeTxVolStreamListCtrlEntries();
 FltpFreeUnicodeString();
 FltpFreeVolume();
 ? FltpFsControl;
@@ -6793,12 +7047,12 @@ FltpFsControlCompletion();
 FltpFsControlLoadFileSystem();
 FltpFsControlMountVolume();
 FltpFsNotification();
-? FltpFsNotificationActual;
+FltpFsNotificationActual();
 FltpFsRtlCompletionRoutine();
-? FltpGenerateDeviceHintEcp;
+FltpGenerateDeviceHintEcp();
 FltpGenerateUniqueIdentifierForObject();
 FltpGetActiveFilterCount();
-FltpGetAnySectionContext();
+? FltpGetAnyContextFromList;
 FltpGetAutoOptInFeatures();
 FltpGetBaseDeviceObjectName();
 FltpGetBoundTransaction();
@@ -6806,254 +7060,270 @@ FltpGetCallbackNodeForInstance();
 ? FltpGetContexts;
 FltpGetCsvFromMultiSz();
 ? FltpGetDeviceObjectFromName;
-? FltpGetDriverVersion;
+FltpGetDriverVersion();
 ? FltpGetFileListCtrl;
-FltpGetFileName();
-FltpGetFileNameFromFileObject();
-? FltpGetFileNameInformation;
-? FltpGetFileNameOpenById;
+? FltpGetFileName;
+? FltpGetFileNameFromFileObject;
+FltpGetFileNameInformation();
+FltpGetFileNameOpenById();
 FltpGetFileNameOpenByIdCallout();
 FltpGetFileNameOpenByIdWorker();
-? FltpGetFltVolumeFromAttachmentList;
-? FltpGetFrameZeroVolume;
+FltpGetFltVolumeFromAttachmentList();
+FltpGetFrameZeroVolume();
 FltpGetFsDeviceObjectAfterMount();
 FltpGetInformation();
-? FltpGetInstanceAltitude;
-FltpGetIoTargetFromFileObject();
+FltpGetInstanceAltitude();
+? FltpGetIoTargetFromFileObject;
 FltpGetLegacyFilterInformation();
 FltpGetLegacyInstanceInformation();
-? FltpGetLoadedLegacyFiltersList;
-? FltpGetLoadOrderGroupRegistryValue;
-? FltpGetMessage;
+FltpGetLoadedLegacyFiltersList();
+FltpGetLoadOrderGroupRegistryValue();
+FltpGetMessage();
 FltpGetNameSupportVolumeInfo();
-? FltpGetNextCallbackNodeForInstance;
+FltpGetNextCallbackNodeForInstance();
 FltpGetNextMessageWaiter();
-? FltpGetNormalizedDestinationFileName;
-FltpGetNormalizedFileNameCallout();
-FltpGetNormalizedFileNameWorker();
+FltpGetNormalizedDestinationFileName();
+? FltpGetNormalizedFileName;
+? FltpGetNumericRegistryValue;
 ? FltpGetObjectName;
-FltpGetOpenedDestinationFileName();
+? FltpGetOpenedDestinationFileName;
 FltpGetOpenedFileName();
 FltpGetParameterOffsets();
-FltpGetRegDwordValue();
-FltpGetServicePathFromFilter();
-? FltpGetShortFileName;
+FltpGetQueryOnCreateEcp();
+? FltpGetRegDwordValue;
+FltpGetShortFileName();
 ? FltpGetStreamListCtrl;
 FltpGetSupportedFeaturesValue();
 ? FltpGetTargetInfo;
 ? FltpGetTxVolContext;
-? FltpGetUniqueIdentifierForFilter;
-FltpGetUniqueIdentifierForObject();
+FltpGetUniqueIdentifierForFilter();
+? FltpGetUniqueIdentifierForObject;
 ? FltpGetUniqueIdentifierForVolume;
 FltpGetUniqueIdentifierForVolumeSnapshot();
 ? FltpGetUniqueIdentifierForVolumeSnapshot$fin$0;
-? FltpGetVolumeFromDeviceObject;
+FltpGetVolumeFromDeviceObject();
+? FltpGetVolumeFromName;
 FltpGetVolumeSafe();
-? FltpHandleDataScanSynchronization;
 ? FltpHandlePreCallbackReturnStatus;
-? FltpInitFrameLookasideLists;
-? FltpInitializeBackPocketIrpCtrls;
-? FltpInitializeCallbackNode;
+FltpInitFrameLookasideLists();
+FltpInitializeBackPocketIrpCtrls();
 FltpInitializeFilterCcb();
-? FltpInitializeFrame;
-? FltpInitializeGeneratedIrp;
-? FltpInitializeInstanceCcb;
+FltpInitializeFilterVerifier();
+FltpInitializeFrame();
+FltpInitializeGeneratedIrp();
+FltpInitializeInstanceCcb();
+FltpInitializeIoPerf();
+FltpInitializeIoPerfCheckpoint();
 FltpInitializeIrpCtrlStackProfiler();
-? FltpInitializeManagerVolumeCcb;
-? FltpInitializeMessagingSupport;
-? FltpInitializeTelemetry;
-? FltpInitializeVolumeCcb;
+FltpInitializeManagerCcb();
+FltpInitializeManagerVolumeCcb();
+FltpInitializeMessagingSupport();
+FltpInitializeTelemetry();
+FltpInitializeVerifier();
+FltpInitializeVolumeCcb();
 FltpInitInstance();
 FltpInitLookasideLists();
+FltpInitNameCacheVolumeCtrl();
 FltpInitNameControl();
 FltpInitThrottledWorkItemCtrl();
-? FltpInitVolume;
+FltpInitVolume();
 FltpInitVolumeAttachPolicy();
-? FltpInsertCallback;
+FltpInitVolumeCallbackEnvironment();
+? FltpInsertContextInList;
 FltpInsertIrp();
-? FltpInsertVolumeInstance;
+FltpInsertVolumeInstance();
 ? FltpInternalCompletePendedPreOperation;
-? FltpInvalidateNameCacheForTxRename;
+FltpInvalidateNameCacheForTxRename();
 ? FltpInvalidateNameCaching;
 ? FltpInvalidateNameCachingAllFrames;
 FltpIoGetDeviceObjectPointer();
+? FltpIoPerfBucketizeIo;
+? FltpIoPerfCheckAndBucketizeIO;
+FltpIoPerfEnableSampling();
+? FltpIoPerfGetOpType;
+FltpIoPerfSendOpData();
+? FltpIoPerfTelemetrySendOpPerfData;
+FltpIoPerfTimerHandler();
 FltpIrpCtrlStackProfilerTimer();
-? FltpIsAttachedToDevice;
-? FltpIsCandidateForNameTunneling;
+FltpIsAttachedToDevice();
+FltpIsCandidateForNameTunneling();
 FltpIsDaxVolume();
-? FltpIsOpenByObjectId;
+FltpIsOpenByObjectId();
 FltpIsVolumeDetached();
-? FltpKtmNotification;
+FltpKtmNotification();
 ? FltpLegacyProcessingAfterPreCallbacksCompleted;
 ? FltpLinkCompletionNodeToInstance;
 FltpLinkFilter();
-? FltpLinkFilterIntoFrame;
 ? FltpLinkHandle;
 FltpLinkVolume();
 FltpLoadFilter();
-? FltpLogEventBypassIoNotSupported;
+FltpLogEventBypassIoNotSupported();
 FltpLogEventBypassIoVetoed();
 FltpLogEventInitAttachPolicy();
-? FltpLogEventWithObjectID;
-? FltpLookupPerFileContext;
+FltpLogEventWithObjectID();
 FltpManualDeviceAttachTimer();
-? FltpManualDeviceAttachWorker;
+FltpManualDeviceAttachWorker();
 FltpMarkAllCallbacksForDeletion();
+FltpMeasureExpandedStackCalloutDepthCallout();
 FltpMeasureFreeInstance();
 FltpMeasureInitInstance();
 FltpMiniFilterDriverUnload();
 FltpMiniFilterDummyUnload();
 ? FltpMoveCallbackDataToIrp;
 ? FltpMoveIrpToCallbackData;
-? FltpMsgDispatch;
-FltpNameCanBeExpanded();
+FltpMsgDispatch();
 FltpNoFilterCallbackCompletion();
 FltpNoFilterCallbackCompletionWorker();
 FltpNoFilterCallbacksWorkerThread();
 ? FltpNormalizeNameComponent;
-FltpNormalizeNameFromCache();
-FltpNumCallbackNodes();
+? FltpNormalizeNameFromCache;
 ? FltpObjectPointerDereference;
 FltpObjectPointerReference();
-? FltpOpenClientPort;
-FltpOpenFileForFailedSupersede();
+? FltpObjectRundownWait;
+FltpOpenClientPort();
+? FltpOpenFileForFailedSupersede;
 FltpOpenInstancesRegistryKey();
-FltpOpenLinkOrRenameTarget();
+? FltpOpenLinkOrRenameTarget;
+FltpOpenServiceRootRegistryKey();
 FltpOplockWaitComplete();
 ? FltpParseShareName;
-? FltpParseStreamName;
 ? FltpPassThrough;
 FltpPassThroughCompletion();
-? FltpPassThroughCompletionWorker;
-? FltpPassThroughFastIo;
+FltpPassThroughCompletionWorker();
+FltpPassThroughFastIo();
 FltpPassThroughInternal();
 FltpPeekNextIrp();
 FltpPerformAsynchronousIoWrapper();
 ? FltpPerformFastIoCall;
-? FltpPerformPostCallbacks;
+FltpPerformPostCallbacks();
 FltpPerformPostCallbacksCallout();
 ? FltpPerformPostCallbacksWorker;
 FltpPerformPostMountCallbacks();
-? FltpPerformPreCallbacks;
+FltpPerformPreCallbacks();
 FltpPerformPreCallbacksCallout();
 ? FltpPerformPreCallbacksWorker;
-? FltpPerformPreMountCallbacks;
-FltpPerfTraceOperationCallback();
-FltpPerfTraceOperationFailure();
+FltpPerformPreMountCallbacks();
+? FltpPerfTraceOperationCallback;
 ? FltpPostFsFilterOperation;
 FltpPostSyncOperation();
-? FltpPreFsFilterOperation;
+FltpPreFsFilterOperation();
 FltpPrePostIrp();
-FltpPrivateLock();
-? FltpProcessContextRegistration;
+? FltpPrivateLock;
+FltpProcessContextRegistration();
 FltpProcessDeferredIoWorkItem();
 ? FltpProcessDirtyData;
-? FltpProcessGenericWorkItem;
+FltpProcessGenericWorkItem();
 ? FltpProcessIoCompletion;
 FltpProcessIrpCtrlStackProfiler();
-FltpProcessManageBypassIo();
-? FltpProcessOperationStatusCallbacks;
+FltpProcessOperationStatusCallbacks();
 FltpProcessShutdownRequest();
 FltpPropagateCallbackDataMdl();
-? FltpPurgeAndReinstateNameCacheForPosixDelete;
-? FltpPurgeAndReinstateNameCacheForTxRename;
-? FltpPurgeMessageWaiters;
+FltpPurgeAndReinstateNameCacheForPosixDelete();
+FltpPurgeAndReinstateNameCacheForTxRename();
+FltpPurgeMessageWaiters();
 FltpPurgeVolumeNameCache();
-? FltpQocEcpCleanupCallback;
-? FltpQueryInformationFile;
+FltpQocEcpCleanupCallback();
+FltpQueryCountersEnabled();
+FltpQueryCountersSamplingRate();
+FltpQueryInformationFile();
 FltpQueryInformationFileFromInstance();
 FltpQueueDataScanSynchronization();
-? FltpQueueThrottledWorkItem;
-? FltpReadDriverParameters;
+FltpQueueThrottledWorkItem();
+FltpReadDriverParameters();
 ? FltpReallocNameControl;
 FltpRecordLastFileRenameForVolume();
 FltpReferenceStreamForSectionConflict();
-FltpReinitStreamForSectionConflict();
+FltpRegWatchCallback();
 ? FltpReinstateNameCaching;
 ? FltpReinstateNameCachingAllFrames;
-FltpReissuePostOperationFailure();
+? FltpReissuePostOperationFailure;
 FltpReissuePostOperationFailureCallout();
-? FltpReissueSynchronousIo;
+FltpReissueSynchronousIo();
 FltpReleaseContexts();
-? FltpReleaseFileListCtrl;
+FltpReleaseFileListCtrl();
 FltpReleaseLock();
 FltpReleaseMessageWaiterLock();
 FltpReleaseStreamForSectionConflict();
-? FltpReleaseStreamListCtrl;
+FltpReleaseStreamListCtrl();
 ? FltpReleaseTxVolContext;
-? FltpRemoveAllNamesCachedForFileObject;
+FltpRemoveAllNamesCachedForFileObject();
 FltpRemoveAllStreamHandleContextsForFileObject();
 FltpRemoveCallbacksForInstance();
-? FltpRemoveExtraDataFromStream;
+FltpRemoveExtraDataFromStream();
 FltpRemoveFinalComponent();
 FltpRemoveIrp();
-? FltpRemoveMessageWaiter;
-? FltpRemoveVolumeContextsForFilter;
+FltpRemoveMessageWaiter();
+FltpRemovePerFileContext();
+FltpRemoveVolumeContextsForFilter();
 FltPrepareComplete();
 FltPrepareToReuseEcp();
+? FltpReplaceContextInList;
 FltPrePrepareComplete();
 FltpResetDeviceHintEcp();
-FltProcessFileLock();
+? FltProcessFileLock;
 FltPropagateActivityIdToThread();
 FltPropagateIrpExtension();
 FltpRundownStreamForSectionConflict();
 FltpSafeCompletionWorker();
-? FltpSaveFileObjectFileName;
+FltpSaveFileObjectFileName();
 FltpScanForVolumeByName();
-FltpScheduleCommitFinalize();
 FltpSendModernAppTermination();
 FltpSendModernAppTerminationWorker();
 FltpServerPortClose();
 FltpServerPortDelete();
-? FltpSetAndEnlistTxVolContext;
+FltpSetAndEnlistTxVolContext();
 FltpSetBufferAndMdlBasedOnBufferingMode();
-? FltpSetCallbacksForInstance;
-? FltpSetIoTargetInFileObject;
+FltpSetCallbacksForInstance();
+FltpSetIoTargetInFileObject();
 FltpSetIrpCtrlIoPriority();
-FltpSetPurgeFailureMode();
-? FltpSetSectionContext;
+FltpSetSectionContext();
 ? FltpSetStreamListStandardInformationFlags;
 FltpSetTxVolVolNameCachePurge();
-? FltpSetUpIrpCallControl;
-? FltpSetupPerformIo;
-? FltpSetVolumeNameCachingState;
+FltpSetUpIrpCallControl();
+FltpSetupPerformIo();
+FltpSetVolumeNameCachingState();
 FltpShouldSwapStacks();
-? FltpStartManualDeviceAttachChecks;
+FltpStartingToDrainObject();
+FltpStartManualDeviceAttachChecks();
 FltpStartMonitoringFrame();
+FltpStartRegWatch();
 FltpSynchronizedOperationCompletion();
 ? FltpSynchronizeIoCleanup;
-FltpSynchronizeWithDatascan();
+? FltpSynchronizeWithDatascan;
 FltpSyncIoCompletion();
 FltpSyncOpWorker();
 FltpSysVolCreateSecurityDescriptor();
-? FltpTelemetryEnumerateSerializeFilterRegistryInstances;
-? FltpTelemetryFilterRegistration;
-FltpTelemetryFilterStartFiltering();
-? FltpTelemetryFilterUnregistration;
-? FltpTelemetryFltSendMessage;
+FltpTelemetryEnumerateSerializeFilterRegistryInstances();
+FltpTelemetryFilterRegistration();
+? FltpTelemetryFilterStartFiltering;
+FltpTelemetryFilterUnregistration();
+FltpTelemetryFltSendMessage();
 FltpTelemetryFreeInstance();
-FltpTelemetryIncompatibleFilterAttachOnWCOS();
+FltpTelemetryGetStopWatchElapsedMilliseconds();
 FltpTelemetryInitInstance();
 FltpTelemetryLegacyFilters();
 FltpTelemetryLegacyFiltersSafe();
-? FltpTelemetrySerializeFilterRegistrationInfo;
-? FltpTelemetrySerializeFilterRegistryInstances;
+FltpTelemetrySerializeFilterRegistrationInfo();
+FltpTelemetrySerializeFilterRegistryInstances();
 FltpTelemetrySerializeLegacyFilterInfo();
 FltpTelemetrySerializeLegacyFiltersInfo();
 FltpTelemetryUnloadFilter();
-FltpTelemetryVolumeAttach();
-FltpTraceRedirectedFileIo();
+? FltpTelemetryVolumeAttach;
+FltpTelemetryVolumeMountFailure();
+? FltpTraceIOStatusOnFailure;
+? FltpTraceRedirectedFileIo;
 FltpTranslateIoctlDataBuffers();
-? FltpTxVolKtmNotification;
+FltpTxVolKtmNotification();
 FltpTxVolWaitForCommitFinalize();
 FltpUnlinkCompletionNodeFromInstanceLocked();
 FltpUnlinkFilter();
 FltpUnloadFilter();
 FltpUnloadFilterWorker();
 FltpUpdateDynamicRegistrySettings();
-? FltpUpdateVolumeDosName;
+FltpUpdateVolumeDosName();
 FltPurgeFileNameInformationCache();
 FltpvConnectionNotify();
+FltpvCreateOutcomeValid();
 FltpvDisconnectNotify();
 FltpvDoLostObjectCheck();
 FltpVerifyIoIrqlStatus();
@@ -7071,40 +7341,40 @@ FltpvValidateReadWriteParameters();
 FltpvValidateVerifierState();
 FltpvVerifyIoIrqlStatus();
 FltpvVerifyPreOperationStatus();
-? FltpWaitForCommitFinalize;
-? FltpWaitForRundownProtectionReleaseInternal;
-? FltpWatchForRegistryChanges;
+FltpWaitForCommitFinalize();
+FltpWaitForRundownProtectionReleaseInternal();
 FltQueryDirectoryFile();
 FltQueryDirectoryFileEx();
-? FltQueryEaFile;
-? FltQueryInformationByName;
-? FltQueryInformationFile;
+FltQueryEaFile();
+FltQueryInformationByName();
+FltQueryInformationFile();
 FltQueryQuotaInformationFile();
 FltQuerySecurityObject();
 FltQueryVolumeInformation();
 FltQueryVolumeInformationFile();
 FltQueueDeferredIoWorkItem();
-? FltQueueGenericWorkItem;
+FltQueueGenericWorkItem();
 FltReadFile();
-FltReadFileEx();
-? FltReferenceContext;
-? FltReferenceFileNameInformation;
-? FltRegisterFilter;
-? FltRegisterForDataScan;
+? FltReadFileEx;
+FltReferenceContext();
+FltReferenceFileNameInformation();
+FltRegisterFilter();
+FltRegisterForDataScan();
 FltReissueSynchronousIo();
 ? FltReleaseContext;
 FltReleaseContexts();
 FltReleaseContextsEx();
-? FltReleaseFileNameInformation;
+FltReleaseFileNameInformation();
 FltReleasePushLock();
 FltReleasePushLockEx();
 FltReleaseResource();
 FltRemoveExtraCreateParameter();
 FltRemoveOpenReparseEntry();
-? FltRequestFileInfoOnCreateCompletion;
-? FltRequestOperationStatusCallback;
+FltRequestFileInfoOnCreateCompletion();
+FltRequestOperationStatusCallback();
+FltRequestSecurityInfoOnCreateCompletion();
 FltRetainSwappedBufferMdlAddress();
-? FltRetrieveFileInfoOnCreateCompletion;
+FltRetrieveFileInfoOnCreateCompletion();
 FltRetrieveFileInfoOnCreateCompletionEx();
 FltRetrieveIoPriorityInfo();
 FltReuseCallbackData();
@@ -7115,11 +7385,11 @@ FltSetActivityIdCallbackData();
 FltSetCallbackDataDirty();
 FltSetCancelCompletion();
 FltSetEaFile();
-? FltSetEcpListIntoCallbackData;
-FltSetFileContext();
+FltSetEcpListIntoCallbackData();
+? FltSetFileContext;
 FltSetFsZeroingOffset();
 FltSetFsZeroingOffsetRequired();
-? FltSetInformationFile;
+FltSetInformationFile();
 ? FltSetInstanceContext;
 FltSetIoCacheIntention();
 FltSetIoPriorityHintIntoCallbackData();
@@ -7129,21 +7399,21 @@ FltSetQuotaInformationFile();
 FltSetSecurityObject();
 FltSetStreamContext();
 FltSetStreamHandleContext();
-? FltSetTransactionContext;
-FltSetVolumeContext();
+FltSetTransactionContext();
+? FltSetVolumeContext;
 FltSetVolumeInformation();
-? FltStartFiltering;
+FltStartFiltering();
 FltSupportsFileContexts();
 ? FltSupportsFileContextsEx;
 FltSupportsStreamContexts();
 FltSupportsStreamHandleContexts();
-FltTagFile();
-FltTagFileEx();
+? FltTagFile;
+? FltTagFileEx;
 FltUninitializeFileLock();
 FltUninitializeOplock();
 FltUnloadFilter();
-? FltUnregisterFilter;
-FltUntagFile();
+FltUnregisterFilter();
+? FltUntagFile;
 FltvAddOpenReparseEntry();
 FltvAllocateCallbackData();
 FltvAllocateCallbackDataEx();
@@ -7270,34 +7540,111 @@ FltvUntagFile();
 FltvWriteFile();
 FltvWriteFileEx();
 FltWriteFile();
-FltWriteFileEx();
+? FltWriteFileEx;
+? FlushEventEntry;
 ? FlushEventEntryList;
 ? FlushLookUpTableBucket;
-? FreeTargetedIoCtrl;
-? GetContextFromFileList;
-? GetContextFromStreamList;
+FreeTargetedIoCtrl();
 GetCtxIdx();
 GsDriverEntry();
 __GSHandlerCheck();
 __GSHandlerCheck_SEH();
 __GSHandlerCheckCommon();
 _guard_check_icall_nop();
+_guard_dispatch_icall();
+_guard_dispatch_icall$thunk$10345483385596137414();
 _guard_dispatch_icall_nop();
 _guard_xfg_dispatch_icall_nop();
-? HandleStreamListNotSupported;
-? InsertContextEntry;
+HandleStreamListNotSupported();
+InsertContextEntry();
 ? InsertEventEntryInLookUpTable;
+void __cdecl IoPerfAddEntityToEntityList(struct _IO_PERF_ENTITY_DATA *);
+IoPerfCheckForSleepSince();
+void __cdecl IoPerfCleanupLatencyInfo(void);
+IoPerfCleanupPeriodicData();
+void __cdecl IoPerfCleanupSummaryData(struct _IO_PERF_SUMMARY_DATA *,unsigned long);
+IoPerfComputeLargeRatio();
+IoPerfEntityDisable();
+IoPerfEntityEnable();
+IoPerfForEachEntity();
+void __cdecl IoPerfFreeCountersData(struct _IO_PERF_COUNTERS_DATA *);
+IoPerfFreeEntityData();
+__int64 __cdecl IoPerfGetAndResetMaxLatency(struct _IO_PERF_COUNTERS_DATA *);
+__int64 __cdecl IoPerfGetLatencyNsBucket(__int64);
+IoPerfInitialize();
+struct _IO_PERF_BUCKETS_INFO * __cdecl IoPerfInitializeBucketsInfo(int const *,unsigned short);
+IoPerfInitializeEntityData();
+void __cdecl IoPerfInitializeLatencyInfo(__int64 const *,unsigned short);
+void __cdecl IoPerfInitializeSleepDetection(void);
+unsigned char __cdecl IoPerfInitializeSummaryData(struct _IO_PERF_SUMMARY_DATA *,enum _POOL_TYPE);
+? IoPerfPcwFreeEntityInstances;
+void __cdecl IoPerfPcwRemoveEntityFromCache(struct _IO_PERF_ENTITY_DATA *);
+IoPerfPrepareToSendData();
+? IoPerfPrintTimeInterval;
+IoPerfRegistryUpdateConfig();
+void __cdecl IoPerfRemoveEntityFromEntityList(struct _IO_PERF_ENTITY_DATA *);
+void __cdecl IoPerfSnapshotEntityCounters(struct _IO_PERF_ENTITY_DATA *);
+IoPerfSummarizeEntityData();
+void __cdecl IoPerfSummarizeIoTypeData(struct _IO_PERF_IO_TYPE_SUMMARY *,void const *,void *,struct _IO_PERF_BUCKETS_INFO const *);
+unsigned char __cdecl IoPerfValidateConfig(struct _IO_PERF_IO_TYPE_CONFIG const *,unsigned short,__int64 const *,unsigned short,int const *,unsigned short);
 ? IssueControlOperation;
 ? LookUpTableFlushComplete;
 ? LookUpTableFlushPartial;
-? McGenControlCallbackV2;
+McGenControlCallbackV2();
 McGenEventRegister_EtwRegister();
-? McGenEventWrite_EtwWriteTransfer;
+McGenEventRegisterContext_EtwRegister_EtwSetInformation();
+McGenEventSetInformation_EtwSetInformation();
+McGenEventWrite_EtwWriteTransfer();
 McTemplateK0hzr0jjhzr4d_EtwWriteTransfer();
 McTemplateK0hzr0jjhzr4dhbr7dhbr10dhbr13tt_EtwWriteTransfer();
 McTemplateK0hzr0jjhzr4dhzr7dhzr10dhzr13tt_EtwWriteTransfer();
-? McTemplateK0zqqmd_EtwWriteTransfer;
+McTemplateK0zqqmd_EtwWriteTransfer();
 McTemplateK0zqqmszqzd_EtwWriteTransfer();
+McTemplateU0s_EtwWriteTransfer();
+McTemplateU0sd_EtwWriteTransfer();
+McTemplateU0sddp_EtwWriteTransfer();
+McTemplateU0sdds_EtwWriteTransfer();
+McTemplateU0sddsp_EtwWriteTransfer();
+McTemplateU0sddwwp_EtwWriteTransfer();
+McTemplateU0sdpp_EtwWriteTransfer();
+McTemplateU0sdpps_EtwWriteTransfer();
+McTemplateU0sdw_EtwWriteTransfer();
+McTemplateU0sdww_EtwWriteTransfer();
+McTemplateU0sdwwww_EtwWriteTransfer();
+McTemplateU0sp_EtwWriteTransfer();
+McTemplateU0spd_EtwWriteTransfer();
+McTemplateU0spdd_EtwWriteTransfer();
+McTemplateU0spddd_EtwWriteTransfer();
+McTemplateU0spddw_EtwWriteTransfer();
+McTemplateU0spddwdd_EtwWriteTransfer();
+McTemplateU0spdppp_EtwWriteTransfer();
+McTemplateU0spdpppd_EtwWriteTransfer();
+McTemplateU0spdw_EtwWriteTransfer();
+McTemplateU0spi_EtwWriteTransfer();
+McTemplateU0spid_EtwWriteTransfer();
+McTemplateU0sppd_EtwWriteTransfer();
+McTemplateU0sppdd_EtwWriteTransfer();
+McTemplateU0sppddw_EtwWriteTransfer();
+McTemplateU0spppp_EtwWriteTransfer();
+McTemplateU0sppwd_EtwWriteTransfer();
+McTemplateU0sppwdpp_EtwWriteTransfer();
+McTemplateU0sppws_EtwWriteTransfer();
+McTemplateU0sppwsd_EtwWriteTransfer();
+McTemplateU0sppwsdp_EtwWriteTransfer();
+McTemplateU0sppwsp_EtwWriteTransfer();
+McTemplateU0sppww_EtwWriteTransfer();
+McTemplateU0spqpppd_EtwWriteTransfer();
+McTemplateU0spqpwpwpppd_EtwWriteTransfer();
+McTemplateU0spqpwpwpppdd_EtwWriteTransfer();
+McTemplateU0spw_EtwWriteTransfer();
+McTemplateU0spwppw_EtwWriteTransfer();
+McTemplateU0spwppwd_EtwWriteTransfer();
+McTemplateU0spwwpw_EtwWriteTransfer();
+McTemplateU0ssppws_EtwWriteTransfer();
+McTemplateU0sw_EtwWriteTransfer();
+McTemplateU0sww_EtwWriteTransfer();
+McTemplateU0swwp_EtwWriteTransfer();
+McTemplateU0swz_EtwWriteTransfer();
 memcmp();
 memcpy();
 memmove();
@@ -7313,149 +7660,178 @@ PurgeStreamNameCache();
 QueryStandardLinkInformationFromInstance();
 RegInfoCompare();
 __report_gsfailure();
-__report_rangecheckfailure();
 RtlStringCbCatNW();
 RtlStringCbCopyA();
-? RtlStringCbCopyUnicodeString;
+RtlStringCbCopyUnicodeString();
 RtlStringCbPrintfA();
+long __cdecl RtlStringCchCatW(unsigned short *,unsigned __int64,unsigned short const *);
+long __cdecl RtlStringCchPrintfW(unsigned short *,unsigned __int64,unsigned short const *,...);
+? RtlStringCopyWorkerW;
 ? RtlStringVPrintfWorkerA;
 RtlUnicodeStringCatString();
 RtlUnicodeStringCatStringEx();
 ? RtlUnicodeStringExHandleOtherFlags;
-? RtlUnicodeStringPrintfEx;
+RtlUnicodeStringPrintfEx();
 ? RtlUnicodeStringValidateDestWorker;
 ? RtlUnicodeStringValidateWorker;
 ? RtlWideCharArrayCopyStringWorker;
 ? RunningHash;
 __security_check_cookie();
 __security_init_cookie();
-? SetContextIntoFileList;
 ? SetContextIntoStreamList;
-StRtlGetIoCacheIntention();
-StRtlSetIoCacheIntention();
-TargetedIOCtrlAttachAsFoCtx();
 ? TargetedIOCtrlGenerateECP;
-? TlgAggregateInternalFlushTimerCallbackKernelMode;
-? TlgAggregateInternalFlushWorkItemRoutineKernelMode;
+? TlgAggregateFlushTimerCallback;
+void __cdecl TlgAggregateInternalFlushTimerCallbackKernelMode(struct _EX_TIMER *,void *);
+void __cdecl TlgAggregateInternalFlushWorkItemRoutineKernelMode(void *);
 ? TlgAggregateInternalProviderCallback;
-? TlgAggregateInternalRegisteredProviderEtwCallback;
-? _tlgCreate1Sz_wchar_t;
+void __cdecl TlgAggregateInternalRegisteredProviderEtwCallback(struct _GUID const *,unsigned long,unsigned char,unsigned __int64,unsigned __int64,struct _EVENT_FILTER_DESCRIPTOR *,void *);
+_tlgCreate1Sz_wchar_t();
 _tlgDefineProvider_annotation__TlgFltMgrTelemetryProviderProv();
+_tlgDefineProvider_annotation__TlgFltPerfTelemetryProviderProv();
 _tlgDefineProvider_annotation__TlgTlgAggregateInternalProviderProv();
 _tlgEnableCallback();
 _tlgKeywordOn();
 TlgRegisterAggregateProvider();
-? TlgRegisterAggregateProviderEx;
-? _tlgWriteAgg;
+TlgRegisterAggregateProviderEx();
+_tlgWriteAgg();
 public: static long __cdecl _tlgWriteTemplate<long __cdecl(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),&long __cdecl _tlgWriteTransfer_EtwWriteTransfer(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,unsigned int,struct _EVENT_DATA_DESCRIPTOR *),struct _GUID const *,struct _GUID const *>::Write<struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<1>,struct _tlgWrapperByRef<16>,struct _tlgWrapperBinary,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<1>,struct _tlgWrapperBinary,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<1>,struct _tlgWrapperBinary,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<1>,struct _tlgWrapperBinary,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<1>,struct _tlgWrapperBinary,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<1>,struct _tlgWrapperBinary,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<1>,struct _tlgWrapperBinary,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<1>,struct _tlgWrapperBinary,struct _tlgWrapperByVal<8>,struct _tlgWrapperByVal<1>,struct _tlgWrapperBinary,struct _tlgWrapperByVal<4>,struct _tlgWrapperByVal<1> >(struct _tlgProvider_t const *,void const *,struct _GUID const *,struct _GUID const *,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperByRef<16> const &,struct _tlgWrapperBinary const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperBinary const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperBinary const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperBinary const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperBinary const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperBinary const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperBinary const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperBinary const &,struct _tlgWrapperByVal<8> const &,struct _tlgWrapperByVal<1> const &,struct _tlgWrapperBinary const &,struct _tlgWrapperByVal<4> const &,struct _tlgWrapperByVal<1> const &);
 _tlgWriteTransfer_EtwWriteTransfer();
-? TraceLoggingRegisterEx_EtwRegister_EtwSetInformation;
-TreeFindNodeOrParent();
+TraceLoggingRegisterEx_EtwRegister_EtwSetInformation();
 TreeInsert();
 TreeLookup();
 TreeTraversalMulti();
 TreeUnlink();
-? TreeUnlinkMulti;
-TreeUnlinkMultiDoWalk();
+TreeUnlinkMulti();
 TreeUnlinkNextNode();
 TxVolDisableNameCachingForStream();
 ? UpdateInternalStatsOnFlush;
 ValidateIoParameters();
 wil_details_BuildFeatureStateCacheFromQueryResults();
+wil_details_EvaluateFeatureDependencies();
 wil_details_EvaluateFeatureDependencies_GetCachedFeatureEnabledState();
-wil_details_EvaluateFeatureDependencies_ReevaluateCachedFeatureEnabledState();
+? wil_details_EvaluateFeatureDependencies_ReevaluateCachedFeatureEnabledState;
+wil_details_EvaluateFeatureDependencies_UpdateFeatureDesiredStates();
+? wil_details_FeatureDescriptors_SkipPadding;
 wil_details_FeatureReporting_IncrementOpportunityInCache();
 wil_details_FeatureReporting_IncrementUsageInCache();
 wil_details_FeatureReporting_RecordUsageInCache();
 wil_details_FeatureReporting_ReportUsageToService();
 wil_details_FeatureReporting_ReportUsageToServiceDirect();
-wil_details_FeatureStateCache_GetCachedFeatureEnabledState();
-wil_details_FeatureStateCache_ReevaluateCachedFeatureEnabledState();
-wil_details_GetCurrentFeatureEnabledState();
+wil_details_FeatureStateCache_TryEnableDeviceUsageFastPath();
 wil_details_MapReportingKind();
-wil_details_OnFeatureConfigurationChange();
+wil_details_OnFeatureUsageProviderFlushNotification();
+wil_details_PopulateInitialConfiguredFeatureStates();
+wil_details_RecordCachedUsage();
+wil_details_RecordFeatureUsageReporting();
+wil_details_ReevaluateOnFeatureConfigurationChange();
 wil_details_UpdateFeatureConfiguredStates();
 ? wil_InitializeFeatureStaging;
-wil_RtlStagingConfig_QueryFeatureState();
-WPP_SF_();
-WPP_SF_D();
-WPP_SF_d();
-WPP_SF_ddq();
-WPP_SF_dds();
-WPP_SF_ddsq();
-WPP_SF_DDZZq();
-WPP_SF_dqq();
-WPP_SF_Dqqs();
-WPP_SF_DZ();
-WPP_SF_dZZ();
-WPP_SF_dZZZZ();
-WPP_SF_Pdd();
-WPP_SF_q();
-WPP_SF_qd();
-WPP_SF_qDd();
-WPP_SF_qdd();
-WPP_SF_qddd();
-WPP_SF_qDdZ();
-WPP_SF_qDDZDD();
-WPP_SF_qdqqq();
-WPP_SF_qdqqqd();
-WPP_SF_qDZ();
-WPP_SF_qi();
-WPP_SF_qiD();
-WPP_SF_qqd();
-WPP_SF_qqdd();
-WPP_SF_qqDdZ();
-WPP_SF_qqqq();
-WPP_SF_qqZD();
-WPP_SF_qqZDqq();
-WPP_SF_qqZs();
-WPP_SF_qqZsD();
-WPP_SF_qqZsDq();
-WPP_SF_qqZsq();
-WPP_SF_qqZZ();
-WPP_SF_qZ();
-WPP_SF_qZqqZ();
-WPP_SF_qZqqZD();
-WPP_SF_qZZqZ();
-WPP_SF_sqqZs();
-WPP_SF_Z();
-WPP_SF_ZS();
-WPP_SF_ZZ();
-WPP_SF_ZZq();
-WppClassicProviderCallback();
-WppInitGlobalLogger();
-? WppInitKm;
-WppLoadTracingSupport();
-WppTraceCallback();
 
 // Globals
 
+__@@_PchSym_@00@KxulyqvxgPillgKxunrmpvimvoUuhUrlkviuoryUnkUlyquivUznwGEUrlkviuorykirezgvOlyq@IoPerfLib-fre;
 __@@_PchSym_@00@KxulyqvxgPillgKxunrmpvimvoUuhUurogvintiUurogviUnkUlyquivUznwGEUkxsOlyq@fltMgr;
+AllocateIrpCtrlSup_c1362;
+AllocateIrpCtrlSup_c1445;
+AllocateIrpCtrlSup_c1460;
+AllocateIrpCtrlSup_c1486;
+AllocateIrpCtrlSup_c1508;
+AllocateIrpCtrlSup_c1834;
+AllocateIrpCtrlSup_c1893;
+AllocateIrpCtrlSup_c2037;
+AllocateIrpCtrlSup_c2109;
+AllocateIrpCtrlSup_c2206;
+AttachDetachSup_c1181;
+AttachDetachSup_c1818;
+AttachDetachSup_c1956;
+AttachDetachSup_c1992;
+AttachDetachSup_c2145;
+AttachDetachSup_c2188;
+AttachDetachSup_c2288;
+AttachDetachSup_c2311;
+AttachDetachSup_c2409;
+AttachDetachSup_c2419;
 BypassIoFailureReason_buffer;
+CallbackSup_c1884;
+CallbackSup_c377;
+CallbackSup_c706;
+CallbackSup_c733;
+CallbackSup_c770;
+CallbackSup_c795;
+CallbackSup_c841;
+CallbackSup_c860;
 __castguard_check_failure_os_handled_fptr;
+CompletionNodeSup_c1130;
+CompletionNodeSup_c1153;
+CompletionNodeSup_c1216;
+CompletionNodeSup_c1249;
+CompletionNodeSup_c1264;
+CompletionNodeSup_c335;
+CompletionNodeSup_c401;
+CompletionNodeSup_c440;
+CompletionNodeSup_c480;
+CompletionNodeSup_c506;
+CompletionNodeSup_c514;
+CompletionNodeSup_c548;
+CompletionNodeSup_c559;
+CompletionNodeSup_c596;
+CompletionNodeSup_c780;
+CompletionNodeSup_c965;
 ContextTypeInfo;
+DefaultIoPerfLatencyLevelsNs;
 ECP_TYPE_OPEN_REPARSE_GUID;
+EnumerationSup_c1127;
 FailedToGetFilePath;
 FailedToGetFilePath_buffer;
-Feature_FltDdAttachPol__private_descriptor;
-Feature_FltDdAttachPol__private_featureState;
-Feature_FltDdAttachPol__private_reporting;
-Feature_FltDdAttachPol__private_requiresFeatures;
-Feature_FltDdAttachPol_logged_traits;
-Feature_MTestUx14__private_descriptor;
-Feature_MTestUx14__private_featureState;
-Feature_MTestUx14__private_reporting;
-Feature_MTestUx15__private_descriptor;
-Feature_MTestUx15__private_featureState;
-Feature_MTestUx15__private_reporting;
-Feature_MTestUx15__private_requiresFeatures;
-Feature_REFSDV__private_descriptor;
-Feature_REFSDV__private_featureState;
-Feature_REFSDV__private_reporting;
-Feature_REFSDV__private_requiresFeatures;
+FastIoSup_c337;
+FastIoSup_c362;
+FastIoSup_c387;
+FastIoSup_c411;
+FastIoSup_c436;
+FastIoSup_c457;
+FastIoSup_c496;
+FastIoSup_c521;
+FastIoSup_c544;
+FastIoSup_c565;
+FastIoSup_c594;
+FastIoSup_c622;
+FastIoSup_c684;
+FastIoSup_c708;
+FastIoSup_c728;
+FastIoSup_c752;
+Feature_CallbacksInCriticalRegion__private_descriptor;
+Feature_CallbacksInCriticalRegion__private_featureState;
+Feature_CallbacksInCriticalRegion__private_reporting;
+Feature_CallbacksInCriticalRegion_logged_traits;
+FileListCtrlSup_c198;
+FileListCtrlSup_c224;
+FileListCtrlSup_c274;
+FileListCtrlSup_c445;
+FileListCtrlSup_c565;
+FileListCtrlSup_c588;
+FileListCtrlSup_c732;
+FileListCtrlSup_c769;
+FileListCtrlSup_c827;
 FileSystemRegKeyName;
-FltDynamicRegistrySettingsResource;
 FltGlobals;
+fltmgr_c1033;
+fltmgr_c11225;
+fltmgr_c1189;
+fltmgr_c1219;
+fltmgr_c12559;
+fltmgr_c1270;
+fltmgr_c13405;
+fltmgr_c1412;
+fltmgr_c2164;
+fltmgr_c4518;
+fltmgr_c4846;
+fltmgr_c5930;
+fltmgr_c5968;
+fltmgr_c6386;
+fltmgr_c7580;
+fltmgr_c7707;
+fltmgr_c7783;
+fltmgr_c996;
 FLTMGR_FILTER_FAILED_INSTANCE_SETUP;
 FLTMGR_FILTER_REGISTERED;
 FLTMGR_FILTER_UNLOADED;
@@ -7473,6 +7849,9 @@ FLTMGR_VOLUME_ATTACH_FAILED;
 FltMgrDeviceName;
 FltMgrDriverName_buffer;
 FltMgrMsgDeviceName;
+FltMgrTrace_Context;
+FltMgrTrace_ControlGuid;
+FltpDynamicConfigRegWatchContext;
 FltpEmptyObject;
 FltpFilterVerifierThunks;
 FltpLogFreeInstanceFunction;
@@ -7481,10 +7860,10 @@ FltpOperationFlags;
 FltpPortGenericMapping;
 FltpRegAltitudeValueName;
 FltpRegDefaultInstanceValueName;
-FltpRegFilterInstances;
+FltpRegFilterInstancesSubKey;
 FltpRegFlagsValueName;
 FltpRegGroupValueName;
-FltpServicesRegistryPath;
+FltpServicesRegistryPathDesktop;
 FltpTelemetryArrayElementSeparator;
 FltpTelemetryArrayEnd;
 FltpTelemetryArrayStart;
@@ -7494,17 +7873,32 @@ FltpTelemetryInstanceInfoFormat;
 FltpTelemetryLegacyFilterInfoFormat;
 FltpTelemetryLegacyFiltersInfoFormatEnd;
 FltpTelemetryLegacyFiltersInfoFormatStart;
+FltpVelocity;
 FltpVerifierCodeSectionHandle;
-FltpVerifierFlags;
+FltpVerifierTurnedOn;
+FltStatusBreakForImage;
+FltStatusBreakForProcess;
+FltStatusBreakForThread;
+FltStatusBreakOnStatus;
 FltTelemetryGlobals;
 FltvMessageTable;
+FrameSup_c1647;
+FrameSup_c1659;
+FrameSup_c1762;
+FrameSup_c1778;
+FrameSup_c2181;
+FrameSup_c2291;
+FrameSup_c549;
+FrameSup_c584;
+FrameSup_c613;
+FrameSup_c629;
 FrameZeroAltitude;
 FsrtlFltMgrCallbacks;
 FsTypes;
-g_wil_details_ensureSubscribedToFeatureConfigurationChanges;
+g_wil_details_featureUsageCached;
+g_wil_details_featureUsageProvider;
 g_wil_details_pfnFeatureLoggingHook;
 g_wil_details_recordFeatureUsage;
-g_wil_details_subscribeFeatureStateCacheToConfigurationChanges;
 __guard_check_icall_fptr;
 __guard_dispatch_icall_fptr;
 __guard_eh_cont_count;
@@ -7524,58 +7918,135 @@ GUID_ECP_IO_DEVICE_HINT;
 GUID_ECP_QUERY_ON_CREATE;
 GUID_NULL;
 HotPatchSpareGlobals;
+HvciRoutines;
 __IMPORT_DESCRIPTOR_HAL;
 __IMPORT_DESCRIPTOR_ntoskrnl;
+InstanceSup_c1880;
+InstanceSup_c1977;
+InstanceSup_c2065;
+InstanceSup_c663;
+InstanceSup_c680;
 IoFileObjectType;
+IoPerfGlobalContext;
+IoPerfLatencyLevels;
+IoPerfRegistryConfig;
+struct _IO_PERF_SLEEP_DETECTION IoPerfSleepDetection;
+IoPerfSummaryContext;
+IoSup_c4573;
+IoSup_c4623;
+IoSup_c4729;
+IoSup_c5145;
+IoSup_c5196;
+IoSup_c5303;
+IoSup_c5505;
+IoSup_c5580;
+IoSup_c5718;
+IoSup_c5736;
+IoSup_c5757;
+IoSup_c5772;
+IoSup_c5797;
+IoSup_c5815;
+IoSup_c5838;
+IoSup_c5855;
 IrpNames;
 __isa_info;
 LegacyFilterAltitdudeMap;
 _load_config_used;
 ManualDeviceAttachList;
+MessageSup_c1888;
+MessageSup_c1901;
+MessageSup_c1909;
+MessageSup_c1985;
+MessageSup_c1998;
+MessageSup_c2006;
+MessageSup_c2039;
+MessageSup_c2140;
+MessageSup_c2264;
+MessageSup_c2317;
+MessageSup_c2325;
+MessageSup_c2686;
+MessageSup_c2749;
+MessageSup_c2766;
+MessageSup_c2815;
+MessageSup_c2878;
+MessageSup_c3041;
+MessageSup_c3106;
+MessageSup_c3128;
+MessageSup_c3146;
+MessageSup_c3248;
+MessageSup_c3260;
+MessageSup_c3318;
+MessageSup_c3367;
 Microsoft_Windows_FilterManagerEnableBits;
 Microsoft_Windows_FilterManagerKeywords;
 Microsoft_Windows_FilterManagerLevels;
+Microsoft_Windows_FltMgrTrace_4d0b89d93def39952d07a17be000652eEnableBits;
+Microsoft_Windows_FltMgrTrace_4d0b89d93def39952d07a17be000652eKeywords;
+Microsoft_Windows_FltMgrTrace_4d0b89d93def39952d07a17be000652eLevels;
 MmHighestUserAddress;
+NameCacheSup_c1916;
+NameCacheSup_c3468;
+NameCacheSup_c3717;
+NameCacheSup_c3726;
+NameCacheSup_c3736;
+NameCacheSup_c4284;
+NameCacheSup_c4440;
+NameCacheSup_c4516;
+NameCacheSup_c4543;
+NameCacheSup_c4567;
+NameCacheSup_c4778;
+NameCacheSup_c5024;
+NameCacheSup_c6006;
+NameCacheSup_c6067;
+NameCacheSup_c6096;
+NameCacheSup_c6105;
+NameCacheSup_c6928;
+NameCacheSup_c7433;
+NameCacheSup_c7448;
+NameCacheSup_c847;
+NameSup_c3568;
+NameSup_c4203;
+NameSup_c5963;
+NameSup_c977;
 __NULL_IMPORT_DESCRIPTOR;
-pfnEtwRegisterClassicProvider;
-pfnWppGetVersion;
-pfnWppQueryTraceInformation;
-pfnWppTraceMessage;
+PendingSup_c626;
 PROV_FLTMGR;
 PROV_FLTMGR_Context;
+queuesup_c686;
+queuesup_c712;
+queuesup_c723;
+RegSup_c451;
+RegSup_c572;
+RegSup_c829;
 __security_cookie;
 __security_cookie_complement;
+StreamListCtrlSup_c177;
+StreamListCtrlSup_c205;
+StreamListCtrlSup_c256;
+StreamListCtrlSup_c409;
+StreamListCtrlSup_c540;
+StreamListCtrlSup_c572;
+StreamListCtrlSup_c715;
+StreamListCtrlSup_c754;
+StreamListCtrlSup_c843;
 SupportedFeaturesRegValueName;
+TargetedIoSup_c1924;
 _TraceLoggingMetadata;
 _TraceLoggingMetadataEnd;
 UnknownName;
 VerifierObjectTypeNames;
+VolumeSup_c952;
 wil_details_featureChangeNotification;
 wil_details_featureDescriptors_a;
 wil_details_featureDescriptors_z;
-WPP_1ca78a17cba3360f8cc825767a571962_Traceguids;
-WPP_25f8f1cc1d9b3bcfe9b8fb5ad130a4e4_Traceguids;
-WPP_34631b1b045236e3a32c474f3298003d_Traceguids;
-WPP_3cdc21e9d8d13051f9b160f81f9223cb_Traceguids;
-WPP_5fe24c30b5473d398a5c9c12ebbd52ae_Traceguids;
-WPP_66a21b8c1435388b19022d6eba5553cd_Traceguids;
-WPP_73dd080b56503df6c2994fefcdf1ebd3_Traceguids;
-WPP_80a78fdcfe40325b4d953b627ec44969_Traceguids;
-WPP_8738a08b0ed4389ef939a07500ea4e6f_Traceguids;
-WPP_874063f5ac0a32d84c48095fb4a17f79_Traceguids;
-WPP_9c69d6c21b84300abc778c48ea7a49be_Traceguids;
-WPP_b2de2344975939ff37319c68b198cdfe_Traceguids;
-WPP_bf1a85427135345c605e16f7d0f52f8f_Traceguids;
-WPP_c1ef524b915735315d6a38c2900a2271_Traceguids;
-WPP_ce201f7259f03244a6834918ce583e03_Traceguids;
-WPP_e2a6b30a27ec33087ca3b9cf7b2a6f2d_Traceguids;
-WPP_e31c62956803364de79863b89ed01be7_Traceguids;
-WPP_e8684e49308533f31143b963756be383_Traceguids;
-WPP_f4f2b71bbb6732b7d7c5e27e0705658d_Traceguids;
-WPP_f8b9e583ae5d33f3d5244c59fd5f7bad_Traceguids;
-WPP_ffda56d28305341add16439808a660dd_Traceguids;
-WPP_GLOBAL_Control;
-WPP_MAIN_CB;
-WPP_ThisDir_CTLGUID_FltMgr;
-WPPTraceSuite;
+WorkSup_c1022;
+WorkSup_c193;
+WorkSup_c214;
+WorkSup_c290;
+WorkSup_c319;
+WorkSup_c457;
+WorkSup_c569;
+WorkSup_c666;
+WorkSup_c714;
+WorkSup_c841;
 ZERO_GUID;
