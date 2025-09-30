@@ -1,5 +1,5 @@
 /*
- * PDB file: ntdll.pdb\219D0663E9DBAD581E64D9EC8618F5421\ntdll.pdb
+ * PDB file: ntdll.pdb\21EB609F5CD42F738B9AD508893634BD1\ntdll.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -136,6 +136,7 @@ struct _HANDLE_TRACE_DB_ENTRY;
 struct _HANDLE_TRACE_DEBUG_INFO;
 enum _HARDWARE_COUNTER_TYPE;
 struct _HEAP;
+struct _HEAP_AFFINITY_MGR;
 struct _HEAP_BUCKET;
 union _HEAP_BUCKET_COUNTERS;
 union _HEAP_BUCKET_RUN_INFO;
@@ -200,11 +201,13 @@ struct _HEAP_VAMGR_CTX;
 struct _HEAP_VAMGR_RANGE;
 struct _HEAP_VAMGR_VASPACE;
 struct _HEAP_VIRTUAL_ALLOC_ENTRY;
+struct _HEAP_VS_AFFINITY_SLOT;
 struct _HEAP_VS_CHUNK_FREE_HEADER;
 struct _HEAP_VS_CHUNK_HEADER;
 union _HEAP_VS_CHUNK_HEADER_SIZE;
 struct _HEAP_VS_CONTEXT;
 struct _HEAP_VS_DELAY_FREE_CONTEXT;
+struct _HEAP_VS_SLOT_MAP;
 struct _HEAP_VS_SUBSEGMENT;
 struct _HEAP_VS_UNUSED_BYTES_INFO;
 struct _IMAGE_ARM64_RUNTIME_FUNCTION_ENTRY;
@@ -449,6 +452,7 @@ enum _POOL_TYPE;
 struct _POP_FX_DEVICE;
 struct _PORT_MESSAGE;
 enum POWER_ACTION;
+enum _POWER_LIMIT_TYPES;
 struct _POWER_SEQUENCE;
 union _POWER_STATE;
 enum _POWER_STATE_TYPE;
@@ -600,6 +604,8 @@ enum _RTLP_HP_LOCK_TYPE;
 enum _RTLP_HP_MEMORY_TYPE;
 struct _RTLP_HP_METADATA_HEAP_CTX;
 struct _RTLP_HP_QUEUE_LOCK_HANDLE;
+union _RTLP_HP_THREAD_CTX;
+struct _RTLP_PROCESS_HEAP_DESCRIPTOR;
 struct _SCSI_REQUEST_BLOCK;
 struct _SE_AUDIT_PROCESS_CREATION_INFO;
 enum SE_WS_APPX_SIGNATURE_ORIGIN;
@@ -731,6 +737,7 @@ struct _WHEA_XPF_CMC_DESCRIPTOR;
 struct _WHEA_XPF_MC_BANK_DESCRIPTOR;
 struct _WHEA_XPF_MCE_DESCRIPTOR;
 struct _WHEA_XPF_NMI_DESCRIPTOR;
+enum _WINDOW_ACTION_KINDS;
 struct _WNF_LOCK;
 struct _WNF_SCOPE_MAP;
 struct _WNF_SILODRIVERSTATE;
@@ -1447,6 +1454,7 @@ typedef enum _DEVICE_USAGE_NOTIFICATION_TYPE
   DeviceUsageTypeBoot = 4,
   DeviceUsageTypePostDisplay = 5,
   DeviceUsageTypeGuestAssigned = 6,
+  DeviceUsageTypeInlineCryptoEngine = 7,
 } DEVICE_USAGE_NOTIFICATION_TYPE, *PDEVICE_USAGE_NOTIFICATION_TYPE;
 
 typedef enum _DEVICE_WAKE_DEPTH
@@ -2403,7 +2411,8 @@ typedef struct _EPROCESS
   struct _PROCESS_NETWORK_COUNTERS* NetworkCounters;
   union _PROCESS_EXECUTION Execution;
   void* ThreadIndexTable;
-  long __PADDING__[14];
+  struct _LIST_ENTRY FreezeWorkLinks;
+  long __PADDING__[10];
 } EPROCESS, *PEPROCESS;
 
 struct _EPROCESS_QUOTA_BLOCK;
@@ -2703,11 +2712,13 @@ typedef struct _ETHREAD
     {
       unsigned char UpdateTebApcFill5[83];
       unsigned char UpdateTebSpareByte2;
-      unsigned long UpdateTebSpareLong2;
+      unsigned long HeapData;
     };
   };
   unsigned __int64 Win32kThreadLock;
   void* ThreadIndex;
+  void* MmFaultClusterContext;
+  struct _EX_FAST_REF ProcessFastRef;
 } ETHREAD, *PETHREAD;
 
 typedef struct _ETW_BUFFER_CONTEXT
@@ -3645,6 +3656,15 @@ typedef struct _HEAP
   struct _HEAP_TUNING_PARAMETERS TuningParameters;
 } HEAP, *PHEAP;
 
+typedef struct _HEAP_AFFINITY_MGR
+{
+  char MapInProgress;
+  char ContentionCount;
+  unsigned char ContentionCountLimit;
+  unsigned char ConservativeAffinity : 1; /* bit position: 0 */
+  unsigned __int64 LastContentionTime;
+} HEAP_AFFINITY_MGR, *PHEAP_AFFINITY_MGR;
+
 typedef struct _HEAP_BUCKET
 {
   unsigned short BlockUnits;
@@ -4022,10 +4042,8 @@ typedef struct _HEAP_LFH_BUCKET
   unsigned __int64 PrivSlotListLock;
   struct _HEAP_LFH_PTRREF_LIST PrivSlotList;
   unsigned char CompactionNeeded;
-  unsigned char Spare;
-  unsigned char AffinityMapInProgress;
-  unsigned char ContentionCount;
-  unsigned __int64 LastContentionTime;
+  unsigned char Spare[7];
+  struct _HEAP_AFFINITY_MGR AffinityMgr;
 } HEAP_LFH_BUCKET, *PHEAP_LFH_BUCKET;
 
 typedef union _HEAP_LFH_COMMIT_UNIT_INFO
@@ -4735,6 +4753,16 @@ typedef struct _HEAP_VIRTUAL_ALLOC_ENTRY
   struct _HEAP_ENTRY BusyBlock;
 } HEAP_VIRTUAL_ALLOC_ENTRY, *PHEAP_VIRTUAL_ALLOC_ENTRY;
 
+typedef struct _HEAP_VS_AFFINITY_SLOT
+{
+  struct _HEAP_VS_CONTEXT* VsContext;
+  unsigned __int64 Lock;
+  struct _RTL_RB_TREE FreeChunkTree;
+  struct _LIST_ENTRY SubsegmentList;
+  struct _HEAP_VS_DELAY_FREE_CONTEXT DelayFreeContext;
+  long __PADDING__[12];
+} HEAP_VS_AFFINITY_SLOT, *PHEAP_VS_AFFINITY_SLOT;
+
 typedef struct _HEAP_VS_CHUNK_FREE_HEADER
 {
   union
@@ -4790,18 +4818,17 @@ typedef union _HEAP_VS_CHUNK_HEADER_SIZE
 
 typedef struct _HEAP_VS_CONTEXT
 {
-  unsigned __int64 Lock;
-  enum _RTLP_HP_LOCK_TYPE LockType;
+  unsigned short SlotMapRef;
+  unsigned char AffinityMask;
+  unsigned char LockType;
+  struct _RTL_HP_VS_CONFIG Config;
+  unsigned char EliminatePointers : 1; /* bit position: 0 */
   short MemStatsOffset;
-  struct _RTL_RB_TREE FreeChunkTree;
-  struct _LIST_ENTRY SubsegmentList;
-  unsigned __int64 TotalCommittedUnits;
-  unsigned __int64 FreeCommittedUnits;
-  struct _HEAP_VS_DELAY_FREE_CONTEXT DelayFreeContext;
   void* BackendCtx;
   struct _HEAP_SUBALLOCATOR_CALLBACKS Callbacks;
-  struct _RTL_HP_VS_CONFIG Config;
-  unsigned long EliminatePointers : 1; /* bit position: 0 */
+  struct _HEAP_AFFINITY_MGR AffinityMgr;
+  unsigned __int64 TotalCommittedUnits;
+  unsigned __int64 FreeCommittedUnits;
 } HEAP_VS_CONTEXT, *PHEAP_VS_CONTEXT;
 
 typedef struct _HEAP_VS_DELAY_FREE_CONTEXT
@@ -4809,18 +4836,25 @@ typedef struct _HEAP_VS_DELAY_FREE_CONTEXT
   union _SLIST_HEADER ListHead;
 } HEAP_VS_DELAY_FREE_CONTEXT, *PHEAP_VS_DELAY_FREE_CONTEXT;
 
+typedef struct _HEAP_VS_SLOT_MAP
+{
+  unsigned short SlotRef;
+  unsigned short ContentionRemapCount;
+} HEAP_VS_SLOT_MAP, *PHEAP_VS_SLOT_MAP;
+
 typedef struct _HEAP_VS_SUBSEGMENT
 {
   struct _LIST_ENTRY ListEntry;
   unsigned __int64 CommitBitmap;
   unsigned __int64 CommitLock;
   unsigned short Size;
+  unsigned short OwnerSlotRef;
   struct /* bitfield */
   {
     unsigned short Signature : 15; /* bit position: 0 */
     unsigned short FullCommit : 1; /* bit position: 15 */
   }; /* bitfield */
-  long __PADDING__[1];
+  char __PADDING__[2];
 } HEAP_VS_SUBSEGMENT, *PHEAP_VS_SUBSEGMENT;
 
 typedef struct _HEAP_VS_UNUSED_BYTES_INFO
@@ -6559,6 +6593,7 @@ typedef struct _KNODE
       unsigned char ProcessorOnly : 1; /* bit position: 0 */
       unsigned char GroupsAssigned : 1; /* bit position: 1 */
       unsigned char MeasurableDistance : 1; /* bit position: 2 */
+      unsigned char SmtSetsPresent : 1; /* bit position: 3 */
     }; /* bitfield */
   } Flags;
   unsigned char GroupSeed;
@@ -7135,7 +7170,8 @@ typedef union _KPRCB_BPB_FEATURES
       unsigned char Smep : 1; /* bit position: 2 */
       unsigned char KCet : 1; /* bit position: 3 */
       unsigned char BhbFlushSequence : 2; /* bit position: 4 */
-      unsigned char FeaturesReserved : 2; /* bit position: 6 */
+      unsigned char FeaturesReserved2 : 1; /* bit position: 6 */
+      unsigned char FeaturesReserved : 1; /* bit position: 7 */
     }; /* bitfield */
     unsigned char AllFlags;
   };
@@ -7240,7 +7276,10 @@ typedef struct _KPROCESS
   struct _KGROUP_MASK ActiveGroupsMask;
   unsigned __int64 ActiveGroupPadding[2];
   struct _KI_IDEAL_PROCESSOR_ASSIGNMENT_BLOCK* IdealProcessorAssignmentBlock;
-  unsigned __int64 Padding[8];
+  unsigned __int64 Padding[6];
+  unsigned long Padding2;
+  unsigned long SchedulerAssistYieldBoostCount;
+  __int64 SchedulerAssistYieldBoostAllowedTime;
   unsigned long Spare0d;
   unsigned short IdealGlobalNode;
   unsigned short Spare1;
@@ -7847,7 +7886,15 @@ typedef struct _KTHREAD
   };
   volatile unsigned char BamQosLevel;
   unsigned char HardwareFeedbackClass;
-  unsigned char Spare23[2];
+  union
+  {
+    short PriorityDecrement;
+    struct /* bitfield */
+    {
+      unsigned short ForegroundBoost : 4; /* bit position: 0 */
+      unsigned short UnusualBoost : 8; /* bit position: 4 */
+    }; /* bitfield */
+  };
   struct _LIST_ENTRY QueueListEntry;
   union
   {
@@ -7864,15 +7911,7 @@ typedef struct _KTHREAD
   unsigned short UserAffinityPrimaryGroup;
   char PreviousMode;
   char BasePriority;
-  union
-  {
-    char PriorityDecrement;
-    struct /* bitfield */
-    {
-      unsigned char ForegroundBoost : 4; /* bit position: 0 */
-      unsigned char UnusualBoost : 4; /* bit position: 4 */
-    }; /* bitfield */
-  };
+  unsigned char Spare24;
   unsigned char Preempted;
   unsigned char AdjustReason;
   char AdjustIncrement;
@@ -8019,7 +8058,10 @@ typedef struct _KTHREAD
   struct _KLOCK_ENTRIES* KernelAbEntries;
   struct _KLOCK_ENTRIES* UserAbEntries;
   unsigned __int64 KcsanThread;
-  unsigned __int64 Padding[7];
+  unsigned long SchedulerAssistYieldCounter;
+  unsigned long SchedulerAssistYieldBoostCount;
+  __int64 SchedulerAssistLastYieldBoostTime;
+  unsigned __int64 Padding[5];
 } KTHREAD, *PKTHREAD;
 
 typedef struct _KTHREAD_COUNTERS
@@ -9756,6 +9798,20 @@ enum POWER_ACTION
   PowerActionDisplayOff = 8,
 };
 
+typedef enum _POWER_LIMIT_TYPES
+{
+  PowerLimitContinuous = 0,
+  PowerLimitType1 = 0,
+  PowerLimitBurst = 1,
+  PowerLimitType2 = 1,
+  PowerLimitRapid = 2,
+  PowerLimitType3 = 2,
+  PowerLimitPreemptive = 3,
+  PowerLimitType4 = 3,
+  PowerLimitPreemptiveOffset = 4,
+  PowerLimitTypeMax = 5,
+} POWER_LIMIT_TYPES, *PPOWER_LIMIT_TYPES;
+
 typedef struct _POWER_SEQUENCE
 {
   unsigned long SequenceD1;
@@ -11256,7 +11312,7 @@ typedef enum _RTL_FEATURE_CONFIGURATION_PRIORITY
   FeatureConfigurationPriorityEKB = 1,
   FeatureConfigurationPrioritySafeguard = 2,
   FeatureConfigurationPriorityPersistent = 2,
-  FeatureConfigurationPriorityReserved3 = 3,
+  FeatureConfigurationPriorityImageDefaultEditionOverride = 3,
   FeatureConfigurationPriorityService = 4,
   FeatureConfigurationPriorityReserved5 = 5,
   FeatureConfigurationPriorityDynamic = 6,
@@ -11341,6 +11397,7 @@ typedef struct _RTL_HP_SUB_ALLOCATOR_CONFIGS
 {
   union _RTL_HP_LFH_CONFIG LfhConfigs;
   struct _RTL_HP_VS_CONFIG VsConfigs;
+  char __PADDING__[3];
 } RTL_HP_SUB_ALLOCATOR_CONFIGS, *PRTL_HP_SUB_ALLOCATOR_CONFIGS;
 
 typedef struct _RTL_HP_VS_CONFIG
@@ -11349,8 +11406,8 @@ typedef struct _RTL_HP_VS_CONFIG
   {
     struct /* bitfield */
     {
-      unsigned long PageAlignLargeAllocs : 1; /* bit position: 0 */
-      unsigned long EnableDelayFree : 1; /* bit position: 1 */
+      unsigned char PageAlignLargeAllocs : 1; /* bit position: 0 */
+      unsigned char EnableDelayFree : 1; /* bit position: 1 */
     }; /* bitfield */
   } Flags;
 } RTL_HP_VS_CONFIG, *PRTL_HP_VS_CONFIG;
@@ -11701,7 +11758,7 @@ union RTLP_HP_LFH_PERF_FLAGS
       unsigned long HotspotDetection : 1; /* bit position: 0 */
       unsigned long LfhSubsegmentPrefetch : 1; /* bit position: 1 */
       unsigned long ThreadPrivateSlot : 1; /* bit position: 2 */
-      unsigned long EnableGarbageCollection : 1; /* bit position: 3 */
+      unsigned long VsAffinitySlots : 1; /* bit position: 3 */
       unsigned long OpportunisticLargePreCommit : 1; /* bit position: 4 */
       unsigned long LfhForcedAffinity : 1; /* bit position: 5 */
       unsigned long LfhConservativeAffinity : 1; /* bit position: 6 */
@@ -11710,6 +11767,7 @@ union RTLP_HP_LFH_PERF_FLAGS
       unsigned long SegCachedCommitLimitRatio : 2; /* bit position: 10 */
       unsigned long HotSubsegmentSizeShift : 2; /* bit position: 12 */
       unsigned long HotThresholdHighShift : 2; /* bit position: 14 */
+      unsigned long Spare : 16; /* bit position: 16 */
     }; /* bitfield */
     unsigned long AllFlags;
   };
@@ -11745,6 +11803,46 @@ typedef struct _RTLP_HP_QUEUE_LOCK_HANDLE
   unsigned __int64 LockPtr;
   unsigned __int64 HandleData;
 } RTLP_HP_QUEUE_LOCK_HANDLE, *PRTLP_HP_QUEUE_LOCK_HANDLE;
+
+typedef union _RTLP_HP_THREAD_CTX
+{
+  union
+  {
+    struct
+    {
+      unsigned char LegacyVirtualAffinity;
+      unsigned char CachedProcIndex;
+      unsigned short LFHDataSlot;
+    };
+    unsigned long EntireUlong;
+  };
+} RTLP_HP_THREAD_CTX, *PRTLP_HP_THREAD_CTX;
+
+typedef struct _RTLP_PROCESS_HEAP_DESCRIPTOR
+{
+  struct _LIST_ENTRY DescriptorLink;
+  void* Heap;
+  union
+  {
+    union
+    {
+      struct /* bitfield */
+      {
+        unsigned long Internal : 1; /* bit position: 0 */
+        unsigned long LegacyNoSerialize : 1; /* bit position: 1 */
+        unsigned long WalkLockRelease : 1; /* bit position: 2 */
+        unsigned long Unused : 29; /* bit position: 3 */
+      }; /* bitfield */
+      unsigned long AsULONG;
+    };
+  } Flags;
+  struct
+  {
+    unsigned long Count;
+    unsigned long Owner;
+    struct _RTL_SRWLOCK Lock;
+  } PseudoGlobalLock;
+} RTLP_PROCESS_HEAP_DESCRIPTOR, *PRTLP_PROCESS_HEAP_DESCRIPTOR;
 
 struct _SCSI_REQUEST_BLOCK;
 
@@ -12098,7 +12196,8 @@ typedef enum _SYSTEM_FEATURE_CONFIGURATION_SECTION_TYPE
   SystemFeatureConfigurationSectionTypeBoot = 0,
   SystemFeatureConfigurationSectionTypeRuntime = 1,
   SystemFeatureConfigurationSectionTypeUsageTriggers = 2,
-  SystemFeatureConfigurationSectionTypeCount = 3,
+  SystemFeatureConfigurationSectionTypeGoverned = 3,
+  SystemFeatureConfigurationSectionTypeCount = 4,
 } SYSTEM_FEATURE_CONFIGURATION_SECTION_TYPE, *PSYSTEM_FEATURE_CONFIGURATION_SECTION_TYPE;
 
 typedef enum _SYSTEM_INFORMATION_CLASS
@@ -12345,13 +12444,16 @@ typedef enum _SYSTEM_INFORMATION_CLASS
   SystemMemoryNumaInformation = 239,
   SystemMemoryNumaPerformanceInformation = 240,
   SystemCodeIntegritySignedPoliciesFullInformation = 241,
-  SystemSecureSecretsInformation = 242,
+  SystemSecureCoreInformation = 242,
   SystemTrustedAppsRuntimeInformation = 243,
   SystemBadPageInformationEx = 244,
   SystemResourceDeadlockTimeout = 245,
   SystemBreakOnContextUnwindFailureInformation = 246,
   SystemOslRamdiskInformation = 247,
-  MaxSystemInfoClass = 248,
+  SystemProcessorFeaturesBitMapInformation = 250,
+  SystemBasicProcessInformation = 252,
+  SystemHandleCountInformation = 253,
+  MaxSystemInfoClass = 254,
 } SYSTEM_INFORMATION_CLASS, *PSYSTEM_INFORMATION_CLASS;
 
 typedef enum _SYSTEM_POOL_LIMIT_MEM_TYPE
@@ -14396,6 +14498,23 @@ typedef struct _WHEA_XPF_NMI_DESCRIPTOR
   unsigned char Enabled;
 } WHEA_XPF_NMI_DESCRIPTOR, *PWHEA_XPF_NMI_DESCRIPTOR;
 
+typedef enum _WINDOW_ACTION_KINDS
+{
+  WAK_NONE = 0,
+  WAK_VISIBILITY = 1,
+  WAK_POSITION = 2,
+  WAK_SIZE = 4,
+  WAK_INSERT_AFTER = 8,
+  WAK_ACTIVATE = 16,
+  WAK_PLACEMENT_STATE = 32,
+  WAK_NORMAL_RECT = 64,
+  WAK_MOVE_TO_MONITOR = 128,
+  WAK_FIT_TO_MONITOR = 256,
+  WAK_DISPLAY_CHANGE = 512,
+  WAK_SYSTEM_OPERATION = 1024,
+  WAK_COALESCEABLE = 31,
+} WINDOW_ACTION_KINDS, *PWINDOW_ACTION_KINDS;
+
 typedef struct _WNF_LOCK
 {
   struct _EX_PUSH_LOCK PushLock;
@@ -14610,12 +14729,26 @@ AlpcRegisterCompletionListWorkerThread();
 AlpcRundownCompletionList();
 AlpcUnregisterCompletionList();
 AlpcUnregisterCompletionListWorkerThread();
+ApiSetGetImplementationHost();
+ApiSetpGetContractKeyInfo();
+ApiSetpGetExtensionNameKeyInfo();
+ApiSetpGetSemverKeyVersions();
+ApiSetpResolveHost();
 ApiSetpSearchForApiSet();
+ApiSetpSearchForApiSetA();
 ApiSetpSearchForApiSetHost();
+ApiSetpSearchForHostOverrideIndex_V7();
+ApiSetpSearchForSectionIndex_V7();
 ApiSetQueryApiSetPresence();
 ApiSetQueryApiSetPresenceEx();
+ApiSetQuerySchema();
 ApiSetQuerySchemaInfo();
+ApiSetQuerySchemaInfo2();
+ApiSetQuerySchemaInfo2_V7();
+ApiSetQuerySchemaInfo_V7();
 ApiSetResolveToHost();
+ApiSetResolveToHost2();
+ApiSetResolveToHostA_V7();
 _AppendCumulativeOverlayFilePath();
 _AppendStandardOverlayFilePath();
 AppModelPolicy_GetPolicy_Internal();
@@ -14687,8 +14820,13 @@ cos();
 ? cos_piby4;
 CountUnicodeToUTF8();
 CountUTF8ToUnicode();
-? _cpu_check_features_forwarder;
+? _cpu_check_features;
 __cpu_features_init();
+crc32();
+crc32_avx512_simd_();
+crc32_sse42_simd_();
+crc32_z();
+? crc_word;
 CsrAllocateCaptureBuffer();
 CsrAllocateMessagePointer();
 CsrCaptureMessageBuffer();
@@ -14900,16 +15038,24 @@ ExpInterlockedPopEntrySListResume();
 ExpInterlockedPushEntrySList();
 fabs();
 _fclrf();
-Feature_3462037821__private_IsEnabledDeviceUsageNoInline();
-Feature_3462037821__private_IsEnabledFallback();
-Feature_Servicing_AutoBoostUsermodeHandleFixes__private_IsEnabledFallback();
-Feature_Servicing_AutoBoostUsermodeHandleFixes__private_IsEnabledNoReportingNoInline();
-Feature_Servicing_KernelArm64FpLrContextControl__private_IsEnabledFallback();
-Feature_Servicing_KernelArm64FpLrContextControl__private_IsEnabledNoReportingNoInline();
+Feature_AdditionalProcessorFeatures__private_IsEnabledDeviceUsageNoInline();
+Feature_AdditionalProcessorFeatures__private_IsEnabledFallback();
+Feature_Arm64RestoreRegistersAroundDllMain__private_IsEnabledDeviceUsageNoInline();
+Feature_Arm64RestoreRegistersAroundDllMain__private_IsEnabledFallback();
+Feature_FasterCrc32__private_IsEnabledDeviceUsageNoInline();
+Feature_FasterCrc32__private_IsEnabledFallback();
+Feature_PackagedComElevationSupport__private_IsEnabledFallback();
+Feature_PackagedComElevationSupport__private_IsEnabledNoReportingNoInline();
+Feature_Servicing_DisallowSharedLockImplicitUpgrade__private_IsEnabledFallback();
+Feature_Servicing_DisallowSharedLockImplicitUpgrade__private_IsEnabledNoReportingNoInline();
+Feature_Servicing_LoaderInitEnvironmentHashTable__private_IsEnabledDeviceUsageNoInline();
+Feature_Servicing_LoaderInitEnvironmentHashTable__private_IsEnabledFallback();
 Feature_Servicing_LoaderSnapsBuffer__private_IsEnabledDeviceUsageNoInline();
 Feature_Servicing_LoaderSnapsBuffer__private_IsEnabledFallback();
-Feature_UC_ConfigFix__private_IsEnabledDeviceUsageNoInline();
-Feature_UC_ConfigFix__private_IsEnabledFallback();
+Feature_Servicing_VBSEnclavesForArgon__private_IsEnabledDeviceUsageNoInline();
+Feature_Servicing_VBSEnclavesForArgon__private_IsEnabledFallback();
+Feature_Servicing_VBSEnclavesForARM64EC__private_IsEnabledDeviceUsageNoInline();
+Feature_Servicing_VBSEnclavesForARM64EC__private_IsEnabledFallback();
 _fgetwc_nolock();
 _filbuf();
 _filbuf_s();
@@ -14929,8 +15075,11 @@ _fputwc_nolock();
 _frnd();
 __ft_array_insert();
 __ft_has_proxy();
+__ft_marker_array_find();
 __ft_marker_array_lower_bound();
+__ft_marker_array_record_impression();
 __ft_marker_array_set_flags();
+__ft_process_handles_array_add();
 __ft_process_marker_get_handle();
 __ft_record_impression();
 __FT_token_increment();
@@ -15087,6 +15236,7 @@ LdrGetProcedureAddressEx();
 LdrGetProcedureAddressForCaller();
 LdrHotPatchNotify();
 LdrImageDirectoryEntryToLoadConfig();
+LdrImageDirectoryEntryToLoadConfigEx();
 LdrInitializeEnclave();
 LdrInitializeMrdata();
 LdrInitializePerThreadRng();
@@ -15136,6 +15286,7 @@ LdrpBuildSystem32FileName();
 LdrpCalcAllocSize();
 LdrpCallInitRoutine();
 ? LdrpCallInitRoutine$fin$0;
+LdrpCallInitRoutineInternal();
 LdrpCallTlsInitializers();
 ? LdrpCallTlsInitializers$filt$0;
 LdrpCaptureCriticalThunks();
@@ -15153,6 +15304,7 @@ LdrpCheckModule();
 ? LdrpCheckPagesForTampering;
 LdrpCheckRedirection();
 LdrpCleanupEnclaveLoadState();
+LdrpCleanupThreadTlsData();
 LdrpCnvrtShortToLongFileName();
 LdrpCodeAuthzCheckDllAllowed();
 LdrpCodeAuthzCheckDllAllowedSrpV2();
@@ -15224,6 +15376,7 @@ LdrpFindTlsEntry();
 LdrpFreeLoadContext();
 LdrpFreeLoadContextOfNode();
 LdrpFreeReplacedModule();
+LdrpFreeTls();
 LdrpFreeUnicodeString();
 LdrpFusionManifestCodePages();
 LdrpGenerateSnapsUnicodeStrings();
@@ -15315,7 +15468,7 @@ LdrpInsertModuleToIndex();
 LdrpInsertModuleToIndexLockHeld();
 LdrpIsCODServiceEnabled();
 LdrpIsCurrentPatchLatest();
-LdrpIsExecutableRelocatedImage();
+LdrpIsImageAddress();
 LdrpIsModuleUnderSystem32();
 LdrpIsReparsePoint();
 LdrpIsSecurityEtwLoggingEnabled();
@@ -15396,7 +15549,6 @@ LdrpPreprocessDllName();
 ? LdrpProcessDetachNode$filt$0;
 ? LdrpProcessDetachNode$fin$1;
 LdrpProcessInitializationComplete();
-LdrpProcessMachineMismatch();
 LdrpProcessMappedModule();
 LdrpProcessWork();
 ? LdrpProcessWork$fin$0;
@@ -15442,6 +15594,7 @@ LdrpResSearchResourceHandle();
 LdrpResSearchResourceInsideDirectory();
 LdrpResSearchResourceMappedFile();
 LdrpResSetFilePointer();
+LdrpResValdiateMappedAddress();
 LdrpResValidateFileHandle();
 LdrpResValidateFilePath();
 LdrProcessRelocationBlock();
@@ -15461,7 +15614,6 @@ LdrpSetModuleSigningLevel();
 LdrpSetProtection();
 LdrpSetThreadPreferredLangList();
 LdrpShouldModuleImportBeRedirected();
-LdrpSignalModuleMapped();
 LdrpSnapKernelBaseExtensions();
 LdrpSnapModule();
 ? LdrpSnapModule$filt$0;
@@ -15483,12 +15635,10 @@ LdrpUnlockTlsDelayedReclaimTable();
 LdrpUnmapModule();
 LdrpUnsuppressAddressTakenIat();
 LdrpUpdateStatistics();
-LdrpValidateEntrySection();
 LdrpValidateIntegrityContinuity();
 LdrpValidateUserCallTarget();
 LdrpValidateUserCallTargetES();
 LdrpVerifyAlternateResourceModuleEx();
-LdrpVsmEnclaveUnregisterTelemetry();
 LdrpWaitForInitializationComplete();
 LdrpWorkCallback();
 LdrpWriteBackProtectedDelayLoad();
@@ -15593,7 +15743,6 @@ _mbstrlen();
 mbtowc();
 MD4Final();
 MD4Init();
-MD4Transform();
 MD4Update();
 MD5Final();
 MD5Init();
@@ -15658,6 +15807,7 @@ NpClose();
 NpCreateSection();
 NpMapViewOfSection();
 NpOpenFile();
+NpQueryVirtualMemory();
 NpUnmapViewOfSection();
 NtAcceptConnectPort();
 NtAccessCheck();
@@ -15865,7 +16015,6 @@ NtdllMessageWindowProc_W();
 NtdllpAllocateStringRoutine();
 NtdllpFreeStringRoutine();
 NtdllpReallocateStringRoutine();
-NtdllRunOnceInitMuiCrits();
 NtdllScrollBarWndProc_A();
 NtdllScrollBarWndProc_W();
 NtdllScrollBarWndProcWorker();
@@ -16298,7 +16447,6 @@ public: static void __cdecl RTL_BINARY_ARRAY<struct RTLP_FLS_CALLBACK_ENTRY,8,4>
 public: static void __cdecl RTL_BINARY_ARRAY<struct RTLP_FLS_SLOT,8,4>::Cleanup(struct RTL_BINARY_ARRAY<struct RTLP_FLS_SLOT,8,4> *);
 RtlAbortRXact();
 RtlAbPostRelease();
-RtlAbPreAcquire();
 RtlAbsoluteToSelfRelativeSD();
 RtlAcquirePebLock();
 RtlAcquirePrivilege();
@@ -16666,6 +16814,7 @@ RtlDuplicateUnicodeString();
 ? RtlDuplicateUnicodeString$fin$0;
 RtlEmptyAtomTable();
 RtlEnableEarlyCriticalSectionEventCreation();
+RtlEnableHeapGC();
 RtlEnableThreadProfiling();
 RtlEnclaveCallDispatch();
 RtlEnclaveCallDispatcher();
@@ -16813,6 +16962,7 @@ RtlGetFullPathName_Ustr();
 RtlGetFullPathName_UstrEx();
 RtlGetFunctionTableListHead();
 RtlGetGroupSecurityDescriptor();
+RtlGetImageEnclaveConfig();
 RtlGetImageFileMachines();
 ? RtlGetImageFileMachines$filt$0;
 ? RtlGetImageFileMachines$fin$1;
@@ -16920,11 +17070,11 @@ RtlInitializeExtendedContext2();
 RtlInitializeGenericTable();
 RtlInitializeGenericTableAvl();
 RtlInitializeHandleTable();
-RtlInitializeHeapGC();
 RtlInitializeHeapLogging();
 RtlInitializeHeapManager();
 RtlInitializeHistoryTable();
 RtlInitializeNtUserPfn();
+RtlInitializeProcessorFeaturesBitMap();
 RtlInitializeResource();
 RtlInitializeRXact();
 RtlInitializeSid();
@@ -17047,6 +17197,7 @@ RtlLockMemoryBlockLookaside();
 RtlLockMemoryStreamRegion();
 RtlLockMemoryZone();
 RtlLockModuleSection();
+RtlLockProcessHeapOnProcessTerminate();
 RtlLogMessageInEventLogger();
 RtlLogStackBackTrace();
 RtlLogStackBackTraceEx();
@@ -17104,7 +17255,7 @@ RtlOsDeploymentState();
 RtlOverwriteFeatureConfigurationBuffer();
 RtlOwnerAcesPresent();
 RtlpAbFreeKernelEntry();
-RtlpAcquireDescriptorPseudoGlobalLock();
+RtlpAcquireDescriptorPseudoGlobalLockEx();
 ? RtlpAcquireSRWLockExclusiveContended;
 ? RtlpAcquireSRWLockSharedContended;
 RtlpActivateLowFragmentationHeap();
@@ -17150,7 +17301,6 @@ RtlpCallQueryRegistryRoutine();
 RtlpCallSecureMemoryCallbacks();
 RtlpCallVectoredHandlers();
 RtlpCapabilityCheckSystemCapability();
-RtlpCapChkTelemetryRunOnce();
 RtlpCaptureContext();
 RtlpCaptureContext2();
 RtlpChangeQueryDebugBufferTarget();
@@ -17213,6 +17363,7 @@ RtlpCopyProcString();
 RtlpCopyRemoteDebugInformation();
 RtlpCopyXStateChunk();
 RtlpCrackActivationContextStringSectionHeader();
+RtlpCrc32c();
 RtlpCreateDeferredCriticalSectionEvent();
 RtlpCreateExecutionRequiredRequest();
 RtlpCreateHashTable();
@@ -17290,18 +17441,22 @@ RtlpFcBufferManagerDereferenceBuffers();
 RtlpFcBufferManagerUpdateBuffers();
 RtlpFcCallChangeCallbacks();
 RtlpFcChangeRegistrationCallback();
+RtlpFcCompareFeatureIdToGovernedFeature();
 RtlpFcConfigurationTypeToBufferType();
 RtlpFcConvertFeatureConfigurationsInternalToExternal();
 RtlpFcEnsureSubscriptionManagerStarted();
 RtlpFcFreeChangeRegistration();
+RtlpFcGetFeatureHasSubscriptionsFromBuffer();
+RtlpFcHasEffectiveStateInGovernedFeatureInfoTable();
 RtlpFcInsertChangeRegistration();
+RtlpFcLinearSearchInSortedArray();
 RtlpFcMapSingleBuffer();
 RtlpFcNoopCallback();
 RtlpFcNotifyFeatureUsageTarget();
-RtlpFcQueryAllFeatureConfigurationsFromBuffers();
 RtlpFcQueryAllFeatureConfigurationsFromBufferSet();
 RtlpFcQueryAllFeatureUsageSubscriptionNotificationsFromBufferSet();
-RtlpFcQueryAllInternalFeatureConfigurationsFromBuffers();
+RtlpFcQueryAllGovernedFeaturesFromBufferSet();
+RtlpFcQueryAllInternalFeatureConfigurationsFromBufferSet();
 RtlpFcQueryFeatureConfigurationFromBuffers();
 RtlpFcQueryFeatureConfigurationFromBufferSet();
 RtlpFcQueryFeatureConfigurationFromKernel();
@@ -17349,6 +17504,7 @@ RtlpFreeEnvironmentHashTable();
 RtlpFreeHandleForAtom();
 RtlpFreeHeap();
 ? RtlpFreeHeap$fin$0;
+RtlpFreeHeapMetadata();
 RtlpFreeNTHeapInternal();
 RtlpFreeTebLanguageList();
 RtlpFreeTraverseNodes();
@@ -17356,6 +17512,7 @@ RtlpFreeUserBlock();
 RtlpFreeUserBlockToHeap();
 RtlpFtFeatureConfigChangeCallback();
 RtlpFtFree();
+RtlpFtInitialize();
 RtlpFtInitOnceCallback();
 RtlpFtQueryConfiguration();
 RtlpFtSendUsageNotification();
@@ -17464,9 +17621,9 @@ RtlpHeapTrkLeakCallback();
 ? RtlpHeapTrkTrackRemoveHeap;
 ? RtlpHeapTrkTrackStack;
 RtlpHeapZeroFastString();
-RtlpHpAcquireQueuedLockExclusive();
+RtlpHpAffinityMgrUpdateComplete();
+RtlpHpAffinityMgrUpdateProcess();
 RtlpHpAllocateHeapBackend();
-RtlpHpAllocateHeapInternal();
 RtlpHpAllocateHeapSlow();
 RtlpHpAllocVA();
 RtlpHpAllocVirtBlockCommitFirst();
@@ -17481,8 +17638,8 @@ RtlpHpCustomVaCallbacksRegistrarUnregister();
 RtlpHpEnvAcquireGlobalLockExclusive();
 RtlpHpEnvAcquireGlobalLockSharedContended();
 RtlpHpEnvAllocVA();
+RtlpHpEnvCompactionIsScheduled();
 RtlpHpEnvCompactionSchedule();
-RtlpHpEnvFlsCleanup();
 RtlpHpEnvFlsSetValue();
 RtlpHpEnvFreeVA();
 RtlpHpEnvQueryProcessorCount();
@@ -17494,10 +17651,13 @@ RtlpHpExtrasGet();
 RtlpHpExtrasReportBusyBlock();
 RtlpHpExtrasSetPresent();
 RtlpHpFindImageNameInList();
+RtlpHpFreeHeap();
 RtlpHpFreeHeapSlow();
 RtlpHpFreeVA();
-RtlpHpGCCallback();
-RtlpHpGCFlushCallback();
+RtlpHpGCTimerCallback();
+RtlpHpGCTimerEnable();
+RtlpHpGCTimerEnumProcessHeapsCallback();
+RtlpHpGetCurrentProcessorNumber();
 RtlpHpGetUserInfo();
 RtlpHpHeapAllocate();
 RtlpHpHeapCheckCommitLimit();
@@ -17519,11 +17679,14 @@ RtlpHpLargeAllocationDestroy();
 RtlpHpLargeAllocationProtect();
 RtlpHpLargeAllocGetMetadata();
 RtlpHpLargeAllocReport();
+RtlpHpLargeAllocSetExtraPresent();
 RtlpHpLargeAllocSize();
 RtlpHpLargeFree();
 RtlpHpLargeLockAcquire();
+RtlpHpLargeLockAcquireShared();
 RtlpHpLargeReAlloc();
 RtlpHpLargeWalkHeap();
+RtlpHpLfhBlockBitmapInitialize();
 RtlpHpLfhBucketActivate();
 RtlpHpLfhBucketAddSubsegment();
 RtlpHpLfhBucketCheckAndUpdate();
@@ -17534,6 +17697,7 @@ RtlpHpLfhBucketInitialize();
 RtlpHpLfhBucketUpdateAffinityMapping();
 RtlpHpLfhContextCleanup();
 RtlpHpLfhContextCompact();
+RtlpHpLfhContextEnable();
 RtlpHpLfhContextFree();
 RtlpHpLfhContextInitialize();
 RtlpHpLfhContextLockExtension();
@@ -17565,10 +17729,12 @@ RtlpHpLfhSlotActiveSubsegmentReset();
 RtlpHpLfhSlotAllocateSlow();
 RtlpHpLfhSlotInitialize();
 RtlpHpLfhSubsegmentCommitBlock();
+RtlpHpLfhSubsegmentComputeCommitUnit();
 RtlpHpLfhSubsegmentConstructCommitState();
 RtlpHpLfhSubsegmentCountEmptyUnits();
 RtlpHpLfhSubsegmentCreate();
 RtlpHpLfhSubsegmentDecBlockCounts();
+RtlpHpLfhSubsegmentDecommitPages();
 RtlpHpLfhSubsegmentDelayFreeListBatch();
 RtlpHpLfhSubsegmentDelayFreeProcess();
 RtlpHpLfhSubsegmentFree();
@@ -17579,7 +17745,7 @@ RtlpHpLfhSubsegmentPrefetchRange();
 RtlpHpLfhSubsegmentReformatAsMulti();
 RtlpHpLfhSubsegmentReformatAsSingle();
 RtlpHpLfhSubsegmentReformatCheck();
-RtlpHpLfhSubsegmentReserveBlock();
+RtlpHpLfhSubsegmentSizeBlock();
 RtlpHpLfhSubsegmentSizeBlockInternal();
 RtlpHpLfhSubsegmentWalk();
 RtlpHpLfhThreadDataInitializeSet();
@@ -17590,16 +17756,16 @@ RtlpHpMetadataCommit();
 RtlpHpMetadataFree();
 RtlpHpMetadataHeapCreate();
 RtlpHpOptIntoSegmentHeap();
-RtlpHpOverrideGCInterval();
 RtlpHpParametersVerify();
 RtlpHpPerHeapStackTraceCleanup();
 RtlpHpPerHeapStackTraceInitialize();
+RtlpHpQueryGCTimerInterval();
 RtlpHpQueryVA();
 RtlpHpRaiseFatalLimitError();
 RtlpHpReAllocateHeap();
+RtlpHpReAllocateHeapSlow();
+RtlpHpReallocComputeSizes();
 RtlpHpReallocMove();
-RtlpHpReAllocWithExceptionProtection();
-? RtlpHpReAllocWithExceptionProtection$filt$0;
 RtlpHpRegisterEnvironment();
 RtlpHpRemoteStackSerializeWriter();
 RtlpHpSegAlloc();
@@ -17607,12 +17773,9 @@ RtlpHpSegContextCleanup();
 RtlpHpSegContextCompact();
 RtlpHpSegContextInitialize();
 RtlpHpSegContextReserve();
-RtlpHpSegDescriptorValidate();
 RtlpHpSegFreeInternal();
 RtlpHpSegFreeRangeInsert();
 RtlpHpSegFreeRangeRemove();
-RtlpHpSegGetDescriptorValidateSafe();
-? RtlpHpSegGetDescriptorValidateSafe$filt$0;
 RtlpHpSegHeapAddSegment();
 RtlpHpSegHeapCheckCommitLimit();
 RtlpHpSegLargeRangeAllocate();
@@ -17649,7 +17812,6 @@ RtlpHpSegReportSegment();
 RtlpHpSegSegmentAllocate();
 RtlpHpSegSegmentFree();
 RtlpHpSegSegmentInitialize();
-RtlpHpSegSizeInternal();
 RtlpHpSegSubAllocate();
 RtlpHpSegTlsCleanup();
 RtlpHpSegVsAllocate();
@@ -17690,7 +17852,6 @@ RtlpHpTagQueryHeapsRemote();
 RtlpHpTagQueryTags();
 RtlpHpTagReAllocateHeap();
 RtlpHpTagRunOnceInit();
-RtlpHpTlLogGCScheduled();
 RtlpHpTlLogGCTimerFinished();
 RtlpHpTlLogMemStats();
 RtlpHpTlLogVAChange();
@@ -17719,24 +17880,35 @@ RtlpHpVaMgrRangeFind();
 RtlpHpVaMgrRangeFree();
 RtlpHpVaMgrRangeSplit();
 RtlpHpVaMgrRegionAllocate();
+RtlpHpVsCalculateAffinitySlotCount();
 RtlpHpVsChunkAlignSplit();
-RtlpHpVsChunkComputeCost();
 RtlpHpVsChunkFree();
 RtlpHpVsChunkSetExtraPresent();
 RtlpHpVsChunkSetUnusedBytes();
 RtlpHpVsChunkSize();
 RtlpHpVsChunkSplit();
 RtlpHpVsContextAllocate();
-RtlpHpVsContextAllocateInternal();
-RtlpHpVsContextCompactChunks();
-RtlpHpVsContextFreeInternal();
-RtlpHpVsContextFreeList();
+RtlpHpVsContextAllocateFinalize();
+RtlpHpVsContextCleanup();
+RtlpHpVsContextCompact();
+RtlpHpVsContextGetSlotInfo();
 RtlpHpVsContextGrowInPlace();
+RtlpHpVsContextHandleContention();
 RtlpHpVsContextInitialize();
+RtlpHpVsContextLockUnlock();
+RtlpHpVsContextStart();
 RtlpHpVsFreeChunkInsert();
 RtlpHpVsFreeChunkRemove();
+RtlpHpVsSlotAddSubsegment();
+RtlpHpVsSlotAllocate();
+RtlpHpVsSlotCompact();
+RtlpHpVsSlotCompactChunks();
+RtlpHpVsSlotCreate();
+RtlpHpVsSlotFreeInternal();
+RtlpHpVsSlotFreeList();
 RtlpHpVsSubsegmentCleanup();
 RtlpHpVsSubsegmentCommitPages();
+RtlpHpVsSubsegmentCreate();
 RtlpHpVsSubsegmentFree();
 RtlpHpVsSubsegmentWalk();
 RtlpIdnToUnicodeWorker();
@@ -17749,6 +17921,7 @@ RtlpInheritAcl2();
 RtlpInitAndCallLcidToCultureName();
 RtlpInitCodePageTables();
 RtlpInitCurrentDir();
+RtlpInitDeferredCriticalSection();
 RtlpInitEnvironmentBlock();
 RtlpInitializeAssemblyStorageMap();
 RtlpInitializeHeapSegment();
@@ -17794,7 +17967,6 @@ RtlpIsCustomLocale();
 RtlpIsDosDeviceName_Ustr();
 RtlpIsDuplicateAce();
 RtlpIsEmptyImageFileOptionsKey();
-RtlpIsEnterpriseTemporaryControl();
 RtlpIsHeapAccessibleInClone();
 RtlpIsLFHZoneAllocation();
 RtlpIsNameInExpressionPrivate();
@@ -17934,6 +18106,7 @@ RtlpNewSecurityObject();
 RtlpNlsGetLcidIndex();
 RtlpNlsGetNameIndex();
 ? RtlpNormalizeAcl;
+RtlpNormalizeStringWorker();
 RtlpNotOwnerCriticalSection();
 ? RtlpNotOwnerCriticalSection$filt$0;
 RtlpNtCreateKey();
@@ -18100,7 +18273,6 @@ RtlpSysVolCreateSecurityDescriptor();
 RtlpSysVolFree();
 RtlpSysVolTakeOwnership();
 RtlpTargetCompare();
-RtlpTestHookInitialize();
 RtlpTimeFieldsToTime();
 RtlpTimeFieldsToTimeNoLeapSeconds();
 RtlpTimeToTimeFields();
@@ -18241,6 +18413,7 @@ RtlpZeroBlockFromOffset();
 RtlQueryActivationContextApplicationSettings();
 RtlQueryAllFeatureConfigurations();
 RtlQueryAllInternalFeatureConfigurations();
+RtlQueryAllInternalRuntimeFeatureConfigurations();
 RtlQueryApplicationKeyOption();
 RtlQueryAtomInAtomTable();
 RtlQueryCriticalSectionOwner();
@@ -18264,6 +18437,7 @@ RtlQueryInformationActivationContext();
 ? RtlQueryInformationActivationContext$fin$0;
 RtlQueryInformationActiveActivationContext();
 RtlQueryInterfaceMemoryStream();
+RtlQueryInternalFeatureConfiguration();
 RtlQueryModuleInformation();
 RtlQueryPackageClaims();
 RtlQueryPackageIdentity();
@@ -18323,6 +18497,7 @@ RtlReadMemoryStream();
 RtlReadOutOfProcessMemoryStream();
 RtlReadThreadProfilingData();
 RtlReAllocateHeap();
+? RtlReAllocateHeap$filt$0;
 RtlRealPredecessor();
 RtlRealSuccessor();
 RtlRegisterFeatureConfigurationChangeNotification();
@@ -18342,6 +18517,7 @@ RtlReleaseResource();
 RtlReleaseSRWLockExclusive();
 RtlReleaseSRWLockShared();
 RtlReleaseStackTrace();
+RtlReleaseSwapReference();
 RtlRemoteCall();
 RtlRemoveEntryHashTable();
 RtlRemoveInvertedFunctionTable();
@@ -18534,6 +18710,7 @@ RtlTryConvertSRWLockSharedToExclusiveOrRelease();
 RtlTryEnterCriticalSection();
 RtlUdiv128();
 RtlULongLongMult();
+RtlULongLongSub();
 RtlULongToUShort();
 RtlUmsThreadYield();
 RtlUnhandledExceptionFilter();
@@ -18676,7 +18853,6 @@ _safecrt_wctomb_s();
 ? _SafeReallocBlob;
 ? SaferpIsDllAllowed;
 ? SaferpIsV2PolicyPresent;
-SbCleanupTrace();
 SbExecuteProcedure();
 void * __cdecl SbFilterProcedure_RTL(void *);
 SbGetContextDetailsById();
@@ -18721,6 +18897,8 @@ ScpCfgValidateUserCallTargetES();
 ScpCfgValidateUserCallTargetES_ES();
 ScpCfgValidateUserCallTargetES_Fptr();
 ScpCfgValidateUserCallTargetES_Nop();
+? ScRsa32Compat_Md4ExportAndWipe;
+? ScRsa32Compat_Md5ExportAndWipe;
 __security_check_cookie();
 ? send_all_trees;
 ? send_tree;
@@ -18732,10 +18910,6 @@ SetAssertBufferPtrinPeb();
 _setjmp();
 setjmp();
 _setjmpex();
-SHA256Final();
-SHA256Transform();
-SHA256Update();
-SHATransform();
 ShipAssert();
 ? ShipAssert$filt$0;
 ShipAssertGetBufferInfo();
@@ -18818,6 +18992,30 @@ swscanf_s();
 ? sxsisol_FreeUnicodeStringBufferAroundUnicodeStrings_Success;
 ? sxsisol_RespectDotLocal;
 ? sxsisol_SearchActCtxForDllName;
+SymCryptDetectCpuFeaturesByCpuid();
+SymCryptHashAppendInternal();
+SymCryptHashCommonPaddingMd4Style();
+SymCryptMd4Append();
+SymCryptMd4AppendBlocks();
+SymCryptMd4Init();
+SymCryptMd4Result();
+SymCryptMd4StateCopy();
+SymCryptMd5Append();
+SymCryptMd5AppendBlocks();
+SymCryptMd5Init();
+SymCryptMd5Result();
+SymCryptMd5StateCopy();
+SymCryptSha1Append();
+SymCryptSha1AppendBlocks();
+SymCryptSha1Init();
+SymCryptSha1Result();
+SymCryptSha1StateCopy();
+SymCryptSha256();
+SymCryptSha256Append();
+SymCryptSha256AppendBlocks_ul1();
+SymCryptSha256Init();
+SymCryptSha256Result();
+SymCryptWipeAsm();
 tan();
 ? tan_piby4;
 TelemetryCoverageCheckTableForCoverageInternal();
@@ -18955,7 +19153,6 @@ TppFreeDirectParamsCache();
 TppFreeThreadData();
 TppFreeWait();
 TppGetCurrentThreadNumaNode();
-TppInitializeTimer();
 TppInitializeTimerQueue();
 TppInitializeTimerSubQueue();
 TppIopCallbackEpilog();
@@ -19091,7 +19288,6 @@ TpWorkOnBehalfSetTicket();
 _tr_flush_block();
 _tr_stored_block();
 TraceLoggingRegisterEx_EtwEventRegister_EtwEventSetInformation();
-TransformMD5();
 UcOnUnexpectedCodePath();
 UcpCreateTelemetryRecord();
 UcpFindOrCreateTelemetryRecord();
@@ -19794,6 +19990,7 @@ __@@_PchSym_@00@KxulyqvxgPillgKxunrmpvimvoUmgwooUwzbglmzUlyquivUznwGEUkxsOlyq@nt
 __@@_PchSym_@00@KxulyqvxgPillgKxunrmpvimvoUvgdUmgwooUwzbglmzUlyquivUznwGEUvgdmgwookOlyq@etwntdll;
 __@@_PchSym_@00@KxulyqvxgPillgKxunrmpvimvoUzkkxlnkzgUhdrgxsyzxpUxlmgvcgUolzwviUlyquivUznwGEUkivxlnkOlyq@SwitchContextLoader;
 __@@_PchSym_@00@KxulyqvxgPillgKxunrmpvimvoUzkkxlnkzgUxzxsvUrmgviuzxvUorynrmUlyquivUznwGEUxlnkzgxzxsvkOlyq@compatcachemin;
+AdditionalProcessorFeaturesEnabled;
 AeSbCallEvent;
 AeSbContextUpdateEvent;
 AeSbImplEvent;
@@ -19830,8 +20027,8 @@ CheckHeapFillPattern;
 __clocalestr;
 ComponentOnDemand;
 ConditionVariableSpinCycleCount;
+cpuidBitInfo;
 Crc32Ctrl;
-Crc32Lookup;
 crc32Map1_;
 crc32Map32_;
 crc32Mult_;
@@ -19870,54 +20067,154 @@ EtwpRegistrationSequence;
 EtwpRegistrationTable;
 FastPebLock;
 FatalUserCallbackException;
-Feature_3462037821__private_descriptor;
-Feature_3462037821__private_featureState;
-Feature_3462037821__private_reporting;
-Feature_3462037821_logged_traits;
-Feature_CadBugs__private_descriptor;
-Feature_CadBugs__private_featureState;
-Feature_CadBugs__private_reporting;
-Feature_CadBugs_logged_traits;
-Feature_REFSDV__private_descriptor;
-Feature_REFSDV__private_featureState;
-Feature_REFSDV__private_reporting;
-Feature_REFSDV_logged_traits;
-Feature_Servicing_AutoBoostUsermodeHandleFixes__private_descriptor;
-Feature_Servicing_AutoBoostUsermodeHandleFixes__private_featureState;
-Feature_Servicing_AutoBoostUsermodeHandleFixes__private_reporting;
-Feature_Servicing_AutoBoostUsermodeHandleFixes__private_requiresFeatures;
-Feature_Servicing_AutoBoostUsermodeHandleFixes_logged_traits;
-Feature_Servicing_KernelArm64FpLrContextControl__private_descriptor;
-Feature_Servicing_KernelArm64FpLrContextControl__private_featureState;
-Feature_Servicing_KernelArm64FpLrContextControl__private_reporting;
-Feature_Servicing_KernelArm64FpLrContextControl__private_requiresFeatures;
-Feature_Servicing_KernelArm64FpLrContextControl_logged_traits;
+Feature_AdditionalProcessorFeatures__private_descriptor;
+Feature_AdditionalProcessorFeatures__private_featureState;
+Feature_AdditionalProcessorFeatures__private_reporting;
+Feature_AdditionalProcessorFeatures__private_requiresFeatures;
+Feature_AdditionalProcessorFeatures_logged_traits;
+Feature_Arm64RestoreRegistersAroundDllMain__private_descriptor;
+Feature_Arm64RestoreRegistersAroundDllMain__private_featureState;
+Feature_Arm64RestoreRegistersAroundDllMain__private_reporting;
+Feature_Arm64RestoreRegistersAroundDllMain__private_requiresFeatures;
+Feature_Arm64RestoreRegistersAroundDllMain_logged_traits;
+Feature_FasterCrc32__private_descriptor;
+Feature_FasterCrc32__private_featureState;
+Feature_FasterCrc32__private_reporting;
+Feature_FasterCrc32__private_requiresFeatures;
+Feature_FasterCrc32_logged_traits;
+Feature_GatePerf__private_descriptor;
+Feature_GatePerf__private_featureState;
+Feature_GatePerf__private_reporting;
+Feature_GatePerf__private_requiresFeatures;
+Feature_GatePerf_logged_traits;
+Feature_ImplVal__private_descriptor;
+Feature_ImplVal__private_featureState;
+Feature_ImplVal__private_reporting;
+Feature_ImplVal__private_requiresFeatures;
+Feature_ImplVal_logged_traits;
+Feature_KVS_BugFixes_54616183__private_descriptor;
+Feature_KVS_BugFixes_54616183__private_featureState;
+Feature_KVS_BugFixes_54616183__private_reporting;
+Feature_KVS_BugFixes_54616183__private_requiresFeatures;
+Feature_KVS_BugFixes_54616183_logged_traits;
+Feature_KVS_BugFixes_55830745__private_descriptor;
+Feature_KVS_BugFixes_55830745__private_featureState;
+Feature_KVS_BugFixes_55830745__private_reporting;
+Feature_KVS_BugFixes_55830745__private_requiresFeatures;
+Feature_KVS_BugFixes_55830745_logged_traits;
+Feature_KVS_BugFixes_55830752__private_descriptor;
+Feature_KVS_BugFixes_55830752__private_featureState;
+Feature_KVS_BugFixes_55830752__private_reporting;
+Feature_KVS_BugFixes_55830752__private_requiresFeatures;
+Feature_KVS_BugFixes_55830752_logged_traits;
+Feature_KVS_BugFixes_55830887__private_descriptor;
+Feature_KVS_BugFixes_55830887__private_featureState;
+Feature_KVS_BugFixes_55830887__private_reporting;
+Feature_KVS_BugFixes_55830887__private_requiresFeatures;
+Feature_KVS_BugFixes_55830887_logged_traits;
+Feature_PackagedComElevationSupport__private_descriptor;
+Feature_PackagedComElevationSupport__private_featureState;
+Feature_PackagedComElevationSupport__private_reporting;
+Feature_PackagedComElevationSupport__private_requiresFeatures;
+Feature_PackagedComElevationSupport_logged_traits;
+Feature_PerfImpTest__private_descriptor;
+Feature_PerfImpTest__private_featureState;
+Feature_PerfImpTest__private_reporting;
+Feature_PerfImpTest_logged_traits;
+Feature_Servicing_DisallowSharedLockImplicitUpgrade__private_descriptor;
+Feature_Servicing_DisallowSharedLockImplicitUpgrade__private_featureState;
+Feature_Servicing_DisallowSharedLockImplicitUpgrade__private_reporting;
+Feature_Servicing_DisallowSharedLockImplicitUpgrade__private_requiresFeatures;
+Feature_Servicing_DisallowSharedLockImplicitUpgrade_logged_traits;
+Feature_Servicing_LoaderInitEnvironmentHashTable__private_descriptor;
+Feature_Servicing_LoaderInitEnvironmentHashTable__private_featureState;
+Feature_Servicing_LoaderInitEnvironmentHashTable__private_reporting;
+Feature_Servicing_LoaderInitEnvironmentHashTable__private_requiresFeatures;
+Feature_Servicing_LoaderInitEnvironmentHashTable_logged_traits;
 Feature_Servicing_LoaderSnapsBuffer__private_descriptor;
 Feature_Servicing_LoaderSnapsBuffer__private_featureState;
 Feature_Servicing_LoaderSnapsBuffer__private_reporting;
 Feature_Servicing_LoaderSnapsBuffer_logged_traits;
+Feature_Servicing_VBSEnclavesForArgon__private_descriptor;
+Feature_Servicing_VBSEnclavesForArgon__private_featureState;
+Feature_Servicing_VBSEnclavesForArgon__private_reporting;
+Feature_Servicing_VBSEnclavesForArgon__private_requiresFeatures;
+Feature_Servicing_VBSEnclavesForArgon_logged_traits;
+Feature_Servicing_VBSEnclavesForARM64EC__private_descriptor;
+Feature_Servicing_VBSEnclavesForARM64EC__private_featureState;
+Feature_Servicing_VBSEnclavesForARM64EC__private_reporting;
+Feature_Servicing_VBSEnclavesForARM64EC__private_requiresFeatures;
+Feature_Servicing_VBSEnclavesForARM64EC_logged_traits;
+Feature_SettingsDel__private_descriptor;
+Feature_SettingsDel__private_featureState;
+Feature_SettingsDel__private_reporting;
+Feature_SettingsDel_logged_traits;
+Feature_Standalone_25_03_NonSec__private_descriptor;
+Feature_Standalone_25_03_NonSec__private_featureState;
+Feature_Standalone_25_03_NonSec__private_reporting;
+Feature_Standalone_25_03_NonSec_logged_traits;
+Feature_Standalone_25_04_NonSec__private_descriptor;
+Feature_Standalone_25_04_NonSec__private_featureState;
+Feature_Standalone_25_04_NonSec__private_reporting;
+Feature_Standalone_25_04_NonSec_logged_traits;
+Feature_Standalone_25_05_NonSec__private_descriptor;
+Feature_Standalone_25_05_NonSec__private_featureState;
+Feature_Standalone_25_05_NonSec__private_reporting;
+Feature_Standalone_25_05_NonSec_logged_traits;
+Feature_Standalone_25_06_NonSec__private_descriptor;
+Feature_Standalone_25_06_NonSec__private_featureState;
+Feature_Standalone_25_06_NonSec__private_reporting;
+Feature_Standalone_25_06_NonSec_logged_traits;
+Feature_Standalone_25_07_NonSec__private_descriptor;
+Feature_Standalone_25_07_NonSec__private_featureState;
+Feature_Standalone_25_07_NonSec__private_reporting;
+Feature_Standalone_25_07_NonSec_logged_traits;
+Feature_Standalone_25_08_NonSec__private_descriptor;
+Feature_Standalone_25_08_NonSec__private_featureState;
+Feature_Standalone_25_08_NonSec__private_reporting;
+Feature_Standalone_25_08_NonSec_logged_traits;
 Feature_Standalone_Future__private_descriptor;
 Feature_Standalone_Future__private_featureState;
 Feature_Standalone_Future__private_reporting;
 Feature_Standalone_Future_logged_traits;
+Feature_TestConfNum__private_descriptor;
+Feature_TestConfNum__private_featureState;
+Feature_TestConfNum__private_reporting;
+Feature_TestConfNum_logged_traits;
+Feature_TestGateImp__private_descriptor;
+Feature_TestGateImp__private_featureState;
+Feature_TestGateImp__private_reporting;
+Feature_TestGateImp__private_requiresFeatures;
+Feature_TestGateImp_logged_traits;
+Feature_TestLabVal__private_descriptor;
+Feature_TestLabVal__private_featureState;
+Feature_TestLabVal__private_reporting;
+Feature_TestLabVal__private_requiresFeatures;
+Feature_TestLabVal_logged_traits;
 Feature_TreatDosDevicePathsAsNormalFiles__private_descriptor;
 Feature_TreatDosDevicePathsAsNormalFiles__private_featureState;
 Feature_TreatDosDevicePathsAsNormalFiles__private_reporting;
 Feature_TreatDosDevicePathsAsNormalFiles_logged_traits;
-Feature_UC_ConfigFix__private_descriptor;
-Feature_UC_ConfigFix__private_featureState;
-Feature_UC_ConfigFix__private_reporting;
-Feature_UC_ConfigFix__private_requiresFeatures;
-Feature_UC_ConfigFix_logged_traits;
 Feature_UxAccOptimization__private_descriptor;
 Feature_UxAccOptimization__private_featureState;
 Feature_UxAccOptimization__private_reporting;
 Feature_UxAccOptimization__private_requiresFeatures;
 Feature_UxAccOptimization_logged_traits;
+Feature_UxLabTest__private_descriptor;
+Feature_UxLabTest__private_featureState;
+Feature_UxLabTest__private_reporting;
+Feature_UxLabTest__private_requiresFeatures;
+Feature_UxLabTest_logged_traits;
+Feature_UxPerfImp__private_descriptor;
+Feature_UxPerfImp__private_featureState;
+Feature_UxPerfImp__private_reporting;
+Feature_UxPerfImp__private_requiresFeatures;
+Feature_UxPerfImp_logged_traits;
 _fltused;
 __ft_g_api_info;
 __ft_g_feature_store_change_registration_handle;
 __ft_g_init_once;
+__ft_g_isTestReadyMedia;
 __ft_g_token;
 g_disableEscalation;
 g_dwLastErrorToBreakOn;
@@ -19961,6 +20258,10 @@ g_SxsKeepActivationContextsAlive;
 g_SxsLiveActivationContexts;
 g_SxsMaxDeadActivationContexts;
 g_SxsTrackReleaseStacks;
+g_SymCryptCpuFeaturesNotPresent;
+g_SymCryptCpuFeaturesPresentCheck;
+g_SymCryptCpuid1;
+g_SymCryptFlags;
 g_werEscalationData;
 g_wil_details_ensureSubscribedToFeatureConfigurationChanges;
 g_wil_details_pfnFeatureLoggingHook;
@@ -20180,7 +20481,6 @@ PrivateLoggerNotificationGuid;
 pTblPtrs;
 _pwctype;
 RegistryInfoCritSect;
-ReleaseAllUserModeAutoBoostLockHandles;
 RtlBaseAceType;
 RtlCompressBufferProcs;
 RtlCriticalSectionDebugSList;
@@ -20268,15 +20568,10 @@ RtlpHpEnvEnableSimulatedLargePageCommit;
 struct _RTLP_FLS_CONTEXT RtlpHpEnvFlsContext;
 RtlpHpEnvHandle;
 RtlpHpEnvThreadSuspendOwnershipLock;
-RtlpHpGCInterval;
-RtlpHpGCTimer;
-RtlpHpGCTimerInitialized;
-RtlpHpGCTimerScheduled;
 RtlpHpHeapFeatures;
 RtlpHpHeapGlobals;
 RtlpHpHeapManager;
 RtlpHpHeapVaCallbacksRegistrar;
-RtlpHpLfhContentionLimit;
 RtlpHpLfhPerfFlags;
 RtlpHpNullGUID;
 RtlpHpStackTraceLogInstance;
@@ -20318,6 +20613,7 @@ RtlpOptimalFlushMethod;
 RtlpPebHeapListStaticBuffer;
 RtlpPerformanceCounterFrequency;
 RtlpPreviousStartAddress;
+RtlpProcessHeaps;
 RtlpProcessHeapsLock;
 RtlpProcessMemoryMap;
 RtlpPropStoreEntries;
@@ -20336,6 +20632,8 @@ RtlpRandomExConstantVector;
 RtlpRandomExInit;
 RtlpRcuState;
 RtlpRegistryPaths;
+RtlProcessorFeaturesBitMap;
+RtlProcessorFeaturesBuffer;
 RtlProtectedAccess;
 RtlpRunTable;
 RtlpScpCfgNtdllExports;
@@ -20347,13 +20645,13 @@ RtlpSecMemLock;
 RtlpShutdownProcessFlags;
 RtlpSlashSlashDot;
 RtlpSmMessageInfo;
+RtlpSrwLockAllowImplicitUpgrade;
 RtlpStackTraceDatabase;
 RtlpStaticDebugInfo;
 RtlpStatusTable;
 RtlpSystem32Dirs;
 RtlpSystemDirs;
 RtlpTempBlocks;
-RtlpTestHookInit;
 RtlpTheEmptyActivationContextData;
 RtlpTheEmptyActivationContextWrapped;
 RtlpTimeout;
@@ -20371,7 +20669,6 @@ RtlpUnloadEventTraceExNumber;
 RtlpUnloadEventTraceExSize;
 RtlpUnwindHistoryTable;
 RtlpUnwindOpSlotTable;
-RtlpUserPolicies;
 RtlpValidateHeapHdrsEnable;
 RtlpValidateHeapTagsEnable;
 RtlpWaitOnAddressSpinCycleCount;
@@ -20399,7 +20696,6 @@ SecurityCookieInitialized;
 SessionNotificationGuid;
 _setjmpexused;
 SetLastWin32ErrorEvent;
-SHA256Magic;
 ShowSnaps;
 SidHashByteToIndexLookupTable;
 SlashSystem32SlashString;
@@ -20407,6 +20703,10 @@ SmtDelayedConfiguration;
 SpecialMachineFramesInitCount;
 SpecialMachineFramesInitialized;
 SRWLockSpinCycleCount;
+SymCryptMd4Algorithm_default;
+SymCryptMd5Algorithm_default;
+SymCryptSha1Algorithm_default;
+SymCryptSha256K;
 SystemTraceControlGuid;
 szBias;
 szDaylightBias;
@@ -20462,7 +20762,6 @@ UcpLockOwningThreadHandle;
 UcpMaxTriggeredNodeExcceded;
 UcpTriggeredList;
 UcpTriggeredNodeCount;
-UcWnfChangeStamp;
 ulInvalidTypes;
 UseCOR;
 UserDiagnosticGuid;
@@ -20483,6 +20782,7 @@ WNF_WER_SERVICE_START;
 Wow64ApcRoutine;
 Wow64EnvironmentThunkTable;
 Wow64PrepareForException;
+x86_cpu_enable_avx512;
 x86_cpu_enable_simd;
 x86_cpu_enable_ssse3;
 XpressHashFunction;
