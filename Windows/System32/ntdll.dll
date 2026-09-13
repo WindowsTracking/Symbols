@@ -1,5 +1,5 @@
 /*
- * PDB file: ntdll.pdb\21EB609F5CD42F738B9AD508893634BD1\ntdll.pdb
+ * PDB file: ntdll.pdb\C3093720177DA6851519DCFFE8DF53FE1\ntdll.pdb
  * Image architecture: AMD64 (0x8664)
  *
  * Dumped by pdbex tool v0.18, by wbenny
@@ -19,7 +19,9 @@ union _AER_ROOTPORT_DESCRIPTOR_FLAGS;
 struct _ALPC_PROCESS_CONTEXT;
 struct _ALPC_WORK_ON_BEHALF_TICKET;
 enum _ALTERNATIVE_ARCHITECTURE_TYPE;
+union _AMD64_DR7_REG;
 union _AMD64_MXCSR_REG;
+union _ARM64_BCR_REG;
 union _ARM64_FPCR_REG;
 union _ARM64_FPSR_REG;
 struct _ASSEMBLY_STORAGE_MAP;
@@ -567,6 +569,7 @@ struct _RTL_HASH_ENTRY;
 struct _RTL_HASH_TABLE;
 struct _RTL_HASH_TABLE_ITERATOR;
 struct RTL_HP_ENV_HANDLE;
+enum _RTL_HP_FEATURE_ENABLEMENT;
 struct _RTL_HP_HEAP_VA_CALLBACKS_ENCODED;
 union _RTL_HP_LFH_CONFIG;
 struct _RTL_HP_SEG_ALLOC_POLICY;
@@ -608,6 +611,8 @@ union _RTLP_HP_THREAD_CTX;
 struct _RTLP_PROCESS_HEAP_DESCRIPTOR;
 struct _SCSI_REQUEST_BLOCK;
 struct _SE_AUDIT_PROCESS_CREATION_INFO;
+enum _SE_ISOLATION_POLICY_OPTION;
+struct _SE_ISOLATION_POLICY_OPTIONS_MAP;
 enum SE_WS_APPX_SIGNATURE_ORIGIN;
 struct _SECTION_OBJECT_POINTERS;
 struct _SECURITY_DESCRIPTOR;
@@ -914,6 +919,54 @@ typedef enum _ALTERNATIVE_ARCHITECTURE_TYPE
   EndAlternatives = 2,
 } ALTERNATIVE_ARCHITECTURE_TYPE, *PALTERNATIVE_ARCHITECTURE_TYPE;
 
+typedef union _AMD64_DR7_REG
+{
+  union
+  {
+    unsigned __int64 Value;
+    unsigned char LGFlags;
+    struct
+    {
+      struct /* bitfield */
+      {
+        unsigned char L0 : 1; /* bit position: 0 */
+        unsigned char G0 : 1; /* bit position: 1 */
+        unsigned char L1 : 1; /* bit position: 2 */
+        unsigned char G1 : 1; /* bit position: 3 */
+        unsigned char L2 : 1; /* bit position: 4 */
+        unsigned char G2 : 1; /* bit position: 5 */
+        unsigned char L3 : 1; /* bit position: 6 */
+        unsigned char G3 : 1; /* bit position: 7 */
+      }; /* bitfield */
+      struct /* bitfield */
+      {
+        unsigned char LE : 1; /* bit position: 0 */
+        unsigned char GE : 1; /* bit position: 1 */
+        unsigned char res1 : 1; /* bit position: 2 */
+        unsigned char res0_1 : 2; /* bit position: 3 */
+        unsigned char GD : 1; /* bit position: 5 */
+        unsigned char res0_2 : 2; /* bit position: 6 */
+      }; /* bitfield */
+      union
+      {
+        unsigned short Len_RW;
+        struct /* bitfield */
+        {
+          unsigned short RW0 : 2; /* bit position: 0 */
+          unsigned short Len0 : 2; /* bit position: 2 */
+          unsigned short RW1 : 2; /* bit position: 4 */
+          unsigned short Len1 : 2; /* bit position: 6 */
+          unsigned short RW2 : 2; /* bit position: 8 */
+          unsigned short Len2 : 2; /* bit position: 10 */
+          unsigned short RW3 : 2; /* bit position: 12 */
+          unsigned short Len3 : 2; /* bit position: 14 */
+        }; /* bitfield */
+      };
+      unsigned int res0_3;
+    };
+  };
+} AMD64_DR7_REG, *PAMD64_DR7_REG;
+
 typedef union _AMD64_MXCSR_REG
 {
   union
@@ -940,6 +993,30 @@ typedef union _AMD64_MXCSR_REG
     }; /* bitfield */
   };
 } AMD64_MXCSR_REG, *PAMD64_MXCSR_REG;
+
+typedef union _ARM64_BCR_REG
+{
+  union
+  {
+    unsigned int Value;
+    struct /* bitfield */
+    {
+      unsigned int E : 1; /* bit position: 0 */
+      unsigned int PMC : 2; /* bit position: 1 */
+      unsigned int BT2 : 1; /* bit position: 3 */
+      unsigned int res0_1 : 1; /* bit position: 4 */
+      unsigned int BAS : 4; /* bit position: 5 */
+      unsigned int res0_2 : 4; /* bit position: 9 */
+      unsigned int HMC : 1; /* bit position: 13 */
+      unsigned int SSC : 2; /* bit position: 14 */
+      unsigned int LBN : 4; /* bit position: 16 */
+      unsigned int BT : 4; /* bit position: 20 */
+      unsigned int Mask : 5; /* bit position: 24 */
+      unsigned int SSCE : 1; /* bit position: 29 */
+      unsigned int LBNX : 2; /* bit position: 30 */
+    }; /* bitfield */
+  };
+} ARM64_BCR_REG, *PARM64_BCR_REG;
 
 typedef union _ARM64_FPCR_REG
 {
@@ -1923,6 +2000,7 @@ typedef struct _EJOB
       unsigned long EnableUsermodeSiloThreadImpersonation : 1; /* bit position: 1 */
       unsigned long DisallowUsermodeSiloThreadImpersonation : 1; /* bit position: 2 */
       unsigned long JobGraphicsFreezeOptimized : 1; /* bit position: 3 */
+      unsigned long JobSystemUILimits : 1; /* bit position: 4 */
     }; /* bitfield */
   };
   struct _PROCESS_EXTENDED_ENERGY_VALUES_V1* EnergyValues;
@@ -2076,7 +2154,7 @@ typedef struct _EPROCESS
   struct _EJOB* volatile CommitChargeJob;
   struct _RTL_AVL_TREE CloneRoot;
   volatile unsigned __int64 NumberOfPrivatePages;
-  volatile unsigned __int64 NumberOfLockedPages;
+  volatile unsigned __int64 MmReserved2;
   void* Win32Process;
   struct _EJOB* volatile Job;
   void* SectionObject;
@@ -2412,7 +2490,9 @@ typedef struct _EPROCESS
   union _PROCESS_EXECUTION Execution;
   void* ThreadIndexTable;
   struct _LIST_ENTRY FreezeWorkLinks;
-  long __PADDING__[10];
+  struct _EX_PUSH_LOCK PpmPolicyLock;
+  unsigned long BamPpmPolicy;
+  long __PADDING__[7];
 } EPROCESS, *PEPROCESS;
 
 struct _EPROCESS_QUOTA_BLOCK;
@@ -3711,7 +3791,8 @@ typedef struct _HEAP_COUNTERS
   unsigned __int64 TotalMemoryReserved;
   unsigned __int64 TotalMemoryCommitted;
   unsigned __int64 TotalMemoryLargeUCR;
-  unsigned __int64 TotalSizeInVirtualBlocks;
+  unsigned __int64 TotalMemoryReservedInVirtualBlocks;
+  unsigned __int64 TotalMemoryCommittedInVirtualBlocks;
   unsigned long TotalSegments;
   unsigned long TotalUCRs;
   unsigned long CommittOps;
@@ -4755,7 +4836,7 @@ typedef struct _HEAP_VIRTUAL_ALLOC_ENTRY
 
 typedef struct _HEAP_VS_AFFINITY_SLOT
 {
-  struct _HEAP_VS_CONTEXT* VsContext;
+  unsigned __int64 VsContextOffset;
   unsigned __int64 Lock;
   struct _RTL_RB_TREE FreeChunkTree;
   struct _LIST_ENTRY SubsegmentList;
@@ -6601,10 +6682,9 @@ typedef struct _KNODE
   unsigned char Padding[3];
   struct _KGROUP_MASK ActiveGroups;
   struct _KSCHEDULER_SUBNODE* SchedulerSubNodes[32];
-  unsigned long ActiveTopologyElements[5];
+  unsigned long ActiveTopologyElements[6];
   struct _KNODE_SUBNODE_SEARCH_RANKS PerformanceSearchRanks[1];
   struct _KNODE_SUBNODE_SEARCH_RANKS EfficiencySearchRanks[1];
-  long __PADDING__[1];
 } KNODE, *PKNODE;
 
 typedef struct _KNODE_SUBNODE_SEARCH_RANKS
@@ -6943,7 +7023,8 @@ typedef struct _KPRCB
   unsigned __int64 StartCyclesQpc;
   unsigned __int64 CycleTimeQpc;
   unsigned __int64 NumberOfSecureFaults;
-  unsigned long PrcbPad84[8];
+  unsigned __int64 CompactionMaskInit;
+  unsigned long PrcbPad84[6];
   void* volatile CachedStacks[2];
   unsigned long DpcWatchdogProfileSingleDpcThresholdTicks;
   long PrcbPad82[3];
@@ -7024,10 +7105,11 @@ typedef struct _KPRCB
       unsigned long ModuleId;
       unsigned long DieId;
       unsigned long PackageId;
+      unsigned long ComplexId;
     };
-    unsigned long TopologyId[5];
+    unsigned long TopologyId[6];
   };
-  unsigned long NodeRelativeTopologyIndex[5];
+  unsigned long PrcbPad101[4];
   unsigned __int64 SharedReadyQueueMask;
   struct _KSHARED_READY_QUEUE* SharedReadyQueue;
   unsigned long SharedQueueScanOwner;
@@ -7153,7 +7235,12 @@ typedef struct _KPRCB
   struct _KCORE_CONTROL_BLOCK_SHADOW LocalCoreControlBlockShadow;
   struct _KAFFINITY_EX CacheProcessorSet[5];
   unsigned __int64 PrcbPad139[160];
-  unsigned __int64 PrcbPad140[171];
+  unsigned long NodeRelativeTopologyIndex[6];
+  struct _KAFFINITY_EX ComplexProcessorSet;
+  unsigned __int64 PrcbPad139b[32];
+  unsigned long LogicalProcessorsPerComplex;
+  unsigned long PrcbPad139c;
+  unsigned __int64 PrcbPad140[102];
   unsigned __int64 PrcbPad140a[8];
   unsigned __int64 PrcbPad141[512];
   struct _REQUEST_MAILBOX RequestMailbox[1];
@@ -7435,7 +7522,7 @@ typedef struct _KSCB
 
 typedef struct _KSCHEDULER_SUBNODE
 {
-  unsigned __int64 SubNodeLock;
+  unsigned __int64 Spare0;
   unsigned __int64 IdleNonParkedCpuSet;
   union
   {
@@ -7443,13 +7530,11 @@ typedef struct _KSCHEDULER_SUBNODE
     {
       unsigned __int64 IdleCpuSet;
       unsigned __int64 IdleSmtSet;
-      unsigned __int64 IdleModuleSet;
     };
     unsigned __int64 IdleIsolationUnitSet[2];
   };
-  unsigned __int64 NonPairedSmtSet;
   unsigned __int64 ThreadQosGroupingSet;
-  unsigned __int64 Spare1[1];
+  unsigned __int64 Spare1[3];
   unsigned __int64 DeepIdleSet;
   unsigned __int64 IdleConstrainedSet;
   unsigned __int64 NonParkedSet;
@@ -8138,7 +8223,9 @@ typedef enum _KTOPOLOGY_LEVEL
   KTopologyLevelModule = 2,
   KTopologyLevelDie = 3,
   KTopologyLevelPackage = 4,
-  KTopologyLevelCount = 5,
+  KTopologyLevelComplex = 5,
+  KTopologyLevelCountV1 = 5,
+  KTopologyLevelCount = 6,
 } KTOPOLOGY_LEVEL, *PKTOPOLOGY_LEVEL;
 
 typedef struct _KTRAP_FRAME
@@ -9424,6 +9511,7 @@ typedef struct _PEB
   };
   unsigned long NtGlobalFlag2;
   unsigned __int64 ExtendedFeatureDisableMask;
+  void* Win32ClientProcInfo;
 } PEB, *PPEB;
 
 typedef struct _PEB32
@@ -9571,6 +9659,8 @@ typedef struct _PEB32
   };
   unsigned long NtGlobalFlag2;
   unsigned __int64 ExtendedFeatureDisableMask;
+  unsigned long Win32ClientProcInfo;
+  long __PADDING__[1];
 } PEB32, *PPEB32;
 
 typedef struct _PEB_LDR_DATA
@@ -10682,7 +10772,11 @@ typedef enum _PS_ATTRIBUTE_NUM
   PsAttributeEnableOptionalXStateFeatures = 30,
   PsAttributeSupportedMachines = 31,
   PsAttributeSveVectorLength = 32,
-  PsAttributeMax = 33,
+  PsAttributeReserved0 = 33,
+  PsAttributeHeapFeatures = 34,
+  PsAttributeContainmentConfiguration = 35,
+  PsAttributeIsolationConfiguration = 36,
+  PsAttributeMax = 37,
 } PS_ATTRIBUTE_NUM, *PPS_ATTRIBUTE_NUM;
 
 typedef union _PS_CLIENT_SECURITY_CONTEXT
@@ -11319,8 +11413,9 @@ typedef enum _RTL_FEATURE_CONFIGURATION_PRIORITY
   FeatureConfigurationPriorityReserved7 = 7,
   FeatureConfigurationPriorityUser = 8,
   FeatureConfigurationPrioritySecurity = 9,
+  FeatureConfigurationPriorityServiceGuard = 9,
   FeatureConfigurationPriorityUserPolicy = 10,
-  FeatureConfigurationPriorityReserved11 = 11,
+  FeatureConfigurationPriorityConfigurationSystem = 11,
   FeatureConfigurationPriorityTest = 12,
   FeatureConfigurationPriorityReserved13 = 13,
   FeatureConfigurationPriorityReserved14 = 14,
@@ -11363,6 +11458,15 @@ struct RTL_HP_ENV_HANDLE
 {
   void* h[2];
 };
+
+typedef enum _RTL_HP_FEATURE_ENABLEMENT
+{
+  RtlHpFeatureEnablementDefault = 0,
+  RtlHpFeatureEnablementEnable = 1,
+  RtlHpFeatureEnablementDisable = 2,
+  RtlHpFeatureEnablementCustom = 3,
+  RtlHpFeatureEnablementMax = 4,
+} RTL_HP_FEATURE_ENABLEMENT, *PRTL_HP_FEATURE_ENABLEMENT;
 
 typedef struct _RTL_HP_HEAP_VA_CALLBACKS_ENCODED
 {
@@ -11676,7 +11780,7 @@ typedef struct _RTL_USER_PROCESS_PARAMETERS
   unsigned long DefaultThreadpoolCpuSetMaskCount;
   unsigned long DefaultThreadpoolThreadMaximum;
   unsigned long HeapMemoryTypeMask;
-  long __PADDING__[1];
+  void* AttributeList;
 } RTL_USER_PROCESS_PARAMETERS, *PRTL_USER_PROCESS_PARAMETERS;
 
 enum RTLP_CSPARSE_BITMAP_STATE
@@ -11850,6 +11954,28 @@ typedef struct _SE_AUDIT_PROCESS_CREATION_INFO
 {
   struct _OBJECT_NAME_INFORMATION* ImageFileName;
 } SE_AUDIT_PROCESS_CREATION_INFO, *PSE_AUDIT_PROCESS_CREATION_INFO;
+
+typedef enum _SE_ISOLATION_POLICY_OPTION
+{
+  SE_ISOLATION_POLICY_OPTION_PROTECTION_ENABLED = 0,
+  SE_ISOLATION_POLICY_OPTION_BLOCK_DEBUGGING = 1,
+  SE_ISOLATION_POLICY_OPTION_NEVER_INHERIT_FROM_PARENT = 2,
+  SE_ISOLATION_POLICY_OPTION_ALLOW_INHERIT_FROM_ANY_IDENTITY = 3,
+  SE_ISOLATION_POLICY_OPTION_SHARE_INSTANCE_WITH_CHILDREN = 4,
+  SE_ISOLATION_POLICY_OPTION_REQUIRE_SIGNING = 5,
+  SE_ISOLATION_POLICY_OPTION_REQUIRE_SIGNED_LIBRARIES = 6,
+  SE_ISOLATION_POLICY_OPTION_BLOCK_UI_ACCESS = 7,
+  SE_ISOLATION_POLICY_OPTION_BLOCK_EXTERNAL_HOOK = 8,
+  SE_ISOLATION_POLICY_OPTION_BLOCK_HANDLE_ACCESS = 9,
+  SE_ISOLATION_POLICY_OPTION_BLOCK_WINDOW_MESSAGES = 10,
+  SE_ISOLATION_POLICY_OPTION_BLOCK_SYNTHETIC_INPUT = 11,
+  SE_ISOLATION_POLICY_OPTION_MAX = 12,
+} SE_ISOLATION_POLICY_OPTION, *PSE_ISOLATION_POLICY_OPTION;
+
+typedef struct _SE_ISOLATION_POLICY_OPTIONS_MAP
+{
+  unsigned __int64 Map[1];
+} SE_ISOLATION_POLICY_OPTIONS_MAP, *PSE_ISOLATION_POLICY_OPTIONS_MAP;
 
 enum SE_WS_APPX_SIGNATURE_ORIGIN
 {
@@ -12453,7 +12579,9 @@ typedef enum _SYSTEM_INFORMATION_CLASS
   SystemProcessorFeaturesBitMapInformation = 250,
   SystemBasicProcessInformation = 252,
   SystemHandleCountInformation = 253,
-  MaxSystemInfoClass = 254,
+  SystemRuntimeAttestationReport = 254,
+  SystemCodeIntegrityEndpointSecurityInformation = 256,
+  MaxSystemInfoClass = 257,
 } SYSTEM_INFORMATION_CLASS, *PSYSTEM_INFORMATION_CLASS;
 
 typedef enum _SYSTEM_POOL_LIMIT_MEM_TYPE
@@ -14730,9 +14858,11 @@ AlpcRundownCompletionList();
 AlpcUnregisterCompletionList();
 AlpcUnregisterCompletionListWorkerThread();
 ApiSetGetImplementationHost();
+ApiSetpFindHashtableIndexAndVerify_V7();
 ApiSetpGetContractKeyInfo();
 ApiSetpGetExtensionNameKeyInfo();
-ApiSetpGetSemverKeyVersions();
+ApiSetpGetSearchKeyHash();
+ApiSetpIsFeatureEnabled();
 ApiSetpResolveHost();
 ApiSetpSearchForApiSet();
 ApiSetpSearchForApiSetA();
@@ -14751,7 +14881,6 @@ ApiSetResolveToHost2();
 ApiSetResolveToHostA_V7();
 _AppendCumulativeOverlayFilePath();
 _AppendStandardOverlayFilePath();
-AppModelPolicy_GetPolicy_Internal();
 __ascii_memicmp();
 __ascii_stricmp();
 __ascii_strnicmp();
@@ -14820,7 +14949,6 @@ cos();
 ? cos_piby4;
 CountUnicodeToUTF8();
 CountUTF8ToUnicode();
-? _cpu_check_features;
 __cpu_features_init();
 crc32();
 crc32_avx512_simd_();
@@ -15038,24 +15166,22 @@ ExpInterlockedPopEntrySListResume();
 ExpInterlockedPushEntrySList();
 fabs();
 _fclrf();
-Feature_AdditionalProcessorFeatures__private_IsEnabledDeviceUsageNoInline();
-Feature_AdditionalProcessorFeatures__private_IsEnabledFallback();
-Feature_Arm64RestoreRegistersAroundDllMain__private_IsEnabledDeviceUsageNoInline();
-Feature_Arm64RestoreRegistersAroundDllMain__private_IsEnabledFallback();
+Feature_DriverSetup_ReofferFingerprinting_v2__private_IsEnabledDeviceUsageNoInline();
+Feature_DriverSetup_ReofferFingerprinting_v2__private_IsEnabledFallback();
 Feature_FasterCrc32__private_IsEnabledDeviceUsageNoInline();
 Feature_FasterCrc32__private_IsEnabledFallback();
-Feature_PackagedComElevationSupport__private_IsEnabledFallback();
-Feature_PackagedComElevationSupport__private_IsEnabledNoReportingNoInline();
+Feature_GetPreferredThreadLanguage_Watson_AccessViolation_BugFix__private_IsEnabledDeviceUsageNoInline();
+Feature_GetPreferredThreadLanguage_Watson_AccessViolation_BugFix__private_IsEnabledFallback();
+Feature_LearningModeTraceService__private_IsEnabledDeviceUsageNoInline();
+Feature_LearningModeTraceService__private_IsEnabledFallback();
+Feature_PackagedComElevationSupport_v2__private_IsEnabledFallback();
+Feature_PackagedComElevationSupport_v2__private_IsEnabledNoReportingNoInline();
+Feature_ProjectTessera_CreateProcessInSandbox__private_IsEnabledDeviceUsageNoInline();
+Feature_ProjectTessera_CreateProcessInSandbox__private_IsEnabledFallback();
 Feature_Servicing_DisallowSharedLockImplicitUpgrade__private_IsEnabledFallback();
 Feature_Servicing_DisallowSharedLockImplicitUpgrade__private_IsEnabledNoReportingNoInline();
-Feature_Servicing_LoaderInitEnvironmentHashTable__private_IsEnabledDeviceUsageNoInline();
-Feature_Servicing_LoaderInitEnvironmentHashTable__private_IsEnabledFallback();
 Feature_Servicing_LoaderSnapsBuffer__private_IsEnabledDeviceUsageNoInline();
 Feature_Servicing_LoaderSnapsBuffer__private_IsEnabledFallback();
-Feature_Servicing_VBSEnclavesForArgon__private_IsEnabledDeviceUsageNoInline();
-Feature_Servicing_VBSEnclavesForArgon__private_IsEnabledFallback();
-Feature_Servicing_VBSEnclavesForARM64EC__private_IsEnabledDeviceUsageNoInline();
-Feature_Servicing_VBSEnclavesForARM64EC__private_IsEnabledFallback();
 _fgetwc_nolock();
 _filbuf();
 _filbuf_s();
@@ -15075,11 +15201,9 @@ _fputwc_nolock();
 _frnd();
 __ft_array_insert();
 __ft_has_proxy();
-__ft_marker_array_find();
 __ft_marker_array_lower_bound();
 __ft_marker_array_record_impression();
 __ft_marker_array_set_flags();
-__ft_process_handles_array_add();
 __ft_process_marker_get_handle();
 __ft_record_impression();
 __FT_token_increment();
@@ -15157,6 +15281,7 @@ iscntrl();
 __iscsym();
 __iscsymf();
 isdigit();
+IsFeatureEnabled();
 isgraph();
 IsHangulLV();
 isleadbyte();
@@ -15235,7 +15360,6 @@ LdrGetProcedureAddress();
 LdrGetProcedureAddressEx();
 LdrGetProcedureAddressForCaller();
 LdrHotPatchNotify();
-LdrImageDirectoryEntryToLoadConfig();
 LdrImageDirectoryEntryToLoadConfigEx();
 LdrInitializeEnclave();
 LdrInitializeMrdata();
@@ -15418,6 +15542,7 @@ LdrpHandleReplacedModule();
 LdrpHandleTlsData();
 ? LdrpHandleTlsData$filt$0;
 LdrpHandleUnprotectedDelayLoad();
+LdrpHandleUserCopyAttributeList();
 LdrpHashAsciizString();
 LdrpHashUnicodeString();
 LdrpICallHandler();
@@ -15468,6 +15593,7 @@ LdrpInsertModuleToIndex();
 LdrpInsertModuleToIndexLockHeld();
 LdrpIsCODServiceEnabled();
 LdrpIsCurrentPatchLatest();
+LdrpIsExecutableRelocatedImage();
 LdrpIsImageAddress();
 LdrpIsModuleUnderSystem32();
 LdrpIsReparsePoint();
@@ -15549,6 +15675,7 @@ LdrpPreprocessDllName();
 ? LdrpProcessDetachNode$filt$0;
 ? LdrpProcessDetachNode$fin$1;
 LdrpProcessInitializationComplete();
+LdrpProcessMachineMismatch();
 LdrpProcessMappedModule();
 LdrpProcessWork();
 ? LdrpProcessWork$fin$0;
@@ -15614,6 +15741,7 @@ LdrpSetModuleSigningLevel();
 LdrpSetProtection();
 LdrpSetThreadPreferredLangList();
 LdrpShouldModuleImportBeRedirected();
+LdrpSignalModuleMapped();
 LdrpSnapKernelBaseExtensions();
 LdrpSnapModule();
 ? LdrpSnapModule$filt$0;
@@ -15635,6 +15763,7 @@ LdrpUnlockTlsDelayedReclaimTable();
 LdrpUnmapModule();
 LdrpUnsuppressAddressTakenIat();
 LdrpUpdateStatistics();
+LdrpValidateEntrySection();
 LdrpValidateIntegrityContinuity();
 LdrpValidateUserCallTarget();
 LdrpValidateUserCallTargetES();
@@ -16021,10 +16150,11 @@ NtdllScrollBarWndProcWorker();
 NtdllStaticWndProc_A();
 NtdllStaticWndProc_W();
 NtdllStaticWndProcWorker();
-NtdllSwitchWindowProc_A();
-NtdllSwitchWindowProc_W();
 NtdllTitleWndProc_A();
 NtdllTitleWndProc_W();
+NtdllUMenuWndProc_A();
+NtdllUMenuWndProc_W();
+NtdllUMenuWndProcWorker();
 NtDrawText();
 NtDuplicateObject();
 NtDuplicateToken();
@@ -16418,6 +16548,7 @@ PsspQueryInfoClass_PSS_QUERY_PROCESS_INFORMATION();
 PsspWalkInfoClass_PSS_WALK_AUXILIARY_PAGES();
 PsspWalkInfoClass_PSS_WALK_HANDLES();
 PsspWalkInfoClass_PSS_WALK_THREADS();
+PssValidateSnapshotDescriptor();
 punycode_decode();
 punycode_encode();
 qsort();
@@ -16447,6 +16578,7 @@ public: static void __cdecl RTL_BINARY_ARRAY<struct RTLP_FLS_CALLBACK_ENTRY,8,4>
 public: static void __cdecl RTL_BINARY_ARRAY<struct RTLP_FLS_SLOT,8,4>::Cleanup(struct RTL_BINARY_ARRAY<struct RTLP_FLS_SLOT,8,4> *);
 RtlAbortRXact();
 RtlAbPostRelease();
+RtlAbPreAcquire();
 RtlAbsoluteToSelfRelativeSD();
 RtlAcquirePebLock();
 RtlAcquirePrivilege();
@@ -16814,7 +16946,6 @@ RtlDuplicateUnicodeString();
 ? RtlDuplicateUnicodeString$fin$0;
 RtlEmptyAtomTable();
 RtlEnableEarlyCriticalSectionEventCreation();
-RtlEnableHeapGC();
 RtlEnableThreadProfiling();
 RtlEnclaveCallDispatch();
 RtlEnclaveCallDispatcher();
@@ -16950,6 +17081,7 @@ RtlGetEnabledExtendedFeatures();
 RtlGetExePath();
 RtlGetExtendedContextLength();
 RtlGetExtendedContextLength2();
+RtlGetExtendedContextLength3();
 RtlGetExtendedFeaturesMask();
 RtlGetFeatureToggleConfiguration();
 RtlGetFeatureTogglesChangeToken();
@@ -17412,7 +17544,6 @@ RtlpDosPathNameToRelativeNtPathName_U();
 RtlpDumpEntryInfo();
 RtlpDupTebLanguageList();
 RtlpEcReadPolicyState();
-RtlpEcReadSkuUpdateManagementGroup();
 RtlpEnclaveCallDispatchFilter();
 RtlpEnsureBufferSize();
 RtlpEnsureLiveDeadListsInitialized();
@@ -17449,7 +17580,6 @@ RtlpFcFreeChangeRegistration();
 RtlpFcGetFeatureHasSubscriptionsFromBuffer();
 RtlpFcHasEffectiveStateInGovernedFeatureInfoTable();
 RtlpFcInsertChangeRegistration();
-RtlpFcLinearSearchInSortedArray();
 RtlpFcMapSingleBuffer();
 RtlpFcNoopCallback();
 RtlpFcNotifyFeatureUsageTarget();
@@ -17527,6 +17657,7 @@ RtlpGetBootStatusPathFromRegistry();
 RtlpGetCachedPath();
 RtlpGetChainHead();
 RtlpGetCompleteLanguageFallback();
+RtlpGetContainingRange();
 ? RtlpGetCorrelationVectorBufferLength;
 ? RtlpGetCorrelationVectorEndPosition;
 ? RtlpGetCorrelationVectorLastDotPosition;
@@ -17543,23 +17674,23 @@ RtlpGetDefaultTrustSubjectContext();
 RtlpGetDeviceFamilyInfoEnum();
 RtlpGetDirPath();
 RtlpGetDynamicTimeZoneInfoHandle();
-RtlpGetEntireXStateAreaLength();
+RtlpGetEntireXStateAreaLength2();
 RtlpGetExtraStuffPointer();
 RtlpGetFileSize();
 RtlpGetFirstBlockAddress();
 RtlpGetFirstWnfNameSubscription();
+RtlpGetFreeBlockInsidePageBoundaries();
 RtlpGetHeapBlock();
 RtlpGetHeapInterceptorIndex();
 RtlpGetHeapProtection();
 RtlpGetHeapTag();
+RtlpGetHeapWalkEntryOverheadBytes();
 RtlpGetInstalledLanguageType();
 ? RtlpGetLastContiguosBase64Position;
 RtlpGetLCIDFromLangInfoNode();
 RtlpGetLengthWithoutLastPathElement();
 RtlpGetLFHContext();
 RtlpGetLocaleDataKey();
-RtlpGetLowFragHeapMetadataSize();
-RtlpGetLowFragHeapSize();
 RtlpGetMemoryFlag();
 RtlpGetModifiedProcessCookie();
 RtlpGetMUIRedirectedFilePath();
@@ -17629,7 +17760,7 @@ RtlpHpAllocVA();
 RtlpHpAllocVirtBlockCommitFirst();
 RtlpHpAppCompatDontChangePolicy();
 RtlpHpAppCompatEnablePaddingAndLFHSubsegmentCommit();
-RtlpHpApplySegmentHeapConfigurations();
+RtlpHpApplyGlobalSegmentHeapConfigurations();
 RtlpHpConvertCreationFlags();
 RtlpHpCustomVaCallbacksEncodedComparison();
 RtlpHpCustomVaCallbacksRegistrarInitialize();
@@ -17638,8 +17769,7 @@ RtlpHpCustomVaCallbacksRegistrarUnregister();
 RtlpHpEnvAcquireGlobalLockExclusive();
 RtlpHpEnvAcquireGlobalLockSharedContended();
 RtlpHpEnvAllocVA();
-RtlpHpEnvCompactionIsScheduled();
-RtlpHpEnvCompactionSchedule();
+RtlpHpEnvFlsCleanup();
 RtlpHpEnvFlsSetValue();
 RtlpHpEnvFreeVA();
 RtlpHpEnvQueryProcessorCount();
@@ -17657,6 +17787,7 @@ RtlpHpFreeVA();
 RtlpHpGCTimerCallback();
 RtlpHpGCTimerEnable();
 RtlpHpGCTimerEnumProcessHeapsCallback();
+RtlpHpGCTimerSchedule();
 RtlpHpGetCurrentProcessorNumber();
 RtlpHpGetUserInfo();
 RtlpHpHeapAllocate();
@@ -17725,6 +17856,7 @@ RtlpHpLfhPrivateSlotCreate();
 RtlpHpLfhPrivateSlotListCompact();
 RtlpHpLfhPrivateSlotsCompact();
 RtlpHpLfhPrivateSlotShutdown();
+RtlpHpLfhReportError();
 RtlpHpLfhSlotActiveSubsegmentReset();
 RtlpHpLfhSlotAllocateSlow();
 RtlpHpLfhSlotInitialize();
@@ -17734,9 +17866,9 @@ RtlpHpLfhSubsegmentConstructCommitState();
 RtlpHpLfhSubsegmentCountEmptyUnits();
 RtlpHpLfhSubsegmentCreate();
 RtlpHpLfhSubsegmentDecBlockCounts();
-RtlpHpLfhSubsegmentDecommitPages();
 RtlpHpLfhSubsegmentDelayFreeListBatch();
 RtlpHpLfhSubsegmentDelayFreeProcess();
+RtlpHpLfhSubsegmentFindEmptyUnits();
 RtlpHpLfhSubsegmentFree();
 RtlpHpLfhSubsegmentIncBlockCounts();
 RtlpHpLfhSubsegmentInitialize();
@@ -17817,6 +17949,7 @@ RtlpHpSegTlsCleanup();
 RtlpHpSegVsAllocate();
 RtlpHpSegWalk();
 ? RtlpHpSetHeapTag;
+RtlpHpSetLowFragHeapGlobalFlags();
 RtlpHpSizeHeap();
 RtlpHpSizeHeapInternal();
 RtlpHpStackDbAllocRoutine();
@@ -17852,6 +17985,7 @@ RtlpHpTagQueryHeapsRemote();
 RtlpHpTagQueryTags();
 RtlpHpTagReAllocateHeap();
 RtlpHpTagRunOnceInit();
+RtlpHpTlLogGCScheduled();
 RtlpHpTlLogGCTimerFinished();
 RtlpHpTlLogMemStats();
 RtlpHpTlLogVAChange();
@@ -17887,6 +18021,7 @@ RtlpHpVsChunkSetExtraPresent();
 RtlpHpVsChunkSetUnusedBytes();
 RtlpHpVsChunkSize();
 RtlpHpVsChunkSplit();
+RtlpHpVsCommitLimitCheck();
 RtlpHpVsContextAllocate();
 RtlpHpVsContextAllocateFinalize();
 RtlpHpVsContextCleanup();
@@ -17921,7 +18056,6 @@ RtlpInheritAcl2();
 RtlpInitAndCallLcidToCultureName();
 RtlpInitCodePageTables();
 RtlpInitCurrentDir();
-RtlpInitDeferredCriticalSection();
 RtlpInitEnvironmentBlock();
 RtlpInitializeAssemblyStorageMap();
 RtlpInitializeHeapSegment();
@@ -18106,7 +18240,6 @@ RtlpNewSecurityObject();
 RtlpNlsGetLcidIndex();
 RtlpNlsGetNameIndex();
 ? RtlpNormalizeAcl;
-RtlpNormalizeStringWorker();
 RtlpNotOwnerCriticalSection();
 ? RtlpNotOwnerCriticalSection$filt$0;
 RtlpNtCreateKey();
@@ -18165,8 +18298,9 @@ RtlpQueryFilesInAssemblyInformationActivationContextDetailedInformation();
 RtlpQueryInformationActivationContextCompatibilityInformation();
 RtlpQueryInformationActivationContextDetailedInformation();
 RtlpQueryInformationActivationContextManifestResourceName();
-RtlpQueryMemoryUsageHeap();
+RtlpQueryMemoryUsageInformation();
 RtlpQueryNlsSystemCodePages();
+RtlpQueryPackageIdentityAttributes();
 RtlpQueryPhysicalMemoryPolicy();
 RtlpQueryProcessDebugInformationFromWow64();
 RtlpQueryProcessDebugInformationRemote();
@@ -18188,8 +18322,8 @@ RtlpReAllocateHeap();
 ? RtlpReAllocateHeap$filt$1;
 ? RtlpReAllocateHeap$filt$2;
 ? RtlpReAllocateHeap$filt$3;
-? RtlpReAllocateHeap$filt$4;
-? RtlpReAllocateHeap$fin$5;
+? RtlpReAllocateHeap$filt$5;
+? RtlpReAllocateHeap$fin$4;
 RtlpReAllocateHeapInternal();
 RtlpRecordBootStatusData();
 RtlpReferenceCurrentDirectory();
@@ -18202,6 +18336,8 @@ RtlpRegisterLockedMemoryZone();
 RtlpRegisterStackTrace();
 RtlpRegTziFormatToTzi();
 RtlpReleaseDescriptorPseudoGlobalLock();
+RtlpReleaseHeapListLock();
+RtlpRemoveArchDisallowedXStateFeatures();
 RtlpRemoveInvertedFunctionTableEntry();
 _RtlpRemovePendingDeleteLanguages();
 RtlpRemoveUCRBlock();
@@ -18341,7 +18477,7 @@ RtlPushFrame();
 RtlpValidAccessFilterAce();
 RtlpValidateActivationContextData();
 RtlpValidateAsciiStd3AndLength();
-RtlpValidateContextFlags();
+RtlpValidateContextFlags2();
 RtlpValidateHeap();
 RtlpValidateHeapEntry();
 RtlpValidateHeapHeaders();
@@ -18440,6 +18576,7 @@ RtlQueryInterfaceMemoryStream();
 RtlQueryInternalFeatureConfiguration();
 RtlQueryModuleInformation();
 RtlQueryPackageClaims();
+RtlQueryPackageClaimsEx();
 RtlQueryPackageIdentity();
 RtlQueryPackageIdentityEx();
 RtlQueryPerformanceCounter();
@@ -18584,6 +18721,7 @@ RtlSetEnvironmentVar();
 RtlSetEnvironmentVariable();
 RtlSetExtendedFeaturesMask();
 RtlSetFeatureConfigurations();
+RtlSetGlobalHeapFeatures();
 RtlSetGroupSecurityDescriptor();
 RtlSetHeapDebuggingInformation();
 RtlSetHeapInformation();
@@ -18594,7 +18732,6 @@ RtlSetIoCompletionCallback();
 ? RtlSetIoCompletionCallback$fin$1;
 RtlSetLastWin32Error();
 RtlSetLastWin32ErrorAndNtStatusFromNtStatus();
-RtlSetLowFragHeapGlobalFlags();
 RtlSetMemoryStreamSize();
 RtlSetOwnerSecurityDescriptor();
 RtlSetPortableOperatingSystem();
@@ -19153,6 +19290,7 @@ TppFreeDirectParamsCache();
 TppFreeThreadData();
 TppFreeWait();
 TppGetCurrentThreadNumaNode();
+TppInitializeTimer();
 TppInitializeTimerQueue();
 TppInitializeTimerSubQueue();
 TppIopCallbackEpilog();
@@ -19174,7 +19312,6 @@ TpPoolReferenceExistingGlobalPool();
 ? TpPoolReferenceExistingGlobalPool$fin$0;
 TpPostTask();
 TpPostWork();
-TppPHDelete();
 TppPHExtractMin();
 TppPoolAddWorker();
 ? TppPoolAddWorker$fin$0;
@@ -19399,6 +19536,7 @@ WerpWaitForCrashReporting();
 WerReportExceptionWorker();
 WerReportSQMEvent();
 ? _whiteout;
+wil_details_AreDependenciesEnabled();
 wil_details_FeatureReporting_IncrementOpportunityInCache();
 wil_details_FeatureReporting_IncrementUsageInCache();
 wil_details_FeatureReporting_RecordUsageInCache();
@@ -19990,7 +20128,6 @@ __@@_PchSym_@00@KxulyqvxgPillgKxunrmpvimvoUmgwooUwzbglmzUlyquivUznwGEUkxsOlyq@nt
 __@@_PchSym_@00@KxulyqvxgPillgKxunrmpvimvoUvgdUmgwooUwzbglmzUlyquivUznwGEUvgdmgwookOlyq@etwntdll;
 __@@_PchSym_@00@KxulyqvxgPillgKxunrmpvimvoUzkkxlnkzgUhdrgxsyzxpUxlmgvcgUolzwviUlyquivUznwGEUkivxlnkOlyq@SwitchContextLoader;
 __@@_PchSym_@00@KxulyqvxgPillgKxunrmpvimvoUzkkxlnkzgUxzxsvUrmgviuzxvUorynrmUlyquivUznwGEUxlnkzgxzxsvkOlyq@compatcachemin;
-AdditionalProcessorFeaturesEnabled;
 AeSbCallEvent;
 AeSbContextUpdateEvent;
 AeSbImplEvent;
@@ -20067,130 +20204,84 @@ EtwpRegistrationSequence;
 EtwpRegistrationTable;
 FastPebLock;
 FatalUserCallbackException;
-Feature_AdditionalProcessorFeatures__private_descriptor;
-Feature_AdditionalProcessorFeatures__private_featureState;
-Feature_AdditionalProcessorFeatures__private_reporting;
-Feature_AdditionalProcessorFeatures__private_requiresFeatures;
-Feature_AdditionalProcessorFeatures_logged_traits;
-Feature_Arm64RestoreRegistersAroundDllMain__private_descriptor;
-Feature_Arm64RestoreRegistersAroundDllMain__private_featureState;
-Feature_Arm64RestoreRegistersAroundDllMain__private_reporting;
-Feature_Arm64RestoreRegistersAroundDllMain__private_requiresFeatures;
-Feature_Arm64RestoreRegistersAroundDllMain_logged_traits;
+Feature_DriverSetup_ReofferFingerprinting_v2__private_descriptor;
+Feature_DriverSetup_ReofferFingerprinting_v2__private_featureState;
+Feature_DriverSetup_ReofferFingerprinting_v2__private_reporting;
+Feature_DriverSetup_ReofferFingerprinting_v2__private_requiresFeatures;
+Feature_DriverSetup_ReofferFingerprinting_v2_logged_traits;
 Feature_FasterCrc32__private_descriptor;
 Feature_FasterCrc32__private_featureState;
 Feature_FasterCrc32__private_reporting;
 Feature_FasterCrc32__private_requiresFeatures;
 Feature_FasterCrc32_logged_traits;
-Feature_GatePerf__private_descriptor;
-Feature_GatePerf__private_featureState;
-Feature_GatePerf__private_reporting;
-Feature_GatePerf__private_requiresFeatures;
-Feature_GatePerf_logged_traits;
+Feature_GetPreferredThreadLanguage_Watson_AccessViolation_BugFix__private_descriptor;
+Feature_GetPreferredThreadLanguage_Watson_AccessViolation_BugFix__private_featureState;
+Feature_GetPreferredThreadLanguage_Watson_AccessViolation_BugFix__private_reporting;
+Feature_GetPreferredThreadLanguage_Watson_AccessViolation_BugFix__private_requiresFeatures;
+Feature_GetPreferredThreadLanguage_Watson_AccessViolation_BugFix_logged_traits;
 Feature_ImplVal__private_descriptor;
 Feature_ImplVal__private_featureState;
 Feature_ImplVal__private_reporting;
-Feature_ImplVal__private_requiresFeatures;
 Feature_ImplVal_logged_traits;
-Feature_KVS_BugFixes_54616183__private_descriptor;
-Feature_KVS_BugFixes_54616183__private_featureState;
-Feature_KVS_BugFixes_54616183__private_reporting;
-Feature_KVS_BugFixes_54616183__private_requiresFeatures;
-Feature_KVS_BugFixes_54616183_logged_traits;
-Feature_KVS_BugFixes_55830745__private_descriptor;
-Feature_KVS_BugFixes_55830745__private_featureState;
-Feature_KVS_BugFixes_55830745__private_reporting;
-Feature_KVS_BugFixes_55830745__private_requiresFeatures;
-Feature_KVS_BugFixes_55830745_logged_traits;
 Feature_KVS_BugFixes_55830752__private_descriptor;
 Feature_KVS_BugFixes_55830752__private_featureState;
 Feature_KVS_BugFixes_55830752__private_reporting;
 Feature_KVS_BugFixes_55830752__private_requiresFeatures;
 Feature_KVS_BugFixes_55830752_logged_traits;
-Feature_KVS_BugFixes_55830887__private_descriptor;
-Feature_KVS_BugFixes_55830887__private_featureState;
-Feature_KVS_BugFixes_55830887__private_reporting;
-Feature_KVS_BugFixes_55830887__private_requiresFeatures;
-Feature_KVS_BugFixes_55830887_logged_traits;
-Feature_PackagedComElevationSupport__private_descriptor;
-Feature_PackagedComElevationSupport__private_featureState;
-Feature_PackagedComElevationSupport__private_reporting;
-Feature_PackagedComElevationSupport__private_requiresFeatures;
-Feature_PackagedComElevationSupport_logged_traits;
-Feature_PerfImpTest__private_descriptor;
-Feature_PerfImpTest__private_featureState;
-Feature_PerfImpTest__private_reporting;
-Feature_PerfImpTest_logged_traits;
+Feature_LearningModeTraceService__private_descriptor;
+Feature_LearningModeTraceService__private_featureState;
+Feature_LearningModeTraceService__private_reporting;
+Feature_LearningModeTraceService__private_requiresFeatures;
+Feature_LearningModeTraceService_logged_traits;
+Feature_PackagedComElevationSupport_v2__private_descriptor;
+Feature_PackagedComElevationSupport_v2__private_featureState;
+Feature_PackagedComElevationSupport_v2__private_reporting;
+Feature_PackagedComElevationSupport_v2__private_requiresFeatures;
+Feature_PackagedComElevationSupport_v2_logged_traits;
+Feature_ProjectTessera_CreateProcessInSandbox__private_descriptor;
+Feature_ProjectTessera_CreateProcessInSandbox__private_featureState;
+Feature_ProjectTessera_CreateProcessInSandbox__private_reporting;
+Feature_ProjectTessera_CreateProcessInSandbox__private_requiresFeatures;
+Feature_ProjectTessera_CreateProcessInSandbox_logged_traits;
 Feature_Servicing_DisallowSharedLockImplicitUpgrade__private_descriptor;
 Feature_Servicing_DisallowSharedLockImplicitUpgrade__private_featureState;
 Feature_Servicing_DisallowSharedLockImplicitUpgrade__private_reporting;
 Feature_Servicing_DisallowSharedLockImplicitUpgrade__private_requiresFeatures;
 Feature_Servicing_DisallowSharedLockImplicitUpgrade_logged_traits;
-Feature_Servicing_LoaderInitEnvironmentHashTable__private_descriptor;
-Feature_Servicing_LoaderInitEnvironmentHashTable__private_featureState;
-Feature_Servicing_LoaderInitEnvironmentHashTable__private_reporting;
-Feature_Servicing_LoaderInitEnvironmentHashTable__private_requiresFeatures;
-Feature_Servicing_LoaderInitEnvironmentHashTable_logged_traits;
 Feature_Servicing_LoaderSnapsBuffer__private_descriptor;
 Feature_Servicing_LoaderSnapsBuffer__private_featureState;
 Feature_Servicing_LoaderSnapsBuffer__private_reporting;
 Feature_Servicing_LoaderSnapsBuffer_logged_traits;
-Feature_Servicing_VBSEnclavesForArgon__private_descriptor;
-Feature_Servicing_VBSEnclavesForArgon__private_featureState;
-Feature_Servicing_VBSEnclavesForArgon__private_reporting;
-Feature_Servicing_VBSEnclavesForArgon__private_requiresFeatures;
-Feature_Servicing_VBSEnclavesForArgon_logged_traits;
-Feature_Servicing_VBSEnclavesForARM64EC__private_descriptor;
-Feature_Servicing_VBSEnclavesForARM64EC__private_featureState;
-Feature_Servicing_VBSEnclavesForARM64EC__private_reporting;
-Feature_Servicing_VBSEnclavesForARM64EC__private_requiresFeatures;
-Feature_Servicing_VBSEnclavesForARM64EC_logged_traits;
 Feature_SettingsDel__private_descriptor;
 Feature_SettingsDel__private_featureState;
 Feature_SettingsDel__private_reporting;
 Feature_SettingsDel_logged_traits;
-Feature_Standalone_25_03_NonSec__private_descriptor;
-Feature_Standalone_25_03_NonSec__private_featureState;
-Feature_Standalone_25_03_NonSec__private_reporting;
-Feature_Standalone_25_03_NonSec_logged_traits;
-Feature_Standalone_25_04_NonSec__private_descriptor;
-Feature_Standalone_25_04_NonSec__private_featureState;
-Feature_Standalone_25_04_NonSec__private_reporting;
-Feature_Standalone_25_04_NonSec_logged_traits;
-Feature_Standalone_25_05_NonSec__private_descriptor;
-Feature_Standalone_25_05_NonSec__private_featureState;
-Feature_Standalone_25_05_NonSec__private_reporting;
-Feature_Standalone_25_05_NonSec_logged_traits;
-Feature_Standalone_25_06_NonSec__private_descriptor;
-Feature_Standalone_25_06_NonSec__private_featureState;
-Feature_Standalone_25_06_NonSec__private_reporting;
-Feature_Standalone_25_06_NonSec_logged_traits;
-Feature_Standalone_25_07_NonSec__private_descriptor;
-Feature_Standalone_25_07_NonSec__private_featureState;
-Feature_Standalone_25_07_NonSec__private_reporting;
-Feature_Standalone_25_07_NonSec_logged_traits;
-Feature_Standalone_25_08_NonSec__private_descriptor;
-Feature_Standalone_25_08_NonSec__private_featureState;
-Feature_Standalone_25_08_NonSec__private_reporting;
-Feature_Standalone_25_08_NonSec_logged_traits;
+Feature_Standalone_26_06_NonSec__private_descriptor;
+Feature_Standalone_26_06_NonSec__private_featureState;
+Feature_Standalone_26_06_NonSec__private_reporting;
+Feature_Standalone_26_06_NonSec_logged_traits;
+Feature_Standalone_26_08_NonSec__private_descriptor;
+Feature_Standalone_26_08_NonSec__private_featureState;
+Feature_Standalone_26_08_NonSec__private_reporting;
+Feature_Standalone_26_08_NonSec_logged_traits;
 Feature_Standalone_Future__private_descriptor;
 Feature_Standalone_Future__private_featureState;
 Feature_Standalone_Future__private_reporting;
 Feature_Standalone_Future_logged_traits;
-Feature_TestConfNum__private_descriptor;
-Feature_TestConfNum__private_featureState;
-Feature_TestConfNum__private_reporting;
-Feature_TestConfNum_logged_traits;
-Feature_TestGateImp__private_descriptor;
-Feature_TestGateImp__private_featureState;
-Feature_TestGateImp__private_reporting;
-Feature_TestGateImp__private_requiresFeatures;
-Feature_TestGateImp_logged_traits;
-Feature_TestLabVal__private_descriptor;
-Feature_TestLabVal__private_featureState;
-Feature_TestLabVal__private_reporting;
-Feature_TestLabVal__private_requiresFeatures;
-Feature_TestLabVal_logged_traits;
+Feature_Tessera_202605Retail__private_descriptor;
+Feature_Tessera_202605Retail__private_featureState;
+Feature_Tessera_202605Retail__private_reporting;
+Feature_Tessera_202605Retail__private_requiresFeatures;
+Feature_Tessera_202605Retail_logged_traits;
+Feature_TestLoc02__private_descriptor;
+Feature_TestLoc02__private_featureState;
+Feature_TestLoc02__private_reporting;
+Feature_TestLoc02_logged_traits;
+Feature_TestLoc03__private_descriptor;
+Feature_TestLoc03__private_featureState;
+Feature_TestLoc03__private_reporting;
+Feature_TestLoc03__private_requiresFeatures;
+Feature_TestLoc03_logged_traits;
 Feature_TreatDosDevicePathsAsNormalFiles__private_descriptor;
 Feature_TreatDosDevicePathsAsNormalFiles__private_featureState;
 Feature_TreatDosDevicePathsAsNormalFiles__private_reporting;
@@ -20200,16 +20291,6 @@ Feature_UxAccOptimization__private_featureState;
 Feature_UxAccOptimization__private_reporting;
 Feature_UxAccOptimization__private_requiresFeatures;
 Feature_UxAccOptimization_logged_traits;
-Feature_UxLabTest__private_descriptor;
-Feature_UxLabTest__private_featureState;
-Feature_UxLabTest__private_reporting;
-Feature_UxLabTest__private_requiresFeatures;
-Feature_UxLabTest_logged_traits;
-Feature_UxPerfImp__private_descriptor;
-Feature_UxPerfImp__private_featureState;
-Feature_UxPerfImp__private_reporting;
-Feature_UxPerfImp__private_requiresFeatures;
-Feature_UxPerfImp_logged_traits;
 _fltused;
 __ft_g_api_info;
 __ft_g_feature_store_change_registration_handle;
@@ -20558,7 +20639,6 @@ RtlpGlobalTagHeap;
 RtlpHeapErrorHandlerThreshold;
 RtlpHeapFailureInfo;
 RtlpHeapHeaderFieldOffsets;
-RtlpHeapInvalidBadAddress;
 RtlpHeapInvalidBreakPoint;
 RtlpHeapKey;
 RtlpHeapStackTraceLog;
